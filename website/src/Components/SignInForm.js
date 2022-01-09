@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 
 import styles from "./SignInForm.module.css";
 
-const SignInForm = () => {
+const SignInForm = (props) => {
+    props.changeButton(window.location.pathname)
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 

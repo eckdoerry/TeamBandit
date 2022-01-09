@@ -35,6 +35,15 @@
 }
 
 .pageSwitcherItem_active {
+    background-color: #40434e;
+    color: #9da6b1;
+    padding: 10px 25px;
+    cursor: pointer;
+    font-size: 0.9em;
+    border: none;
+    outline: none;
+    display: inline-block;
+    text-decoration: none;
     background-color: #6b5b95;
     color: white;
 }
@@ -46,6 +55,20 @@
 .pageSwitcherItem:last-child {
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
+}
+
+.pageSwitcherItem_active:first-child {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+.pageSwitcherItem_active:last-child {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.formCenter {
+    margin-bottom: 100px;
 }
 
 .formTitle {
@@ -62,5 +85,16 @@
     margin: 0 10px;
     padding-bottom: 5px;
 }
+
+.formTitleLink_active {
+    color: #707c8b;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.7em;
+    margin: 0 10px;
+    padding-bottom: 5px;
+    color: white;
+    border-bottom: 1px solid #6b5b95;
+  }
 
 
