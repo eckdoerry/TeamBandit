@@ -1,44 +1,40 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import styles from "./SignUpForm.module.css"
 
-class SignUpForm extends Component {
-    constructor() {
-        super();
+const SignUpForm = () => {
+    // JS
 
-        this.state = {
-            email: "",
-            password: "",
-            name: "",
-            hasAgreed: false,
-        };
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
+    const [hasAgreed, setHasAgreed] = useState(false);
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+    const emailChangeHandler = (event) => {
+        setEmail(event.target.value);
+    };
+
+    const passwordChangeHandler = (event) => {
+        setPassword(event.target.value);
+    };
+
+    const nameChangeHandler = (event) => {
+        setName(event.target.value);
     }
 
-    handleChange(event) {
-        let target = event.target;
-        let value = target.type === "checkbox" ? target.checked : target.value;
-        let name = target.name;
-
-        this.setState({
-            [name]: value,
-        });
+    const hasAgreedChangeHandler = (event) => {
+        setHasAgreed( hasAgreed ? false : true);
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-
-        console.log("The form was submitted with the following data:");
-        console.log(this.state);
+    const submitHandler = () => {
+        console.log("Submitted");
     }
-
-    render() {
+    
+    // JSX
         return (
             <div className={styles.formCenter}>
-                <form onSubmit={this.handleSubmit} className={styles.formFields}>
+                <form onSubmit={submitHandler} className={styles.formFields}>
                     <div className={styles.formField}>
                         <label className={styles.formFieldLabel} htmlFor="name">
                             Full Name
@@ -49,8 +45,8 @@ class SignUpForm extends Component {
                             className={styles.formFieldInput}
                             placeholder="Enter your full name"
                             name="name"
-                            value={this.state.name}
-                            onChange={this.handleChange}
+                            value={name}
+                            onChange={nameChangeHandler}
                         />
                     </div>
                     <div className={styles.formField}>
@@ -63,8 +59,8 @@ class SignUpForm extends Component {
                             className={styles.formFieldInput}
                             placeholder="Enter your password"
                             name="password"
-                            value={this.state.password}
-                            onChange={this.handleChange}
+                            value={password}
+                            onChange={passwordChangeHandler}
                         />
                     </div>
                     <div className={styles.formField}>
@@ -77,8 +73,8 @@ class SignUpForm extends Component {
                             className={styles.formFieldInput}
                             placeholder="Enter your email"
                             name="email"
-                            value={this.state.email}
-                            onChange={this.handleChange}
+                            value={email}
+                            onChange={emailChangeHandler}
                         />
                     </div>
 
@@ -88,8 +84,8 @@ class SignUpForm extends Component {
                                 className={styles.formFieldCheckbox}
                                 type="checkbox"
                                 name="hasAgreed"
-                                value={this.state.hasAgreed}
-                                onChange={this.handleChange}
+                                value={hasAgreed}
+                                onChange={hasAgreedChangeHandler}
                             />{" "}
                             I agree all statements in{" "}
                             <a href="null" className={styles.formFieldTermsLink}>
@@ -108,5 +104,4 @@ class SignUpForm extends Component {
             </div>
         );
     }
-}
 export default SignUpForm;
