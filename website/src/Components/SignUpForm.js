@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+import styles from "./SignUpForm.module.css"
+
 class SignUpForm extends Component {
     constructor() {
         super();
@@ -35,44 +37,44 @@ class SignUpForm extends Component {
 
     render() {
         return (
-            <div className="formCenter">
-                <form onSubmit={this.handleSubmit} className="formFields">
-                    <div className="formField">
-                        <label className="formFieldLabel" htmlFor="name">
+            <div className={styles.formCenter}>
+                <form onSubmit={this.handleSubmit} className={styles.formFields}>
+                    <div className={styles.formField}>
+                        <label className={styles.formFieldLabel} htmlFor="name">
                             Full Name
                         </label>
                         <input
                             type="text"
                             id="name"
-                            className="formFieldInput"
+                            className={styles.formFieldInput}
                             placeholder="Enter your full name"
                             name="name"
                             value={this.state.name}
                             onChange={this.handleChange}
                         />
                     </div>
-                    <div className="formField">
-                        <label className="formFieldLabel" htmlFor="password">
+                    <div className={styles.formField}>
+                        <label className={styles.formFieldLabel} htmlFor="password">
                             Password
                         </label>
                         <input
                             type="password"
                             id="password"
-                            className="formFieldInput"
+                            className={styles.formFieldInput}
                             placeholder="Enter your password"
                             name="password"
                             value={this.state.password}
                             onChange={this.handleChange}
                         />
                     </div>
-                    <div className="formField">
-                        <label className="formFieldLabel" htmlFor="email">
+                    <div className={styles.formField}>
+                        <label className={styles.formFieldLabel} htmlFor="email">
                             E-Mail Address
                         </label>
                         <input
                             type="email"
                             id="email"
-                            className="formFieldInput"
+                            className={styles.formFieldInput}
                             placeholder="Enter your email"
                             name="email"
                             value={this.state.email}
@@ -80,25 +82,25 @@ class SignUpForm extends Component {
                         />
                     </div>
 
-                    <div className="formField">
-                        <label className="formFieldCheckboxLabel">
+                    <div className={styles.formField}>
+                        <label className={styles.formFieldCheckboxLabel}>
                             <input
-                                className="formFieldCheckbox"
+                                className={styles.formFieldCheckbox}
                                 type="checkbox"
                                 name="hasAgreed"
                                 value={this.state.hasAgreed}
                                 onChange={this.handleChange}
                             />{" "}
                             I agree all statements in{" "}
-                            <a href="null" className="formFieldTermsLink">
+                            <a href="null" className={styles.formFieldTermsLink}>
                                 terms of service
                             </a>
                         </label>
                     </div>
 
                     <div className="formField">
-                        <button className="formFieldButton">Sign Up</button>{" "}
-                        <Link to="/sign-in" className="formFieldLink">
+                        <button className={styles.formFieldButton}>Sign Up</button>{" "}
+                        <Link to="/sign-in" className={styles.formFieldLink}>
                             I'm already member
                         </Link>
                     </div>

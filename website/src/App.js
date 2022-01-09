@@ -3,38 +3,38 @@ import { BrowserRouter as Router, Route, Routes, NavLink } from "react-router-do
 import SignUpForm from "./Components/SignUpForm";
 import SignInForm from "./Components/SignInForm";
 
-import "./App.css";
+import styles from "./App.module.css";
 
 class App extends Component {
     render() {
         return (
             <Router>
-                <div className="App">
-                    <div className="appAside" />
-                    <div className="appForm">
-                        <div className="pageSwitcher">
+                <div className={styles.App}>
+                    <div className={styles.appAside} />
+                    <div className={styles.appForm}>
+                        <div className={styles.pageSwitcher}>
                             <NavLink
                                 to="/sign-in"
-                                activeClassName="pageSwitcherItem-active"
-                                className="pageSwitcherItem"
+                                activeClassName={styles.pageSwitcherItem_active}
+                                className={styles.pageSwitcherItem}
                             >
                                 Sign In
                             </NavLink>
                             <NavLink
                                 exact
                                 to="/"
-                                activeClassName="pageSwitcherItem-active"
-                                className="pageSwitcherItem"
+                                activeClassName={styles.pageSwitcherItem_active}
+                                className={styles.pageSwitcherItem}
                             >
                                 Sign Up
                             </NavLink>
                         </div>
 
-                        <div className="formTitle">
+                        <div className={styles.formTitle}>
                             <NavLink
                                 to="/sign-in"
-                                activeClassName="formTitleLink-active"
-                                className="formTitleLink"
+                                activeClassName={styles.formTitleLink_active}
+                                className={styles.formTitleLink}
                             >
                                 Sign In
                             </NavLink>{" "}
@@ -42,8 +42,8 @@ class App extends Component {
                             <NavLink
                                 exact
                                 to="/"
-                                activeClassName="formTitleLink-active"
-                                className="formTitleLink"
+                                activeClassName={styles.formTitleLink_active}
+                                className={styles.formTitleLink}
                             >
                                 Sign Up
                             </NavLink>

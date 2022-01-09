@@ -1,0 +1,66 @@
+.App {
+    height: 100vh;
+    display: flex;
+    color: white;
+}
+
+.appAside {
+    width: 50%;
+    background-color: #6b5b95;
+}
+
+.appForm {
+    width: 50%;
+    background-color: #12130f;
+    padding: 25px 40px;
+    overflow: auto;
+}
+
+.pageSwitcher {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10%;
+}
+
+.pageSwitcherItem {
+    background-color: #40434e;
+    color: #9da6b1;
+    padding: 10px 25px;
+    cursor: pointer;
+    font-size: 0.9em;
+    border: none;
+    outline: none;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.pageSwitcherItem_active {
+    background-color: #6b5b95;
+    color: white;
+}
+
+.pageSwitcherItem:first-child {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+.pageSwitcherItem:last-child {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.formTitle {
+    color: #707c8b;
+    font-weight: 300;
+    margin-bottom: 50px;
+}
+
+.formTitleLink {
+    color: #707c8b;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.7em;
+    margin: 0 10px;
+    padding-bottom: 5px;
+}
+
+
