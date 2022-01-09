@@ -21,8 +21,8 @@
 }
 
 .formFieldButton {
-    background-color: #6b5b95;
-    color: white;
+    background-color: #FAC01A;
+    color: black;
     border: none;
     outline: none;
     border-radius: 25px;
@@ -32,10 +32,10 @@
 }
 
 .formFieldLink {
-    color: #66707d;
+    color: #CDDDDD;
     text-decoration: none;
     display: inline-block;
-    border-bottom: 1.5px solid #6b5b95;
+    border-bottom: 1.5px solid #FAC01A;
     padding-bottom: 5px;
 }
 

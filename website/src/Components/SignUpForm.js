@@ -88,7 +88,7 @@ const SignUpForm = (props) => {
                                 value={hasAgreed}
                                 onChange={hasAgreedChangeHandler}
                             />{" "}
-                            I agree all statements in{" "}
+                            I agree to all statements in the
                             <a href="null" className={styles.formFieldTermsLink}>
                                 terms of service
                             </a>
@@ -98,7 +98,7 @@ const SignUpForm = (props) => {
                     <div className="formField">
                         <button className={styles.formFieldButton}>Sign Up</button>{" "}
                         <Link to="/sign-in" className={styles.formFieldLink}>
-                            I'm already member
+                            I'm already a member
                         </Link>
                     </div>
                 </form>

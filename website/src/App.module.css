@@ -1,17 +1,17 @@
 .App {
     height: 100vh;
     display: flex;
-    color: white;
+    color: CDDDDD;
 }
 
 .appAside {
     width: 50%;
-    background-color: #6b5b95;
+    background-color: #fac01a;
 }
 
 .appForm {
     width: 50%;
-    background-color: #12130f;
+    background-color: #002454;
     padding: 25px 40px;
     overflow: auto;
 }
@@ -23,7 +23,7 @@
 }
 
 .pageSwitcherItem {
-    background-color: #40434e;
+    background-color: #696969;
     color: #9da6b1;
     padding: 10px 25px;
     cursor: pointer;
@@ -35,7 +35,7 @@
 }
 
 .pageSwitcherItem_active {
-    background-color: #40434e;
+    background-color: #fac01a;
     color: #9da6b1;
     padding: 10px 25px;
     cursor: pointer;
@@ -44,8 +44,7 @@
     outline: none;
     display: inline-block;
     text-decoration: none;
-    background-color: #6b5b95;
-    color: white;
+    color: black;
 }
 
 .pageSwitcherItem:first-child {
@@ -72,13 +71,14 @@
 }
 
 .formTitle {
-    color: #707c8b;
+    color: white;
     font-weight: 300;
     margin-bottom: 50px;
+    color: #cddddd;
 }
 
 .formTitleLink {
-    color: #707c8b;
+    color: white;
     text-decoration: none;
     display: inline-block;
     font-size: 1.7em;
@@ -87,7 +87,7 @@
 }
 
 .formTitleLink_active {
-    color: #707c8b;
+    color: #cddddd;
     text-decoration: none;
     display: inline-block;
     font-size: 1.7em;
@@ -95,6 +95,4 @@
     padding-bottom: 5px;
     color: white;
     border-bottom: 1px solid #6b5b95;
-  }
-
-
+}
