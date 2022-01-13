@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import styles from "./SignUpForm.module.css"
 
 const SignUpForm = (props) => {
     // JS
-    props.changeButton(window.location.pathname)
+    // UPDATE BUTTON
+    useEffect(() => {
+        props.changeButton(window.location.pathname);
+    }, []);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
