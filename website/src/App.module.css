@@ -9,11 +9,23 @@
     background-color: #fac01a;
 }
 
+@media (max-width: 600px) {
+    .appAside {
+        display: none;
+    }
+}
+
 .appForm {
     width: 50%;
     background-color: #002454;
     padding: 25px 40px;
     overflow: auto;
+}
+
+@media (max-width: 600px) {
+    .appForm {
+        width: 100%;
+    }
 }
 
 .pageSwitcher {
