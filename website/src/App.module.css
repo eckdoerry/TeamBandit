@@ -106,5 +106,13 @@
     margin: 0 10px;
     padding-bottom: 5px;
     color: white;
-    border-bottom: 1px solid #6b5b95;
+    border-bottom: 1px solid #fac01a;
 }
+
+.image{
+    width: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+

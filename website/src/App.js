@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import SignUpForm from "./Components/SignUpForm";
 import SignInForm from "./Components/SignInForm";
+import Logo from "./Images/teamBanditLogo.png";
 
 import styles from "./App.module.css";
 
@@ -16,7 +17,9 @@ const App = () => {
     return (
         <Router>
             <div className={styles.App}>
-                <div className={styles.appAside} />
+                <div className={styles.appAside}>
+                    <div><img className = {styles.image} src={Logo} alt="Logo"/></div>
+                </div>
                 <div className={styles.appForm}>
                     <div className={styles.pageSwitcher}>
                         <NavLink
@@ -35,11 +38,13 @@ const App = () => {
                     </div>
 
                     <div className={styles.formTitle}>
-                        <NavLink to="/sign-in" className={styles.formTitleLink}>
+                        <NavLink to="/sign-in" 
+                        className={`${URL === "/sign-in" ? styles.formTitleLink_active : styles.formTitleLink}`}>
                             Sign In
                         </NavLink>{" "}
                         or{" "}
-                        <NavLink exact to="/" className={styles.formTitleLink}>
+                        <NavLink exact to="/" 
+                        className={`${URL !== "/sign-in" ? styles.formTitleLink_active : styles.formTitleLink}`}>
                             Sign Up
                         </NavLink>
                     </div>
