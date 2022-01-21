@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {
-    HashRouter as Router,
+    BrowserRouter as Router,
     Route,
     Routes,
     NavLink,
