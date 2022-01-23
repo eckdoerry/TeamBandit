@@ -1,65 +1,62 @@
-import React, {useState} from "react";
-import {
-    BrowserRouter as Router,
-    Route,
-    Routes,
-    NavLink,
-} from "react-router-dom";
-import SignUpForm from "./Components/SignUpForm";
-import SignInForm from "./Components/SignInForm";
-import Logo from "./Images/teamBanditLogo.png";
+import React, {Fragment, useState, useEffect} from "react";
+import './App.module.css';
 
-import styles from "./App.module.css";
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
-const App = () => {
-    const [URL, setURL] = useState(window.location.pathname)
+import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
+
+// components
+import Landing from "./Pages/LandingPage/LandingPage";
+import Info from "./Pages/InfoPage/Info";
+import TeamBandit from "./Pages/TeamBandit/TeamBandit";
+
+// Toastify is on first app page to get configured
+toast.configure();
+
+function App() {
+    const [isAuthenticated, setIsAuthenticated] = useState( false );
+
+    const setAuth = (boolean) => {
+        setIsAuthenticated(boolean);
+    };
+
+    const checkAuthenticated = async () => {
+        console.log("1");
+        try {
+            console.log("2");
+        const response = await fetch("http://localhost:80/auth/verify", {
+            method: "GET",
+            headers: { token: localStorage.token}
+        });
+        
+        const parseRes = await response.json();
+
+        parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false);
+        
+        } catch (error) {
+            
+            console.error(error.message);
+        }
+    };
+
+    useEffect(()=>{
+        checkAuthenticated();
+    }, []);
 
     return (
-        <Router>
-            <div className={styles.App}>
-                <div className={styles.appAside}>
-                    <div><img className = {styles.image} src={Logo} alt="Logo"/></div>
-                </div>
-                <div className={styles.appForm}>
-                    <div className={styles.pageSwitcher}>
-                        <NavLink
-                            to="/sign-in"
-                            className={`${URL === "/sign-in" ? styles.pageSwitcherItem_active : styles.pageSwitcherItem}`}
-                        >
-                            Sign In
-                        </NavLink>
-                        <NavLink
-                            exact
-                            to="/"
-                            className={`${URL !== "/sign-in" ? styles.pageSwitcherItem_active : styles.pageSwitcherItem}`}
-                        >
-                            Sign Up
-                        </NavLink>
-                    </div>
-
-                    <div className={styles.formTitle}>
-                        <NavLink to="/sign-in" 
-                        className={`${URL === "/sign-in" ? styles.formTitleLink_active : styles.formTitleLink}`}>
-                            Sign In
-                        </NavLink>{" "}
-                        or{" "}
-                        <NavLink exact to="/" 
-                        className={`${URL !== "/sign-in" ? styles.formTitleLink_active : styles.formTitleLink}`}>
-                            Sign Up
-                        </NavLink>
-                    </div>
+        <Fragment>
+            <Router>
+                <div className="container">
                     <Routes>
-                        <Route path="/sign-in" element={<SignInForm changeButton = {setURL}/>}>
-                            Sign In
-                        </Route>
-                        <Route path="/" element={<SignUpForm changeButton = {setURL}/>}>
-                            Sign Up
-                        </Route>
+                        <Route exact path = "/" element={!isAuthenticated ? <Landing setAuth={setAuth}/> : <Navigate to="/team-bandit"/>}/>
+                        <Route exact path = "/info" element={<Info/>}/>
+                        <Route exact path = "/team-bandit" element={isAuthenticated ? <TeamBandit setAuth={setAuth}/> : <Navigate to="/"/>}/>
                     </Routes>
                 </div>
-            </div>
-        </Router>
+            </Router>
+        </Fragment>
     );
-};
+}
 
 export default App;

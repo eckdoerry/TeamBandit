@@ -3,15 +3,28 @@ const express = require("express");
 const fs = require("fs");
 const http = require("http");
 const https = require("https");
+const cors = require("cors");
 
 // express app
 const app = express();
 
 try {
+    
+
+    // ROUTES //
+
+    
     // add middlewares
     app.use(express.static(path.join(__dirname, "..", "build")));
     app.use(express.static("public"));
     app.use(express.static(__dirname, { dotfiles: "allow" }));
+    app.use(express.json()) //req.body
+    app.use(cors())
+
+    // register and login routes
+
+    app.use("/auth", require("./routes/jwtAuth"));
+    app.use("/dashboard", require("./routes/dashboard"));
 
     // Starting both http & https servers
     const httpServer = http.createServer(app);
@@ -36,6 +49,13 @@ try {
     // add middlewares
     app.use(express.static(path.join(__dirname, "..", "build")));
     app.use(express.static("public"));
+    app.use(express.json()) //req.body
+    app.use(cors())
+
+    // register and login routes
+
+    app.use("/auth", require("./routes/jwtAuth"));
+    app.use("/dashboard", require("./routes/dashboard"));
 
     // start express server on port 5000
     app.listen(5000, () => {
