@@ -1,0 +1,119 @@
+.App {
+    height: 100vh;
+    display: flex;
+    color: CDDDDD;
+}
+
+.appAside {
+    width: 50%;
+    background-color: #fac01a;
+}
+
+@media (max-width: 600px) {
+    .appAside {
+        display: none;
+    }
+}
+
+.appForm {
+    width: 50%;
+    background-color: #002454;
+    padding: 25px 40px;
+    overflow: auto;
+}
+
+@media (max-width: 600px) {
+    .appForm {
+        width: 100%;
+    }
+}
+
+.pageSwitcher {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10%;
+}
+
+.pageSwitcherItem {
+    background-color: #696969;
+    color: #9da6b1;
+    padding: 10px 25px;
+    cursor: pointer;
+    font-size: 0.9em;
+    border: none;
+    outline: none;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.pageSwitcherItem_active {
+    background-color: #fac01a;
+    color: #9da6b1;
+    padding: 10px 25px;
+    cursor: pointer;
+    font-size: 0.9em;
+    border: none;
+    outline: none;
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+}
+
+.pageSwitcherItem:first-child {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+.pageSwitcherItem:last-child {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.pageSwitcherItem_active:first-child {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+.pageSwitcherItem_active:last-child {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.formCenter {
+    margin-bottom: 100px;
+}
+
+.formTitle {
+    color: white;
+    font-weight: 300;
+    margin-bottom: 50px;
+    color: #cddddd;
+}
+
+.formTitleLink {
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.7em;
+    margin: 0 10px;
+    padding-bottom: 5px;
+    cursor:pointer;
+}
+
+.formTitleLink_active {
+    color: #cddddd;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.7em;
+    margin: 0 10px;
+    padding-bottom: 5px;
+    color: white;
+    border-bottom: 1px solid #fac01a;
+    cursor:pointer;
+}
+
+.image{
+    width: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}

@@ -29,6 +29,7 @@
     padding: 15px 70px;
     font-size: 0.8em;
     font-weight: 500;
+    cursor:pointer;
 }
 
 .formFieldLink {
@@ -54,23 +55,4 @@
 
 .formFieldInput::placeholder {
     color: #616e7f;
-}
-
-.formFieldCheckboxLabel {
-    color: white;
-    font-size: 0.9em;
-}
-
-.formFieldCheckbox {
-    position: relative;
-    top: 1.5px;
-}
-
-.formFieldTermsLink {
-    color: #FAC01A;
-    border-bottom: 1px solid #FAC01A;
-    text-decoration: none;
-    display: inline-block;
-    padding-bottom: 2px;
-    margin-left: 5px;
 }

@@ -1,44 +1,60 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 import styles from "./SignUpForm.module.css"
 
 const SignUpForm = (props) => {
-    // JS
-    // UPDATE BUTTON
-    useEffect(() => {
-        props.changeButton(window.location.pathname);
-    }, []);
+    
+    const [inputs, setInputs] = useState({
+        email: "",
+        password: "",
+        name: ""
+    });
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
+    const { email, password, name } = inputs;
+
     const [hasAgreed, setHasAgreed] = useState(false);
 
-    const emailChangeHandler = (event) => {
-        setEmail(event.target.value);
+    const onChange = (event) => {
+        setInputs({...inputs, [event.target.name] : event.target.value});
     };
-
-    const passwordChangeHandler = (event) => {
-        setPassword(event.target.value);
-    };
-
-    const nameChangeHandler = (event) => {
-        setName(event.target.value);
-    }
 
     const hasAgreedChangeHandler = (event) => {
         setHasAgreed( hasAgreed ? false : true);
     }
 
-    const submitHandler = () => {
-        console.log("Submitted");
-    }
+    const onSubmitForm = async (event) => {
+        event.preventDefault();
+
+        try {
+            const body = {email, password, name};
+
+            const response = await fetch("http://localhost:80/auth/register", { method: "POST", headers: {"Content-Type" : "application/json"}, body: JSON.stringify(body)});
+            
+            const parseRes = await response.json();
+            console.log(parseRes)
+            if(parseRes.token)
+            {
+                localStorage.setItem("token", parseRes.token);
+
+                props.setAuth(true);
+                toast.success("Registered Successfully!");
+            } else {
+                props.setAuth(false);
+                toast.error(parseRes);
+            }
+            
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
     
     // JSX
         return (
             <div className={styles.formCenter}>
-                <form onSubmit={submitHandler} className={styles.formFields}>
+                <form onSubmit={onSubmitForm} className={styles.formFields}>
                     <div className={styles.formField}>
                         <label className={styles.formFieldLabel} htmlFor="name">
                             Full Name
@@ -50,7 +66,7 @@ const SignUpForm = (props) => {
                             placeholder="Enter your full name"
                             name="name"
                             value={name}
-                            onChange={nameChangeHandler}
+                            onChange={event => onChange(event)}
                         />
                     </div>
                     <div className={styles.formField}>
@@ -64,7 +80,7 @@ const SignUpForm = (props) => {
                             placeholder="Enter your password"
                             name="password"
                             value={password}
-                            onChange={passwordChangeHandler}
+                            onChange={event => onChange(event)}
                         />
                     </div>
                     <div className={styles.formField}>
@@ -78,7 +94,7 @@ const SignUpForm = (props) => {
                             placeholder="Enter your email"
                             name="email"
                             value={email}
-                            onChange={emailChangeHandler}
+                            onChange={event => onChange(event)}
                         />
                     </div>
 
@@ -89,7 +105,7 @@ const SignUpForm = (props) => {
                                 type="checkbox"
                                 name="hasAgreed"
                                 value={hasAgreed}
-                                onChange={hasAgreedChangeHandler}
+                                onChange={event => onChange(event)}
                             />{" "}
                             I agree to all statements in the
                             <a href="null" className={styles.formFieldTermsLink}>

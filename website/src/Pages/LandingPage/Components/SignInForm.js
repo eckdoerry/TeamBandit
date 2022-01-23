@@ -1,30 +1,52 @@
-import React, { useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import styles from "./SignInForm.module.css";
 
+import { toast } from 'react-toastify';
+
 const SignInForm = (props) => {
-    useEffect(() => {
-        props.changeButton(window.location.pathname);
-    }, []);
+    const [inputs, setInputs] = useState({
+        email: "",
+        password: ""
+    });
+    
+    const { email, password } = inputs;
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
-    const emailChangeHandler = (event) => {
-        setEmail(event.target.value);
+    const onChange = (event) => {
+        setInputs({ ...inputs, [event.target.name] : event.target.value});
     };
 
-    const passwordChangeHandler = (event) => {
-        setPassword(event.target.value);
-    };
+    const onSubmitForm = async (event) => {
+        event.preventDefault();
+        try {
 
-    const submitHandler = () => {
-        console.log("Submitted");
-    };
+            const body = { email, password };
+
+            const response = await fetch("http://localhost:80/auth/login", { method: "POST", headers : {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+
+            const parseRes = await response.json();
+
+            if( parseRes.token )
+            {
+                localStorage.setItem("token", parseRes.token);
+                props.setAuth(true);
+                toast.success("Login successfull!");
+            } else {
+                props.setAuth(false);
+                toast.error(parseRes);
+            }
+
+            
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
     return (
+        <Fragment>
         <div className={styles.formCenter}>
-            <form className={styles.formFields} onSubmit={submitHandler}>
+            <form className={styles.formFields} onSubmit={onSubmitForm}>
                 <div className={styles.formField}>
                     <label className={styles.formFieldLabel} htmlFor="email">
                         E-Mail Address
@@ -36,7 +58,7 @@ const SignInForm = (props) => {
                         placeholder="Enter your email"
                         name="email"
                         value={email}
-                        onChange={emailChangeHandler}
+                        onChange={event => onChange(event)}
                     />
                 </div>
 
@@ -51,7 +73,7 @@ const SignInForm = (props) => {
                         placeholder="Enter your password"
                         name="password"
                         value={password}
-                        onChange={passwordChangeHandler}
+                        onChange={event => onChange(event)}
                     />
                 </div>
 
@@ -63,6 +85,7 @@ const SignInForm = (props) => {
                 </div>
             </form>
         </div>
+        </Fragment>
     );
 };
 
