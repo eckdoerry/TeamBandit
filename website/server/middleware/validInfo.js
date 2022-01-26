@@ -1,5 +1,5 @@
 module.exports = (req, res, next) => {
-    const { email, name, password } = req.body;
+    const { email, fname, lname, password } = req.body;
 
     function validEmail( userEmail )
     {
@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
 
     if(req.path === "/register")
     {
-        if(![email, name, password].every(Boolean)){
+        if(![email, fname, lname, password].every(Boolean)){
             return res.status(403).json("Missing Credentials");
         } else if (!validEmail(email)){
             return res.json("Invalid Email");
