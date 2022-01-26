@@ -25,7 +25,7 @@ function App() {
         console.log("1");
         try {
             console.log("2");
-        const response = await fetch("http://localhost:80/auth/verify", {
+        const response = await fetch("http://localhost:5000/auth/verify", {
             method: "GET",
             headers: { token: localStorage.token}
         });
