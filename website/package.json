@@ -21,7 +21,7 @@
         "web-vitals": "^2.1.2"
     },
     "scripts": {
-        "start-client": "react-scripts start",
+        "start-client": "(cd server && cd middleware && forever start authRoutes.js) && react-scripts start",
         "start": "npm run build && (cd server && forever start index.js )",
         "build": "react-scripts build",
         "test": "react-scripts test",
