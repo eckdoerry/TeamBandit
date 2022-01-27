@@ -1,8 +1,9 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-import Test from "./Test"
+import TeamBanditRoutes from "./TeamBanditRoutes"
 
+import styles from "./TeamBandit.module.css";
 
 // MUI imports
 import { styled, useTheme } from "@mui/material/styles";
@@ -23,6 +24,14 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import LogoutIcon from '@mui/icons-material/Logout';
+import Menu from '@mui/material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 // DRAWER FUNCTIONS
 const drawerWidth = 240;
@@ -92,10 +101,15 @@ const Drawer = styled(MuiDrawer, {
     }),
 }));
 
+const settings = ['Profile', 'Logout'];
+
 export default function MiniDrawer({setAuth}) {
     // JS
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+
+    // ENUM string for routes 
+    const [route, setRoute] = useState('Landing Page');
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -113,12 +127,30 @@ export default function MiniDrawer({setAuth}) {
         toast.success("Logged out successfully!");
     };
 
+    const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+    const handleOpenNavMenu = (event) => {
+        setAnchorElNav(event.currentTarget);
+    };
+    const handleOpenUserMenu = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
+    const handleCloseNavMenu = () => {
+        setAnchorElNav(null);
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
+
     // JSX
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
-            <AppBar position="fixed" open={open}>
-                <Toolbar>
+            <AppBar style={{background: '#002454'}} position="fixed" open={open}>
+                <Toolbar className = {styles.toolbar}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -132,8 +164,43 @@ export default function MiniDrawer({setAuth}) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Mini variant drawer
+                        TeamBandit
                     </Typography>
+                    
+                    <Box sx={{ flexGrow: 1 }}>
+                        
+                    <Tooltip title="Open settings">
+                    
+                        <IconButton className={styles.avatar} onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                        </IconButton>
+                        </Tooltip>
+                        <Menu
+                        sx={{ mt: '45px' }}
+                        id="menu-appbar"
+                        anchorEl={anchorElUser}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={Boolean(anchorElUser)}
+                        onClose={handleCloseUserMenu}
+                        >
+                        {settings.map((setting) => (
+                            <MenuItem key={setting} onClick={(event)=> setting !== 'Logout' ? (handleCloseUserMenu(), setRoute({setting})) : logout(event)}>
+                            <Typography textAlign="center">{setting}</Typography>
+                            </MenuItem>
+                        ))}
+                        </Menu>
+                        <IconButton color="inherit" className = {styles.avatar} onClick={()=> {setRoute('Settings')}}>
+                            <SettingsIcon/>
+                        </IconButton>
+                    </Box>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>
@@ -148,9 +215,11 @@ export default function MiniDrawer({setAuth}) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {["Home", "Email Hub", "Courses"].map(
+                    {["Landing Page", "Email Hub", "Courses"].map(
                         (text, index) => (
-                            <ListItem button key={text}>
+                            <ListItem button key={text} onClick={() => {
+                                setRoute({text});
+                            }}>
                                 <ListItemIcon>
                                     {index % 2 === 0 ? (
                                         <InboxIcon />
@@ -167,33 +236,18 @@ export default function MiniDrawer({setAuth}) {
                 <List>
                     <ListItem button key="Logout" onClick={(event)=> logout(event)}>
                         <ListItemIcon>
-                            
+                            <LogoutIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Logout" />
                     </ListItem>
                 </List>
+                
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-                <Test></Test>
-                <Typography paragraph>
-                    Consequat mauris nunc congue nisi vitae suscipit. Fringilla
-                    est ullamcorper eget nulla facilisi etiam dignissim diam.
-                    Pulvinar elementum integer enim neque volutpat ac tincidunt.
-                    Ornare suspendisse sed nisi lacus sed viverra tellus. Purus
-                    sit amet volutpat consequat mauris. Elementum eu facilisis
-                    sed odio morbi. Euismod lacinia at quis risus sed vulputate
-                    odio. Morbi tincidunt ornare massa eget egestas purus
-                    viverra accumsan in. In hendrerit gravida rutrum quisque non
-                    tellus orci ac. Pellentesque nec nam aliquam sem et tortor.
-                    Habitant morbi tristique senectus et. Adipiscing elit duis
-                    tristique sollicitudin nibh sit. Ornare aenean euismod
-                    elementum nisi quis eleifend. Commodo viverra maecenas
-                    accumsan lacus vel facilisis. Nulla posuere sollicitudin
-                    aliquam ultrices sagittis orci a.
-                </Typography>
-                <div className="d-flex mt-5 justify-content-around">
-            </div>
+                <TeamBanditRoutes route={route} />
+                
+                <footer className = {styles.footer}> Copyright @ 2022 All Rights Reserved </footer>
             </Box>
         </Box>
     );
