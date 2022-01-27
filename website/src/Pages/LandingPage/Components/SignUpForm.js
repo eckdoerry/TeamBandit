@@ -123,8 +123,8 @@ const SignUpForm = (props) => {
                                 onChange={event => onChange(event)}
                             />{" "}
                             I agree to all statements in the
-                            <a href="null" className={styles.formFieldTermsLink}>
-                                terms of service
+                            <a href="/privacy-policy" target="_blank" className={styles.formFieldTermsLink}>
+                                Privacy Policy
                             </a>
                         </label>
                     </div>
