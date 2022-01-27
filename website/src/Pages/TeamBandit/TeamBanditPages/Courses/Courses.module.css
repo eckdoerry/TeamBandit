@@ -1,0 +1,17 @@
+.courseContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 10px;
+  height: 75vh;
+  width: 100wh;
+  border: 1px solid black;
+  position: relative;
+}
+
+.addCourseBtn2 {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
