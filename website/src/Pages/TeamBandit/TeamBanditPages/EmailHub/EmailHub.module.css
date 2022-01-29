@@ -1,0 +1,10 @@
+.contact_list {
+    width: 25%;
+    overflow: scroll;
+    height: 87vh;
+}
+
+.contact_card {
+    height: 3rem;
+    font-size: 1.5vw;
+}
