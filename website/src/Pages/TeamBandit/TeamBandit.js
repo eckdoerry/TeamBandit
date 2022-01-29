@@ -252,18 +252,4 @@ export default function MiniDrawer({setAuth}) {
         </Box>
     );
 }
-/*
-    // JS
-    
 
-    // JSX
-    return(
-        <Fragment>
-            <div className="d-flex mt-5 justify-content-around">
-                <h1> Welcome  </h1>
-                <button className="btn btn-primary"onClick={(event)=> logout(event)}> Logout </button>
-            </div>
-        </Fragment>
-    );
-};
-*/
