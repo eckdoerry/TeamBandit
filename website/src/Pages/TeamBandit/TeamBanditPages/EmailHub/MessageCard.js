@@ -9,7 +9,6 @@ const MessageCard = (props) => {
     return (
         <div className = {styles.contact_card}>
             {props.name}
-            <hr class="solid"></hr>
         </div>
         
     )
