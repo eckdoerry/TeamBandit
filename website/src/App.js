@@ -9,6 +9,7 @@ import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom
 // components
 import Landing from "./Pages/LandingPage/LandingPage";
 import Info from "./Pages/InfoPage/Info";
+import PrivacyPolicy from "./Pages/PrivacyPolicyPage/PrivacyPolicy";
 import TeamBandit from "./Pages/TeamBandit/TeamBandit";
 
 // Toastify is on first app page to get configured
@@ -22,9 +23,7 @@ function App() {
     };
 
     const checkAuthenticated = async () => {
-        console.log("1");
         try {
-            console.log("2");
         const response = await fetch("http://localhost:5000/auth/verify", {
             method: "GET",
             headers: { token: localStorage.token}
@@ -51,6 +50,7 @@ function App() {
                     <Routes>
                         <Route exact path = "/" element={!isAuthenticated ? <Landing setAuth={setAuth}/> : <Navigate to="/team-bandit"/>}/>
                         <Route exact path = "/info" element={<Info/>}/>
+                        <Route exact path = "/privacy-policy" element={<PrivacyPolicy/>}/>
                         <Route exact path = "/team-bandit" element={isAuthenticated ? <TeamBandit setAuth={setAuth}/> : <Navigate to="/"/>}/>
                     </Routes>
                 </div>

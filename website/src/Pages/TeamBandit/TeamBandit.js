@@ -1,55 +1,255 @@
-import React, {Fragment, useState, useEffect} from "react";
-import { toast } from 'react-toastify';
+import React, { Fragment, useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
-// components
-import InputToDo from "./todolist/InputToDo";
-import ListToDos from "./todolist/ListTodos";
+import TeamBanditRoutes from "./TeamBanditRoutes"
 
+import styles from "./TeamBandit.module.css";
 
-const Dashboard = ({setAuth}) => {
+// MUI imports
+import { styled, useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import MuiDrawer from "@mui/material/Drawer";
+import MuiAppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import CssBaseline from "@mui/material/CssBaseline";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import LogoutIcon from '@mui/icons-material/Logout';
+import Menu from '@mui/material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import SettingsIcon from '@mui/icons-material/Settings';
 
-    const [name, setName] = useState("");
-    const [allTodos, setAllTodos] = useState([]);
-    const [todosChange, setTodosChange] = useState(false);
+// DRAWER FUNCTIONS
+const drawerWidth = 240;
 
-    const getName = async () =>
-    {
-        try {
-            const response = await fetch("http://localhost:80/dashboard/", {method: "GET", headers: {token: localStorage.token}});
+const openedMixin = (theme) => ({
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+    }),
+    overflowX: "hidden",
+});
 
-            const parseData = await response.json();
+const closedMixin = (theme) => ({
+    transition: theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: "hidden",
+    width: `calc(${theme.spacing(7)} + 1px)`,
+    [theme.breakpoints.up("sm")]: {
+        width: `calc(${theme.spacing(9)} + 1px)`,
+    },
+});
 
-            setName(parseData[0].user_name);
-            setAllTodos(parseData);
+const DrawerHeader = styled("div")(({ theme }) => ({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+}));
 
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
+const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(["width", "margin"], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+        marginLeft: drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(["width", "margin"], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    }),
+}));
+
+const Drawer = styled(MuiDrawer, {
+    shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: "nowrap",
+    boxSizing: "border-box",
+    ...(open && {
+        ...openedMixin(theme),
+        "& .MuiDrawer-paper": openedMixin(theme),
+    }),
+    ...(!open && {
+        ...closedMixin(theme),
+        "& .MuiDrawer-paper": closedMixin(theme),
+    }),
+}));
+
+const settings = ['Profile', 'Logout'];
+
+export default function MiniDrawer({setAuth}) {
+    // JS
+    const theme = useTheme();
+    const [open, setOpen] = React.useState(false);
+
+    // ENUM string for routes 
+    const [route, setRoute] = useState('Landing Page');
+
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
 
     const logout = (event) => {
         event.preventDefault();
         localStorage.removeItem("token");
         setAuth(false);
-
+    
         toast.success("Logged out successfully!");
     };
 
-    useEffect(() => {
-        getName();
-        setTodosChange(false);
-    }, [todosChange]);
+    const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-    return(
-        <Fragment>
-            <div className="d-flex mt-5 justify-content-around">
-                <h1> {name} 's Todo List  </h1>
-                <button className="btn btn-primary"onClick={(event)=> logout(event)}> Logout </button>
-            </div>
-            <InputToDo setTodosChange = {setTodosChange} />
-            <ListToDos allTodos = {allTodos} setTodosChange = {setTodosChange}/>
-        </Fragment>
+    const handleOpenNavMenu = (event) => {
+        setAnchorElNav(event.currentTarget);
+    };
+    const handleOpenUserMenu = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
+    const handleCloseNavMenu = () => {
+        setAnchorElNav(null);
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
+
+    // JSX
+    return (
+        <Box sx={{ display: "flex" }}>
+            <CssBaseline />
+            <AppBar style={{background: '#002454'}} position="fixed" open={open}>
+                <Toolbar className = {styles.toolbar}>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        sx={{
+                            marginRight: "36px",
+                            ...(open && { display: "none" }),
+                        }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" noWrap component="div">
+                        TeamBandit
+                    </Typography>
+                    
+                    <Box sx={{ flexGrow: 1 }}>
+                        
+                    <Tooltip title="Open settings">
+                    
+                        <IconButton className={styles.avatar} onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                        </IconButton>
+                        </Tooltip>
+                        <Menu
+                        sx={{ mt: '45px' }}
+                        id="menu-appbar"
+                        anchorEl={anchorElUser}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={Boolean(anchorElUser)}
+                        onClose={handleCloseUserMenu}
+                        >
+                        {settings.map((setting) => (
+                            <MenuItem key={setting} onClick={(event)=> setting !== 'Logout' ? (handleCloseUserMenu(), setRoute({setting})) : logout(event)}>
+                            <Typography textAlign="center">{setting}</Typography>
+                            </MenuItem>
+                        ))}
+                        </Menu>
+                        <IconButton color="inherit" className = {styles.avatar} onClick={()=> {setRoute('Settings')}}>
+                            <SettingsIcon/>
+                        </IconButton>
+                    </Box>
+                </Toolbar>
+            </AppBar>
+            <Drawer variant="permanent" open={open}>
+                <DrawerHeader>
+                    <IconButton onClick={handleDrawerClose}>
+                        {theme.direction === "rtl" ? (
+                            <ChevronRightIcon />
+                        ) : (
+                            <ChevronLeftIcon />
+                        )}
+                    </IconButton>
+                </DrawerHeader>
+                <Divider />
+                <List>
+                    {["Landing Page", "Email Hub", "Courses"].map(
+                        (text, index) => (
+                            <ListItem button key={text} onClick={() => {
+                                setRoute({text});
+                            }}>
+                                <ListItemIcon>
+                                    {index % 2 === 0 ? (
+                                        <InboxIcon />
+                                    ) : (
+                                        <MailIcon />
+                                    )}
+                                </ListItemIcon>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        )
+                    )}
+                </List>
+                <Divider />
+                <List>
+                    <ListItem button key="Logout" onClick={(event)=> logout(event)}>
+                        <ListItemIcon>
+                            <LogoutIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Logout" />
+                    </ListItem>
+                </List>
+                
+            </Drawer>
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                <DrawerHeader />
+                <TeamBanditRoutes route={route} />
+                
+                <footer className = {styles.footer}> Copyright @ 2022 All Rights Reserved </footer>
+            </Box>
+        </Box>
     );
-};
+}
 
-export default Dashboard;
