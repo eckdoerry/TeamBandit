@@ -1,10 +1,12 @@
 import { Fragment, React } from "react";
 
-const Course = ({ course }) => {
+import CourseCard from "./CourseCard";
+
+const Course = ({courseInfo}) => {
     return (
         <Fragment>
             <div>
-                <h3>{course}</h3>
+                <CourseCard courseInfo={courseInfo}/>
             </div>
         </Fragment>
     );
