@@ -5,10 +5,10 @@ import styles from "./EmailHub.module.css"
 import MessageCard from "./MessageCard";
 
 // TODO: DELETE
-const DUMMY_CONTACTS = ['Freddy Krueger', 'Keyser Söze', 'Mohinder Singh Pandher', 'John Wick', 'Jason Voorhees',
-'Freddy Krueger', 'Keyser Söze', 'Mohinder Singh Pandher', 'John Wick', 'Jason Voorhees',
-'Freddy Krueger', 'Keyser Söze', 'Mohinder Singh Pandher', 'John Wick', 'Jason Voorhees',
-'Freddy Krueger', 'Keyser Söze', 'Mohinder Singh Pandher', 'John Wick', 'Jason Voorhees'];
+const DUMMY_CONTACTS = ['Freddy Krueger', 'Keyser Söze', 'Mohinder Pandher', 'John Wick', 'Jason Voorhees',
+'Freddy Krueger', 'Keyser Söze', 'Mohinder Pandher', 'John Wick', 'Jason Voorhees',
+'Freddy Krueger', 'Keyser Söze', 'Mohinder Pandher', 'John Wick', 'Jason Voorhees',
+'Freddy Krueger', 'Keyser Söze', 'Mohinder Pandher', 'John Wick', 'Jason Voorhees'];
 
 const MessageList = () => {
     // JS
