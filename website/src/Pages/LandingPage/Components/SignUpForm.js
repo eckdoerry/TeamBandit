@@ -9,11 +9,10 @@ const SignUpForm = (props) => {
     const [inputs, setInputs] = useState({
         email: "",
         password: "",
-        fname: "",
-        lname: ""
+        name: ""
     });
 
-    const { email, password, fname, lname } = inputs;
+    const { email, password, name } = inputs;
 
     const [hasAgreed, setHasAgreed] = useState(false);
 
@@ -29,7 +28,7 @@ const SignUpForm = (props) => {
         event.preventDefault();
 
         try {
-            const body = {email, password, fname, lname};
+            const body = {email, password, name};
 
             const response = await fetch("http://localhost:5000/auth/register", { method: "POST", headers: {"Content-Type" : "application/json"}, body: JSON.stringify(body)});
             
@@ -57,30 +56,16 @@ const SignUpForm = (props) => {
             <div className={styles.formCenter}>
                 <form onSubmit={onSubmitForm} className={styles.formFields}>
                     <div className={styles.formField}>
-                        <label className={styles.formFieldLabel} htmlFor="fname">
-                            First Name
+                        <label className={styles.formFieldLabel} htmlFor="name">
+                            Full Name
                         </label>
                         <input
                             type="text"
-                            id="fname"
+                            id="name"
                             className={styles.formFieldInput}
-                            placeholder="Enter your first name"
-                            name="fname"
-                            value={fname}
-                            onChange={event => onChange(event)}
-                        />
-                    </div>
-                    <div className={styles.formField}>
-                        <label className={styles.formFieldLabel} htmlFor="lname">
-                            Last Name
-                        </label>
-                        <input
-                            type="text"
-                            id="lname"
-                            className={styles.formFieldInput}
-                            placeholder="Enter your last name"
-                            name="lname"
-                            value={lname}
+                            placeholder="Enter your full name"
+                            name="name"
+                            value={name}
                             onChange={event => onChange(event)}
                         />
                     </div>
@@ -123,8 +108,8 @@ const SignUpForm = (props) => {
                                 onChange={event => onChange(event)}
                             />{" "}
                             I agree to all statements in the
-                            <a href="/privacy-policy" target="_blank" className={styles.formFieldTermsLink}>
-                                Privacy Policy
+                            <a href="null" className={styles.formFieldTermsLink}>
+                                terms of service
                             </a>
                         </label>
                     </div>
