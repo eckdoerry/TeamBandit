@@ -1,11 +1,11 @@
 import {Fragment,React} from "react";
 
-const LandingPage = () => {
+const Clients = () => {
     return(
         <Fragment>
-            <p>LandingPage</p>
+            <p>Clients</p>
         </Fragment>
     );
 }
 
-export default LandingPage;
+export default Clients;

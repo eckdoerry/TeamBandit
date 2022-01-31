@@ -6,6 +6,7 @@ import AlertTitle from '@mui/material/AlertTitle';
 
 // TeamBandit Pages //
 import Courses from "./TeamBanditPages/Courses/Courses";
+import Clients from "./TeamBanditPages/Clients/clients";
 import EmailHub from "./TeamBanditPages/EmailHub/EmailHub";
 import LandingPage from "./TeamBanditPages/LandingPage/LandingPage";
 import Profile from "./TeamBanditPages/Profile/Profile";
@@ -34,6 +35,14 @@ const TeamBanditRouter = ({route}) => {
         return (
             <Fragment>
                 <Courses/>
+            </Fragment>
+        )
+    }
+    else if(route.text === "Clients") //TODO: Try to figure out a uniform route, route.text route.setting, get it all in route
+    {
+        return (
+            <Fragment>
+                <Clients/>
             </Fragment>
         )
     }

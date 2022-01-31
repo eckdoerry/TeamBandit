@@ -1,11 +1,11 @@
 import {Fragment, React} from "react";
 
-const Profile = () => {
+const Students = () => {
     return(
         <Fragment>
-            <p>Profile</p>
+            <p>Students</p>
         </Fragment>
     );
 }
 
-export default Profile;
+export default Students;
