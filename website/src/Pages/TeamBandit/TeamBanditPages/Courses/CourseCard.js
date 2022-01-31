@@ -11,6 +11,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
+import CoursePage from './CoursePage';
+
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -40,6 +42,7 @@ const CourseCard = ({courseInfo}) => {
         title={courseInfo.course}
         subheader="subheader"
       />
+      <CoursePage text={"Open Course"}/>
       <CardContent>
         <Typography >
         &lt;Short Course Description&gt;
