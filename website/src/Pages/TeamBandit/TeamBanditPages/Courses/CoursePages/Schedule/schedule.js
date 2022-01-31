@@ -1,11 +1,11 @@
 import {Fragment, React} from "react";
 
-const Profile = () => {
+const Schedule = () => {
     return(
         <Fragment>
-            <p>Profile</p>
+            <p>Schedule</p>
         </Fragment>
     );
 }
 
-export default Profile;
+export default Schedule;

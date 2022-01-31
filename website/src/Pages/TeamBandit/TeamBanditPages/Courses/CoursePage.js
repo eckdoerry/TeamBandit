@@ -1,10 +1,27 @@
 import {Fragment, useState, React} from 'react';
+
+// MUI Functions
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import MenuItem from '@mui/material/MenuItem';
 
+// CSS
 import styles from "./Courses.module.css"
+
+// Routes
 import CoursePageTabs from './CoursePageTabs';
+import CourseRouter from './CourseRouter';
+
+// Table of the contents
+const pages = ['Homepage', 'Schedule', 'Info and Policies', 'Projects', 'Students', 'Clients', 'Assignments', 'Settings'];
 
 const CoursePage = ({text}) => {
   const [state, setState] = useState({
@@ -25,7 +42,7 @@ const CoursePage = ({text}) => {
     <Box className={styles.mainCourseBox}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <div className={styles.mainCoursePage}>
+      <div>
         <div className={styles.courseContent}>
           <CoursePageTabs />
         </div>
@@ -33,17 +50,101 @@ const CoursePage = ({text}) => {
     </Box>
   );
 
+  const [anchorElNav, setAnchorElNav] = useState(null);
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+
+  // ENUM string for routes 
+  const [route, setRoute] = useState('Homepage');
+
   return (
     <div>
       <Fragment key={anchor}>
         <Button onClick={toggleDrawer(anchor, true)}>{text}</Button>
         <Drawer
-          PaperProps={{ style: {position: 'absolute', marginTop: 64, height: 757, width: 1350 }}}
+          PaperProps={{ style: {position: 'flex', marginTop: 64, height: '100%', width: '96%' }}}
           anchor={anchor}
           open={state[anchor]}
           onClose={toggleDrawer(anchor, false)}
         >
-          {list(anchor)}
+            <AppBar style={{background: '#CDDDDD'}} position="static">
+            <Container maxWidth="xl">
+              <Toolbar disableGutters>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+                >
+                  CS1111-Max's Cool Class-Spring 2022
+                </Typography>
+
+                <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                  <IconButton
+                    size="large"
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    onClick={handleOpenNavMenu}
+                    color="inherit"
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorElNav}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'left',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'left',
+                    }}
+                    open={Boolean(anchorElNav)}
+                    onClose={handleCloseNavMenu}
+                    sx={{
+                      display: { xs: 'block', md: 'none' },
+                    }}
+                  >
+                    {pages.map((page) => (
+                      <MenuItem key={page} onClick={handleCloseNavMenu}>
+                        <Typography textAlign="center">{page}</Typography>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </Box>
+                
+                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                  {pages.map((page) => (
+                    <Button
+                      className={styles.changeFont}
+                      key={page}
+                      onClick={() => {
+                                handleCloseNavMenu();
+                                setRoute({page});
+                            }}
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      {page}
+                    </Button>
+                  ))}
+                </Box>
+              </Toolbar>
+            </Container>
+          </AppBar>
+
+          {/*This will return whatever page we want displayed :)*/}
+          <CourseRouter route={route}/>
+
         </Drawer>
       </Fragment>
     </div>

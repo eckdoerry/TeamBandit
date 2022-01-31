@@ -32,6 +32,9 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import SettingsIcon from '@mui/icons-material/Settings';
+import HomeIcon from '@mui/icons-material/Home';
+import PeopleIcon from '@mui/icons-material/People';
+import SchoolIcon from '@mui/icons-material/School';
 
 // DRAWER FUNCTIONS
 const drawerWidth = 240;
@@ -127,19 +130,13 @@ export default function MiniDrawer({setAuth}) {
         toast.success("Logged out successfully!");
     };
 
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-    const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
-    };
+
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
 
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-    };
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
@@ -215,17 +212,13 @@ export default function MiniDrawer({setAuth}) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {["Landing Page", "Email Hub", "Courses"].map(
+                    {["Landing Page", "Email Hub",  "Clients", "Courses"].map(
                         (text, index) => (
                             <ListItem button key={text} onClick={() => {
                                 setRoute({text});
                             }}>
                                 <ListItemIcon>
-                                    {index % 2 === 0 ? (
-                                        <InboxIcon />
-                                    ) : (
-                                        <MailIcon />
-                                    )}
+                                    {index === 0 ? <HomeIcon/> : index === 1 ? <InboxIcon/> : index === 2 ? <PeopleIcon/> : <SchoolIcon/>}
                                 </ListItemIcon>
                                 <ListItemText primary={text} />
                             </ListItem>
