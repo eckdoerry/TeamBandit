@@ -29,10 +29,10 @@ const CourseCard = ({courseInfo}) => {
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
-  };
+};
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ boxShadow: 8}}>
       <CardHeader
         action={
           <IconButton aria-label="settings">
@@ -42,10 +42,10 @@ const CourseCard = ({courseInfo}) => {
         title={courseInfo.course}
         subheader="subheader"
       />
-      <CoursePage text={"Open Course"}/>
+      <CoursePage courseInfo={courseInfo} />
       <CardContent>
         <Typography >
-        &lt;Short Course Description&gt;
+        Short Course Description?
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -63,9 +63,8 @@ const CourseCard = ({courseInfo}) => {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Course Objectives:</Typography>
           <Typography paragraph>
-            &lt;Long Course Description&gt;
+            Long Course Description?
           </Typography>
         </CardContent>
       </Collapse>
