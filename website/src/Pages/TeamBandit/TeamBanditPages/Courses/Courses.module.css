@@ -4,22 +4,15 @@
 
 .courseContainer {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-content: flex-start;
+  flex-direction: column;
   gap: 10px;
-  height: 75vh;
   width: 100wh;
-  position: relative;
 }
 
 .courseBtns {
-  position: absolute;
   display: flex;
   flex-direction: row;
   gap: 10px;
-  bottom: 0;
-  right: 0;
 }
 
 .addCourseBtn2 {

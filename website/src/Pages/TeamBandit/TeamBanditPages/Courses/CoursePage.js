@@ -17,13 +17,12 @@ import MenuItem from '@mui/material/MenuItem';
 import styles from "./Courses.module.css"
 
 // Routes
-import CoursePageTabs from './CoursePageTabs';
 import CourseRouter from './CourseRouter';
 
 // Table of the contents
 const pages = ['Homepage', 'Schedule', 'Info and Policies', 'Projects', 'Students', 'Clients', 'Assignments', 'Settings'];
 
-const CoursePage = ({text}) => {
+const CoursePage = ({courseInfo}) => {
   const [state, setState] = useState({
     right: false,
   });
@@ -38,21 +37,8 @@ const CoursePage = ({text}) => {
     setState({ ...state, [anchor]: open });
   };
 
-  const list = (anchor) => (
-    <Box className={styles.mainCourseBox}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
-      <div>
-        <div className={styles.courseContent}>
-          <CoursePageTabs />
-        </div>
-      </div>
-    </Box>
-  );
-
   const [anchorElNav, setAnchorElNav] = useState(null);
-
-  const handleOpenNavMenu = (event) => {
+    const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
 
@@ -67,14 +53,14 @@ const CoursePage = ({text}) => {
   return (
     <div>
       <Fragment key={anchor}>
-        <Button onClick={toggleDrawer(anchor, true)}>{text}</Button>
+        <Button onClick={toggleDrawer(anchor, true)}>Click to open course</Button>
         <Drawer
           PaperProps={{ style: {position: 'flex', marginTop: 64, height: '100%', width: '96%' }}}
           anchor={anchor}
           open={state[anchor]}
           onClose={toggleDrawer(anchor, false)}
         >
-            <AppBar style={{background: '#CDDDDD'}} position="static">
+          <AppBar style={{background: '#CDDDDD'}} position="static">
             <Container maxWidth="xl">
               <Toolbar disableGutters>
                 <Typography
@@ -83,7 +69,7 @@ const CoursePage = ({text}) => {
                   component="div"
                   sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                 >
-                  CS1111-Max's Cool Class-Spring 2022
+                  {courseInfo.course}
                 </Typography>
 
                 <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -116,7 +102,10 @@ const CoursePage = ({text}) => {
                     }}
                   >
                     {pages.map((page) => (
-                      <MenuItem key={page} onClick={handleCloseNavMenu}>
+                      <MenuItem key={page} onClick={() => {
+                                handleCloseNavMenu();
+                                setRoute({page});
+                            }}>
                         <Typography textAlign="center">{page}</Typography>
                       </MenuItem>
                     ))}
