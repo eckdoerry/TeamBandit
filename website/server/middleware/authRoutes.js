@@ -18,6 +18,6 @@ app.use("/auth", require("../routes/jwtAuth"));
 
 app.use("/courses", require("../routes/TeamBanditPages/courseHomePage"));
 
-app.listen(5000, ()=> {
-    console.log("server is running on port 5000");
+app.listen(3000, ()=> {
+    console.log("server is running on port 3000");
 })

@@ -14,7 +14,7 @@ const Courses = () => {
     const getCourses = async () =>
     {
         try {
-            const response = await fetch("http://localhost:5000/courses/", {method: "GET", headers: {token: localStorage.token}});
+            const response = await fetch("http://34.216.91.228:3000/courses/", {method: "GET", headers: {token: localStorage.token}});
 
             const parseData = await response.json();
 

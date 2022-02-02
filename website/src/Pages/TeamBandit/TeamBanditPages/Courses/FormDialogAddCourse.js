@@ -28,7 +28,7 @@ const FormDialogAddCourse = ({setCoursesChange}) => {
         myHeaders.append("token", localStorage.token);
 
         const body = { title };
-        const response = await fetch("http://localhost:5000/courses/courses", {
+        const response = await fetch("http://34.216.91.228:3000/courses/courses", {
             method: "POST",
             headers: myHeaders,
             body: JSON.stringify(body)

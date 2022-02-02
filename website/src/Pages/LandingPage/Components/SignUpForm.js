@@ -31,7 +31,7 @@ const SignUpForm = (props) => {
         try {
             const body = {email, password, fname, lname};
 
-            const response = await fetch("http://localhost:5000/auth/register", { method: "POST", headers: {"Content-Type" : "application/json"}, body: JSON.stringify(body)});
+            const response = await fetch("http://34.216.91.228:3000/auth/register", { method: "POST", headers: {"Content-Type" : "application/json"}, body: JSON.stringify(body)});
             
             const parseRes = await response.json();
             console.log(parseRes)
