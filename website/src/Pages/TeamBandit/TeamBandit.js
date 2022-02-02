@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-import TeamBanditRoutes from "./TeamBanditRoutes"
+import TeamBanditRoutes from "./TeamBanditRoutes";
 
 import styles from "./TeamBandit.module.css";
 
@@ -24,17 +24,17 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import LogoutIcon from '@mui/icons-material/Logout';
-import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import SettingsIcon from '@mui/icons-material/Settings';
-import HomeIcon from '@mui/icons-material/Home';
-import PeopleIcon from '@mui/icons-material/People';
-import SchoolIcon from '@mui/icons-material/School';
+import LogoutIcon from "@mui/icons-material/Logout";
+import Menu from "@mui/material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import SettingsIcon from "@mui/icons-material/Settings";
+import HomeIcon from "@mui/icons-material/Home";
+import PeopleIcon from "@mui/icons-material/People";
+import SchoolIcon from "@mui/icons-material/School";
 
 // DRAWER FUNCTIONS
 const drawerWidth = 240;
@@ -104,15 +104,15 @@ const Drawer = styled(MuiDrawer, {
     }),
 }));
 
-const settings = ['Profile', 'Logout'];
+const settings = ["Profile", "Logout"];
 
-export default function MiniDrawer({setAuth}) {
+export default function MiniDrawer({ setAuth }) {
     // JS
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
-    // ENUM string for routes 
-    const [route, setRoute] = useState('Landing Page');
+    // ENUM string for routes
+    const [route, setRoute] = useState("Landing Page");
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -126,17 +126,15 @@ export default function MiniDrawer({setAuth}) {
         event.preventDefault();
         localStorage.removeItem("token");
         setAuth(false);
-    
+
         toast.success("Logged out successfully!");
     };
 
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
-
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
@@ -146,8 +144,12 @@ export default function MiniDrawer({setAuth}) {
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
-            <AppBar style={{background: '#002454'}} position="fixed" open={open}>
-                <Toolbar className = {styles.toolbar}>
+            <AppBar
+                style={{ background: "#002454" }}
+                position="fixed"
+                open={open}
+            >
+                <Toolbar className={styles.toolbar}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -163,39 +165,60 @@ export default function MiniDrawer({setAuth}) {
                     <Typography variant="h6" noWrap component="div">
                         TeamBandit
                     </Typography>
-                    
+
                     <Box sx={{ flexGrow: 1 }}>
-                        
-                    <Tooltip title="Open settings">
-                    
-                        <IconButton className={styles.avatar} onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                        </IconButton>
+                        <Tooltip title="Open settings">
+                            <IconButton
+                                className={styles.avatar}
+                                onClick={handleOpenUserMenu}
+                                sx={{ p: 0 }}
+                            >
+                                <Avatar
+                                    alt="Remy Sharp"
+                                    src="/static/images/avatar/2.jpg"
+                                />
+                            </IconButton>
                         </Tooltip>
                         <Menu
-                        sx={{ mt: '45px' }}
-                        id="menu-appbar"
-                        anchorEl={anchorElUser}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        open={Boolean(anchorElUser)}
-                        onClose={handleCloseUserMenu}
+                            sx={{ mt: "45px" }}
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                                vertical: "top",
+                                horizontal: "right",
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: "top",
+                                horizontal: "right",
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
                         >
-                        {settings.map((setting) => (
-                            <MenuItem key={setting} onClick={(event)=> setting !== 'Logout' ? (handleCloseUserMenu(), setRoute({setting})) : logout(event)}>
-                            <Typography textAlign="center">{setting}</Typography>
-                            </MenuItem>
-                        ))}
+                            {settings.map((setting) => (
+                                <MenuItem
+                                    key={setting}
+                                    onClick={(event) =>
+                                        setting !== "Logout"
+                                            ? (handleCloseUserMenu(),
+                                                setRoute({ setting }))
+                                            : logout(event)
+                                    }
+                                >
+                                    <Typography textAlign="center">
+                                        {setting}
+                                    </Typography>
+                                </MenuItem>
+                            ))}
                         </Menu>
-                        <IconButton color="inherit" className = {styles.avatar} onClick={()=> {setRoute('Settings')}}>
-                            <SettingsIcon/>
+                        <IconButton
+                            color="inherit"
+                            className={styles.avatar}
+                            onClick={() => {
+                                setRoute("Settings");
+                            }}
+                        >
+                            <SettingsIcon />
                         </IconButton>
                     </Box>
                 </Toolbar>
@@ -212,13 +235,49 @@ export default function MiniDrawer({setAuth}) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {["Landing Page", "Email Hub",  "Clients", "Courses"].map(
+                    {["Home", "Email Hub", "Clients", "Courses"].map(
                         (text, index) => (
-                            <ListItem button key={text} onClick={() => {
-                                setRoute({text});
-                            }}>
+                            <ListItem
+                                button
+                                key={text}
+                                onClick={() => {
+                                    setRoute({ text });
+                                }}
+                            >
                                 <ListItemIcon>
-                                    {index === 0 ? <HomeIcon/> : index === 1 ? <InboxIcon/> : index === 2 ? <PeopleIcon/> : <SchoolIcon/>}
+                                    {index === 0 ? (
+                                        <Tooltip
+                                            title="Home"
+                                            placement="right"
+                                            arrow
+                                        >
+                                            <HomeIcon />
+                                        </Tooltip>
+                                    ) : index === 1 ? (
+                                        <Tooltip
+                                            title="Emails"
+                                            placement="right"
+                                            arrow
+                                        >
+                                            <InboxIcon />
+                                        </Tooltip>
+                                    ) : index === 2 ? (
+                                        <Tooltip
+                                            title="Clients"
+                                            placement="right"
+                                            arrow
+                                        >
+                                            <PeopleIcon />
+                                        </Tooltip>
+                                    ) : (
+                                        <Tooltip
+                                            title="Courses"
+                                            placement="right"
+                                            arrow
+                                        >
+                                            <SchoolIcon />
+                                        </Tooltip>
+                                    )}
                                 </ListItemIcon>
                                 <ListItemText primary={text} />
                             </ListItem>
@@ -227,22 +286,29 @@ export default function MiniDrawer({setAuth}) {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button key="Logout" onClick={(event)=> logout(event)}>
+                    <ListItem
+                        button
+                        key="Logout"
+                        onClick={(event) => logout(event)}
+                    >
                         <ListItemIcon>
-                            <LogoutIcon/>
+                            <Tooltip title="Logout" arrow>
+                                <LogoutIcon />
+                            </Tooltip>
                         </ListItemIcon>
                         <ListItemText primary="Logout" />
                     </ListItem>
                 </List>
-                
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
                 <TeamBanditRoutes route={route} />
-                
-                <footer className = {styles.footer}> Copyright @ 2022 All Rights Reserved </footer>
+
+                <footer className={styles.footer}>
+                    {" "}
+                    Copyright @ 2022 All Rights Reserved{" "}
+                </footer>
             </Box>
         </Box>
     );
 }
-
