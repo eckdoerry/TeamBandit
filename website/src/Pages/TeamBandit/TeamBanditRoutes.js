@@ -6,7 +6,7 @@ import AlertTitle from '@mui/material/AlertTitle';
 
 // TeamBandit Pages //
 import Courses from "./TeamBanditPages/Courses/Courses";
-import Clients from "./TeamBanditPages/Clients/Clients";
+import Clients from "./TeamBanditPages/Clients/clients";
 import EmailHub from "./TeamBanditPages/EmailHub/EmailHub";
 import LandingPage from "./TeamBanditPages/LandingPage/LandingPage";
 import Profile from "./TeamBanditPages/Profile/Profile";

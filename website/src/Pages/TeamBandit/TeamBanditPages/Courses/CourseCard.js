@@ -27,6 +27,7 @@ const ExpandMore = styled((props) => {
 const CourseCard = ({courseInfo}) => {
   const [expanded, setExpanded] = useState(false);
 
+  console.log(courseInfo);
   const handleExpandClick = () => {
     setExpanded(!expanded);
 };
@@ -39,7 +40,7 @@ const CourseCard = ({courseInfo}) => {
             <MoreVertIcon />
           </IconButton>
         }
-        title={courseInfo.course}
+        title={courseInfo.course_title}
         subheader="subheader"
       />
       <CoursePage courseInfo={courseInfo} />

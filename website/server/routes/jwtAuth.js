@@ -36,7 +36,7 @@ router.post("/register", validInfo, async (req, res) =>{
         const newUser = await pool.query("INSERT INTO organizers(organizer_fname, organizer_lname, organizer_email, organizer_pass) VALUES ($1, $2, $3, $4) RETURNING *", [fname, lname, email, bcryptPassword]);
         
         //5. generating our jwt token
-        const token = jwtGenerator(newUser.rows[0].user_id);
+        const token = jwtGenerator(newUser.rows[0].organizer_id);
 
         res.json({ token });
 
@@ -70,7 +70,7 @@ router.post("/login", validInfo, async (req, res)=>{
         }
 
         // 4. give them the jwt token
-        const token = jwtGenerator(user.rows[0].user_id);
+        const token = jwtGenerator(user.rows[0].organizer_id);
 
         res.json({ token });
 

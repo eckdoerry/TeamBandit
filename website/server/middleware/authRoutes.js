@@ -12,7 +12,9 @@ app.use(cors())
 // register and login routes
 
 app.use("/auth", require("../routes/jwtAuth"));
-app.use("/dashboard", require("../routes/dashboard"));
+//app.use("/dashboard", require("../routes/dashboard"));
+
+// Course information routes
 
 app.use("/courses", require("../routes/TeamBanditPages/courseHomePage"));
 

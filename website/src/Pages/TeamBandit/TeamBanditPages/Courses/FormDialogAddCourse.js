@@ -7,9 +7,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-const FormDialogAddCourse = ({addCourse}) => {
+const FormDialogAddCourse = ({setCoursesChange}) => {
   const [open, setOpen] = useState(false);
-  const [course, setCourse] = useState([]);
+  const [title, setTitle] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -19,17 +19,31 @@ const FormDialogAddCourse = ({addCourse}) => {
     setOpen(false);
   };
 
-  const handleAddCourse = (event) => {
-    event.preventDefault();
-    if(!course) {
-      alert('Please add a course or click cancel');
-      return;
+  const onSubmitForm = async e => {
+    e.preventDefault();
+    try {
+        const myHeaders = new Headers();
+
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("token", localStorage.token);
+
+        const body = { title };
+        const response = await fetch("http://localhost:5000/courses/courses", {
+            method: "POST",
+            headers: myHeaders,
+            body: JSON.stringify(body)
+        });
+
+        const parseResponse = await response.json();
+
+        console.log(parseResponse);
+
+        setCoursesChange(true);
+        setTitle("");
+    } catch (err) {
+      console.error(err.message);
     }
-
-    addCourse({course})
-
-    setCourse('')
-    handleClose(event);
+    handleClose();
   };
 
   return (
@@ -50,12 +64,12 @@ const FormDialogAddCourse = ({addCourse}) => {
             type="text"
             fullWidth
             variant="standard"
-            onChange={(e) => setCourse(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleAddCourse}>Add Course</Button>
+          <Button onClick={onSubmitForm}>Add Course</Button>
         </DialogActions>
       </Dialog>
     </div>

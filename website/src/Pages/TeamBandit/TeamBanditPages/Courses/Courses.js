@@ -1,4 +1,4 @@
-import {Fragment, React, useState} from "react";
+import {Fragment, React, useState, useEffect} from "react";
 
 import styles from "./Courses.module.css";
 
@@ -9,55 +9,22 @@ import FormDialogDeleteCourse from "./FormDialogDeleteCourse";
 const Courses = () => {
 
     const [courses, setCourses] = useState([]);
+    const [coursesChange, setCoursesChange] = useState(false);
 
-    /*
-    // Fetch Tasks
-    const fetchCourses = async () => {
-        const res = await fetch('http://localhost:5000/tasks')
-        const data = await res.json()
-        
-        return data 
-    }
-
-    // Fetch Task
-    const fetchCourse = async (id) => {
-        const res = await fetch(`http://localhost:5000/tasks/${id}`)
-        const data = await res.json()
-        
-        return data 
-    }
-
-    // Add Course
-    const addCourse = async (course) => {
+    const getCourses = async () =>
+    {
         try {
-            const body = {name, semester};
+            const response = await fetch("http://localhost:5000/courses/", {method: "GET", headers: {token: localStorage.token}});
 
-            const response = await fetch("http://localhost:5000/courses/addcourse", { method: "POST", headers: {"Content-Type" : "application/json"}, body: JSON.stringify(body)});
-            
-            const parseRes = await response.json();
-            console.log(parseRes)
+            const parseData = await response.json();
+
+            setCourses(parseData);
 
         } catch (error) {
             console.error(error.message);
         }
     }
 
-    // Delete Course
-    const deleteCourse = async (id) => {
-        await fetch(`http://localhost:5000/courses/${id}`, {
-        method: 'DELETE'
-        })
-
-        setCourses(courses.filter((course) => course.id !== id))
-    }
-    */
-
-    // Add Course
-    const addCourse = async (course) => {
-        const id = Math.floor(Math.random() * 10000) + 1
-        const newCourse = {id, ...course}
-        setCourses([...courses, newCourse])
-    }
 
     // Delete Course
     const deleteCourse = async (inCourse) => {
@@ -69,11 +36,17 @@ const Courses = () => {
         setCourses(courses.filter((course) => course.course !== inCourse.course));
     }
 
+    // Updates Page
+    useEffect(() => {
+        getCourses();
+        setCoursesChange(false);
+    }, [coursesChange]);
+
     return(
         <Fragment>
             <h1>Courses</h1>
             <div className={styles.courseBtns}>
-                <FormDialogAddCourse addCourse={addCourse}/>
+                <FormDialogAddCourse setCoursesChange = {setCoursesChange}/>
                 <FormDialogDeleteCourse deleteCourse={deleteCourse}/>
             </div>
             <div className={styles.courseContainer}>

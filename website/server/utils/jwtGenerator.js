@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
 require('dotenv').config(); // get access to all .env variables
 
-function jwtGenerator(user_id)
+function jwtGenerator(organizer_id)
 {
     const payload = {
-        user: user_id
+        user: organizer_id
     }
 
     return jwt.sign(payload, process.env.jwtSecret, {expiresIn: "1hr"});
