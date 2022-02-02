@@ -42,6 +42,8 @@ const Courses = () => {
         setCoursesChange(false);
     }, [coursesChange]);
 
+    console.log(courses);
+
     return(
         <Fragment>
             <h1>Courses</h1>

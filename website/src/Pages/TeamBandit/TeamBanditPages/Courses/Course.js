@@ -6,7 +6,7 @@ const Course = ({courseInfo}) => {
     return (
         <Fragment>
             <div>
-                <CourseCard courseInfo={courseInfo}/>
+            {courseInfo.course_title !== null && <CourseCard courseInfo={courseInfo}/>}
             </div>
         </Fragment>
     );
