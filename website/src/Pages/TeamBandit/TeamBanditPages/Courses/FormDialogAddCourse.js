@@ -25,6 +25,10 @@ const FormDialogAddCourse = ({setCoursesChange}) => {
 
   const onSubmitForm = async e => {
     e.preventDefault();
+    if (!title) {
+      alert("Please add a Course Name");
+      return;
+    }
     try {
         const myHeaders = new Headers();
 
@@ -45,6 +49,8 @@ const FormDialogAddCourse = ({setCoursesChange}) => {
 
         setCoursesChange(true);
         setTitle("");
+        setSemester("");
+        setDescription("");
     } catch (err) {
       console.error(err.message);
       toast.error("Failed to add course!");
@@ -71,6 +77,9 @@ const FormDialogAddCourse = ({setCoursesChange}) => {
             type="text"
             fullWidth
             variant="standard"
+            value = {title}
+            error={title === ""}
+            helperText={title === "" ? 'This is a required field' : ' '}
             onChange={(e) => setTitle(e.target.value)}
           />
           <TextField
