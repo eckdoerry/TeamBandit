@@ -87,10 +87,13 @@ const [anchorElUser, setAnchorElUser] = useState(null);
       }
     }
 
-    //edit course function
-
+  //edit course function
   const updateCourse = async e => {
     e.preventDefault();
+    if (!title) {
+      alert("Please add a Course Name");
+      return;
+    }
     try {
         const myHeaders = new Headers();
 
@@ -204,16 +207,18 @@ const [anchorElUser, setAnchorElUser] = useState(null);
           </DialogContentText>
           <TextField
             autoFocus
+            required
             margin="dense"
             label="Course Name"
             type="text"
             fullWidth
             variant="standard"
             value = {title}
+            error={title === ""}
+            helperText={title === "" ? 'This is a required field' : ' '}
             onChange={(e) => setTitle(e.target.value)}
           />
           <TextField
-            autoFocus
             margin="dense"
             label="Course Semester"
             type="text"
@@ -223,7 +228,6 @@ const [anchorElUser, setAnchorElUser] = useState(null);
             onChange={(e) => setSemester(e.target.value)}
           />
           <TextField
-            autoFocus
             margin="dense"
             label="Course Description"
             type="text"

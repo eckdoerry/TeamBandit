@@ -76,7 +76,7 @@ const ListStudents = ({courseInfo}) => {
                 <TableBody>
                 {students.map((student) => (
                     <TableRow
-                    key={student.id}
+                    key={student.student_id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                     <TableCell style={{backgroundColor:'#003466', color: 'white',}}component="th" scope="row">
