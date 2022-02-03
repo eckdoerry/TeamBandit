@@ -62,12 +62,11 @@ const CoursePage = ({courseInfo}) => {
           onClose={toggleDrawer(anchor, false)}
         >
           <AppBar style={{background: '#CDDDDD', color: 'black'}} position="static">
-            <Container maxWidth="xl">
-              <Toolbar disableGutters>
-                <IconButton onClick={toggleDrawer(anchor, false)}
-                  sx={{ marginRight: '11.5%' }}>
-                  <CancelIcon />
-                </IconButton>
+            <Container maxWidth="xl" sx={{display: 'flex', flexDirection: 'row'}}>
+              <IconButton onClick={toggleDrawer(anchor, false)}>
+                <CancelIcon />
+              </IconButton>
+              <Toolbar disableGutters >
                 <Typography
                   variant="h6"
                   noWrap
