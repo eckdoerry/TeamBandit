@@ -64,6 +64,7 @@ const FormDialogAddCourse = ({setCoursesChange}) => {
             Please enter course information here.
           </DialogContentText>
           <TextField
+            required
             autoFocus
             margin="dense"
             label="Course Name"
@@ -73,7 +74,6 @@ const FormDialogAddCourse = ({setCoursesChange}) => {
             onChange={(e) => setTitle(e.target.value)}
           />
           <TextField
-            autoFocus
             margin="dense"
             label="Course Semester"
             type="text"
@@ -82,7 +82,6 @@ const FormDialogAddCourse = ({setCoursesChange}) => {
             onChange={(e) => setSemester(e.target.value)}
           />
           <TextField
-            autoFocus
             margin="dense"
             label="Course Description"
             type="text"

@@ -13,4 +13,5 @@
 .toolbar{
     width:100%;
     position: flex;
+    z-index: 0;
 }
