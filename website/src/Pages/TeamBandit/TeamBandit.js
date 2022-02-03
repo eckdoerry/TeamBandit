@@ -145,7 +145,7 @@ export default function MiniDrawer({ setAuth }) {
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
             <AppBar
-                style={{ background: "#002454" }}
+                sx={{ background: "#002454" }}
                 position="fixed"
                 open={open}
             >
@@ -223,7 +223,7 @@ export default function MiniDrawer({ setAuth }) {
                     </Box>
                 </Toolbar>
             </AppBar>
-            <Drawer variant="permanent" open={open}>
+            <Drawer variant="permanent" open={open} sx={{zIndex: 0}}>
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === "rtl" ? (
@@ -242,6 +242,7 @@ export default function MiniDrawer({ setAuth }) {
                                 key={text}
                                 onClick={() => {
                                     setRoute({ text });
+                                    handleDrawerClose();
                                 }}
                             >
                                 <ListItemIcon>

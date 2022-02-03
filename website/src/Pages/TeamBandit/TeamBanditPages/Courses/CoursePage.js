@@ -12,6 +12,7 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 // CSS
 import styles from "./Courses.module.css"
@@ -55,7 +56,7 @@ const CoursePage = ({courseInfo}) => {
       <Fragment key={anchor}>
         <Button onClick={toggleDrawer(anchor, true)}>Click to open course</Button>
         <Drawer
-          PaperProps={{ style: {position: 'flex', marginTop: 64, height: '100%', width: '96%' }}}
+          PaperProps={{ style: { marginTop: 64, height: '100%', width: '96%' }}}
           anchor={anchor}
           open={state[anchor]}
           onClose={toggleDrawer(anchor, false)}
@@ -63,13 +64,17 @@ const CoursePage = ({courseInfo}) => {
           <AppBar style={{background: '#CDDDDD', color: 'black'}} position="static">
             <Container maxWidth="xl">
               <Toolbar disableGutters>
+                <IconButton onClick={toggleDrawer(anchor, false)}
+                  sx={{ marginRight: '11.5%' }}>
+                  <CancelIcon />
+                </IconButton>
                 <Typography
                   variant="h6"
                   noWrap
                   component="div"
                   sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                 >
-                  {courseInfo.course}
+                  {courseInfo.course_title}
                 </Typography>
 
                 <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -110,6 +115,7 @@ const CoursePage = ({courseInfo}) => {
                       </MenuItem>
                     ))}
                   </Menu>
+                  {courseInfo.course_title}
                 </Box>
                 
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>

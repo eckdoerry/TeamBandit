@@ -6,14 +6,12 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 100wh;
   padding-top: 10px;
 }
 
 .courseBtns {
   display: flex;
   flex-direction: row;
-  gap: 10px;
 }
 
 .addCourseBtn2 {

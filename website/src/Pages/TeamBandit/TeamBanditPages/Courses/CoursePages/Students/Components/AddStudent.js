@@ -99,6 +99,7 @@ const InputTodo = ({courseInfo, setStudentsChange}) => {
 
             toast.success("Student was added successfully!");
             setStudentsChange(true);
+
         } catch (error) {
             console.error(error.message);
             toast.error("Failed to add student!");
@@ -124,6 +125,11 @@ const InputTodo = ({courseInfo, setStudentsChange}) => {
             });
 
             toast.success("Student was added successfully!");
+            setStudentFname("");
+            setStudentLname("");
+            setStudentEmplid("");
+            setStudentEmail("");
+            setStudentGpa("");
             setStudentsChange(true);
         } catch (error) {
             console.error(error.message);
