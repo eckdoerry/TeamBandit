@@ -14,7 +14,7 @@ import Settings from "./TeamBanditPages/Settings/Settings";
 
 const TeamBanditRouter = ({route}) => {
     console.log(route); //TODO: Delete this
-    if(route.text === 'Landing Page' || route === 'Landing Page') //TODO: For some reason the buttons are wack and are setting route.text = to wat I want, for now its fine. Just rn Landing Page needs this.
+    if(route.text === 'Home' || route === 'Home') //TODO: For some reason the buttons are wack and are setting route.text = to wat I want, for now its fine. Just rn Landing Page needs this.
     {
         return (
             <Fragment>

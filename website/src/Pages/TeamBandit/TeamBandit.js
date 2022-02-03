@@ -112,7 +112,7 @@ export default function MiniDrawer({ setAuth }) {
     const [open, setOpen] = React.useState(false);
 
     // ENUM string for routes
-    const [route, setRoute] = useState("Landing Page");
+    const [route, setRoute] = useState("Home");
 
     const handleDrawerOpen = () => {
         setOpen(true);

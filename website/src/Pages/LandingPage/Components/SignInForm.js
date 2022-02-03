@@ -31,7 +31,7 @@ const SignInForm = (props) => {
             {
                 localStorage.setItem("token", parseRes.token);
                 props.setAuth(true);
-                toast.success("Login successfull!");
+                toast.success("Login successful!");
             } else {
                 props.setAuth(false);
                 toast.error(parseRes);

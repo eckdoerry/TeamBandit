@@ -25,17 +25,6 @@ const Courses = () => {
         }
     }
 
-
-    // Delete Course
-    const deleteCourse = async (inCourse) => {
-        if (courses.length === 0)
-        {
-            alert("There are no courses to delete");
-            return;
-        }
-        setCourses(courses.filter((course) => course.course !== inCourse.course));
-    }
-
     // Updates Page
     useEffect(() => {
         getCourses();
@@ -49,11 +38,11 @@ const Courses = () => {
             <h1>Courses</h1>
             <div className={styles.courseBtns}>
                 <FormDialogAddCourse setCoursesChange = {setCoursesChange}/>
-                <FormDialogDeleteCourse deleteCourse={deleteCourse}/>
             </div>
             <div className={styles.courseContainer}>
-                {courses.map((course) => (
-                <Course key={course.id} courseInfo={course}/>))}
+                {courses.map((course) => (                   
+                <Course key={course.course_id} courseInfo={course} courseChange={setCoursesChange}/>))}
+                
             </div>
         </Fragment>
     );

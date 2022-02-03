@@ -7,9 +7,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
+import { toast } from 'react-toastify';
+
 const FormDialogAddCourse = ({setCoursesChange}) => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
+  const [semester, setSemester] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -27,7 +31,7 @@ const FormDialogAddCourse = ({setCoursesChange}) => {
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("token", localStorage.token);
 
-        const body = { title };
+        const body = { title, semester, description };
         const response = await fetch("http://localhost:5000/courses/courses", {
             method: "POST",
             headers: myHeaders,
@@ -37,11 +41,13 @@ const FormDialogAddCourse = ({setCoursesChange}) => {
         const parseResponse = await response.json();
 
         console.log(parseResponse);
+        toast.success("Course added successfully!");
 
         setCoursesChange(true);
         setTitle("");
     } catch (err) {
       console.error(err.message);
+      toast.error("Failed to add course!");
     }
     handleClose();
   };
@@ -55,16 +61,34 @@ const FormDialogAddCourse = ({setCoursesChange}) => {
         <DialogTitle>Add a New Course</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Please enter the name of your course here.
+            Please enter course information here.
           </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
-            label="Course name"
+            label="Course Name"
             type="text"
             fullWidth
             variant="standard"
             onChange={(e) => setTitle(e.target.value)}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Course Semester"
+            type="text"
+            fullWidth
+            variant="standard"
+            onChange={(e) => setSemester(e.target.value)}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Course Description"
+            type="text"
+            fullWidth
+            variant="standard"
+            onChange={(e) => setDescription(e.target.value)}
           />
         </DialogContent>
         <DialogActions>

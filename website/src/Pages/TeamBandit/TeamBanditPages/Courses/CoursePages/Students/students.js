@@ -1,10 +1,15 @@
 import {Fragment, React} from "react";
 
-const Students = () => {
+
+import StudentList from './Components/StudentList';
+
+const Students = ({courseInfo}) => {
     return(
-        <Fragment>
-            <p>Students</p>
-        </Fragment>
+    <Fragment>
+        <div>
+            <StudentList courseInfo={courseInfo}/>
+        </div>
+    </Fragment>
     );
 }
 

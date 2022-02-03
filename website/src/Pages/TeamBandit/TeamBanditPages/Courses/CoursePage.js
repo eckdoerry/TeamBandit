@@ -60,7 +60,7 @@ const CoursePage = ({courseInfo}) => {
           open={state[anchor]}
           onClose={toggleDrawer(anchor, false)}
         >
-          <AppBar style={{background: '#CDDDDD'}} position="static">
+          <AppBar style={{background: '#CDDDDD', color: 'black'}} position="static">
             <Container maxWidth="xl">
               <Toolbar disableGutters>
                 <Typography
@@ -132,7 +132,7 @@ const CoursePage = ({courseInfo}) => {
           </AppBar>
 
           {/*This will return whatever page we want displayed :)*/}
-          <CourseRouter route={route}/>
+          <CourseRouter route={route} courseInfo={courseInfo}/>
 
         </Drawer>
       </Fragment>
