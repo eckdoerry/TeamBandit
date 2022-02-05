@@ -30,13 +30,17 @@ const expandedMenu = ["Edit", "Delete"];
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+} )
+
+    (({ theme, expand }) => ( {
+      transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+      marginLeft: 'auto',
+      transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+      }),
+
+    } )
+    );
 
 const CourseCard = ({courseInfo, setCoursesChange}) => {
 
@@ -47,6 +51,7 @@ const CourseCard = ({courseInfo, setCoursesChange}) => {
 
   const [expanded, setExpanded] = useState(false);
   const [open, setOpen] = useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -61,31 +66,32 @@ const CourseCard = ({courseInfo, setCoursesChange}) => {
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
-};
-const [anchorElUser, setAnchorElUser] = useState(null);
+  };
+  
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
-    const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
-    };
+  const handleOpenUserMenu = (event) => {
+      setAnchorElUser(event.currentTarget);
+  };
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
+  const handleCloseUserMenu = () => {
+      setAnchorElUser(null);
+  };
 
-    async function deleteCourse(id) {
-      try {
+  async function deleteCourse(id) {
+    try {
         await fetch(`http://localhost:5000/courses/courses/${id}`, {
           method: "DELETE",
           headers: { token: localStorage.token }
-        });
+      });
   
-        setCoursesChange(true);
-        toast.success("Course was deleted!");
-      } catch (err) {
-        console.error(err.message);
-        toast.error("Course failed to delete!");
+      setCoursesChange(true);
+      toast.success("Course was deleted!");
+    } catch (err) {
+      console.error(err.message);
+      toast.error("Course failed to delete!");
       }
-    }
+  }
 
   //edit course function
   const updateCourse = async e => {
@@ -123,125 +129,139 @@ const [anchorElUser, setAnchorElUser] = useState(null);
 
   return (
     <Fragment>
-    <Card sx={{ boxShadow: 8}}>
-      <CardHeader
-        action={
-          <>
-          <Tooltip title="Open settings">
-            <IconButton
-                
-                onClick={handleOpenUserMenu}
-                sx={{ p: 0 }}
-            >
-                <MoreVertIcon />
-            </IconButton>
-        </Tooltip>
-        <Menu
-            sx={{ mt: "45px" }}
-            id="menu-appbar"
-            anchorEl={anchorElUser}
-            anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-            }}
-            keepMounted
-            transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-            }}
-            open={Boolean(anchorElUser)}
-            onClose={handleCloseUserMenu}
-        >
-            {expandedMenu.map((setting) => (
-                <MenuItem
-                    key={setting}
-                    onClick={(event) =>
-                      setting === 'Delete' ? (handleCloseUserMenu(), deleteCourse(courseInfo.course_id)) : (handleCloseUserMenu(), handleClickOpen())
-                    }
-                >
-                    <Typography textAlign="center">
-                        {setting}
-                    </Typography>
-                </MenuItem>
-            ))}
-        </Menu>
-        </>
-        }
-        title={courseInfo.course_title}
-        subheader={courseInfo.course_semester}
-      />
-      <CoursePage courseInfo={courseInfo} />
-      <CardContent>
-        <Typography >
-        {courseInfo.course_description}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+
+      <Card sx={{ boxShadow: 8}}>
+
+        <CardHeader
+          action={
+            <>
+            <Tooltip title="Open settings">
+              <IconButton
+                  
+                  onClick={handleOpenUserMenu}
+                  sx={{ p: 0 }}
+              >
+                  <MoreVertIcon />
+              </IconButton>
+          </Tooltip>
+
+          <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+          >
+
+              {expandedMenu.map((setting) => (
+                  <MenuItem
+                      key={setting}
+                      onClick={(event) =>
+                        setting === 'Delete' ? (handleCloseUserMenu(), deleteCourse(courseInfo.course_id)) : (handleCloseUserMenu(), handleClickOpen())
+                      }
+                  >
+                      <Typography textAlign="center">
+                          {setting}
+                      </Typography>
+                  </MenuItem>
+              ))}
+          </Menu>
+          </>
+          }
+          title={courseInfo.course_title}
+          subheader={courseInfo.course_semester}
+        />
+
+        <CoursePage courseInfo={courseInfo} />
         <CardContent>
-          <Typography paragraph>
-            Long Course Description?
+          <Typography >
+          {courseInfo.course_description}
           </Typography>
         </CardContent>
-      </Collapse>
-    </Card>
+        <CardActions disableSpacing>
+          <IconButton aria-label="add to favorites">
+            <FavoriteIcon />
+          </IconButton>
+          
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
+            <ExpandMoreIcon />
+          </ExpandMore>
+        </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography paragraph>
+              Long Course Description?
+            </Typography>
+          </CardContent>
+        </Collapse>
+      </Card>
 
-    <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit this course</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please enter course information here.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            label="Course Name"
-            type="text"
-            fullWidth
-            variant="standard"
-            value = {title}
-            error={title === ""}
-            helperText={title === "" ? 'This is a required field' : ' '}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <TextField
-            margin="dense"
-            label="Course Semester"
-            type="text"
-            fullWidth
-            variant="standard"
-            value = {semester}
-            onChange={(e) => setSemester(e.target.value)}
-          />
-          <TextField
-            margin="dense"
-            label="Course Description"
-            type="text"
-            fullWidth
-            variant="standard"
-            value = {description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={updateCourse}>Edit Course</Button>
-        </DialogActions>
-      </Dialog>
+      <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Edit this course</DialogTitle>
+
+          <DialogContent>
+
+            <DialogContentText>
+              Please enter course information here.
+            </DialogContentText>
+
+            <TextField
+              autoFocus
+              required
+              margin="dense"
+              label="Course Name"
+              type="text"
+              fullWidth
+              variant="standard"
+              value = {title}
+              error={title === ""}
+              helperText={title === "" ? 'This is a required field' : ' '}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+
+            <TextField
+              margin="dense"
+              label="Course Semester"
+              type="text"
+              fullWidth
+              variant="standard"
+              value = {semester}
+              onChange={(e) => setSemester(e.target.value)}
+            />
+
+            <TextField
+              margin="dense"
+              label="Course Description"
+              type="text"
+              fullWidth
+              variant="standard"
+              value = {description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+
+          </DialogContent>
+
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={updateCourse}>Edit Course</Button>
+          </DialogActions>
+
+        </Dialog>
+
       </Fragment>
   );
 }
