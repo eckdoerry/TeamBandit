@@ -2,34 +2,41 @@ import {Fragment,React} from "react";
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import Paper from '@mui/material/Paper';
-import TableRow from '@mui/material/TableRow';
-import TableHead from '@mui/material/TableHead';
 
+import NewClientButton from "./NewClientButton";
 import ClientTableHeader from './ClientTableHeader';
 import Client from './Client'
+
+import './Clients.css'
 
 const Clients = () => {
     return(
         <Fragment>
             <h1>Clients</h1>
-        
-            <TableContainer>
 
-                <Table>
-                    
-                    <ClientTableHeader />
+            <div className="ClientTable">
+                <TableContainer>
 
-                    <TableBody>
+                    <Table>
+                        
+                        <ClientTableHeader />
 
-                        <Client />
+                        <TableBody>
 
-                    </TableBody>
+                            <Client />
 
-                </Table>
+                        </TableBody>
 
-            </TableContainer>
+                    </Table>
+
+                </TableContainer>
+            </div>
+
+            <div>
+
+                <NewClientButton />
+
+            </div>
         </Fragment>
     );
 }
