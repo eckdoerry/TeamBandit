@@ -1,6 +1,9 @@
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 
+// CSS
+import './Client.css';
+
 const Client = () => {
     return (
         <div>
@@ -8,39 +11,39 @@ const Client = () => {
             <TableRow>
 
                 <TableCell style={{width:150}}>
-                    temp
+                    Dr. Doerry
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    temp
+                    SICCS
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    temp
+                    TeamBandit
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    temp
+                    N
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    temp
+                    1.0
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    temp
+                    Selected
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    temp
+                    Doerry@<br/>email.com
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    temp
+                    N/A
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    temp
+                    Y
                 </TableCell>
 
             </TableRow>
