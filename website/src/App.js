@@ -11,6 +11,7 @@ import Landing from "./Pages/LandingPage/LandingPage";
 import Info from "./Pages/InfoPage/Info";
 import PrivacyPolicy from "./Pages/PrivacyPolicyPage/PrivacyPolicy";
 import TeamBandit from "./Pages/TeamBandit/TeamBandit";
+import Guest from "./Pages/Guest/Guest"
 
 // Toastify is on first app page to get configured
 toast.configure();
@@ -52,6 +53,7 @@ function App() {
                         <Route exact path = "/info" element={<Info/>}/>
                         <Route exact path = "/privacy-policy" element={<PrivacyPolicy/>}/>
                         <Route exact path = "/team-bandit" element={isAuthenticated ? <TeamBandit setAuth={setAuth}/> : <Navigate to="/"/>}/>
+                        <Route exact path = "/team-bandit-guest" element={<Guest/>}/>
                     </Routes>
                 </div>
             </Router>

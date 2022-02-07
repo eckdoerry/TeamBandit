@@ -40,7 +40,31 @@ const SignInForm = (props) => {
             
 
         } catch (error) {
-            console.error(error.message);
+            
+            try {
+
+                const body = { email, password };
+    
+                const response = await fetch("http://localhost:5000/students/login", { method: "POST", headers : {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+    
+                const parseRes = await response.json();
+                console.log(parseRes);
+                if( parseRes.token )
+                {
+                    localStorage.setItem("token", parseRes.token);
+                    props.setAuth(true);
+                    toast.success("Login successful!");
+                } else {
+                    props.setAuth(false);
+                    toast.error(parseRes);
+                }
+    
+                
+    
+            } catch (error) {
+                
+                console.error(error.message);
+            }
         }
     }
     return (
@@ -81,6 +105,12 @@ const SignInForm = (props) => {
                     <button className={styles.formFieldButton}>Sign In</button>{" "}
                     <Link to="/" className={styles.formFieldLink}>
                         Create an account
+                    </Link>
+                    
+                </div>
+                <div className={styles.formField}>
+                    <Link to="/team-bandit-guest">
+                        <button className={styles.formFieldButton}>Guest Sign In</button>{" "}
                     </Link>
                 </div>
             </form>

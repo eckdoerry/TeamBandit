@@ -1,8 +1,46 @@
 const router = require("express").Router();
 const pool = require("../../db");
 const authorization = require('../../middleware/authorization');
+const validInfo = require("../../middleware/validInfo");
 
 // ROUTES //
+
+// login route
+router.post("/login", validInfo, async (req, res)=>{
+    try {
+        
+        // 1. destructure the req.body
+        const { email, password } = req.body;
+
+        // 2. check if user doesn't exist (if not then we throw error)
+        const user = await pool.query("SELECT * FROM students WHERE student_email = $1", [email]);
+
+        // user is not in the system
+        if(user.rows.length === 0) {
+            return res.status(401).json("Password or Email is incorrect");
+        }
+
+        // 3. check if incoming password is the same as the database password
+        const validPassword = await bcrypt.compare(password, user.rows[0].organizer_pass);
+        
+        if(!validPassword)
+        {
+            if(user.rows[0].student_password != password)
+            {
+                return res.status(401).json("Password or Email is incorrect");
+            }
+        }
+
+        // 4. give them the jwt token
+        const token = jwtGenerator(user.rows[0].student_id);
+
+        res.json({ token });
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
 
 //create a student
 router.post("/students", authorization, async(req,res) =>{
@@ -10,7 +48,7 @@ router.post("/students", authorization, async(req,res) =>{
         
         console.log(req.body);
         
-        const newTodo = await pool.query("INSERT INTO students(student_fname, student_lname, student_emplid, student_email, student_gpa, organizer_id, course_id) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *", [req.body['student_fname'], req.body['student_lname'], req.body['student_emplid'], req.body['student_email'], req.body['student_gpa'], req.user, req.body['course_id']]);
+        const newTodo = await pool.query("INSERT INTO students(student_fname, student_lname, student_emplid, student_email, student_gpa, organizer_id, course_id, project_id) VALUES($1, $2, $3, $4, $5, $6, $7, NULL) RETURNING *", [req.body['student_fname'], req.body['student_lname'], req.body['student_emplid'], req.body['student_email'], req.body['student_gpa'], req.user, req.body['course_id']]);
 
         res.json(newTodo.rows[0]);
     } catch (err) {
@@ -18,7 +56,7 @@ router.post("/students", authorization, async(req,res) =>{
     }
 });
 
-//create a student
+//create a student with CSVs
 router.post("/csv", authorization, async(req,res) =>{
     try{
         
@@ -36,7 +74,7 @@ router.post("/csv", authorization, async(req,res) =>{
 router.get("/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
-        const students = await pool.query("SELECT * FROM students WHERE organizer_id = $1 AND course_id = $2", [req.user, course_id]);
+        const students = await pool.query("SELECT * FROM students WHERE organizer_id = $1 AND course_id = $2  ORDER BY student_id ASC", [req.user, course_id]);
 
         res.json(students.rows);
     } catch (error) {

@@ -7,8 +7,23 @@ router.get("/", authorization, async(req, res) => {
     try {
         
         const user = await pool.query(
-            "SELECT organizers.organizer_fname, courses.course_id, courses.course_description, courses.course_title, courses.course_semester FROM organizers LEFT JOIN courses ON organizers.organizer_id = courses.organizer_id WHERE organizers.organizer_id = $1",
+            "SELECT organizers.organizer_fname, organizers.organizer_lname, courses.course_id, courses.course_description, courses.course_title, courses.course_semester FROM organizers LEFT JOIN courses ON organizers.organizer_id = courses.organizer_id WHERE organizers.organizer_id = $1 ORDER BY course_id ASC ",
             [req.user]
+        );
+
+        res.json(user.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+// get all courses for GUEST
+router.get("/guest",  async(req, res) => {
+    try {
+        const user = await pool.query(
+            "SELECT organizers.organizer_fname, organizers.organizer_lname, courses.course_id, courses.course_description, courses.course_title, courses.course_semester FROM organizers LEFT JOIN courses ON organizers.organizer_id = courses.organizer_id WHERE course_public = true"
         );
 
         res.json(user.rows);

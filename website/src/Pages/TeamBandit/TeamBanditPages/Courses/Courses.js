@@ -4,7 +4,6 @@ import styles from "./Courses.module.css";
 
 import Course from "./Course";
 import FormDialogAddCourse from "./FormDialogAddCourse";
-import FormDialogDeleteCourse from "./FormDialogDeleteCourse";
 
 const Courses = () => {
 
