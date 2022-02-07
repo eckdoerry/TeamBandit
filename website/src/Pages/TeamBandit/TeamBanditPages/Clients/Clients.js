@@ -9,7 +9,26 @@ import Client from './Client'
 
 import './Clients.css'
 
-const Clients = () => {
+// Controls displasy of the Clients table
+const Clients = (clients) => {
+
+    // Temporary hardcoded clientList until database and add
+    // functionality is finished
+    const clientList = 
+    [
+        {
+            clientName: "Dr. Doerry",
+            where: "SICCS",
+            project: "TeamBandit",
+            draft: "N",
+            version: 1.0,
+            status: "selected",
+            email: "Doerry@email.com",
+            notes: "N/A",
+            selected: "Y",
+        },
+    ];
+
     return(
         <Fragment>
             <h1>Clients</h1>
@@ -23,7 +42,7 @@ const Clients = () => {
 
                         <TableBody>
 
-                            <Client />
+                            <Client registeredClients={clientList} />
 
                         </TableBody>
 
