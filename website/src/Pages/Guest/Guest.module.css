@@ -1,0 +1,10 @@
+.courseContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 10px;
+}
+
+.container {
+    padding: 50px
+}

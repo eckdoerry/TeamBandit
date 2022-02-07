@@ -100,6 +100,9 @@ const InputTodo = ({courseInfo, setStudentsChange}) => {
             toast.success("Student was added successfully!");
             setStudentsChange(true);
 
+            setContacts([]);
+            handleToggle();
+
         } catch (error) {
             console.error(error.message);
             toast.error("Failed to add student!");
@@ -155,7 +158,7 @@ const InputTodo = ({courseInfo, setStudentsChange}) => {
             <div className = {styles.appHeader}>
                     <div className = {styles.uploader}>
                         <div
-                            className = {`{styles.appLink} ${highlighted ? "{styles.appHighlighted}" : "{styles.appNothing}"}`}
+                            className = {`${styles.appLink} ${highlighted ? styles.appHighlighted : styles.appNothing}`}
 
                             onDragEnter = {() =>{
                                 setHighlighted(true);
@@ -172,7 +175,6 @@ const InputTodo = ({courseInfo, setStudentsChange}) => {
                             onDrop = {(e) => {
                                 e.preventDefault();
                                 setHighlighted(false);
-                                handleToggle();
 
                                 console.log(e.dataTransfer.files);
 
@@ -187,14 +189,11 @@ const InputTodo = ({courseInfo, setStudentsChange}) => {
                                 });
 
                         }}>
-
                             DRAG AND DROP FILE HERE
-
                         </div>
 
-                        <p className = "p-6"> OR </p>
+                        <p className = {styles.p}> OR </p>
 
-                        {/*This be a comment*/}
                         <label htmlFor="contained-button-file">
                         <ThemeProvider theme = {theme}>
 

@@ -1,6 +1,7 @@
 import React, {Fragment, useEffect, useState} from "react";
 
 import EditStudent from "./EditStudent";
+import styles from '../students.module.css';
 
 // This stuff is for the Tables
 import TableContainer from '@mui/material/TableContainer';
@@ -57,9 +58,9 @@ const ListStudents = ({courseInfo}) => {
 
 
     return(
-        <>
+        <Fragment className = {styles.container}>
             <AddStudent courseInfo={courseInfo} setStudentsChange={setStudentsChange}/>
-            <div className = "table-pad">
+            <div className={styles.container}>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 1000 }} aria-label="simple table">
                     <TableHead>
@@ -96,7 +97,7 @@ const ListStudents = ({courseInfo}) => {
                 </Table>
                 </TableContainer>
             </div>
-            </>
+            </Fragment>
     ); 
 };
 

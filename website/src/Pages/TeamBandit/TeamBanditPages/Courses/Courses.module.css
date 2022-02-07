@@ -86,7 +86,7 @@
 
 .appHighlighted {
   box-shadow: 2px 2px 4px #000000;
-  color: white;
+  color: black;
   background-color: #003466;
   border-style: none;
   border-width: 2px;
@@ -94,4 +94,8 @@
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   padding: 1.5rem;
+}
+
+.p{
+  color: black;
 }
