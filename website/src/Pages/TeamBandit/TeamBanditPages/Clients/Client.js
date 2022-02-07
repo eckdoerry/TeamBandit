@@ -1,49 +1,51 @@
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
+import Clients from "./Clients";
 
 // CSS
 import './Client.css';
 
-const Client = () => {
+// Determines how a client will be displayed in the table
+const Client = (props) => {
     return (
         <div>
 
             <TableRow>
 
                 <TableCell style={{width:150}}>
-                    Dr. Doerry
+                    {props.registeredClients[0].clientName}
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    SICCS
+                    {props.registeredClients[0].where}
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    TeamBandit
+                    {props.registeredClients[0].project}
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    N
+                    {props.registeredClients[0].draft}
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    1.0
+                    {props.registeredClients[0].version}
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    Selected
+                    {props.registeredClients[0].selected}
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    Doerry@<br/>email.com
+                    {props.registeredClients[0].email}
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    N/A
+                    {props.registeredClients[0].notes}
                 </TableCell>
 
                 <TableCell style={{width:150}}>
-                    Y
+                    {props.registeredClients[0].selected}
                 </TableCell>
 
             </TableRow>
