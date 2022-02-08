@@ -1,10 +1,16 @@
 import {Fragment, React} from "react";
 
-const Projects = () => {
+// Stylesheet
+import styles from "./projects.module.css";
+
+// Project Pages
+import ProjectList from "./Components/ProjectList";
+
+const Projects = ({courseInfo}) => {
     return(
-        <Fragment>
-            <p>Projects</p>
-        </Fragment>
+        <div className = {styles.pad}>
+            <ProjectList courseInfo={courseInfo}/>
+        </div>
     );
 }
 

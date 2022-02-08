@@ -16,6 +16,9 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Dialog from '@mui/material/Dialog';
+import AddIcon from '@mui/icons-material/Add';
+
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 // Need this to change color schemes
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -142,17 +145,13 @@ const InputTodo = ({courseInfo, setStudentsChange}) => {
     
     return (
         <Fragment>
-        <div className = "Uploader">
-            <Box component="form" >
-                <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="First Name" type = "text" value = {student_fname} onChange = {e => setStudentFname(e.target.value)}/>
-                <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="Last Name" type = "text" value = {student_lname} onChange = {e => setStudentLname(e.target.value)}/>
-                <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="Student ID" type = "text" value = {student_emplid} onChange = {e => setStudentEmplid(e.target.value)}/>
-                <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="Email Address" type = "text" value = {student_email} onChange = {e => setStudentEmail(e.target.value)}/>
-                <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="GPA" type = "text" value = {student_gpa} onChange = {e => setStudentGpa(e.target.value)}/>
-                <Button sx={{ m: 3 }} size="large" variant="contained" color="success" onClick={onSubmitForm}> Add </Button>
-                <Button sx={{ m: 3 }} size="large" variant="contained" color="secondary" onClick={handleToggle}> Upload Student List </Button>
-            </Box>
-        </div>  
+        
+            
+                <Button  size="large" variant="outlined" color="success" onClick={onSubmitForm} startIcon={<AddIcon />} > Add </Button>
+                <Button  sx={{ m: 3, pl: 5, pr: 5}} style={{textAlign: 'center', whiteSpace: 'nowrap'}} size="large" variant="outlined" color="secondary" onClick={handleToggle} startIcon={<FileUploadIcon/>}> Upload Student List </Button>
+                
+
+
         <Dialog maxHeight={'lg'} maxWidth={'lg'} open={open} onClose={handleClose}>
         <div className = {styles.csv}>
             <div className = {styles.appHeader}>

@@ -56,23 +56,54 @@ router.post("/login", validInfo, async (req, res)=>{
         // 2. check if user doesn't exist (if not then we throw error)
         const user = await pool.query("SELECT * FROM organizers WHERE organizer_email = $1", [email]);
 
+        // 3. Check if a student user exists
+        const student = await pool.query("SELECT * FROM students WHERE student_email = $1", [email]);
+
+
         // user is not in the system
         if(user.rows.length === 0) {
-            return res.status(401).json("Password or Email is incorrect");
+            if(student.rows.length === 0)
+            {
+                return res.status(401).json("Password or Email is incorrect");
+            }
         }
 
         // 3. check if incoming password is the same as the database password
-        const validPassword = await bcrypt.compare(password, user.rows[0].organizer_pass);
+        var validPassword = "";
+
+        if(user.rows.length === 0)
+        {
+            validPassword = await bcrypt.compare(password, student.rows[0].student_password);
+        }
+        else 
+        {
+            validPassword = await bcrypt.compare(password, user.rows[0].organizer_pass);
+        }
 
         // IF PASSWORD NOT THE SAME
         if(!validPassword) {
-            return res.status(401).json("Password or Email is incorrect");
+            if(student.rows[0].student_password != password)
+            {
+                return res.status(401).json("Password or Email is incorrect");
+            }
         }
+        var token = "";
+        var identifier = "";
+        // invalid user 
+        if(user.rows.length === 0)
+        {
+            token = jwtGenerator(student.rows[0].student_id);
+            identifier = "student";
+        }
+        else 
+        {
+            // 4. give them the jwt token
+            token = jwtGenerator(user.rows[0].organizer_id);
+            identifier = "organizer";
+        }
+        
 
-        // 4. give them the jwt token
-        const token = jwtGenerator(user.rows[0].organizer_id);
-
-        res.json({ token });
+        res.json({ token_value : token, user_identifier: identifier });
 
     } catch (error) {
         console.error(error.message);

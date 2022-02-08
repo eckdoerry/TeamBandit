@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
+import EditIcon from '@mui/icons-material/Edit';
 
 import { toast } from 'react-toastify';
 
@@ -15,7 +16,6 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 700,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
     boxShadow: 24,
     p: 4,
 };
@@ -64,7 +64,7 @@ const EditStudent = ({student, setStudentsChange}) => {
 
     return (
         <div>
-            <Button variant="contained" color="warning" onClick={handleOpen}>
+            <Button variant="outlined" color="warning" onClick={handleOpen} startIcon={<EditIcon />}>
                 Edit
             </Button>
             <Modal
