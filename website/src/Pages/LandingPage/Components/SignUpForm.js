@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 import styles from "./SignUpForm.module.css"
 
-const SignUpForm = (props) => {
+const SignUpForm = ({setAuth}) => {
     
     const [inputs, setInputs] = useState({
         email: "",
@@ -39,10 +39,10 @@ const SignUpForm = (props) => {
             {
                 localStorage.setItem("token", parseRes.token);
 
-                props.setAuth(true);
+                setAuth(true);
                 toast.success("Registered Successfully!");
             } else {
-                props.setAuth(false);
+                setAuth(false);
                 toast.error(parseRes);
             }
             

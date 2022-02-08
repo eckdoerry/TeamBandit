@@ -7,9 +7,10 @@ import styles from "./LandingPage.module.css";
 import SignUpForm from "./Components/SignUpForm";
 import SignInForm from "./Components/SignInForm";
 
-const App = (props) => {
+const App = ({setAuth, setUser}) => {
 
     const [location, setLocation] = useState("sign-in");
+    
 
     const changeLocation = (newLocation) => {
         setLocation(newLocation);
@@ -58,25 +59,25 @@ const App = (props) => {
                             Sign Up
                         </a>
                     </div>
-                    <DisplayCorrectForm location = {location} setAuth={props.setAuth}/>
+                    <DisplayCorrectForm location = {location} setAuth={setAuth} setUser={setUser}/>
                 </div>
             </div>
         </Fragment>
     );
 };
 
-function DisplayCorrectForm(props)
+function DisplayCorrectForm({location, setAuth, setUser})
 {
-    if(props.location === "sign-in")
+    if(location === "sign-in")
     {
         return(
-            <SignInForm setAuth={props.setAuth}/>
+            <SignInForm setAuth={setAuth} setUser={setUser}/>
         );
     }
-    else if(props.location === "sign-up")
+    else if(location === "sign-up")
     {
         return(
-            <SignUpForm setAuth={props.setAuth}/>
+            <SignUpForm setAuth={setAuth}/>
         );
     }
     else

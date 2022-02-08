@@ -5,11 +5,12 @@ import styles from "./SignInForm.module.css";
 
 import { toast } from 'react-toastify';
 
-const SignInForm = (props) => {
+const SignInForm = ({setAuth, setUser}) => {
     const [inputs, setInputs] = useState({
         email: "",
         password: ""
     });
+
     
     const { email, password } = inputs;
 
@@ -27,44 +28,22 @@ const SignInForm = (props) => {
 
             const parseRes = await response.json();
 
-            if( parseRes.token )
+            if( parseRes.token_value )
             {
-                localStorage.setItem("token", parseRes.token);
-                props.setAuth(true);
+                localStorage.setItem("token", parseRes.token_value);
+                setAuth(true);
                 toast.success("Login successful!");
+                setUser(parseRes.user_identifier);
             } else {
-                props.setAuth(false);
+                setAuth(false);
                 toast.error(parseRes);
+                setUser("NULL");
             }
 
             
 
         } catch (error) {
-            
-            try {
-
-                const body = { email, password };
-    
-                const response = await fetch("http://localhost:5000/students/login", { method: "POST", headers : {"Content-Type": "application/json"}, body: JSON.stringify(body)});
-    
-                const parseRes = await response.json();
-                console.log(parseRes);
-                if( parseRes.token )
-                {
-                    localStorage.setItem("token", parseRes.token);
-                    props.setAuth(true);
-                    toast.success("Login successful!");
-                } else {
-                    props.setAuth(false);
-                    toast.error(parseRes);
-                }
-    
-                
-    
-            } catch (error) {
-                
-                console.error(error.message);
-            }
+            console.error(error.message);
         }
     }
     return (
@@ -107,11 +86,6 @@ const SignInForm = (props) => {
                         Create an account
                     </Link>
                     
-                </div>
-                <div className={styles.formField}>
-                    <Link to="/team-bandit-guest">
-                        <button className={styles.formFieldButton}>Guest Sign In</button>{" "}
-                    </Link>
                 </div>
             </form>
         </div>

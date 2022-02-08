@@ -12,7 +12,7 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
-import CancelIcon from '@mui/icons-material/Cancel';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 // CSS
 import styles from "./Courses.module.css"
@@ -21,7 +21,7 @@ import styles from "./Courses.module.css"
 import CourseRouter from './CourseRouter';
 
 // Table of the contents
-const pages = ['Homepage', 'Schedule', 'Info and Policies', 'Projects', 'Students', 'Clients', 'Assignments', 'Settings'];
+const pages = ['Homepage', 'Schedule', 'Info and Policies', 'Projects', 'Students', 'Clients', 'Assignments', 'Mentors', 'Settings'];
 
 const CoursePage = ({courseInfo}) => {
   const [state, setState] = useState({
@@ -62,9 +62,9 @@ const CoursePage = ({courseInfo}) => {
           onClose={toggleDrawer(anchor, false)}
         >
           <AppBar style={{background: '#CDDDDD', color: 'black'}} position="static">
-            <Container maxWidth="xl" sx={{display: 'flex', flexDirection: 'row'}}>
+            <Container maxWidth="xl" sx={{display: 'flex', flexDirection: 'row', float: 'left'}}>
               <IconButton onClick={toggleDrawer(anchor, false)}>
-                <CancelIcon />
+                <ArrowBackIcon />
               </IconButton>
               <Toolbar disableGutters >
                 <Typography

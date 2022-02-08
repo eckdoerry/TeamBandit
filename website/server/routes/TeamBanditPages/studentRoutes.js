@@ -5,52 +5,25 @@ const validInfo = require("../../middleware/validInfo");
 
 // ROUTES //
 
-// login route
-router.post("/login", validInfo, async (req, res)=>{
-    try {
-        
-        // 1. destructure the req.body
-        const { email, password } = req.body;
-
-        // 2. check if user doesn't exist (if not then we throw error)
-        const user = await pool.query("SELECT * FROM students WHERE student_email = $1", [email]);
-
-        // user is not in the system
-        if(user.rows.length === 0) {
-            return res.status(401).json("Password or Email is incorrect");
-        }
-
-        // 3. check if incoming password is the same as the database password
-        const validPassword = await bcrypt.compare(password, user.rows[0].organizer_pass);
-        
-        if(!validPassword)
-        {
-            if(user.rows[0].student_password != password)
-            {
-                return res.status(401).json("Password or Email is incorrect");
-            }
-        }
-
-        // 4. give them the jwt token
-        const token = jwtGenerator(user.rows[0].student_id);
-
-        res.json({ token });
-
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).send("Server Error");
-    }
-});
-
 //create a student
 router.post("/students", authorization, async(req,res) =>{
     try{
-        
-        console.log(req.body);
-        
-        const newTodo = await pool.query("INSERT INTO students(student_fname, student_lname, student_emplid, student_email, student_gpa, organizer_id, course_id, project_id) VALUES($1, $2, $3, $4, $5, $6, $7, NULL) RETURNING *", [req.body['student_fname'], req.body['student_lname'], req.body['student_emplid'], req.body['student_email'], req.body['student_gpa'], req.user, req.body['course_id']]);
+        const existingStudent = await pool.query("SELECT student_email FROM students WHERE student_email = $1", [req.body['student_email']]);
 
-        res.json(newTodo.rows[0]);
+        if(existingStudent.rows.length !== 0)
+        {
+            var tempStudent = await pool.query("SELECT student_id FROM students WHERE student_email = $1", [req.body['student_email']]);
+            var alreadyCourse = await pool.query("SELECT student_id, course_id FROM studentcourses WHERE student_id = $1 AND course_id = $2", [tempStudent.rows[0].student_id, req.body['course_id']]);
+            if(alreadyCourse.rows.length === 0)
+            {
+                await pool.query("INSERT INTO studentcourses(student_id, course_id) VALUES ($1, $2)", [tempStudent.rows[0].student_id, req.body['course_id']]);
+            }
+            return res.status(401).json("Student Already Exists");
+        }
+
+        const student = await pool.query("INSERT INTO students(student_fname, student_lname, student_emplid, student_email, student_gpa, organizer_id, project_id) VALUES($1, $2, $3, $4, $5, $6, NULL) RETURNING *", [req.body['student_fname'], req.body['student_lname'], req.body['student_emplid'], req.body['student_email'], req.body['student_gpa'], req.user]);
+        await pool.query("INSERT INTO studentcourses(student_id, course_id) VALUES ($1, $2)", [student.rows[0].student_id, req.body['course_id']]);
+        res.json(student.rows[0]);
     } catch (err) {
         console.error(err.message);
     }
@@ -59,12 +32,26 @@ router.post("/students", authorization, async(req,res) =>{
 //create a student with CSVs
 router.post("/csv", authorization, async(req,res) =>{
     try{
-        
-        console.log(req.body);
-        
-        const newTodo = await pool.query("INSERT INTO students(student_fname, student_lname, student_emplid, student_email, student_gpa, organizer_id, course_id) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *", [req.body['student_fname_csv'], req.body['student_lname_csv'], req.body['student_emplid_csv'], req.body['student_email_csv'], req.body['student_gpa_csv'], req.user, req.body['course_id']]);
 
-        res.json(newTodo.rows[0]);
+        const existingStudent = await pool.query("SELECT student_email FROM students WHERE student_email = $1", [req.body['student_email_csv']]);
+
+        if(existingStudent.rows.length !== 0)
+        {
+            
+            var tempStudent = await pool.query("SELECT student_id FROM students WHERE student_email = $1", [req.body['student_email_csv']]);
+            var alreadyCourse = await pool.query("SELECT student_id, course_id FROM studentcourses WHERE student_id = $1 AND course_id = $2", [tempStudent.rows[0].student_id, req.body['course_id']]);
+            if(alreadyCourse.rows.length === 0)
+            {
+                await pool.query("INSERT INTO studentcourses(student_id, course_id) VALUES ($1, $2)", [tempStudent.rows[0].student_id, req.body['course_id']]);
+                return res.status(401).json("Student Already Added them to course");
+            }
+            console.log("3");
+            return res.status(401).json("Student Already Exists");
+        }
+        
+        const student = await pool.query("INSERT INTO students(student_fname, student_lname, student_emplid, student_email, student_gpa, organizer_id, project_id) VALUES($1, $2, $3, $4, $5, $6, NULL) RETURNING *", [req.body['student_fname_csv'], req.body['student_lname_csv'], req.body['student_emplid_csv'], req.body['student_email_csv'], req.body['student_gpa_csv'], req.user]);
+        await pool.query("INSERT INTO studentcourses(student_id, course_id) VALUES ($1, $2)", [student.rows[0].student_id, req.body['course_id']]);
+        res.json(student.rows[0]);
     } catch (err) {
         console.error(err.message);
     }
@@ -74,7 +61,8 @@ router.post("/csv", authorization, async(req,res) =>{
 router.get("/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
-        const students = await pool.query("SELECT * FROM students WHERE organizer_id = $1 AND course_id = $2  ORDER BY student_id ASC", [req.user, course_id]);
+        
+        const students = await pool.query("SELECT * FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id WHERE students.organizer_id = $1 AND studentcourses.course_id = $2 ORDER BY students.student_id ASC ", [req.user, course_id]);
 
         res.json(students.rows);
     } catch (error) {
@@ -112,17 +100,34 @@ router.put("/students/:id", authorization, async(req, res) => {
 });
 
 //delete a student
-router.delete("/students/:id", authorization, async(req, res) => {
+router.delete("/students/:id/:course_id", authorization, async(req, res) => {
     try {
-        const {id} = req.params;
-        const deleteStudent = await pool.query("DELETE FROM students WHERE student_id = $1 AND organizer_id = $2", [id, req.user]);
+        
+        
+        const {id} = req.params.id;
+        const {course_id} = req.params.course_id;
+        
+        const checkForStudentAmount = await pool.query("SELECT * FROM studentcourses WHERE student_id = $1", [req.params.id]);
 
-        if( deleteStudent.rows.length === 0 )
+        if(checkForStudentAmount.rows.length > 1)
         {
-            return res.json("This Student is not yours!");
+            await pool.query("DELETE FROM studentcourses WHERE student_id = $1 AND course_id = $2", [req.params.id, req.params.course_id]);
+            res.json("Student was removed from course!");
+        }
+        else
+        {
+            await pool.query("DELETE FROM studentcourses WHERE student_id = $1 AND course_id = $2", [req.params.id, req.params.course_id]);
+            const deleteStudent = await pool.query("DELETE FROM students WHERE student_id = $1 AND organizer_id = $2", [req.params.id, req.user]);
+
+            if( deleteStudent.rows.length === 0 )
+            {
+                return res.json("This Student is not yours!");
+            }
+
+            res.json("Student was deleted!");
         }
 
-        res.json("Student was deleted!");
+        
     } catch (error) {
         console.error(error.message);
     }

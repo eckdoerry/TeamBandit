@@ -1,4 +1,4 @@
-import {useState, Fragment, React} from "react"
+import {Fragment, React} from "react"
 
 // Material UI Imports
 import Alert from '@mui/material/Alert';
@@ -13,6 +13,7 @@ import Projects from './CoursePages/Projects/projects';
 import Schedule from './CoursePages/Schedule/schedule';
 import Settings from './CoursePages/Settings/settings';
 import Students from './CoursePages/Students/students';
+import Mentors from './CoursePages/Mentors/Mentors';
 
 const CourseRouter = ({route, courseInfo}) => {
     console.log(route); //TODO: Delete this
@@ -28,7 +29,7 @@ const CourseRouter = ({route, courseInfo}) => {
     {
         return (
             <Fragment>
-                <Projects/>
+                <Projects courseInfo={courseInfo}/>
             </Fragment>
         )
     }
@@ -69,6 +70,14 @@ const CourseRouter = ({route, courseInfo}) => {
         return (
             <Fragment>
                 <Assignments/>
+            </Fragment>
+        )
+    }
+    else if(route.page === "Mentors") 
+    {
+        return (
+            <Fragment>
+                <Mentors courseInfo={courseInfo}/>
             </Fragment>
         )
     }

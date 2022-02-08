@@ -6,9 +6,9 @@ import MessageList from "./MessageList";
 
 const EmailHub = () => {
     return (
-        <Fragment className = {styles.hidden_overflow}>
+        <div className = {styles.hidden_overflow}>
             <MessageList />
-        </Fragment>
+        </div>
     );
 };
 
