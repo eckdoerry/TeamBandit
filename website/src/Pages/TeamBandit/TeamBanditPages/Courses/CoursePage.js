@@ -54,7 +54,7 @@ const CoursePage = ({courseInfo}) => {
   return (
     <div>
       <Fragment key={anchor}>
-        <Button onClick={toggleDrawer(anchor, true)}>Click to open course</Button>
+        <Button onClick={toggleDrawer(anchor, true)}>{courseInfo.course_title}</Button>
         <Drawer
           PaperProps={{ style: { marginTop: 64, height: '100%', width: '96%' }}}
           anchor={anchor}

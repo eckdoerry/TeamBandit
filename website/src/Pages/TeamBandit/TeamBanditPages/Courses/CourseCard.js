@@ -178,7 +178,7 @@ const CourseCard = ({courseInfo, setCoursesChange}) => {
           </>
           }
           title={courseInfo.course_title}
-          subheader={courseInfo.course_semester + " - " + courseInfo.organizer_fname + ", " + courseInfo.organizer_lname}
+          subheader={courseInfo.course_semester + " - " + courseInfo.organizer_fname + " " + courseInfo.organizer_lname}
         />
 
         <CoursePage courseInfo={courseInfo} />

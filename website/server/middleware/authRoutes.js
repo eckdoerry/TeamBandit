@@ -21,6 +21,8 @@ app.use("/projects", require("../routes/TeamBanditPages/projectRoutes"));
 app.use("/mentors", require("../routes/TeamBanditPages/mentorRoutes"));
 app.use("/clients", require("../routes/TeamBanditPages/clientRoutes"));
 
+app.use("/general", require("../routes/TeamBanditPages/generalRoutes"));
+
 app.listen(5000, ()=> {
     console.log("server is running on port 5000");
 })

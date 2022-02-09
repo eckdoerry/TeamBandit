@@ -77,18 +77,21 @@ function EnhancedTableHead(props) {
                     padding={'normal'}
                     sortDirection={orderBy === headCell.id ? order : false}
                 >
+                    {headCell.label === "Edit" && headCell.label}
+                    {headCell.label === "Delete" && headCell.label}
+                    {(headCell.label !== "Edit" && headCell.label !== "Delete") &&
                     <TableSortLabel
                     active={orderBy === headCell.id}
                     direction={orderBy === headCell.id ? order : 'asc'}
                     onClick={createSortHandler(headCell.id)}
                     >
                     {headCell.label}
-                    {orderBy === headCell.id ? (
+                    {orderBy === headCell.id && (
                         <Box component="span" sx={visuallyHidden}>
                         {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                         </Box>
-                    ) : null}
-                    </TableSortLabel>
+                    )}
+                    </TableSortLabel>}
                 </TableCell>
                 ))}
             </TableRow>
@@ -340,7 +343,7 @@ const ListStudents = ({courseInfo}) => {
                         <TableCell align="right">{student.student_email}</TableCell>
                         <TableCell align="right">{student.student_gpa}</TableCell>
                         <TableCell align="right"><EditStudent student={student} setStudentsChange={setStudentsChange} courseInfo={courseInfo}/></TableCell>
-                        <TableCell align="right"><Button variant="outlined" color="error" onClick = {() => deleteStudent(student.project_id)} startIcon={<DeleteIcon />}> Delete </Button></TableCell>
+                        <TableCell align="right"><Button variant="outlined" color="error" onClick = {() => deleteStudent(student.student_id)} startIcon={<DeleteIcon />}> Delete </Button></TableCell>
                         </TableRow>
                     );
                     })}
