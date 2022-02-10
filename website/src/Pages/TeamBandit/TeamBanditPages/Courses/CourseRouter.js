@@ -15,7 +15,7 @@ import Settings from './CoursePages/Settings/settings';
 import Students from './CoursePages/Students/students';
 import Mentors from './CoursePages/Mentors/Mentors';
 
-const CourseRouter = ({route, courseInfo}) => {
+const CourseRouter = ({route, courseInfo, setCoursesChange}) => {
     console.log(route); //TODO: Delete this
     if(route.page === 'Homepage' || route === 'Homepage') //TODO: For some reason the buttons are wack and are setting route.text = to wat I want, for now its fine. Just rn Landing Page needs this.
     {
@@ -85,7 +85,7 @@ const CourseRouter = ({route, courseInfo}) => {
     {
         return (
             <Fragment>
-                <Settings/>
+                <Settings courseInfo={courseInfo} setCoursesChange={setCoursesChange}/>
             </Fragment>
         )
     }

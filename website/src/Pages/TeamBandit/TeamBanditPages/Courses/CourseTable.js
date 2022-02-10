@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -12,6 +12,7 @@ import CourseTableBodyCell from './CourseTableBodyCell';
 const CourseTable = ({coursesInfo, setCoursesChange}) => {
 
   return (
+    <>
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
         <TableHead>
@@ -19,8 +20,7 @@ const CourseTable = ({coursesInfo, setCoursesChange}) => {
             <TableCell>Course Name</TableCell>
             <TableCell>Course Organizer</TableCell>
             <TableCell>Course Semester</TableCell>
-            <TableCell>Edit Course</TableCell>
-            <TableCell>Delete Course</TableCell>
+            <TableCell>Course Description</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -30,6 +30,7 @@ const CourseTable = ({coursesInfo, setCoursesChange}) => {
         </TableBody>
       </Table>
     </TableContainer>
+    </>
   );
 }
 

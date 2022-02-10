@@ -23,7 +23,7 @@ import CourseRouter from './CourseRouter';
 // Table of the contents
 const pages = ['Homepage', 'Schedule', 'Info and Policies', 'Projects', 'Students', 'Clients', 'Assignments', 'Mentors', 'Settings'];
 
-const CoursePage = ({courseInfo}) => {
+const CoursePage = ({courseInfo, setCoursesChange}) => {
   const [state, setState] = useState({
     right: false,
   });
@@ -137,7 +137,7 @@ const CoursePage = ({courseInfo}) => {
           </AppBar>
 
           {/*This will return whatever page we want displayed :)*/}
-          <CourseRouter route={route} courseInfo={courseInfo}/>
+          <CourseRouter route={route} courseInfo={courseInfo} setCoursesChange={setCoursesChange}/>
 
         </Drawer>
       </Fragment>

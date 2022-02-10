@@ -91,7 +91,7 @@ const CourseTableBodyCell = ({courseInfo, setCoursesChange}) => {
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
       <TableCell component="th" scope="row">
-        <CoursePage courseInfo={courseInfo} />
+        <CoursePage courseInfo={courseInfo} setCoursesChange={setCoursesChange}/>
       </TableCell>
       <TableCell>
       {courseInfo.organizer_fname + " " + courseInfo.organizer_lname}
@@ -100,63 +100,7 @@ const CourseTableBodyCell = ({courseInfo, setCoursesChange}) => {
       {courseInfo.course_semester}
       </TableCell>
       <TableCell>
-        <Button onClick={handleClickOpen}>
-          Edit This Course
-        </Button>
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Edit this course</DialogTitle>
-
-          <DialogContent>
-
-            <DialogContentText>
-              Please enter course information here.
-            </DialogContentText>
-
-            <TextField
-              autoFocus
-              required
-              margin="dense"
-              label="Course Name"
-              type="text"
-              fullWidth
-              variant="standard"
-              value = {title}
-              error={title === ""}
-              helperText={title === "" ? 'This is a required field' : ' '}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-
-            <TextField
-              margin="dense"
-              label="Course Semester"
-              type="text"
-              fullWidth
-              variant="standard"
-              value = {semester}
-              onChange={(e) => setSemester(e.target.value)}
-            />
-
-            <TextField
-              margin="dense"
-              label="Course Description"
-              type="text"
-              fullWidth
-              variant="standard"
-              value = {description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-
-          </DialogContent>
-
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={updateCourse}>Edit Course</Button>
-          </DialogActions>
-
-        </Dialog>
-      </TableCell>
-      <TableCell>
-        <Button onClick={()=>deleteCourse(courseInfo.course_id)}>Delete Course</Button>
+      {courseInfo.course_description}
       </TableCell>
     </TableRow>
   )

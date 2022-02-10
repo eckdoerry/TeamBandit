@@ -5,7 +5,11 @@ import { parse } from "papaparse";
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 // CSV Uploader stuff
 import TableContainer from '@mui/material/TableContainer';
@@ -15,7 +19,6 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Dialog from '@mui/material/Dialog';
 import AddIcon from '@mui/icons-material/Add';
 
 import FileUploadIcon from '@mui/icons-material/FileUpload';
@@ -41,13 +44,6 @@ const theme = createTheme({
     },
 });
 
-const DialogBig = {
-    dialogPaper: {
-        minHeight: '80vh',
-        maxHeight: '80vh',
-    },
-};
-
 const Input = styled('input')({
     display: 'none',
 });
@@ -58,18 +54,28 @@ const InputTodo = ({courseInfo, setStudentsChange}) => {
     const [student_emplid, setStudentEmplid] = useState("");
     const [student_email, setStudentEmail] = useState("");
     const [student_gpa, setStudentGpa] = useState("");
-    const [course_id, setCouseId] = useState(courseInfo.course_id);
+    const [course_id, setCourseId] = useState(courseInfo.course_id);
 
     // CSV STUFF
     const [highlighted, setHighlighted] = React.useState(false);
     const [contacts, setContacts] = React.useState([]);
 
     const [open, setOpen] = React.useState(false);
+    const [individualAddOpen, setIndividualAddOpen] = React.useState(false);
+
     const handleClose = () => {
         setOpen(false);
     };
     const handleToggle = () => {
         setOpen(!open);
+    };
+
+    const handleIndividualClickOpen = () => {
+        setIndividualAddOpen(true);
+    };
+
+    const handleIndividualClose = () => {
+    setIndividualAddOpen(false);
     };
 
     const [success, setSuccess] = React.useState(false);
@@ -137,6 +143,7 @@ const InputTodo = ({courseInfo, setStudentsChange}) => {
             setStudentEmail("");
             setStudentGpa("");
             setStudentsChange(true);
+            handleIndividualClose();
         } catch (error) {
             console.error(error.message);
             toast.error("Failed to add student!");
@@ -145,120 +152,170 @@ const InputTodo = ({courseInfo, setStudentsChange}) => {
     
     return (
         <Fragment>
-        
-            
-                <Button  size="large" variant="outlined" color="success" onClick={onSubmitForm} startIcon={<AddIcon />} > Add </Button>
-                <Button  sx={{ m: 3, pl: 5, pr: 5}} style={{textAlign: 'center', whiteSpace: 'nowrap'}} size="large" variant="outlined" color="secondary" onClick={handleToggle} startIcon={<FileUploadIcon/>}> Upload Student List </Button>
-                
+            <Button  size="large" variant="outlined" color="success" onClick={handleIndividualClickOpen} startIcon={<AddIcon />} > Add </Button>
+            <Dialog open={individualAddOpen} onClose={handleIndividualClose}>
+                <DialogTitle>Add a New Student</DialogTitle>
+                <DialogContent>
+                <DialogContentText>
+                    Please enter student information here.
+                </DialogContentText>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    label="First Name"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    value = {student_fname}
+                    onChange={(e) => setStudentFname(e.target.value)}
+                />
+                <TextField
+                    margin="dense"
+                    label="Last Name"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    onChange={(e) => setStudentLname(e.target.value)}
+                />
+                <TextField
+                    margin="dense"
+                    label="Student University ID"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    onChange={(e) => setStudentEmplid(e.target.value)}
+                />
+                <TextField
+                    margin="dense"
+                    label="Student Email"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    onChange={(e) => setStudentEmail(e.target.value)}
+                />
+                <TextField
+                    margin="dense"
+                    label="Student GPA"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    onChange={(e) => setStudentGpa(e.target.value)}
+                />
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleIndividualClose}>Cancel</Button>
+                <Button onClick={onSubmitForm}>Add Student</Button>
+                </DialogActions>
+            </Dialog>
 
+            <Button  sx={{ m: 3, pl: 5, pr: 5}} style={{textAlign: 'center', whiteSpace: 'nowrap'}} size="large" variant="outlined" color="secondary" onClick={handleToggle} startIcon={<FileUploadIcon/>}> Upload Student List </Button>
+            <Dialog maxHeight={'lg'} maxWidth={'lg'} open={open} onClose={handleClose}>
+            <div className = {styles.csv}>
+                <div className = {styles.appHeader}>
+                        <div className = {styles.uploader}>
+                            <div
+                                className = {`${styles.appLink} ${highlighted ? styles.appHighlighted : styles.appNothing}`}
 
-        <Dialog maxHeight={'lg'} maxWidth={'lg'} open={open} onClose={handleClose}>
-        <div className = {styles.csv}>
-            <div className = {styles.appHeader}>
-                    <div className = {styles.uploader}>
-                        <div
-                            className = {`${styles.appLink} ${highlighted ? styles.appHighlighted : styles.appNothing}`}
+                                onDragEnter = {() =>{
+                                    setHighlighted(true);
+                                }}
 
-                            onDragEnter = {() =>{
-                                setHighlighted(true);
-                            }}
+                                onDragLeave = {() => {
+                                    setHighlighted(false);
+                                }}
 
-                            onDragLeave = {() => {
-                                setHighlighted(false);
-                            }}
+                                onDragOver = {(e) =>{
+                                    e.preventDefault();
+                                }}
 
-                            onDragOver = {(e) =>{
-                                e.preventDefault();
-                            }}
+                                onDrop = {(e) => {
+                                    e.preventDefault();
+                                    setHighlighted(false);
 
-                            onDrop = {(e) => {
-                                e.preventDefault();
-                                setHighlighted(false);
+                                    console.log(e.dataTransfer.files);
 
-                                console.log(e.dataTransfer.files);
+                                    Array.from(e.dataTransfer.files)
+                                    .filter((file) => file.type === "application/vnd.ms-excel")
+                                    .forEach(async (file) => {
+                                    const text = await file.text();
+                                    const result = parse(text, {header: true});
+                                    setContacts(existing => [...existing, ...result.data]);
+                                    console.log(result);
+                                    
+                                    });
 
-                                Array.from(e.dataTransfer.files)
-                                .filter((file) => file.type === "application/vnd.ms-excel")
-                                .forEach(async (file) => {
-                                const text = await file.text();
-                                const result = parse(text, {header: true});
-                                setContacts(existing => [...existing, ...result.data]);
-                                console.log(result);
-                                
+                            }}>
+                                DRAG AND DROP FILE HERE
+                            </div>
+
+                            <p className = {styles.p}> OR </p>
+
+                            <label htmlFor="contained-button-file">
+                            <ThemeProvider theme = {theme}>
+
+                                <Input
+                                accept="text/csv"
+                                id="contained-button-file"
+                                multiple type="file"
+
+                                onChange = {(event) => {
+                                event.preventDefault();
+                                const loadCSV = Promise.resolve(event.target.files[0].text());
+
+                                loadCSV.then(function(resultOfPromise){
+                                    const parsedResult = parse(resultOfPromise, {header: true});
+                                    setContacts(existing => [...existing, ...parsedResult.data]);
+                                    console.log(parsedResult);
                                 });
+                                }}
+                                />
 
-                        }}>
-                            DRAG AND DROP FILE HERE
-                        </div>
+                                <Button color = "sameBlue" variant="contained" component = "span">
+                                Upload File
+                                </Button>
+                            </ThemeProvider>
+                            </label>
 
-                        <p className = {styles.p}> OR </p>
-
-                        <label htmlFor="contained-button-file">
-                        <ThemeProvider theme = {theme}>
-
-                            <Input
-                            accept="text/csv"
-                            id="contained-button-file"
-                            multiple type="file"
-
-                            onChange = {(event) => {
-                            event.preventDefault();
-                            const loadCSV = Promise.resolve(event.target.files[0].text());
-
-                            loadCSV.then(function(resultOfPromise){
-                                const parsedResult = parse(resultOfPromise, {header: true});
-                                setContacts(existing => [...existing, ...parsedResult.data]);
-                                console.log(parsedResult);
-                            });
-                            }}
-                            />
-
-                            <Button color = "sameBlue" variant="contained" component = "span">
-                            Upload File
-                            </Button>
-                        </ThemeProvider>
-                        </label>
-
-                
-            </div>
-            {/*This be a comment*/}
-            <div className = {styles.tablepad}>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 1000 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                    <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}}>First Name</TableCell>
-                    <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}}>Last Name</TableCell>
-                    <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}} align="right">Student ID</TableCell>
-                    <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}}align="right">Email</TableCell>
-                    <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}}align="right">GPA</TableCell>
+                    
+                </div>
+                {/*This be a comment*/}
+                <div className = {styles.tablepad}>
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 1000 }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                        <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}}>First Name</TableCell>
+                        <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}}>Last Name</TableCell>
+                        <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}} align="right">Student ID</TableCell>
+                        <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}}align="right">Email</TableCell>
+                        <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}}align="right">GPA</TableCell>
+                        </TableRow>
+                    </TableHead>
+                <TableBody>
+                {contacts.map((contact) => (
+                    <TableRow
+                    key={contact.studentID}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                    <TableCell style={{backgroundColor:'#003466', color: 'white',}}component="th" scope="row">
+                        {contact.firstName}
+                    </TableCell>
+                    <TableCell style={{backgroundColor:'#003466', color: 'white',}}component="th" scope="row">
+                        {contact.lastName}
+                    </TableCell>
+                    <TableCell style={{backgroundColor:'#003466', color: 'white',}}align="right">{contact.studentID}</TableCell>
+                    <TableCell style={{backgroundColor:'#003466', color: 'white',}}align="right">{contact.email}</TableCell>
+                    <TableCell style={{backgroundColor:'#003466', color: 'white',}}align="right">{contact.gpa}</TableCell>
                     </TableRow>
-                </TableHead>
-            <TableBody>
-            {contacts.map((contact) => (
-                <TableRow
-                key={contact.studentID}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                <TableCell style={{backgroundColor:'#003466', color: 'white',}}component="th" scope="row">
-                    {contact.firstName}
-                </TableCell>
-                <TableCell style={{backgroundColor:'#003466', color: 'white',}}component="th" scope="row">
-                    {contact.lastName}
-                </TableCell>
-                <TableCell style={{backgroundColor:'#003466', color: 'white',}}align="right">{contact.studentID}</TableCell>
-                <TableCell style={{backgroundColor:'#003466', color: 'white',}}align="right">{contact.email}</TableCell>
-                <TableCell style={{backgroundColor:'#003466', color: 'white',}}align="right">{contact.gpa}</TableCell>
-                </TableRow>
-            ))}
-                </TableBody>
-            </Table>
-            </TableContainer>
-            <Button variant="contained" color="secondary" onClick={addList}> Commit Changes </Button>
+                ))}
+                    </TableBody>
+                </Table>
+                </TableContainer>
+                <Button variant="contained" color="secondary" onClick={addList}> Commit Changes </Button>
+                </div>
             </div>
-        </div>
-        </div>
-        </Dialog> 
+            </div>
+            </Dialog> 
         </Fragment>
     );
 };

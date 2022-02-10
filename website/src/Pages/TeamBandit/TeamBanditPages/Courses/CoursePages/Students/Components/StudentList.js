@@ -137,7 +137,7 @@ function EnhancedTableHead(props) {
                 id="tableTitle"
                 component="div"
                 >
-                Projects
+                Students
                 </Typography>
             )}
             <AddStudent courseInfo={courseInfo} setStudentsChange={setStudentsChange}/>
@@ -313,7 +313,6 @@ const ListStudents = ({courseInfo}) => {
                 {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                     rows.slice().sort(getComparator(order, orderBy)) */}
                 {stableSort(students, getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((student, index) => {
                     const isItemSelected = isSelected(student.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
@@ -347,27 +346,9 @@ const ListStudents = ({courseInfo}) => {
                         </TableRow>
                     );
                     })}
-                {emptyRows > 0 && (
-                    <TableRow
-                    style={{
-                        height: (dense ? 33 : 53) * emptyRows,
-                    }}
-                    >
-                    <TableCell colSpan={6} />
-                    </TableRow>
-                )}
                 </TableBody>
             </Table>
             </TableContainer>
-            <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={students.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            />
         </Paper>
         </Box>
             </div>
