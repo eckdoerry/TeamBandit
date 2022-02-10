@@ -6,11 +6,11 @@ router.get("/", authorization, async(req, res) => {
   try {
       
       const user = await pool.query(
-          "SELECT organizer_fname, organizer_lname FROM organizers WHERE organizer_id = $1",
+          "SELECT organizer_fname, organizer_lname, organizer_email, organizer_id FROM organizers WHERE organizer_id = $1",
           [req.user]
       );
 
-      res.json(user.rows);
+      res.json(user.rows[0]);
 
   } catch (error) {
       console.error(error.message);

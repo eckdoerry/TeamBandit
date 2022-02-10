@@ -110,23 +110,22 @@ export default function MiniDrawer({ setAuth }) {
 
     const [organizerInfo, setOrganizerInfo] = useState([]);
     const [organizerChange, setOrganizerChange] = useState(false);
-    
-    const getOrganizer = async () => {
-        try {
-            const response = await fetch("http://localhost:5000/general/", {method: "GET", headers: {token: localStorage.token}});
-
-            const parseData = await response.json();
-
-            setOrganizerInfo(parseData);
-            console.log(organizerInfo);
-
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
 
     // Updates Page
     useEffect(() => {
+        const getOrganizer = async () => {
+            try {
+                const response = await fetch("http://localhost:5000/general/", {method: "GET", headers: {token: localStorage.token}});
+    
+                const parseData = await response.json();
+    
+                setOrganizerInfo(parseData);
+                console.log(organizerInfo);
+    
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
         getOrganizer();
         setOrganizerChange(false);
     }, [organizerChange]);
@@ -198,7 +197,7 @@ export default function MiniDrawer({ setAuth }) {
                                 sx={{ p: 0 }}
                             >
                                 <Avatar
-                                    alt="Remy Sharp"
+                                    alt={organizerInfo.organizer_fname}
                                     src="/static/images/avatar/2.jpg"
                                 />
                             </IconButton>
