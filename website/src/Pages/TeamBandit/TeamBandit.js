@@ -107,6 +107,30 @@ const Drawer = styled(MuiDrawer, {
 const settings = ["Profile", "Logout"];
 
 export default function MiniDrawer({ setAuth }) {
+
+    const [organizerInfo, setOrganizerInfo] = useState([]);
+    const [organizerChange, setOrganizerChange] = useState(false);
+    
+    const getOrganizer = async () => {
+        try {
+            const response = await fetch("http://localhost:5000/general/", {method: "GET", headers: {token: localStorage.token}});
+
+            const parseData = await response.json();
+
+            setOrganizerInfo(parseData);
+            console.log(organizerInfo);
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    // Updates Page
+    useEffect(() => {
+        getOrganizer();
+        setOrganizerChange(false);
+    }, [organizerChange]);
+
     // JS
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
@@ -303,7 +327,7 @@ export default function MiniDrawer({ setAuth }) {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-                <TeamBanditRoutes route={route} />
+                <TeamBanditRoutes route={route} organizerInfo={organizerInfo}/>
 
                 <footer className={styles.footer}>
                     {" "}

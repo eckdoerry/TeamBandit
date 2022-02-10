@@ -2,11 +2,10 @@ import {Fragment, React, useState, useEffect} from "react";
 
 import styles from "./Courses.module.css";
 
-import Course from "./Course";
 import FormDialogAddCourse from "./FormDialogAddCourse";
+import CourseTable from "./CourseTable";
 
-const Courses = () => {
-
+const Courses = ({organizerInfo}) => {
     const [courses, setCourses] = useState([]);
     const [coursesChange, setCoursesChange] = useState(false);
 
@@ -30,19 +29,13 @@ const Courses = () => {
         setCoursesChange(false);
     }, [coursesChange]);
 
-    console.log(courses);
-
     return(
         <Fragment>
             <h1>Courses</h1>
             <div className={styles.courseBtns}>
                 <FormDialogAddCourse setCoursesChange = {setCoursesChange}/>
             </div>
-            <div className={styles.courseContainer}>
-                {courses.map((course) => (                   
-                <Course key={course.course_id} courseInfo={course} courseChange={setCoursesChange}/>))}
-                
-            </div>
+            <CourseTable coursesInfo={courses} setCoursesChange={setCoursesChange}/>
         </Fragment>
     );
 }

@@ -12,7 +12,7 @@ import LandingPage from "./TeamBanditPages/LandingPage/LandingPage";
 import Profile from "./TeamBanditPages/Profile/Profile";
 import Settings from "./TeamBanditPages/Settings/Settings";
 
-const TeamBanditRouter = ({route}) => {
+const TeamBanditRouter = ({route, organizerInfo}) => {
     console.log(route); //TODO: Delete this
     if(route.text === 'Home' || route === 'Home') //TODO: For some reason the buttons are wack and are setting route.text = to wat I want, for now its fine. Just rn Landing Page needs this.
     {
@@ -34,7 +34,7 @@ const TeamBanditRouter = ({route}) => {
     {
         return (
             <Fragment>
-                <Courses/>
+                <Courses organizerInfo={organizerInfo}/>
             </Fragment>
         )
     }

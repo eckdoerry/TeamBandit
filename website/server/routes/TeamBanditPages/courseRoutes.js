@@ -73,7 +73,7 @@ router.delete("/courses/:id", authorization, async(req, res) => {
         
         const {id} = req.params;
 
-        const deleteStudents = await pool.query("DELETE FROM students WHERE course_id = $1 AND organizer_id = $2 RETURNING *", [id, req.user]);
+        const deleteStudents = await pool.query("DELETE FROM studentcourses WHERE course_id = $1 RETURNING *", [id]);
         const deleteCourse = await pool.query("DELETE FROM courses WHERE course_id = $1 AND organizer_id = $2 RETURNING *", [id, req.user]);
         
         if( deleteCourse.rows.length === 0 )
