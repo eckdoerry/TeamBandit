@@ -326,7 +326,7 @@ export default function MiniDrawer({ setAuth }) {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-                <TeamBanditRoutes route={route} organizerInfo={organizerInfo}/>
+                <TeamBanditRoutes route={route} organizerInfo={organizerInfo} setOrganizerChange={setOrganizerChange}/>
 
                 <footer className={styles.footer}>
                     {" "}
