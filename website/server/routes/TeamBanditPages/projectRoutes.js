@@ -18,6 +18,18 @@ router.get("/:course_id", authorization, async(req, res) => {
     }
 });
 
+//get all projects
+router.get("/homepage/:organizer_id", authorization, async(req, res) => {
+    try {
+        console.log(req.user);
+        const students = await pool.query("SELECT * FROM projects WHERE organizer_id = $1 ORDER BY project_id ASC ", [req.user]);
+
+        res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
 //get all members
 router.get("/members/:project_id", authorization, async(req, res) => {
     try {

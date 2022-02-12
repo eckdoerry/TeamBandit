@@ -5,11 +5,9 @@ import StudentList from './Components/StudentList';
 
 const Students = ({courseInfo}) => {
     return(
-    <Fragment>
-        <div>
-            <StudentList courseInfo={courseInfo}/>
-        </div>
-    </Fragment>
+    
+        <StudentList courseInfo={courseInfo}/>
+        
     );
 }
 

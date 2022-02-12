@@ -48,7 +48,7 @@ const Input = styled('input')({
     display: 'none',
 });
 
-const InputTodo = ({courseInfo, setStudentsChange}) => {
+const InputTodo = ({courseInfo, setRowChange}) => {
     const [student_fname, setStudentFname] = useState("");
     const [student_lname, setStudentLname] = useState("");
     const [student_emplid, setStudentEmplid] = useState("");
@@ -107,7 +107,7 @@ const InputTodo = ({courseInfo, setStudentsChange}) => {
             const response = await fetch(`http://localhost:5000/students/csv/`, {method: "POST", headers: myHeaders, body: JSON.stringify(body)});
 
             toast.success("Student was added successfully!");
-            setStudentsChange(true);
+            setRowChange(true);
 
             setContacts([]);
             handleToggle();
@@ -142,7 +142,7 @@ const InputTodo = ({courseInfo, setStudentsChange}) => {
             setStudentEmplid("");
             setStudentEmail("");
             setStudentGpa("");
-            setStudentsChange(true);
+            setRowChange(true);
             handleIndividualClose();
         } catch (error) {
             console.error(error.message);

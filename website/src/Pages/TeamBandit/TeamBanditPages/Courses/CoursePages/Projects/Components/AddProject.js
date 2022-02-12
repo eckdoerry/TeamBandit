@@ -195,7 +195,7 @@ const AddProject = ({courseInfo, setRowChange}) => {
 
     const getMentors = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/mentors/`, {method: "GET", headers: {token: localStorage.token}});
+            const response = await fetch(`http://localhost:5000/mentors/${courseInfo.course_id}`, {method: "GET", headers: {token: localStorage.token}});
             const jsonData = await response.json();
             
             setMentors(jsonData);

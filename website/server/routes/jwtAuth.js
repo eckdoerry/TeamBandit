@@ -59,21 +59,31 @@ router.post("/login", validInfo, async (req, res)=>{
         // 3. Check if a student user exists
         const student = await pool.query("SELECT * FROM students WHERE student_email = $1", [email]);
 
+        // 3. Check if a student user exists
+        const mentor = await pool.query("SELECT * FROM mentors WHERE mentor_email = $1", [email]);
+
 
         // user is not in the system
         if(user.rows.length === 0) {
             if(student.rows.length === 0)
             {
-                return res.status(401).json("Password or Email is incorrect");
+                if(mentor.rows.length === 0)
+                {
+                    return res.status(401).json("Password or Email is incorrect");
+                }
             }
         }
 
         // 3. check if incoming password is the same as the database password
         var validPassword = "";
 
-        if(user.rows.length === 0)
+        if(student.rows.length !== 0)
         {
             validPassword = await bcrypt.compare(password, student.rows[0].student_password);
+        }
+        else if(mentor.rows.length !== 0)
+        {
+            validPassword = await bcrypt.compare(password, mentor.rows[0].mentor_password);
         }
         else 
         {
@@ -82,18 +92,29 @@ router.post("/login", validInfo, async (req, res)=>{
 
         // IF PASSWORD NOT THE SAME
         if(!validPassword) {
-            if(student.rows[0].student_password != password)
+            if(student.rows.legnth > 0 && student.rows[0].student_password != password)
             {
                 return res.status(401).json("Password or Email is incorrect");
             }
+            if(mentor.rows.legnth > 0 && mentor.rows[0].mentor_password != password)
+            {
+                return res.status(401).json("Password or Email is incorrect");
+            }
+            
         }
+
         var token = "";
         var identifier = "";
         // invalid user 
-        if(user.rows.length === 0)
+        if(student.rows.length !== 0)
         {
             token = jwtGenerator(student.rows[0].student_id);
             identifier = "student";
+        }
+        else if(mentor.rows.length !== 0)
+        {
+            token = jwtGenerator(mentor.rows[0].mentor_id);
+            identifier = "mentor";
         }
         else 
         {
