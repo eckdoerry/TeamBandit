@@ -1,10 +1,22 @@
-import {Fragment, React} from "react";
+import { useState, useEffect, React } from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import { toast } from "react-toastify";
 
-const Profile = () => {
+import styles from "./Profile.module.css";
+import EditBioDialog from "./EditBioDialog";
+
+
+const Profile = ({organizerInfo, setOrganizerChange}) => {
+
     return(
-        <Fragment>
-            <p>Profile</p>
-        </Fragment>
+        <>
+           <h1>Profile</h1>
+           <h2>Your bio:</h2>
+           <p>{organizerInfo.organizer_bio}</p>
+           {console.log(organizerInfo)}
+           <EditBioDialog setOrganizerChange={setOrganizerChange}/>
+        </>
     );
 }
 
