@@ -25,13 +25,14 @@
         "pg": "^8.7.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
+        "react-mui-scheduler": "^1.2.5",
         "react-router-dom": "^6.2.1",
         "react-scripts": "^5.0.0",
         "react-toastify": "^8.1.0",
         "web-vitals": "^2.1.2"
     },
     "scripts": {
-        "start-client": "(cd server && cd middleware && node authRoutes.js) & react-scripts start",
+        "start-client": "react-scripts start",
         "start": "npm run build && (cd server && forever start index.js )",
         "build": "react-scripts build",
         "test": "react-scripts test",

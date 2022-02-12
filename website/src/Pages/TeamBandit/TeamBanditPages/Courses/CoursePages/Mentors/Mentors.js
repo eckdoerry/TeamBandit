@@ -1,28 +1,28 @@
-import {Fragment, React, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
+import Typography from '@mui/material/Typography';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Button from '@mui/material/Button';
+
 import { DataGrid,
     GridToolbarContainer,
     GridToolbarColumnsButton,
     GridToolbarFilterButton,
     GridToolbarExport,
     GridToolbarDensitySelector,
-   } from '@mui/x-data-grid';
-
-import DeleteIcon from '@mui/icons-material/Delete';
-import Button from '@mui/material/Button';
-
-import { toast } from 'react-toastify';
+} from '@mui/x-data-grid';
 
 // components
 import AddProject from "../Projects/Components/AddProject";
 import TeamsAssignment from "../Projects/Components/TeamAssignment";
 import EditProject from "../Projects/Components/EditProject";
 
+import AddMentor from "./Components/AddMentor";
+import EditMentor from "./Components/EditMentor";
+
+import { toast } from 'react-toastify';
 
 
-
-  
-
-const Mentors = ({courseInfo}) => {
+const Projects = ({courseInfo}) => {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
 
@@ -30,13 +30,12 @@ const Mentors = ({courseInfo}) => {
         return (
             <strong>
                 
-                <Button variant="outlined" color="error" onClick = {() => deleteProject(params.row.project_id)} startIcon={<DeleteIcon />}> Delete </Button>
+                <Button variant="outlined" color="error" onClick = {() => deleteMentor(params.row.project_id)} startIcon={<DeleteIcon />}> Delete </Button>
             </strong>
         )
     };
     
     const editButton = (params) => {
-        console.log("Params" + params.row);
         return (
             
                 <EditProject project={params.row} setRowChange={setRowChange} courseInfo={courseInfo}/>
@@ -48,123 +47,93 @@ const Mentors = ({courseInfo}) => {
 
     const columns = [
         {
-          field: 'project_name',
-          headerName: 'Project Name',
-          width: 150,
-          editable: true,
+        field: 'mentor_name',
+        headerName: 'Mentor Name',
+        flex: 1,
         },
         {
-          field: 'project_team_lead',
-          headerName: 'Team Lead',
-          width: 150,
-          editable: true,
+            field: 'mentor_email',
+            headerName: 'Mentor Email',
+            flex: 1,
         },
-        {
-          field: 'project_member1',
-          headerName: 'Student Team',
-          width: 150,
-          editable: true,
-        },
-        {
-            field: 'project_mentor',
-            headerName: 'Team Mentor',
-            width: 150,
-            editable: true,
-          },
-          {
-            field: 'project_sponsor',
-            headerName: 'Project Sponsor',
-            width: 150,
-            editable: true,
-          },
-          {
-            field: 'status_tracker',
-            headerName: 'Status Tracker',
-            width: 150,
-            editable: true,
-          },
-        
         {
             field: 'edit',
             headerName: 'Edit',
             sortable: false,
             filterable: false,
-            width: 150,
+            flex: 1,
             renderCell: editButton,
             disableClickEventBubbling: true,
-          },
-          {
+        },
+        {
             field: 'delete',
             headerName: 'Delete',
             sortable: false,
             filterable: false,
-            width: 150,
+            flex: 1,
             renderCell: deleteButton,
             disableClickEventBubbling: true,
-          },
-          
-      ];
+        },
+    ];
 
-      const CustomToolbar = () => {
+    const CustomToolbar = () => {
         return (
-          <GridToolbarContainer>
-            <GridToolbarColumnsButton />
-            <GridToolbarFilterButton />
-            <GridToolbarDensitySelector />
-            <AddProject courseInfo={courseInfo} setRowChange={setRowChange}/>
-            <TeamsAssignment setRowChange={setRowChange}/>
-          </GridToolbarContainer>
+        <GridToolbarContainer>
+            <Typography sx={{ m: 1 }} variant="h4">Mentors</Typography>
+            <GridToolbarColumnsButton  sx={{ m: 1 }} />
+            <GridToolbarFilterButton sx={{ m: 1 }} />
+            <GridToolbarDensitySelector sx={{ m: 1 }} />
+            <GridToolbarExport sx={{ m: 1 }} />
+            <AddMentor courseInfo={courseInfo} setRowChange={setRowChange}/>
+        </GridToolbarContainer>
         );
-      }
+    }
     
 
     
     // Delete function
-    const deleteProject= async (id) => {
+    const deleteMentor= async (id) => {
         try {
 
-            await fetch(`http://localhost:5000/projects/projects/${id}/`, {
+            await fetch(`http://localhost:5000/mentors/mentors/${id}/${courseInfo.course_id}`, {
                 method: "DELETE",
                 headers: { token: localStorage.token }
             });
 
 
-            toast.success("Project was deleted!");
+            toast.success("Mentor was deleted!");
             setRowChange(true);
         } catch (error) {
             console.error(error.message);
-            toast.error("Failed to delete project!");
+            toast.error("Failed to delete mentor!");
         }
     }
     
-    const getProjects = async () => {
+    const getMentors = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/projects/${courseInfo.course_id}`, {method: "GET", headers: {token: localStorage.token}});
+            const response = await fetch(`http://localhost:5000/mentors/${courseInfo.course_id}`, {method: "GET", headers: {token: localStorage.token}});
             const jsonData = await response.json();
-        
+            console.log(jsonData);
             setRows(jsonData);
-            
             } catch (err) {
             console.error(err.message);
             }
         };
     
     useEffect(() => {
-        getProjects();
+        getMentors();
         setRowChange(false);
     }, [rowChange]);
 
     return(
         
-        <div style={{ height: '100%', width: '100%' }}>
-        
+        <div style={{ padding: '25px', display:'flex', height: '100%', width: '100%' }}>
+            
             <DataGrid
                 rows={rows}
                 columns={columns}
-                getRowId={(rows) => rows.project_id}
+                getRowId={(rows) => rows.mentor_id}
                 components = {{Toolbar: CustomToolbar,}}
-                pageSize={10}
-                rowsPerPageOptions={[5,10,25]}
                 disableSelectionOnClick
             />
         </div>
@@ -172,4 +141,4 @@ const Mentors = ({courseInfo}) => {
     );
 }
 
-export default Mentors;
+export default Projects;

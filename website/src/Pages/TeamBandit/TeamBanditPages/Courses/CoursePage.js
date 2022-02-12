@@ -21,7 +21,7 @@ import styles from "./Courses.module.css"
 import CourseRouter from './CourseRouter';
 
 // Table of the contents
-const pages = ['Homepage', 'Schedule', 'Info and Policies', 'Projects', 'Students', 'Clients', 'Assignments', 'Mentors', 'Settings'];
+const pages = ['Homepage', 'Schedule', 'Info and Policies', 'Projects', 'Students', 'Assignments', 'Mentors', 'Settings'];
 
 const CoursePage = ({courseInfo, setCoursesChange}) => {
   const [state, setState] = useState({
@@ -62,11 +62,9 @@ const CoursePage = ({courseInfo, setCoursesChange}) => {
           open={state[anchor]}
           onClose={toggleDrawer(anchor, false)}
         >
-          <AppBar style={{background: '#CDDDDD', color: 'black'}} position="static">
-            <Container maxWidth="xl" sx={{display: 'flex', flexDirection: 'row', float: 'left'}}>
-              <IconButton onClick={toggleDrawer(anchor, false)}>
-                <ArrowBackIcon />
-              </IconButton>
+          <AppBar style={{background: '#FAC01A', color: 'black'}} position="static">
+            <Container maxWidth="xl" sx={{display: 'flex', flexDirection: 'row'}}>
+              <Button sx={{m: 2, mr: 5, ml:-20}} variant="contained" onClick={toggleDrawer(anchor, false)} startIcon={<ArrowBackIcon/>}> Go Back </Button>
               <Toolbar disableGutters >
                 <Typography
                   variant="h6"

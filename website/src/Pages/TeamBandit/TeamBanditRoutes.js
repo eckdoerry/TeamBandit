@@ -18,7 +18,7 @@ const TeamBanditRouter = ({route, organizerInfo}) => {
     {
         return (
             <Fragment>
-                <LandingPage/>
+                <LandingPage organizerInfo={organizerInfo}/>
             </Fragment>
         )
     }

@@ -20,7 +20,7 @@ const style = {
     p: 4,
 };
 
-const EditStudent = ({student, setStudentsChange}) => {
+const EditStudent = ({student, setRowChange}) => {
     
 
     // Variables 
@@ -55,7 +55,7 @@ const EditStudent = ({student, setStudentsChange}) => {
             const response = await fetch(`http://localhost:5000/students/students/${student.student_id}`, {method: "PUT", headers: myHeaders, body: JSON.stringify(body)});
 
             toast.success("Student was successfully updated!");
-            setStudentsChange(true);
+            setRowChange(true);
         } catch (error) {
             console.error(error.message);
             toast.error("Failed to update student!");

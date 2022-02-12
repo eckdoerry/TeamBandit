@@ -21,7 +21,7 @@ const CourseRouter = ({route, courseInfo, setCoursesChange}) => {
     {
         return (
             <Fragment>
-                <Homepage/>
+                <Homepage courseInfo={courseInfo}/>
             </Fragment>
         )
     }
@@ -53,7 +53,7 @@ const CourseRouter = ({route, courseInfo, setCoursesChange}) => {
     {
         return (
             <Fragment>
-                <InfoAndPolicies/>
+                <InfoAndPolicies courseInfo={courseInfo}/>
             </Fragment>
         )
     }

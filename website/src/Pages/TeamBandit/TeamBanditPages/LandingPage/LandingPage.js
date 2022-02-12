@@ -7,15 +7,15 @@ import WelcomeMessage from "./WelcomeMessage";
 // TODO: Set up route
 //import LandingPageRouter from './LandingPageRouter';
 
-const LandingPage = () => {
+const LandingPage = ({organizerInfo}) => {
 
     return(
 
         <div>
 
-            <WelcomeMessage />
+            <WelcomeMessage organizerInfo={organizerInfo}/>
             
-            <Dashboard />
+            <Dashboard organizerInfo={organizerInfo}/>
         </div>
 
     );

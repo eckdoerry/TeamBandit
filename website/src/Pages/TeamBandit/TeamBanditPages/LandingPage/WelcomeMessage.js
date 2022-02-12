@@ -1,4 +1,5 @@
-const WelcomeMessage = () => {
+import React, {useEffect, useState} from "react";
+const WelcomeMessage = ({organizerInfo}) => {
     // Get the current date in real time
     const currentDate = new Date();
 
@@ -27,7 +28,7 @@ const WelcomeMessage = () => {
 
         <div>
     
-            <h1 className='test'>Good {timeOfDay}, [fname]!</h1>
+            <h1 className='test'>Good {timeOfDay}, {organizerInfo.organizer_fname}!</h1>
     
         </div>
     
