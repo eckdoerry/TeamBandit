@@ -212,7 +212,7 @@ const ListStudents = ({courseInfo}) => {
     const [students, setStudents] = useState([]);
     const [studentsChange, setStudentsChange] = useState(false);
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('studentTeam');
+    const [orderBy, setOrderBy] = React.useState('student_fname');
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);

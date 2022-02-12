@@ -50,7 +50,7 @@ const style = {
 };
 
 const EditProject = ({project, setRowChange, courseInfo}) => {
-    // Variables 
+        // Variables 
     const [project_name, setProjectName] = useState(project.project_name);
     const [project_description, setProjectDescription] = useState(project.project_description);
     const [project_team_lead, setProjectTeamLead] = useState(project.project_team_lead);
@@ -182,6 +182,19 @@ const EditProject = ({project, setRowChange, courseInfo}) => {
         }
     };
 
+    const getTeamlead = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/projects/members/`, {method: "GET", headers: {token: localStorage.token}});
+            const jsonData = await response.json();
+            
+            setTeamlead(jsonData);
+            
+                
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
+    
     
     
     useEffect(() => {

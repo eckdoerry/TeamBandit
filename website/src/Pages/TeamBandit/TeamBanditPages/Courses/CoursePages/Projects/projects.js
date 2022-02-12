@@ -8,9 +8,7 @@ import ProjectList from "./Components/ProjectList";
 
 const Projects = ({courseInfo}) => {
     return(
-        <div className = {styles.pad}>
-            <ProjectList courseInfo={courseInfo}/>
-        </div>
+        <ProjectList courseInfo={courseInfo}/>
     );
 }
 

@@ -21,7 +21,6 @@ router.get("/:course_id", authorization, async(req, res) => {
 //get all members
 router.get("/members/:project_id", authorization, async(req, res) => {
     try {
-        console.log("CALLED");
         const {project_id} = req.params;
         
         const project_members = await pool.query("SELECT project_member1, project_member2, project_member3, project_member4 FROM projects WHERE projects.organizer_id = $1 AND projects.project_id = $2", [req.user, project_id]);
@@ -72,9 +71,9 @@ router.delete("/projects/:id", authorization, async(req, res) => {
 // Add a new course
 router.post("/projects", authorization, async(req,res) =>{
     try{
-        const { project_name, project_description, project_team_lead, member1, member2, member3, member4, mentorName, sponsorName, courseId } = req.body;
+        const { project_name, project_description, mentorName, sponsorName, courseId } = req.body;
         
-        const newCourse = await pool.query("INSERT INTO projects (course_id, organizer_id, project_name, project_team_lead, project_member1, project_member2, project_member3, project_member4, project_description, project_mentor, project_sponsor) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *", [courseId, req.user, project_name, project_team_lead, member1, member2, member3, member4, project_description, mentorName, sponsorName]);
+        const newCourse = await pool.query("INSERT INTO projects (course_id, organizer_id, project_name, project_description, project_mentor, project_sponsor) VALUES($1, $2, $3, $4, $5, $6) RETURNING *", [courseId, req.user, project_name, project_description, mentorName, sponsorName]);
         
         res.json(newCourse.rows[0]);
     } catch (err) {
