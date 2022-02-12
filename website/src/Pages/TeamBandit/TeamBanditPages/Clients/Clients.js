@@ -1,63 +1,73 @@
-import {Fragment,React} from "react";
-import Table from '@mui/material/Table';
-import TableContainer from '@mui/material/TableContainer';
-import TableBody from '@mui/material/TableBody';
+import { React, useState } from 'react';
+import { DataGrid } from '@mui/x-data-grid';
+import FormDialogAddClient from './FormDialogAddClient';
 
-import NewClientButton from "./NewClientButton";
-import ClientTableHeader from './ClientTableHeader';
-import Client from './Client'
 
-import './Clients.css'
+const clientFields = [
+  {
+    field: 'clientName',
+    headerName: 'Client Name',
+    width: 150,
+    editable: true,
+  },
+  {
+    field: 'where',
+    headerName: 'Where?',
+    width: 150,
+    editable: true,
+  },
+  {
+    field: 'project',
+    headerName: 'Project',
+    width: 150,
+    editable: true,
+  },
+  {
+    field: 'email',
+    headerName: 'email',
+    width: 150,
+    editable: true,
+  },
+  {
+    field: 'notes',
+    headerName: 'Notes',
+    width: 150,
+    editable: true,
+  },
+];
 
-// Controls displasy of the Clients table
-const Clients = (clients) => {
+//const clients = [
+//  { id: 1, clientName: 'test', where: 'SICCS', project: 'A robot', email: 'ml@email.com', notes: 'N/A'  },
+//];
 
-    // Temporary hardcoded clientList until database and add
-    // functionality is finished
-    const clientList = 
-    [
-        {
-            clientName: "Dr. Doerry",
-            where: "SICCS",
-            project: "TeamBandit",
-            draft: "N",
-            version: 1.0,
-            status: "selected",
-            email: "Doerry@email.com",
-            notes: "N/A",
-            selected: "Y",
-        },
-    ];
+const Clients = () => {
 
-    return(
-        <Fragment>
+    const [clients, setClients] = useState([]);
+
+    const addClient = (client) => {
+      setClients([...clients, client]);
+    }
+
+    return (
+        <div style={{ height: 400, width: '100%' }}>
             <h1>Clients</h1>
 
-            <div className="ClientTable">
-                <TableContainer>
+            <FormDialogAddClient
+             addClient = {addClient}
+            />
 
-                    <Table>
-                        
-                        <ClientTableHeader />
+            <br />
 
-                        <TableBody>
-
-                            <Client registeredClients={clientList} />
-
-                        </TableBody>
-
-                    </Table>
-
-                </TableContainer>
-            </div>
-
-            <div>
-
-                <NewClientButton />
-
-            </div>
-        </Fragment>
-    );
+            <DataGrid
+                rows = {clients}
+                columns = {clientFields}
+                pageSize = {5}
+                rowsPerPageOptions = {[5]}
+                checkboxSelection
+                disableSelectionOnClick
+            />
+        </div>
+  );
 }
 
 export default Clients;
