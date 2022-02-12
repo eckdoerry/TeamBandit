@@ -122,20 +122,12 @@ const AddProject = ({courseInfo, setRowChange}) => {
         event.preventDefault();
         try {
 
-            // TODO: SO THIS IS BAD, but idk how else to get the information FML
-            var member1 = project_members[0].student_fname + " " + project_members[0].student_lname;
-            
-            var member2 = project_members[1].student_fname + " " + project_members[1].student_lname;
 
-            var member3 = project_members[2].student_fname + " " + project_members[2].student_lname;
-
-            var member4 = project_members[3].student_fname + " " + project_members[3].student_lname;
-            
             var courseId = courseInfo.course_id;
             var mentorName = project_mentor.mentor_name;
             var sponsorName = project_sponsor.client_name;
 
-            const body = {project_name, project_description, project_team_lead, member1, member2, member3, member4, mentorName, sponsorName, courseId};
+            const body = {project_name, project_description, mentorName, sponsorName, courseId};
             const myHeaders = new Headers();
 
             myHeaders.append("Content-Type", "application/json");
@@ -150,14 +142,8 @@ const AddProject = ({courseInfo, setRowChange}) => {
             toast.success("Project was added successfully!");
             setProjectName("");
             setProjectDescription("");
-            setProjectTeamLead("");
-            setProjectMember1("");
-            setProjectMember2("");
-            setProjectMember3("");
-            setProjectMember4("");
             setProjectMentor("");
             setProjectSponsor("");
-            setProjectMembers([]);
             setRowChange(true);
         } catch (error) {
             console.error(error.message);
@@ -207,19 +193,6 @@ const AddProject = ({courseInfo, setRowChange}) => {
         );
     };
 
-
-    const getStudents = async () => {
-        try {
-            const response = await fetch(`http://localhost:5000/students/${courseInfo.course_id}`, {method: "GET", headers: {token: localStorage.token}});
-            const jsonData = await response.json();
-        
-            setStudents(jsonData);
-            
-            } catch (err) {
-            console.error(err.message);
-            }
-        };
-
     const getMentors = async () => {
         try {
             const response = await fetch(`http://localhost:5000/mentors/`, {method: "GET", headers: {token: localStorage.token}});
@@ -244,28 +217,13 @@ const AddProject = ({courseInfo, setRowChange}) => {
         }
     };
 
-    const getTeamlead = async () => {
-        try {
-            const response = await fetch(`http://localhost:5000/projects/members`, {method: "GET", headers: {token: localStorage.token}});
-            const jsonData = await response.json();
-            
-            setTeamlead(jsonData);
-            
-                
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
     
     useEffect(() => {
-        getStudents();
         getMentors();
         getClients();
-        getTeamlead();
         setValueChange(false);
     }, [valueChange]);
     
-    console.log("TEAMLEAD" + teamlead);
 
     return (
         <Fragment>
@@ -292,81 +250,6 @@ const AddProject = ({courseInfo, setRowChange}) => {
                             Project Description
                     </Typography>
                     <TextField fullWidth sx={{ m: 2 }} label="Project Description" type = "text" value = {project_description} onChange = {e => setProjectDescription(e.target.value)}/>
-                    <Typography>
-                            Team Lead
-                    </Typography>
-                <Select
-                sx={{ m: 2 }}
-                fullWidth
-                displayEmpty
-                value={project_team_lead}
-                onChange={handleChangeTeamLead}
-                input={<OutlinedInput />}
-                renderValue={(selected) => {
-                    if (selected.length === 0) {
-                    return <em>Team Lead</em>;
-                    }
-                    return selected.student_id;
-                }}
-                MenuProps={MenuProps}
-                inputProps={{ 'aria-label': 'Without label' }}
-                >
-                <MenuItem disabled value="">
-                    <em>Team Lead</em>
-                </MenuItem>
-                {teamlead.map((leader) => (
-                    <MenuItem
-                    key={leader.project_member1}
-                    value={leader}
-                    >
-                    {leader.project_member1}
-                    </MenuItem>
-                ))}
-                </Select>
-                    <Typography>
-                            Team Members
-                    </Typography>
-                <Select
-                sx={{ m: 2 }}
-                multiple
-                fullWidth
-                displayEmpty
-                value={project_members}
-                onChange={handleChangeTeamMembers}
-                input={<OutlinedInput />}
-                renderValue={(selected) => {
-                    var string = "";
-                    if (selected.length === 0) {
-                    return <em>Team Members (Select up to Four)</em>;
-                    }
-                    for(var i = 0; i < selected.length; i++)
-                    {
-                        string += selected[i].student_fname + " " + selected[i].student_lname;
-                        if(i + 1 !== selected.length)
-                        {
-                            string += ", ";
-                        }
-                    }
-                    return string;
-                    
-                }}
-                MenuProps={MenuProps}
-                inputProps={{ 'aria-label': 'Without label' }}
-                >
-                <MenuItem disabled value="">
-                    <em>Team Members</em>
-                </MenuItem>
-                {students.map((student) => (
-                    <MenuItem
-                    key={student.student_id}
-                    value={student}
-                    
-                    >
-                    {student.student_fname} {student.student_lname}
-                    </MenuItem>
-                ))}
-                </Select>
-
                 <Typography >
                             Team Mentor
                         </Typography>

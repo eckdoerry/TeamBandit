@@ -56,7 +56,8 @@ const CoursePage = ({courseInfo, setCoursesChange}) => {
       <Fragment key={anchor}>
         <Button onClick={toggleDrawer(anchor, true)}>{courseInfo.course_title}</Button>
         <Drawer
-          PaperProps={{ style: { marginTop: 64, height: '100%', width: '96%' }}}
+          sx={{ zIndex: 'modal' }}
+          PaperProps={{ style: {height: '100%', width: '96%' }}}
           anchor={anchor}
           open={state[anchor]}
           onClose={toggleDrawer(anchor, false)}
