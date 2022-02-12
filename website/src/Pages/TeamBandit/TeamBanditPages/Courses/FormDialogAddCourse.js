@@ -63,6 +63,10 @@ const FormDialogAddCourse = ({setCoursesChange}) => {
       <Button variant="outlined" onClick={handleClickOpen}>
         Add a New Course
       </Button>
+
+      <br />
+      <br />
+      
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add a New Course</DialogTitle>
         <DialogContent>
