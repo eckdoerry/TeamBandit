@@ -1,6 +1,4 @@
 import { useState, React } from 'react';
-
-// MUI Imports
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -9,12 +7,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
+import { toast } from 'react-toastify';
 
-const FormDialogAddClient = ({addClient}) => {
+const AddClient = ({setClientsChange}) => {
   const [open, setOpen] = useState(false);
-  const [id, setID] = useState("");
   const [clientName, setClientName] = useState("");
-  const [where, setWhere] = useState("");
+  const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
   const [notes, setNotes] = useState("");
 
@@ -26,34 +24,57 @@ const FormDialogAddClient = ({addClient}) => {
     setOpen(false);
   };
 
-  const onSubmitForm = () => {
-    addClient({id, clientName, where, email, notes});
-  }
+  const onSubmitForm = async e => {
+    e.preventDefault();
+    if (!clientName || !company || !email){
+      alert("Please fill out all required fields");
+      return;
+    }
+    try {
+        const myHeaders = new Headers();
+
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("token", localStorage.token);
+
+        const body = { clientName, email, company, notes };
+        const response = await fetch("http://localhost:5000/clients/addclient", {
+            method: "POST",
+            headers: myHeaders,
+            body: JSON.stringify(body)
+        });
+
+        const parseResponse = await response.json();
+
+        toast.success("Client added successfully!");
+
+        setClientsChange(true);
+        setClientName("");
+        setCompany("");
+        setEmail("");
+        setNotes("");
+    } catch (err) {
+      console.error(err.message);
+      toast.error("Failed to add course!");
+    }
+    handleClose();
+  };
 
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Add a New Client
+        Add Client
       </Button>
+
       <Dialog open={open} onClose={handleClose}>
+
         <DialogTitle>Add a New Client</DialogTitle>
+
         <DialogContent>
+
           <DialogContentText>
-            Enter client information here.
+            Enter client information here
           </DialogContentText>
-          <TextField
-            required
-            autoFocus
-            margin="dense"
-            label="ID"
-            type="text"
-            fullWidth
-            variant="standard"
-            value = {id}
-            error={id === ""}
-            helperText={id === "" ? 'Client ID is required' : ' '}
-            onChange={(e) => setID(e.target.value)}
-          />
+
           <TextField
             required
             autoFocus
@@ -67,18 +88,22 @@ const FormDialogAddClient = ({addClient}) => {
             helperText={clientName === "" ? 'Client name is required' : ' '}
             onChange={(e) => setClientName(e.target.value)}
           />
+
           <TextField
+            required
             margin="dense"
-            label="Where?"
+            label="Company"
             type="text"
             fullWidth
             variant="standard"
-            value = {where}
-            error={where === ""}
-            helperText={where === "" ? 'Client location is required' : ' '}
-            onChange={(e) => setWhere(e.target.value)}
+            value = {company}
+            error={company === ""}
+            helperText={company === "" ? 'Client company is required' : ' '}
+            onChange={(e) => setCompany(e.target.value)}
           />
+
           <TextField
+            required
             margin="dense"
             label="Client Email"
             type="text"
@@ -89,7 +114,8 @@ const FormDialogAddClient = ({addClient}) => {
             helperText={email === "" ? 'Client email is required' : ' '}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <TextField
+
+           <TextField
             margin="dense"
             label="Notes"
             type="text"
@@ -98,14 +124,18 @@ const FormDialogAddClient = ({addClient}) => {
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
           />
+
         </DialogContent>
+
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick = {onSubmitForm}>Add Client</Button>
         </DialogActions>
+
       </Dialog>
+
     </div>
   );
 }
 
-export default FormDialogAddClient;
+export default AddClient;
