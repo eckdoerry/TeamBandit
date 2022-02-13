@@ -1,273 +1,269 @@
-import { useState, React, Fragment } from 'react';
+import { useState, React, Fragment } from "react";
 
 // MUI Imports
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { styled } from "@mui/material/styles";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
-import CoursePage from './CoursePage';
+import CoursePage from "./CoursePage";
 
 const expandedMenu = ["Edit", "Delete"];
 
 const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-} )
+    const { expand, ...other } = props;
+    return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+    transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+        duration: theme.transitions.duration.shortest,
+    }),
+}));
 
-    (({ theme, expand }) => ( {
-      transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-      marginLeft: 'auto',
-      transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-      }),
-
-    } )
+const CourseCard = ({ courseInfo, setCoursesChange }) => {
+    // Variables
+    const [title, setTitle] = useState(courseInfo.course_title);
+    const [semester, setSemester] = useState(courseInfo.course_semester);
+    const [description, setDescription] = useState(
+        courseInfo.course_description
     );
 
-const CourseCard = ({courseInfo, setCoursesChange}) => {
+    const [expanded, setExpanded] = useState(false);
+    const [open, setOpen] = useState(false);
 
-  // Variables 
-  const [title, setTitle] = useState(courseInfo.course_title);
-  const [semester, setSemester] = useState(courseInfo.course_semester);
-  const [description, setDescription] = useState(courseInfo.course_description);
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
 
-  const [expanded, setExpanded] = useState(false);
-  const [open, setOpen] = useState(false);
+    const handleClose = () => {
+        setOpen(false);
+        setTitle(courseInfo.course_title);
+        setSemester(courseInfo.course_semester);
+        setDescription(courseInfo.course_description);
+    };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+    const handleExpandClick = () => {
+        setExpanded(!expanded);
+    };
 
-  
-  const handleClose = () => {
-    setOpen(false);
-    setTitle(courseInfo.course_title);
-    setSemester(courseInfo.course_semester);
-    setDescription(courseInfo.course_description);
-  };
+    const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-  
-  const [anchorElUser, setAnchorElUser] = useState(null);
+    const handleOpenUserMenu = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
 
-  const handleOpenUserMenu = (event) => {
-      setAnchorElUser(event.currentTarget);
-  };
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
 
-  const handleCloseUserMenu = () => {
-      setAnchorElUser(null);
-  };
+    async function deleteCourse(id) {
+        try {
+            await fetch(`http://localhost:5000/courses/courses/${id}`, {
+                method: "DELETE",
+                headers: { token: localStorage.token },
+            });
 
-  async function deleteCourse(id) {
-    try {
-        await fetch(`http://localhost:5000/courses/courses/${id}`, {
-          method: "DELETE",
-          headers: { token: localStorage.token }
-      });
-  
-      setCoursesChange(true);
-      toast.success("Course was deleted!");
-    } catch (err) {
-      console.error(err.message);
-      toast.error("Course failed to delete!");
-      }
-  }
-
-  //edit course function
-  const updateCourse = async e => {
-    e.preventDefault();
-    if (!title) {
-      alert("Please add a Course Name");
-      return;
-    }
-    try {
-        const myHeaders = new Headers();
-
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("token", localStorage.token);
-
-
-      const body = { title, semester, description };
-      await fetch(
-        `http://localhost:5000/courses/courses/${courseInfo.course_id}`,
-        {
-          method: "PUT",
-          headers: myHeaders,
-          body: JSON.stringify(body)
+            setCoursesChange(true);
+            toast.success("Course was deleted!");
+        } catch (err) {
+            console.error(err.message);
+            toast.error("Course failed to delete!");
         }
-      );
-
-      setCoursesChange(true);
-      toast.success("Course edited successfully!");
-      handleClose();
-
-    } catch (err) {
-      console.error(err.message);
-      toast.error("Failed to update course!");
     }
-  };
 
-  return (
-    <Fragment>
+    //edit course function
+    const updateCourse = async (e) => {
+        e.preventDefault();
+        if (!title) {
+            alert("Please add a Course Name");
+            return;
+        }
+        try {
+            const myHeaders = new Headers();
 
-      <Card sx={{ boxShadow: 8}}>
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("token", localStorage.token);
 
-        <CardHeader
-          action={
-            <>
-            <Tooltip title="Open settings">
-              <IconButton
-                  
-                  onClick={handleOpenUserMenu}
-                  sx={{ p: 0 }}
-              >
-                  <MoreVertIcon />
-              </IconButton>
-          </Tooltip>
+            const body = { title, semester, description };
+            await fetch(
+                `http://localhost:5000/courses/courses/${courseInfo.course_id}`,
+                {
+                    method: "PUT",
+                    headers: myHeaders,
+                    body: JSON.stringify(body),
+                }
+            );
 
-          <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-          >
+            setCoursesChange(true);
+            toast.success("Course edited successfully!");
+            handleClose();
+        } catch (err) {
+            console.error(err.message);
+            toast.error("Failed to update course!");
+        }
+    };
 
-              {expandedMenu.map((setting) => (
-                  <MenuItem
-                      key={setting}
-                      onClick={(event) =>
-                        setting === 'Delete' ? (handleCloseUserMenu(), deleteCourse(courseInfo.course_id)) : (handleCloseUserMenu(), handleClickOpen())
-                      }
-                  >
-                      <Typography textAlign="center">
-                          {setting}
-                      </Typography>
-                  </MenuItem>
-              ))}
-          </Menu>
-          </>
-          }
-          title={courseInfo.course_title}
-          subheader={courseInfo.course_semester + " - " + courseInfo.organizer_fname + " " + courseInfo.organizer_lname}
-        />
+    return (
+        <Fragment>
+            <Card sx={{ boxShadow: 8 }}>
+                <CardHeader
+                    action={
+                        <>
+                            <Tooltip title="Open settings">
+                                <IconButton
+                                    onClick={handleOpenUserMenu}
+                                    sx={{ p: 0 }}
+                                >
+                                    <MoreVertIcon />
+                                </IconButton>
+                            </Tooltip>
 
-        <CoursePage courseInfo={courseInfo} />
-        <CardContent>
-          <Typography >
-          {courseInfo.course_description}
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography paragraph>
-              Long Course Description?
-            </Typography>
-          </CardContent>
-        </Collapse>
-      </Card>
+                            <Menu
+                                sx={{ mt: "45px" }}
+                                id="menu-appbar"
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right",
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right",
+                                }}
+                                open={Boolean(anchorElUser)}
+                                onClose={handleCloseUserMenu}
+                            >
+                                {expandedMenu.map((setting) => (
+                                    <MenuItem
+                                        key={setting}
+                                        onClick={(event) =>
+                                            setting === "Delete"
+                                                ? (handleCloseUserMenu(),
+                                                  deleteCourse(
+                                                      courseInfo.course_id
+                                                  ))
+                                                : (handleCloseUserMenu(),
+                                                  handleClickOpen())
+                                        }
+                                    >
+                                        <Typography textAlign="center">
+                                            {setting}
+                                        </Typography>
+                                    </MenuItem>
+                                ))}
+                            </Menu>
+                        </>
+                    }
+                    title={courseInfo.course_title}
+                    subheader={
+                        courseInfo.course_semester +
+                        " - " +
+                        courseInfo.organizer_fname +
+                        " " +
+                        courseInfo.organizer_lname
+                    }
+                />
 
-      <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Edit this course</DialogTitle>
+                <CoursePage courseInfo={courseInfo} />
+                <CardContent>
+                    <Typography>{courseInfo.course_description}</Typography>
+                </CardContent>
+                <CardActions disableSpacing>
+                    <IconButton aria-label="add to favorites">
+                        <FavoriteIcon />
+                    </IconButton>
 
-          <DialogContent>
+                    <ExpandMore
+                        expand={expanded}
+                        onClick={handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                    >
+                        <ExpandMoreIcon />
+                    </ExpandMore>
+                </CardActions>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <CardContent>
+                        <Typography paragraph>
+                            Long Course Description?
+                        </Typography>
+                    </CardContent>
+                </Collapse>
+            </Card>
 
-            <DialogContentText>
-              Please enter course information here.
-            </DialogContentText>
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Edit this course</DialogTitle>
 
-            <TextField
-              autoFocus
-              required
-              margin="dense"
-              label="Course Name"
-              type="text"
-              fullWidth
-              variant="standard"
-              value = {title}
-              error={title === ""}
-              helperText={title === "" ? 'This is a required field' : ' '}
-              onChange={(e) => setTitle(e.target.value)}
-            />
+                <DialogContent>
+                    <DialogContentText>
+                        Please enter course information here.
+                    </DialogContentText>
 
-            <TextField
-              margin="dense"
-              label="Course Semester"
-              type="text"
-              fullWidth
-              variant="standard"
-              value = {semester}
-              onChange={(e) => setSemester(e.target.value)}
-            />
+                    <TextField
+                        autoFocus
+                        required
+                        margin="dense"
+                        label="Course Name"
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                        value={title}
+                        error={title === ""}
+                        helperText={
+                            title === "" ? "This is a required field" : " "
+                        }
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
 
-            <TextField
-              margin="dense"
-              label="Course Description"
-              type="text"
-              fullWidth
-              variant="standard"
-              value = {description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
+                    <TextField
+                        margin="dense"
+                        label="Course Semester"
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                        value={semester}
+                        onChange={(e) => setSemester(e.target.value)}
+                    />
 
-          </DialogContent>
+                    <TextField
+                        margin="dense"
+                        label="Course Description"
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                </DialogContent>
 
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={updateCourse}>Edit Course</Button>
-          </DialogActions>
-
-        </Dialog>
-
-      </Fragment>
-  );
-}
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={updateCourse}>Edit Course</Button>
+                </DialogActions>
+            </Dialog>
+        </Fragment>
+    );
+};
 
 export default CourseCard;
-
-
