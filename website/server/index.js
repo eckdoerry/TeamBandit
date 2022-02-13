@@ -1,9 +1,6 @@
 const path = require("path");
 const express = require("express");
-const fs = require("fs");
 const http = require("http");
-const https = require("https");
-const cors = require("cors");
 
 // express app
 const app = express();

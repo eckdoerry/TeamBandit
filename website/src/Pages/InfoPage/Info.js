@@ -1,15 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-const Landing = () => {
+/**
+ * Acts as an info page for TeamBandit,
+ * may or not be used
+ */
+const InfoPage = () => {
     return (
-        <div className="jumbotron mt-5">
-            <h1> Welcome to ToDo City </h1>
-            <p> Sign In and start building your ToDo list </p>
-            <Link to="/login" className="btn btn-primary"> Login </Link>
-            <Link to="/register" className="btn btn-primary ml-3"> Register </Link>
+        <div>
+            <h1> INFO FOR TEAM BANDIT YAY </h1>
+            <p> There isnt really anything here yet lmao </p>
         </div>
     );
 };
 
-export default Landing;
+export default InfoPage;

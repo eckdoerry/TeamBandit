@@ -1,3 +1,12 @@
+/**
+ * Uses Regex to identify whether the inputted email is correct or not. To be used as a
+ * middleware
+ * 
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ * @param {*} next As this is a middleware function, moves onto function actually called
+ * @returns User email if email is Valid or errors if email is not valid
+ */
 module.exports = (req, res, next) => {
     const { email, fname, lname, password } = req.body;
 

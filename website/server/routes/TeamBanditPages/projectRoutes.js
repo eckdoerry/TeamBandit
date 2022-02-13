@@ -1,11 +1,10 @@
 const router = require("express").Router();
 const pool = require("../../db");
 const authorization = require('../../middleware/authorization');
-const validInfo = require("../../middleware/validInfo");
 
-// ROUTES //
+// PROJECT ROUTES //
 
-//get all projects
+//Get all projects assocaited with current course id
 router.get("/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
@@ -18,10 +17,9 @@ router.get("/:course_id", authorization, async(req, res) => {
     }
 });
 
-//get all projects
+//Get all projects associated with the current organizer
 router.get("/homepage/:organizer_id", authorization, async(req, res) => {
     try {
-        console.log(req.user);
         const students = await pool.query("SELECT * FROM projects WHERE organizer_id = $1 ORDER BY project_id ASC ", [req.user]);
 
         res.json(students.rows);
@@ -30,7 +28,12 @@ router.get("/homepage/:organizer_id", authorization, async(req, res) => {
     }
 });
 
-//get all members
+/**
+ * Get all project members associated with the current project.
+ * 
+ * @TODO: This needs to get changed to a bridge table interaction as there can be 1 - as many as he wants students
+ * associated with a project
+ */
 router.get("/members/:project_id", authorization, async(req, res) => {
     try {
         const {project_id} = req.params;
@@ -43,25 +46,12 @@ router.get("/members/:project_id", authorization, async(req, res) => {
     }
 });
 
-// update a course
-router.put("/courses/:id", authorization, async(req, res) => {
-    try {
-        const {id} = req.params;
-        const {title, semester, description} = req.body;
-        const updateTodo = await pool.query("UPDATE courses SET course_description = $1, course_title = $4, course_semester = $5 WHERE course_id = $2 AND organizer_id = $3 RETURNING *", [description, id, req.user, title, semester]);
-
-        if(updateTodo.rows.length === 0)
-        {
-            return res.json("This course is not yours!");
-        }
-
-        res.json("Course was updated!");
-    } catch (error) {
-        console.error(error.message);
-    }
-});
-
-// delete a project
+/**
+ * Deletes a project based off of the organizer.
+ * 
+ * @TODO: This will need to change once bridge interactions start happening, but
+ * might be okay
+ */
 router.delete("/projects/:id", authorization, async(req, res) => {
     try {
         
@@ -80,7 +70,7 @@ router.delete("/projects/:id", authorization, async(req, res) => {
     }
 });
 
-// Add a new course
+// Adds a new Project to the Projects table
 router.post("/projects", authorization, async(req,res) =>{
     try{
         const { project_name, project_description, mentorName, sponsorName, courseId } = req.body;
@@ -92,5 +82,7 @@ router.post("/projects", authorization, async(req,res) =>{
         console.error(err.message);
     }
 });
+
+// END PROJECT ROUTES //
 
 module.exports = router;

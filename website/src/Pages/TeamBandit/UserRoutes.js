@@ -1,25 +1,24 @@
-import {useEffect, useState, Fragment, React} from "react"
+import {Fragment, React} from "react"
 
 // Material UI Imports
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 
-// TeamBandit Pages //
-import StudenTeamBandit from "./StudentTeamBandit";
-import MentorTeamBandit from "./MentorTeamBandit";
-import TeamBandit from "./TeamBandit";
+// TeamBandit Pages 
+import StudenTeamBandit from "./StudentPages/StudentTeamBandit";
+import MentorTeamBandit from "./MentorPages/MentorTeamBandit";
+import TeamBandit from "./OrganizerPages/TeamBandit";
 
+/**
+ * Checks for what type of user is signed in, then displays the
+ * corresponding TeamBandit application.
+ * 
+ * @param userIdentifier Identifier of what type of user is signed in
+ * @param setAuth Used to set the authentication of users
+ */
 const UserRouter = ({userIdentifier, setAuth}) => {
-
-    const [user, setUser] = useState("");
-    var user_id = localStorage.getItem("user");
     
-    const changeUser = (string) => {
-        setUser(string);
-    };
-    
-    
-    if(userIdentifier === "organizer") //TODO: For some reason the buttons are wack and are setting route.text = to wat I want, for now its fine. Just rn Landing Page needs this.
+    if(userIdentifier === "organizer") 
     {
         return (
             <Fragment>
@@ -27,7 +26,7 @@ const UserRouter = ({userIdentifier, setAuth}) => {
             </Fragment>
         )
     }
-    else if(userIdentifier === "student") //TODO: Try to figure out a uniform route, route.text route.setting, get it all in route
+    else if(userIdentifier === "student") 
     {
         return (
             <Fragment>
@@ -35,7 +34,7 @@ const UserRouter = ({userIdentifier, setAuth}) => {
             </Fragment>
         )
     }
-    else if(userIdentifier === "mentor") //TODO: Try to figure out a uniform route, route.text route.setting, get it all in route
+    else if(userIdentifier === "mentor") 
     {
         return (
             <Fragment>

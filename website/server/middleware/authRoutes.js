@@ -2,26 +2,27 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 
-// middleware
+// Middleware
 
-app.use(express.json()) //req.body
+app.use(express.json())
 app.use(cors())
 
 // ROUTES //
 
-// register and login routes
-
+// Register and Login Routes
 app.use("/auth", require("../routes/jwtAuth"));
-//app.use("/dashboard", require("../routes/dashboard"));
 
-// Course information routes
+// Course Information Routes
 app.use("/courses", require("../routes/TeamBanditPages/courseRoutes"));
 app.use("/students", require("../routes/TeamBanditPages/studentRoutes"));
 app.use("/projects", require("../routes/TeamBanditPages/projectRoutes"));
 app.use("/mentors", require("../routes/TeamBanditPages/mentorRoutes"));
 app.use("/clients", require("../routes/TeamBanditPages/clientRoutes"));
 
+// General Routes
 app.use("/general", require("../routes/TeamBanditPages/generalRoutes"));
+
+// END ROUTES //
 
 app.listen(5000, ()=> {
     console.log("server is running on port 5000");
