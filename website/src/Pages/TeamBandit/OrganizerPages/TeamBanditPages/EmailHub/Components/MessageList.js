@@ -1,25 +1,43 @@
-import React from "react";
-import styles from "../EmailHub.module.css"
+import { React, useState, useEffect } from "react";
+import styles from "../EmailHub.module.css";
 
 // COMPONENTS
 import MessageCard from "./MessageCard";
 
-// TODO: DELETE
-const DUMMY_CONTACTS = ['Freddy Krueger', 'Keyser Söze', 'Mohinder Pandher', 'John Wick', 'Jason Voorhees',
-'Freddy Krueger', 'Keyser Söze', 'Mohinder Pandher', 'John Wick', 'Jason Voorhees',
-'Freddy Krueger', 'Keyser Söze', 'Mohinder Pandher', 'John Wick', 'Jason Voorhees',
-'Freddy Krueger', 'Keyser Söze', 'Mohinder Pandher', 'John Wick', 'Jason Voorhees'];
-
 const MessageList = () => {
     // JS
+    // GET LIST OF ALL CONTACTS WITH UNIQUE SUBJECTS
+    const [messageChain, setMessageChain] = useState([]);
 
+    const getEmailClients = async () => {
+        try {
+            const response = await fetch("http://localhost:5000/emailhub/", {
+                method: "GET",
+                headers: { token: localStorage.token },
+            });
+
+            const parseData = await response.json();
+
+            console.log(parseData);
+
+            setMessageChain(parseData);
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
+
+    useEffect(() => {
+        getEmailClients();
+    }, []);
 
     // JSX
     return (
-        <div className = {styles.contact_list}>
-            {DUMMY_CONTACTS.map(DUMMY_CONTACT => <MessageCard name = {DUMMY_CONTACT}/>)}
+        <div className={styles.contact_list}>
+            {messageChain.map((message) => (
+                <MessageCard name={message.sender} />
+            ))}
         </div>
-    )
-}
+    );
+};
 
 export default MessageList;

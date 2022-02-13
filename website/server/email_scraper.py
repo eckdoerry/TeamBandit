@@ -37,6 +37,8 @@ in .env file, then calls helper functions to parse emails and put them into DB
 INPUT: N/A
 OUTPUT: N/A
 """
+
+
 def checkMail():
     # ACC CREDENTIALS FROM .ENV FILE
     username = os.getenv("EMAIL_USERNAME")
@@ -83,12 +85,14 @@ values passed in from caller
 INPUT: Values to be input into messages table
 OUTPUT: N/A
 """
+
+
 def executeQuery(values):
     connection = psycopg2.connect(
         host=os.getenv("host"),
         database=os.getenv("database"),
         user=os.getenv("user"),
-        password=os.getenv("password")
+        password=os.getenv("password"),
     )
 
     # SET UP CURSOR
@@ -112,6 +116,8 @@ for database insertion
 INPUT: email_message in encoded format
 OUTPUT: Values extracted from email (recipient, sender, subject, message, time)
 """
+
+
 def formatEmail(email_message):
     # FORMAT EMAIL ADDRESSES IF FIRST/NAME INCLUDED
     if "<" in email_message["to"]:
@@ -128,7 +134,7 @@ def formatEmail(email_message):
         ):
             message = part.get_payload(decode=True).decode().strip()
             break
-    
+
     # FORMAT TIME
     time = email_message["date"]
     # CHECK FOR TIMEZONES
@@ -157,6 +163,8 @@ FORWARDED EMAILS HAVE A DIFFERENT FORMAT THAN REGULAR EMAILS,
 AND AS SUCH MUST BE PARSED DUE TO META INFORMATION (SENDER, RECIPIENT, ETC)
 BEING IN MESSAGE BODY AND NOT HEADER.
 """
+
+
 def formatForwardedEmail(email_message):
     # ACCESS MESSSAGE
     for part in email_message.walk():
@@ -182,17 +190,19 @@ def formatForwardedEmail(email_message):
         elif "Date:" in i:
             time = i.replace("Date: ", "")
             time = parser.parse(time)
-    
+
     # MESSAGE ALWAYS LAST ITEM IN LIST
     message = messageLines[5].strip()
 
     return [recipient, sender, subject, message, time]
-    
+
 
 """ 
 SMALL DRY HELPER FUNCTION TO PARSE ANY GIVEN STRING USING PATTERN
 PASSED IN.
 """
+
+
 def regexParser(string, pattern):
     return re.search(pattern, string).group(1)
 
@@ -204,8 +214,7 @@ if __name__ == "__main__":
     main()
 
 
-
-'''
+"""
 EMAIL DEV TIMELINE
 - Wrote tech demo script
     - only had one organizer email so whichever email wasn't that one was the client,
@@ -233,4 +242,4 @@ EMAIL DEV TIMELINE
     on how different clients will work (as of now most/all emails will be forwarded to teambandit inbox from
     gmail but may need to be reworked in the future)
 - KISS: Different email clients package emails, replies, etc in different ways, thus adding many edge cases
-'''
+"""
