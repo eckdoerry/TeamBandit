@@ -1,21 +1,25 @@
 import React, {Fragment, useState, useEffect} from "react";
 import './App.module.css';
 
-import { toast } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
-
 import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 
-// components
+// Page Components
 import Landing from "./Pages/LandingPage/LandingPage";
 import Info from "./Pages/InfoPage/Info";
 import PrivacyPolicy from "./Pages/PrivacyPolicyPage/PrivacyPolicy";
 import UserRoutes from "./Pages/TeamBandit/UserRoutes";
-import Guest from "./Pages/Guest/Guest"
 
-// Toastify is on first app page to get configured
+// Toastify gets configured on the first page, this is the notification thing
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 toast.configure();
 
+/**
+ * Acts as the Router Page for TeamBandit, will effectively direct
+ * the user to the correct location based on authentication.
+ * 
+ * @returns Displays the entire application TeamBandit Application
+ */
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState( false );
     const [ userIdentifier, setUserIdentifier] = useState("NULL");
@@ -43,6 +47,7 @@ function App() {
         
         } catch (error) {
             
+            // Error 401 when first arriving on the page is good
             console.error(error.message);
         }
     };

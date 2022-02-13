@@ -5,10 +5,15 @@ const jwtGenerator = require("../utils/jwtGenerator");
 const validInfo = require("../middleware/validInfo");
 const authorization = require("../middleware/authorization");
 
-// registering
 
+// AUTHORIZATION ROUTES //
+
+/**
+ * User Registering Route, only used by Organizers
+ */
 router.post("/register", validInfo, async (req, res) =>{
     try {
+
         //1. destructure the req.body (fname, lname, email, password)     
         const { fname, lname, email, password } = req.body;
 
@@ -26,10 +31,8 @@ router.post("/register", validInfo, async (req, res) =>{
         }
         
         //3. Bcrypt the user password
-            // How encrypted the password will be
         const saltRounds = 10;
         const salt = await bcrypt.genSalt(saltRounds);
-
         const bcryptPassword = await bcrypt.hash(password, salt);
 
         //4. enter the new user inside our database
@@ -46,25 +49,33 @@ router.post("/register", validInfo, async (req, res) =>{
     }
 });
 
-// login route
+/**
+ * Login Route, used by Organizers, Mentors, and Students
+ * 
+ * @TODO: Currently, works under the assumption that Organizer, Student, and Mentor 
+ * do not have emails in more then one table. If they do, it might throw errors as the
+ * wrong comparisons might happen. 
+ */
 router.post("/login", validInfo, async (req, res)=>{
+
+    // Variables for use primarily in checks and returns
+    var token = "";
+    var identifier = "";
+    var validPassword = "";
+
     try {
-        
+
         // 1. destructure the req.body
         const { email, password } = req.body;
 
-        // 2. check if user doesn't exist (if not then we throw error)
+        // 2. check if user email exists in Organizers, Mentors, or Students(if not then we throw error)
         const user = await pool.query("SELECT * FROM organizers WHERE organizer_email = $1", [email]);
-
-        // 3. Check if a student user exists
         const student = await pool.query("SELECT * FROM students WHERE student_email = $1", [email]);
-
-        // 3. Check if a student user exists
         const mentor = await pool.query("SELECT * FROM mentors WHERE mentor_email = $1", [email]);
 
-
         // user is not in the system
-        if(user.rows.length === 0) {
+        if(user.rows.length === 0) 
+        {
             if(student.rows.length === 0)
             {
                 if(mentor.rows.length === 0)
@@ -74,38 +85,38 @@ router.post("/login", validInfo, async (req, res)=>{
             }
         }
 
-        // 3. check if incoming password is the same as the database password
-        var validPassword = "";
-
+        // 3. Check first if password is bcrypted and is correct 
         if(student.rows.length !== 0)
         {
-            validPassword = await bcrypt.compare(password, student.rows[0].student_password);
+            validPassword = await bcrypt.compare( password, student.rows[0].student_password );
+            if(!validPassword)
+            {
+                if( student.rows[0].student.rows[0].student_password != password )
+                {
+                    return res.status(401).json("Password or Email is incorrect");
+                }
+            }
         }
-        else if(mentor.rows.length !== 0)
+        else if( mentor.rows.length !== 0 )
         {
             validPassword = await bcrypt.compare(password, mentor.rows[0].mentor_password);
+            if( mentor.rows[0].mentor_password != password )
+                {
+                    return res.status(401).json("Password or Email is incorrect");
+                }
         }
-        else 
+        else if( user.rows.length !== 0 )
         {
-            validPassword = await bcrypt.compare(password, user.rows[0].organizer_pass);
-        }
+            validPassword = await bcrypt.compare( password, user.rows[0].organizer_pass );
 
-        // IF PASSWORD NOT THE SAME
-        if(!validPassword) {
-            if(student.rows.legnth > 0 && student.rows[0].student_password != password)
+            if( !validPassword )
             {
                 return res.status(401).json("Password or Email is incorrect");
             }
-            if(mentor.rows.legnth > 0 && mentor.rows[0].mentor_password != password)
-            {
-                return res.status(401).json("Password or Email is incorrect");
-            }
-            
         }
 
-        var token = "";
-        var identifier = "";
-        // invalid user 
+
+        // Generate JWT Token and User based off of successful login
         if(student.rows.length !== 0)
         {
             token = jwtGenerator(student.rows[0].student_id);
@@ -118,21 +129,22 @@ router.post("/login", validInfo, async (req, res)=>{
         }
         else 
         {
-            // 4. give them the jwt token
             token = jwtGenerator(user.rows[0].organizer_id);
             identifier = "organizer";
         }
         
-
         res.json({ token_value : token, user_identifier: identifier });
-
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Server Error");
     }
 });
 
-// Verifys authentication
+/**
+ * Verifies that the current user has a valid JWT token
+ * 
+ * @returns true if the user does have a valid JWT token
+ */
 router.get("/verify", authorization, async(req, res) => {
     try {
         res.json(true);
@@ -143,5 +155,6 @@ router.get("/verify", authorization, async(req, res) => {
     }
 });
 
+// END AUTHORIZATION ROUTES //
 
 module.exports = router;

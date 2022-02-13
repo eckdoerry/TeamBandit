@@ -1,11 +1,18 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState} from "react";
 import { Link } from "react-router-dom";
-
 import styles from "./SignInForm.module.css";
-
 import { toast } from 'react-toastify';
 
+/**
+ * Displays the sign in information and accesses the login
+ * route to log the user in
+ * 
+ * @param setAuth Passed along to give the user authentication
+ * @param setUser Passed along to determine which type of user
+ * is signed in
+ */
 const SignInForm = ({setAuth, setUser}) => {
+
     const [inputs, setInputs] = useState({
         email: "",
         password: ""
@@ -39,56 +46,51 @@ const SignInForm = ({setAuth, setUser}) => {
                 toast.error(parseRes);
                 setUser("NULL");
             }
-
-            
-
         } catch (error) {
             console.error(error.message);
         }
-    }
+    };
+
     return (
         <Fragment>
-        <div className={styles.formCenter}>
-            <form className={styles.formFields} onSubmit={onSubmitForm}>
-                <div className={styles.formField}>
-                    <label className={styles.formFieldLabel} htmlFor="email">
-                        E-Mail Address
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        className={styles.formFieldInput}
-                        placeholder="Enter your email"
-                        name="email"
-                        value={email}
-                        onChange={event => onChange(event)}
-                    />
-                </div>
-
-                <div className={styles.formField}>
-                    <label className={styles.formFieldLabel} htmlFor="password">
-                        Password
-                    </label>
-                    <input
-                        type="password"
-                        id="password"
-                        className={styles.formFieldInput}
-                        placeholder="Enter your password"
-                        name="password"
-                        value={password}
-                        onChange={event => onChange(event)}
-                    />
-                </div>
-
-                <div className={styles.formField}>
-                    <button className={styles.formFieldButton}>Sign In</button>{" "}
-                    <Link to="/" className={styles.formFieldLink}>
-                        Create an account
-                    </Link>
-                    
-                </div>
-            </form>
-        </div>
+            <div className={styles.formCenter}>
+                <form className={styles.formFields} onSubmit={onSubmitForm}>
+                    <div className={styles.formField}>
+                        <label className={styles.formFieldLabel} htmlFor="email">
+                            E-Mail Address
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            className={styles.formFieldInput}
+                            placeholder="Enter your email"
+                            name="email"
+                            value={email}
+                            onChange={event => onChange(event)}
+                        />
+                    </div>
+                    <div className={styles.formField}>
+                        <label className={styles.formFieldLabel} htmlFor="password">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            className={styles.formFieldInput}
+                            placeholder="Enter your password"
+                            name="password"
+                            value={password}
+                            onChange={event => onChange(event)}
+                        />
+                    </div>
+                    <div className={styles.formField}>
+                        <button className={styles.formFieldButton}>Sign In</button>{" "}
+                        <Link to="/" className={styles.formFieldLink}>
+                            Create an account
+                        </Link>
+                    </div>
+                </form>
+            </div>
         </Fragment>
     );
 };
