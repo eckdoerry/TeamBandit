@@ -85,10 +85,10 @@ OUTPUT: N/A
 """
 def executeQuery(values):
     connection = psycopg2.connect(
-        host="localhost",
-        database="teambanditdb",
-        user="quinnmelssen",
-        password="ZeroTwo02!",
+        host=os.getenv("host"),
+        database=os.getenv("database"),
+        user=os.getenv("user"),
+        password=os.getenv("password")
     )
 
     # SET UP CURSOR
@@ -126,7 +126,7 @@ def formatEmail(email_message):
             part.get_content_type() == "text/plain"
             or part.get_content_type() == "text/html"
         ):
-            message = part.get_payload(decode=True).decode()
+            message = part.get_payload(decode=True).decode().strip()
             break
     
     # FORMAT TIME
@@ -135,12 +135,10 @@ def formatEmail(email_message):
     if "-" in time:
         time = time.split(" -", 1)
         time = time[0]
-
     elif "+" in time:
         time = time.split(" +", 1)
         time = time[0]
-
-    time = datetime.strptime(time, "%a, %d %b %Y %H:%M:%S")
+    time = parser.parse(time)
 
     # GET SUBJECT
     subject = email_message["subject"]
@@ -173,13 +171,22 @@ def formatForwardedEmail(email_message):
     # SPLIT EMAIL BODY BY LINE
     messageLines = message.split("\n", 5)
 
-    # PARSE SENDER FROM SECOND LINE
-    sender = regexParser(messageLines[1], "\<(.+?)\>")
+    # ITERATE THROUGH EACH LINE LOOKING FOR KEYS
+    for i in messageLines:
+        if "To:" in i:
+            recipient = regexParser(i, "\<(.+?)\>")
+        elif "From:" in i:
+            sender = regexParser(i, "\<(.+?)\>")
+        elif "Subject:" in i:
+            subject = i.replace("Subject: ", "").replace("\r", "")
+        elif "Date:" in i:
+            time = i.replace("Date: ", "")
+            time = parser.parse(time)
+    
+    # MESSAGE ALWAYS LAST ITEM IN LIST
+    message = messageLines[5].strip()
 
-    # PARSE TIME
-
-
-    # 
+    return [recipient, sender, subject, message, time]
     
 
 """ 
@@ -190,6 +197,9 @@ def regexParser(string, pattern):
     return re.search(pattern, string).group(1)
 
 
+###################
+### MAIN DRIVER ###
+###################
 if __name__ == "__main__":
     main()
 
