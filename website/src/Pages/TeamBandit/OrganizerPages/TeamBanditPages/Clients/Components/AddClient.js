@@ -43,7 +43,7 @@ const AddClient = ({setClientsChange}) => {
             body: JSON.stringify(body)
         });
 
-        const parseResponse = await response.json();
+        //const parseResponse = await response.json();
 
         toast.success("Client added successfully!");
 
@@ -92,18 +92,18 @@ const AddClient = ({setClientsChange}) => {
           <TextField
             required
             margin="dense"
-            label="Company"
+            label="Company/Location"
             type="text"
             fullWidth
             variant="standard"
             value = {company}
             error={company === ""}
-            helperText={company === "" ? 'Client company is required' : ' '}
+            helperText={company === "" ? 'Client company/location is required' : ' '}
             onChange={(e) => setCompany(e.target.value)}
           />
 
           <TextField
-            required
+            type="email"
             margin="dense"
             label="Client Email"
             type="text"
