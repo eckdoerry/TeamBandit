@@ -1,11 +1,9 @@
 import { React, useState, useEffect } from 'react';
-import Typography from '@mui/material/Typography';
 import { DataGrid,
   GridToolbarContainer,
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
   GridToolbarExport,
-  GridToolbarDensitySelector,
 } from '@mui/x-data-grid';
 import AddClient from './Components/AddClient';
 import Button from '@mui/material/Button';
@@ -77,17 +75,17 @@ const Clients = () => {
       },
       {
         field: 'client_company',
-        headerName: 'Where?',
-        flex: 1
-      },
-      {
-        field: 'client_notes',
-        headerName: 'Notes',
+        headerName: 'Company',
         flex: 1
       },
       {
         field: 'project',
         headerName: 'Project',
+        flex: 1
+      },
+      {
+        field: 'client_notes',
+        headerName: 'Notes',
         flex: 1
       },
       {
@@ -113,12 +111,9 @@ const Clients = () => {
     const CustomToolbar = () => {
       return (
       <GridToolbarContainer>
-          <Typography sx={{ m: 1 }} variant="h4">Clients</Typography>
           <GridToolbarColumnsButton  sx={{ m: 1 }} />
           <GridToolbarFilterButton sx={{ m: 1 }} />
-          <GridToolbarDensitySelector sx={{ m: 1 }} />
           <GridToolbarExport sx={{ m: 1 }} />
-          <AddClient setClientsChange = {setClientsChange}/>
       </GridToolbarContainer>
       );
     }
@@ -131,6 +126,12 @@ const Clients = () => {
 
     return (
         <div style={{ height: 400, width: '100%' }}>
+
+          <div className='PageHeader'>
+          <h1>Clients</h1>
+
+          <AddClient setClientsChange = {setClientsChange}/>
+          </div>
 
             <br />
 
