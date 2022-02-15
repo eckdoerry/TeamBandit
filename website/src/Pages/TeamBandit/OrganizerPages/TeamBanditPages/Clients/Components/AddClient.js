@@ -54,7 +54,7 @@ const AddClient = ({setClientsChange}) => {
         setNotes("");
     } catch (err) {
       console.error(err.message);
-      toast.error("Failed to add course!");
+      toast.error("Failed to add client!");
     }
     handleClose();
   };
