@@ -90,7 +90,7 @@ const Clients = () => {
       },
       {
         field: 'edit',
-        headerName: 'Edit',
+        headerName: '',
         sortable: false,
         filterable: false,
         flex: 1,
@@ -99,7 +99,7 @@ const Clients = () => {
     },
     {
         field: 'delete',
-        headerName: 'Delete',
+        headerName: '',
         sortable: false,
         filterable: false,
         flex: 1,
