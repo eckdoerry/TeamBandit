@@ -26,7 +26,7 @@ router.post("/students", authorization, async(req,res) =>{
         }
 
         // 3. Student does not already exist so they are added to the students db and the students courses db as well
-        const student = await pool.query("INSERT INTO students(student_fname, student_lname, student_emplid, student_email, student_gpa, organizer_id, project_id) VALUES($1, $2, $3, $4, $5, $6, NULL) RETURNING *", [req.body['student_fname'], req.body['student_lname'], req.body['student_emplid'], req.body['student_email'], req.body['student_gpa'], req.user]);
+        const student = await pool.query("INSERT INTO students(student_fname, student_lname, student_emplid, student_email, student_gpa, organizer_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING *", [req.body['student_fname'], req.body['student_lname'], req.body['student_emplid'], req.body['student_email'], req.body['student_gpa'], req.user]);
         await pool.query("INSERT INTO studentcourses(student_id, course_id) VALUES ($1, $2)", [student.rows[0].student_id, req.body['course_id']]);
 
         res.json(student.rows[0]);
@@ -63,7 +63,7 @@ router.post("/csv", authorization, async(req,res) =>{
         }
         
         // 3. Student does not already exist so they are added to the students db and the students courses db as well
-        const student = await pool.query("INSERT INTO students(student_fname, student_lname, student_emplid, student_email, student_gpa, organizer_id, project_id) VALUES($1, $2, $3, $4, $5, $6, NULL) RETURNING *", [req.body['student_fname_csv'], req.body['student_lname_csv'], req.body['student_emplid_csv'], req.body['student_email_csv'], req.body['student_gpa_csv'], req.user]);
+        const student = await pool.query("INSERT INTO students(student_fname, student_lname, student_emplid, student_email, student_gpa, organizer_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING *", [req.body['student_fname_csv'], req.body['student_lname_csv'], req.body['student_emplid_csv'], req.body['student_email_csv'], req.body['student_gpa_csv'], req.user]);
         await pool.query("INSERT INTO studentcourses(student_id, course_id) VALUES ($1, $2)", [student.rows[0].student_id, req.body['course_id']]);
 
         res.json(student.rows[0]);
