@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from "react";
 import { toast } from 'react-toastify';
+import {
+    Link
+} from "react-router-dom";
 
 // MUI Imports
 import Typography from '@mui/material/Typography';
@@ -17,10 +20,10 @@ import { DataGrid,
 
 // Page Components
 import AddProject from "./AddProject";
-import TeamsAssignment from "./TeamAssignment";
+import TeamsAssignment from "./TeamAssignmentButton";
 import EditProject from "./EditProject";
 
-const Projects = ({courseInfo}) => {
+const Projects = ({courseInfo, setRoute}) => {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
 
@@ -35,6 +38,12 @@ const Projects = ({courseInfo}) => {
     const editButton = (params) => {
         return (
             <EditProject project={params.row} setRowChange={setRowChange} courseInfo={courseInfo}/>
+        );
+    };
+
+    const teamPage = (params) => {
+        return (
+            <Link to ={`/team-pages/${params.row.team_name}`}> {params.row.team_name} </Link>
         );
     };
 
@@ -56,8 +65,9 @@ const Projects = ({courseInfo}) => {
         flex: 1,
         },
         {
-        field: 'project_member1',
+        field: 'team_name',
         headerName: 'Student Team',
+        renderCell: teamPage,
         flex: 1,
         },
         {
@@ -105,7 +115,7 @@ const Projects = ({courseInfo}) => {
             <GridToolbarDensitySelector sx={{ m: 1 }} />
             <GridToolbarExport sx={{ m: 1 }} />
             <AddProject courseInfo={courseInfo} setRowChange={setRowChange}/>
-            <TeamsAssignment setRowChange={setRowChange}/>
+            <TeamsAssignment setRoute={setRoute}/>
         </GridToolbarContainer>
         );
     }
@@ -145,6 +155,7 @@ const Projects = ({courseInfo}) => {
         setRowChange(false);
     }, [rowChange]);
 
+    console.log(rows);
     return(   
         <div style={{ padding: '25px', display:'flex', height: '100%', width: '100%' }}>
             <DataGrid
