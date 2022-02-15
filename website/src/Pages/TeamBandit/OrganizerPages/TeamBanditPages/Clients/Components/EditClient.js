@@ -20,7 +20,7 @@ const style = {
     p: 4,
 };
 
-const EditStudent = ({client, setClientsChange}) => {
+const EditClient = ({client, setClientsChange}) => {
 
 
     // Variables
@@ -38,6 +38,38 @@ const EditStudent = ({client, setClientsChange}) => {
         setCompany(client.client_company);
         setNotes(client.client_notes);
     };
+
+    const onSubmitForm = async e => {
+        e.preventDefault();
+        if (!clientName || !company || !email){
+          alert("Please fill out all required fields");
+          return;
+        }
+        try {
+            const myHeaders = new Headers();
+    
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("token", localStorage.token);
+    
+            const body = { clientName, email, company, notes };
+            const response = await fetch("http://localhost:5000/clients/editclient", {
+                method: "PUT",
+                headers: myHeaders,
+                body: JSON.stringify(body)
+            });
+    
+            setClientsChange(true);
+            setClientName("");
+            setCompany("");
+            setEmail("");
+            setNotes("");
+            updateClient(e);
+        } catch (err) {
+          console.error(err.message);
+          toast.error("Failed to add client!");
+        }
+        handleClose();
+      };
 
     //edit description function
     const updateClient = async e => {
@@ -84,13 +116,48 @@ const EditStudent = ({client, setClientsChange}) => {
                 </Typography>
 
 
-                <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="Name" type = "text" value = {clientName} onChange = {e => setClientName(e.target.value)}/>
-                <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="Email" type = "text" value = {email} onChange = {e => setEmail(e.target.value)}/>
-                <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="Company" type = "text" value = {company} onChange = {e => setCompany(e.target.value)}/>
-                <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="Notes" type = "text" value = {notes} onChange = {e => setNotes(e.target.value)}/>
+                <TextField 
+                required 
+                sx={{ m: 2 }} 
+                variant="filled" 
+                id ="filled-password-input" 
+                label="Name" 
+                type = "text" 
+                value = {clientName} 
+                error={clientName === ""} 
+                helperText={clientName === "" ? 'Client name is required' : ' '}
+                onChange = {e => setClientName(e.target.value)}/>
+                <TextField 
+                required 
+                sx={{ m: 2 }} 
+                variant="filled" 
+                id ="filled-password-input" 
+                label="Email" 
+                type = "text" 
+                value = {email} 
+                helperText={clientName === "" ? 'Client email is required' : ' '}
+                onChange = {e => setEmail(e.target.value)}/>
+                <TextField 
+                required 
+                sx={{ m: 2 }} 
+                variant="filled" 
+                id ="filled-password-input" 
+                label="Company" 
+                type = "text" 
+                value = {company} 
+                helperText={clientName === "" ? 'Client company is required' : ' '}
+                onChange = {e => setCompany(e.target.value)}/>
+                <TextField 
+                sx={{ m: 2 }} 
+                variant="filled" 
+                id ="filled-password-input" 
+                label="Notes" 
+                type = "text" 
+                value = {notes}
+                onChange = {e => setNotes(e.target.value)}/>
 
 
-                <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {(e) => updateClient(e)}> Edit </Button>
+                <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {onSubmitForm}> Edit </Button>
 
 
                 <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Close </Button>
@@ -100,4 +167,4 @@ const EditStudent = ({client, setClientsChange}) => {
     );
 }
 
-export default EditStudent;
+export default EditClient;
