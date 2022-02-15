@@ -13,9 +13,11 @@ import Schedule from './CoursePages/Schedule/Schedule';
 import Settings from './CoursePages/Settings/Settings';
 import Students from './CoursePages/Students/Students';
 import Mentors from './CoursePages/Mentors/Mentors';
+import Teams from './CoursePages/Teams/Teams';
+import TeamsAssignment from './CoursePages/TeamAssignment/TeamAssignment';
 
-const CourseRouter = ({route, courseInfo, setCoursesChange}) => {
-    
+const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
+
     if(route.page === 'Homepage' || route === 'Homepage') 
     {
         return (
@@ -28,7 +30,7 @@ const CourseRouter = ({route, courseInfo, setCoursesChange}) => {
     {
         return (
             <Fragment>
-                <Projects courseInfo={courseInfo}/>
+                <Projects courseInfo={courseInfo} setRoute={setRoute}/>
             </Fragment>
         )
     }
@@ -69,6 +71,22 @@ const CourseRouter = ({route, courseInfo, setCoursesChange}) => {
         return (
             <Fragment>
                 <Mentors courseInfo={courseInfo}/>
+            </Fragment>
+        )
+    }
+    else if(route.page === "Teams") 
+    {
+        return (
+            <Fragment>
+                <Teams courseInfo={courseInfo}/>
+            </Fragment>
+        )
+    }
+    else if(route === "Teams Assignment") 
+    {
+        return (
+            <Fragment>
+                <TeamsAssignment courseInfo={courseInfo}/>
             </Fragment>
         )
     }
