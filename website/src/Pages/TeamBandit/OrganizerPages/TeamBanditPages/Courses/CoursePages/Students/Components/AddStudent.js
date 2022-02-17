@@ -93,7 +93,7 @@ const InputTodo = ({courseInfo, setRowChange}) => {
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("token", localStorage.token);
 
-            await fetch(`http://localhost:5000/students/csv/`, {method: "POST", headers: myHeaders, body: JSON.stringify(body)});
+            await fetch(`${process.env.REACT_APP_BASEURL}/students/csv/`, {method: "POST", headers: myHeaders, body: JSON.stringify(body)});
 
             toast.success("Student was added successfully!");
             setRowChange(true);
@@ -119,7 +119,7 @@ const InputTodo = ({courseInfo, setRowChange}) => {
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("token", localStorage.token);
             
-            await fetch("http://localhost:5000/students/students", {
+            await fetch(`${process.env.REACT_APP_BASEURL}/students/students`, {
                 method: "POST",
                 headers: myHeaders,
                 body: JSON.stringify(body)

@@ -47,7 +47,7 @@ const AddMentor = ({courseInfo, setRowChange}) => {
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("token", localStorage.token);
             
-            await fetch("http://localhost:5000/mentors/mentors", {
+            await fetch(`${process.env.REACT_APP_BASEURL}/mentors/mentors`, {
                 method: "POST",
                 headers: myHeaders,
                 body: JSON.stringify(body)

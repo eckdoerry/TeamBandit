@@ -9,9 +9,26 @@ router.get("/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
         
-        const students = await pool.query("SELECT projects.project_id, projects.project_name, projects.project_description, projects.project_mentor, projects.project_sponsor, teams.team_name FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.organizer_id = $1 AND projects.course_id = $2 ORDER BY projects.project_id ASC ", [req.user, course_id]);
+        const students = await pool.query("SELECT projects.project_id, projects.project_name, projects.project_short_name, projects.project_mentor, projects.project_sponsor, teams.team_name FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.organizer_id = $1 AND projects.course_id = $2 ORDER BY projects.project_id ASC ", [req.user, course_id]);
 
         res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/projects/:id", authorization, async(req, res) => {
+    try {
+
+        const updateStudents = await pool.query("UPDATE projects SET project_name = $1, project_short_name = $2, project_mentor = $3, project_sponsor = $4 WHERE project_id = $5 AND organizer_id = $6", [req.body['project_name'], req.body['project_short_name'], req.body['project_mentor'], req.body['project_sponsor'],  req.params['id'], req.user]);
+
+        if(updateStudents.rows.length === 0)
+        {
+            return res.json("This project is not yours!");
+        }
+
+        res.json("Project list was updated!");
     } catch (error) {
         console.error(error.message);
     }
@@ -77,9 +94,9 @@ router.delete("/projects/:id", authorization, async(req, res) => {
 // Adds a new Project to the Projects table
 router.post("/projects", authorization, async(req,res) =>{
     try{
-        const { project_name, project_description, mentorName, sponsorName, courseId } = req.body;
+        const { project_name, project_short_name, mentorName, sponsorName, courseId } = req.body;
         
-        const newCourse = await pool.query("INSERT INTO projects (course_id, organizer_id, project_name, project_description, project_mentor, project_sponsor) VALUES($1, $2, $3, $4, $5, $6) RETURNING *", [courseId, req.user, project_name, project_description, mentorName, sponsorName]);
+        const newCourse = await pool.query("INSERT INTO projects (course_id, organizer_id, project_name, project_short_name, project_mentor, project_sponsor) VALUES($1, $2, $3, $4, $5, $6) RETURNING *", [courseId, req.user, project_name, project_short_name, mentorName, sponsorName]);
         
         // Create new team
         await pool.query("INSERT INTO teams (organizer_id, course_id, project_id) VALUES ($1, $2, $3)", [req.user, courseId, newCourse.rows[0].project_id]);

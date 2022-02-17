@@ -29,11 +29,20 @@ const Teams = ({courseInfo}) => {
         )
     };
 
-    // @TODO: A team with spaces gets all funky, but it works
+    
     const teamPage = (params) => {
 
         return (
             <Link to ={`/team-pages/${params.row.team_name}`}> {params.row.team_name} </Link>
+        );
+    };
+
+    const projectPage = (params) => {
+        return (
+            <Link to={`/project-pages/${params.row.project_name}`}>
+                {" "}
+                {params.row.project_name}{" "}
+            </Link>
         );
     };
             
@@ -42,6 +51,7 @@ const Teams = ({courseInfo}) => {
         {
         field: 'project_name',
         headerName: 'Project Name',
+        renderCell: projectPage,
         flex: 1,
         },
         {
@@ -80,7 +90,7 @@ const Teams = ({courseInfo}) => {
     
     const getTeams = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/teams/${courseInfo.course_id}`, {method: "GET", headers: {token: localStorage.token}});
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/teams/${courseInfo.course_id}`, {method: "GET", headers: {token: localStorage.token}});
             const jsonData = await response.json();
         
             setRows(jsonData);

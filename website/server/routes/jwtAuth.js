@@ -91,7 +91,7 @@ router.post("/login", validInfo, async (req, res)=>{
             validPassword = await bcrypt.compare( password, student.rows[0].student_password );
             if(!validPassword)
             {
-                if( student.rows[0].student.rows[0].student_password != password )
+                if( student.rows[0].student_password != password )
                 {
                     return res.status(401).json("Password or Email is incorrect");
                 }

@@ -112,7 +112,7 @@ export default function MiniDrawer({ setAuth }) {
     useEffect(() => {
         const getOrganizer = async () => {
             try {
-                const response = await fetch("http://localhost:5000/general/", {method: "GET", headers: {token: localStorage.token}});
+                const response = await fetch(`${process.env.REACT_APP_BASEURL}/general/`, {method: "GET", headers: {token: localStorage.token}});
     
                 const parseData = await response.json();
     

@@ -46,7 +46,7 @@ const style = {
 const AddProject = ({courseInfo, setRowChange}) => {
     // Variables 
     const [project_name, setProjectName] = useState("");
-    const [project_description, setProjectDescription] = useState("");
+    const [project_short_name, setProjectShortName] = useState("");
     const [project_mentor, setProjectMentor] = useState("");
     const [project_sponsor, setProjectSponsor] = useState("");
 
@@ -72,13 +72,13 @@ const AddProject = ({courseInfo, setRowChange}) => {
             var mentorName = project_mentor.mentor_name;
             var sponsorName = project_sponsor.client_name;
 
-            const body = {project_name, project_description, mentorName, sponsorName, courseId};
+            const body = {project_name, project_short_name, mentorName, sponsorName, courseId};
             const myHeaders = new Headers();
 
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("token", localStorage.token);
             
-            await fetch("http://localhost:5000/projects/projects", {
+            await fetch(`${process.env.REACT_APP_BASEURL}/projects/projects`, {
                 method: "POST",
                 headers: myHeaders,
                 body: JSON.stringify(body)
@@ -86,7 +86,7 @@ const AddProject = ({courseInfo, setRowChange}) => {
 
             toast.success("Project was added successfully!");
             setProjectName("");
-            setProjectDescription("");
+            setProjectShortName("");
             setProjectMentor("");
             setProjectSponsor("");
             setRowChange(true);
@@ -118,7 +118,7 @@ const AddProject = ({courseInfo, setRowChange}) => {
 
     const getMentors = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/mentors/${courseInfo.course_id}`, {method: "GET", headers: {token: localStorage.token}});
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/mentors/${courseInfo.course_id}`, {method: "GET", headers: {token: localStorage.token}});
             const jsonData = await response.json();
             
             setMentors(jsonData);
@@ -130,7 +130,7 @@ const AddProject = ({courseInfo, setRowChange}) => {
 
     const getClients = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/clients/`, {method: "GET", headers: {token: localStorage.token}});
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/clients/`, {method: "GET", headers: {token: localStorage.token}});
             const jsonData = await response.json();
             
             setClients(jsonData);
@@ -170,9 +170,9 @@ const AddProject = ({courseInfo, setRowChange}) => {
                     <TextField fullWidth sx={{ m: 2 }} label="Project Name" type = "text" value = {project_name} onChange = {e => setProjectName(e.target.value)}/>
                 
                     <Typography>
-                            Project Description
+                            Project Short Name 
                     </Typography>
-                    <TextField fullWidth sx={{ m: 2 }} label="Project Description" type = "text" value = {project_description} onChange = {e => setProjectDescription(e.target.value)}/>
+                    <TextField fullWidth sx={{ m: 2 }} label="Project Short Name" type = "text" value = {project_short_name} onChange = {e => setProjectShortName(e.target.value)}/>
                 <Typography >
                             Team Mentor
                         </Typography>

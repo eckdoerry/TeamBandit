@@ -46,7 +46,7 @@ const EditStudent = ({team, setRowChange}) => {
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("token", localStorage.token);
 
-            const response = await fetch(`http://localhost:5000/teams/teams/${team.team_id}`, {method: "PUT", headers: myHeaders, body: JSON.stringify(body)});
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/teams/teams/${team.team_id}`, {method: "PUT", headers: myHeaders, body: JSON.stringify(body)});
 
             toast.success("Team was successfully updated!");
             setRowChange(true);

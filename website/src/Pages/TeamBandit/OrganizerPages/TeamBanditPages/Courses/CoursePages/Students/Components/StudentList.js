@@ -104,7 +104,7 @@ const Students = ({courseInfo}) => {
             const PLEASE = {course_id};
             
             
-            await fetch(`http://localhost:5000/students/students/${id}/${course_id}`, {
+            await fetch(`${process.env.REACT_APP_BASEURL}/students/students/${id}/${course_id}`, {
                 method: "DELETE",
                 headers: { token: localStorage.token },
                 body: JSON.stringify(PLEASE)
@@ -121,7 +121,7 @@ const Students = ({courseInfo}) => {
     
     const getStudents = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/students/${courseInfo.course_id}`, {method: "GET", headers: {token: localStorage.token}});
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/students/${courseInfo.course_id}`, {method: "GET", headers: {token: localStorage.token}});
             const jsonData = await response.json();
         
             setRows(jsonData);

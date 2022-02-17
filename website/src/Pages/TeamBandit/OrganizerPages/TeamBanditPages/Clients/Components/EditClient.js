@@ -42,8 +42,8 @@ const EditClient = ({client, setClientsChange}) => {
     const onSubmitForm = async e => {
         e.preventDefault();
         if (!clientName || !company || !email){
-          alert("Please fill out all required fields");
-          return;
+            alert("Please fill out all required fields");
+            return;
         }
         try {
             const myHeaders = new Headers();
@@ -52,7 +52,7 @@ const EditClient = ({client, setClientsChange}) => {
             myHeaders.append("token", localStorage.token);
     
             const body = { clientName, email, company, notes };
-            const response = await fetch("http://localhost:5000/clients/editclient", {
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/clients/editclient`, {
                 method: "PUT",
                 headers: myHeaders,
                 body: JSON.stringify(body)
@@ -81,7 +81,7 @@ const EditClient = ({client, setClientsChange}) => {
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("token", localStorage.token);
 
-            const response = await fetch(`http://localhost:5000/clients/editclient/${client.client_id}`, {method: "PUT", headers: myHeaders, body: JSON.stringify(body)});
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/clients/editclient/${client.client_id}`, {method: "PUT", headers: myHeaders, body: JSON.stringify(body)});
 
             const resp = await response.json();
             toast.success(resp);
