@@ -11,7 +11,7 @@ const MessageList = () => {
 
     const getEmailClients = async () => {
         try {
-            const response = await fetch("http://localhost:5000/emailhub/", {
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/emailhub/`, {
                 method: "GET",
                 headers: { token: localStorage.token },
             });

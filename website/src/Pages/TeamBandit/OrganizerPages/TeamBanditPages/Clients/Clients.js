@@ -34,7 +34,7 @@ const Clients = () => {
     const getClients = async () =>
     {
         try {
-            const response = await fetch("http://localhost:5000/clients/", {method: "GET", headers: {token: localStorage.token}});
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/clients/`, {method: "GET", headers: {token: localStorage.token}});
 
             const parseData = await response.json();
             setClients(parseData);
@@ -47,7 +47,7 @@ const Clients = () => {
     const deleteClient = async (id) => {
       try {
 
-        const response = await fetch(`http://localhost:5000/clients/deleteclient/${id}`, {
+        const response = await fetch(`${process.env.REACT_APP_BASEURL}/clients/deleteclient/${id}`, {
               method: "DELETE",
               headers: { token: localStorage.token }
           });

@@ -4,8 +4,8 @@ import { React, useState, useEffect } from "react";
  * Acts as an info page for TeamBandit,
  * may or not be used
  */
-const TeamPage = () => {
-    const windowValue = window.location.pathname.replace("/team-pages/", "");
+const ProjectPage = () => {
+    const windowValue = window.location.pathname.replace("/project-pages/", "");
     const regExp = /%20/g;
     const team = windowValue.replace(regExp, " ");
 
@@ -71,4 +71,4 @@ const TeamPage = () => {
     }
 };
 
-export default TeamPage;
+export default ProjectPage;

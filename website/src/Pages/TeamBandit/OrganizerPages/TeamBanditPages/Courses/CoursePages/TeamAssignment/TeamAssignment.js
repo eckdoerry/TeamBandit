@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import "./TeamAssignment.css";
 
+
 // MUI Imports
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,7 +10,38 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import TableSortLabel from "@mui/material/TableSortLabel";
+
+
+function descendingComparator(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+        return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+        return 1;
+    }
+    return 0;
+}
+
+function getComparator(order, orderBy) {
+    return order === "desc"
+        ? (a, b) => descendingComparator(a, b, orderBy)
+        : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+// This method is created for cross-browser compatibility, if you don't
+// need to support IE11, you can use Array.prototype.sort() directly
+function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) {
+            return order;
+        }
+        return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+}
 
 export default function TeamAssignment({ courseInfo }) {
     const [rows, setRows] = useState([]);
@@ -18,6 +50,12 @@ export default function TeamAssignment({ courseInfo }) {
     const [assignedStudents, setAssignedStudents] = useState([]);
     const [teams, setTeams] = useState([]);
 
+    const [order, setOrder] = React.useState('asc');
+    const [orderBy, setOrderBy] = React.useState('student_gpa');
+
+    const [gpaActive, setGPAActive] = useState(true);
+    const [projectActive, setProjectActive] = useState(false);
+
     const WARNING = "#FFB774";
     const SUCCESS = "#9BFF8C";
     const FAILURE = "#FF8484";
@@ -25,7 +63,8 @@ export default function TeamAssignment({ courseInfo }) {
     const getStudents = async () => {
         try {
             const response = await fetch(
-                `http://localhost:5000/students/${courseInfo.course_id}`,
+            
+                `${process.env.REACT_APP_BASEURL}/students/teams-assignment/${courseInfo.course_id}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();
@@ -39,7 +78,7 @@ export default function TeamAssignment({ courseInfo }) {
     const getProjects = async () => {
         try {
             const response = await fetch(
-                `http://localhost:5000/projects/${courseInfo.course_id}`,
+                `${process.env.REACT_APP_BASEURL}/projects/${courseInfo.course_id}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();
@@ -51,26 +90,15 @@ export default function TeamAssignment({ courseInfo }) {
     };
 
     const getProjectPref = (student_id, project_id) => {
-        
-        for(var i = 0; i < rows.length; i++)
-        {
-            if( rows[i].student_id === student_id )
-            {
-            
-                if(rows[i].student_projectpref1 == project_id)
-                {
-                    return "First Choice";
-                }
-                else if(rows[i].student_projectpref2 == project_id)
-                {
-                    return "Second Choice";
-                }
-                else if(rows[i].student_projectpref3 == project_id)
-                {
-                    return "Third Choice";
-                }
-                else
-                {
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i].student_id === student_id) {
+                if (rows[i].student_projectpref1 == project_id) {
+                    return "1";
+                } else if (rows[i].student_projectpref2 == project_id) {
+                    return "2";
+                } else if (rows[i].student_projectpref3 == project_id) {
+                    return "3";
+                } else {
                     return "";
                 }
             }
@@ -81,42 +109,30 @@ export default function TeamAssignment({ courseInfo }) {
     const teamTotal = (project_id) => {
         var total = 0;
         var teamSize = 0;
-        for(var i = 0; i < assignedStudents.length; i++)
-        {
-            if( assignedStudents[i].project_id === project_id )
-            {
+        for (var i = 0; i < assignedStudents.length; i++) {
+            if (assignedStudents[i].project_id === project_id) {
                 total++;
             }
         }
-        for(var i = 0; i < teams.length; i++)
-        {
-            if( teams[i].project_id === project_id )
-            {
+        for (var i = 0; i < teams.length; i++) {
+            if (teams[i].project_id === project_id) {
                 teamSize = teams[i].team_size;
             }
         }
 
-        if(teamSize < total )
-        {
+        if (teamSize < total) {
             return "greater";
-        }
-        else if ( teamSize === total )
-        {
+        } else if (teamSize === total) {
             return "equal";
-        }
-        else
-        {
+        } else {
             return "less";
         }
-    }
+    };
 
     const getFirstChoice = (project_id) => {
-        
         var total = 0;
-        for(var i = 0; i < rows.length; i++)
-        {
-            if( rows[i].student_projectpref1 == project_id )
-            {
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i].student_projectpref1 == project_id) {
                 total++;
             }
         }
@@ -124,12 +140,9 @@ export default function TeamAssignment({ courseInfo }) {
     };
 
     const getSecondChoice = (project_id) => {
-        
         var total = 0;
-        for(var i = 0; i < rows.length; i++)
-        {
-            if( rows[i].student_projectpref2 == project_id )
-            {
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i].student_projectpref2 == project_id) {
                 total++;
             }
         }
@@ -137,12 +150,9 @@ export default function TeamAssignment({ courseInfo }) {
     };
 
     const getThirdChoice = (project_id) => {
-        
         var total = 0;
-        for(var i = 0; i < rows.length; i++)
-        {
-            if( rows[i].student_projectpref3 == project_id )
-            {
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i].student_projectpref3 == project_id) {
                 total++;
             }
         }
@@ -150,12 +160,13 @@ export default function TeamAssignment({ courseInfo }) {
     };
 
     const getChoiceTotals = (project_id) => {
-        
         var total = 0;
-        for(var i = 0; i < rows.length; i++)
-        {
-            if( rows[i].student_projectpref1 == project_id || rows[i].student_projectpref2 == project_id || rows[i].student_projectpref3 == project_id)
-            {
+        for (var i = 0; i < rows.length; i++) {
+            if (
+                rows[i].student_projectpref1 == project_id ||
+                rows[i].student_projectpref2 == project_id ||
+                rows[i].student_projectpref3 == project_id
+            ) {
                 total++;
             }
         }
@@ -163,12 +174,9 @@ export default function TeamAssignment({ courseInfo }) {
     };
 
     const getTotalAssigned = (project_id) => {
-        
         var total = 0;
-        for(var i = 0; i < assignedStudents.length; i++)
-        {
-            if( assignedStudents[i].project_id === project_id )
-            {
+        for (var i = 0; i < assignedStudents.length; i++) {
+            if (assignedStudents[i].project_id === project_id) {
                 total++;
             }
         }
@@ -178,7 +186,7 @@ export default function TeamAssignment({ courseInfo }) {
     const getAssignedStudents = async () => {
         try {
             const response = await fetch(
-                `http://localhost:5000/projects/getAssignedStudents/${courseInfo.course_id}`,
+                `${process.env.REACT_APP_BASEURL}/projects/getAssignedStudents/${courseInfo.course_id}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();
@@ -192,7 +200,7 @@ export default function TeamAssignment({ courseInfo }) {
     const getTeams = async () => {
         try {
             const response = await fetch(
-                `http://localhost:5000/teams/${courseInfo.course_id}`,
+                `${process.env.REACT_APP_BASEURL}/teams/${courseInfo.course_id}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();
@@ -203,44 +211,19 @@ export default function TeamAssignment({ courseInfo }) {
         }
     };
 
-    const getAssignedProject = (student_id) => {
-        
-        var pid = 0;
-        var pname = "";
-
-        for(var i = 0; i < assignedStudents.length; i++)
-        {
-            if( assignedStudents[i].student_id === student_id )
-            {
-                pid = assignedStudents[i].project_id;
-
-                for( var j = 0; j < projects.length; j++ )
-                {
-                    if(projects[j].project_id === pid)
-                    {
-                        pname = projects[j].project_name;
-                    }
-                }
-            }
-        }
-
-        return pname;
-    };
 
     const toggleStudent = async (student_id, project_id) => {
-        
         try {
-
             const body = {
                 student_id,
-                project_id
+                project_id,
             };
             const myHeaders = new Headers();
 
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("token", localStorage.token);
 
-            await fetch("http://localhost:5000/projects/toggleStudent", {
+            await fetch(`${process.env.REACT_APP_BASEURL}/projects/toggleStudent`, {
                 method: "POST",
                 headers: myHeaders,
                 body: JSON.stringify(body),
@@ -253,15 +236,54 @@ export default function TeamAssignment({ courseInfo }) {
     };
 
     const studentInProject = (student_id, project_id) => {
-        for (var i = 0; i < assignedStudents.length; i++)
-        {
-            if(assignedStudents[i].student_id == student_id && assignedStudents[i].project_id == project_id)
-            {
+        for (var i = 0; i < assignedStudents.length; i++) {
+            if (
+                assignedStudents[i].student_id == student_id &&
+                assignedStudents[i].project_id == project_id
+            ) {
                 return true;
             }
-            
         }
         return false;
+    };
+
+    const sortByGpa = () => {
+
+        setGPAActive(true);
+        setProjectActive(false);
+
+        const isAsc = order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+
+        setOrderBy('student_gpa');
+
+
+        setRows(stableSort(rows, getComparator(order, orderBy)));
+    };
+
+    const sortByProject = () => {
+
+        setGPAActive(false);
+        setProjectActive(true);
+
+        const isAsc = order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderBy('project_name');
+
+        setRows(stableSort(rows, getComparator(order, orderBy)));
+    };
+    
+    // @TODO: I think there should be a reset feature for the sort to go back to how it originally was but IDK
+    const sortByStudent = () => {
+
+        setGPAActive(false);
+        setProjectActive(false);
+
+        const isAsc = order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderBy('student_id');
+
+        setRows(orderBy(rows, orderBy, order(order, orderBy)));
     };
 
     useEffect(() => {
@@ -272,115 +294,192 @@ export default function TeamAssignment({ courseInfo }) {
         setRowChange(false);
     }, [rowChange]);
 
+    
     return (
-        <div style={{ direction: "flex", padding: "25px", overflow: "auto" }}>
-            <TableContainer component={Paper}>
-                <Table
-                    sx={{ minWidth: 1000, minHeight: 500 }}
-                    aria-label="spanning table"
-                >
-                    <TableHead style={{ backgroundColor: "#002454" }}>
-                    <TableRow>
-                        <TableCell style={{ color: "white" }}  colSpan={5}>
-                        Students
-                        </TableCell>
-                        <TableCell style={{ color: "white" }} colSpan={1 + projects.length} align="left">Projects</TableCell>
-                    </TableRow>
-                        <TableRow>
-                            <TableCell
-                                style={{ minWidth: 200, color: "white" }}
-                            >
-                                Student Name
+        <div style={{ padding: "25px" }}>
+            <TableContainer style={{ overflowX: "initial" }}>
+                <Table aria-label="spanning table">
+                    <TableHead className="sticky">
+                        <TableRow
+                            style={{ boxShadow: "0 4px 2px 0px #002454, 0 -6px 1px 0px #002454"}}
+                        >
+                            <TableCell style={{ color: "white" }} colSpan={3}>
+                                Students
                             </TableCell>
                             <TableCell
-                                style={{ minWidth: 200, color: "white" }}
-                                align="right"
+                                style={{ color: "white" }}
+                                colSpan={1 + projects.length}
+                                align="left"
                             >
-                                Student Email
+                                Projects
                             </TableCell>
-                            <TableCell
-                                style={{ minWidth: 100, color: "white" }}
-                                align="right"
-                            >
-                                Student UID
+                        </TableRow>
+                        <TableRow
+                            style={{ boxShadow: "0 4px 2px 0px #002454" }}
+                        >
+                            <TableCell style={{ color: "white" }}>
+                                Student Information
                             </TableCell>
-                            <TableCell
-                                style={{ minWidth: 100, color: "white" }}
-                                align="right"
-                            >
+                            <TableCell key={'gpa'} style={{ color: "white" }} align="right">
                                 GPA
+                                <TableSortLabel
+                                    sx={{
+                                        "&.MuiTableSortLabel-root": {
+                                            color: "white",
+                                        },
+                                        "&.MuiTableSortLabel-root:hover": {
+                                            color: "grey",
+                                        },
+                                        "&.Mui-active": {
+                                            color: "white",
+                                        },
+                                        "& .MuiTableSortLabel-icon": {
+                                            color: "white !important",
+                                        },
+                                    }}
+                                    onClick={sortByGpa}
+                                    active={gpaActive}
+                                    direction={order}
+                                ></TableSortLabel>
                             </TableCell>
-                            <TableCell
-                                style={{ minWidth: 150, color: "white" }}
-                                align="right"
-                            >
+                            <TableCell key={'project'} style={{ color: "white" }} align="right">
                                 Assigned Project{" "}
+                                <TableSortLabel
+                                    sx={{
+                                        "&.MuiTableSortLabel-root": {
+                                            color: "white",
+                                        },
+                                        "&.MuiTableSortLabel-root:hover": {
+                                            color: "grey",
+                                        },
+                                        "&.Mui-active": {
+                                            color: "white",
+                                        },
+                                        "& .MuiTableSortLabel-icon": {
+                                            color: "white !important",
+                                        },
+                                    }}
+                                    active={projectActive}
+                                    direction={order}
+                                    onClick={sortByProject}
+                                ></TableSortLabel>
                             </TableCell>
                             {projects.map((project) => (
                                 <TableCell
                                     key={project.project_id}
-                                    style={{ minWidth: 100, color: "white" }}
+                                    style={{ color: "white" }}
                                     align="right"
                                 >
                                     {project.project_name}
                                 </TableCell>
                             ))}
                         </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows.map((row) => (
-                            <TableRow key={row.student_id}>
-                                <TableCell
-                                    style={
-                                        row.assigned
-                                            ? { backgroundColor: SUCCESS }
-                                            : { backgroundColor: FAILURE }
-                                    }
-                                >
-                                    {row.student_fname} {row.student_lname}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {row.student_email}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {row.student_emplid}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {row.student_gpa}
-                                </TableCell>
-                                <TableCell align="right">{getAssignedProject(row.student_id)}</TableCell>
-                                {projects.map( (project) => (
-                                        <TableCell
-                                        key={project.project_id}
-                                        style={
-                                            (studentInProject(row.student_id, project.project_id) === true)
-                                                ? { cursor: 'pointer', backgroundColor: SUCCESS }
-                                                : ({ cursor: 'pointer', backgroundColor: "white" })
-                                        }
-                                        onClick={() => toggleStudent(row.student_id, project.project_id)}
-                                        align="right"
-                                    >
-                                        {getProjectPref(row.student_id, project.project_id)}
-                                    </TableCell> 
-                                ))}
-                            </TableRow>
-                        ))}
-                        <TableRow>
+                        <TableRow
+                            style={{
+                                backgroundColor: "white",
+                                boxShadow: "0 4px 2px -2px gray",
+                            }}
+                        >
                             <TableCell rowSpan={5} />
                             <TableCell rowSpan={5} />
-                            <TableCell rowSpan={5} />
-                            <TableCell rowSpan={5} />
-                            <TableCell> Total Assigned: </TableCell>
+
+                            <TableCell style={{ textAlign: "right" }}>
+                                {" "}
+                                Total Assigned:{" "}
+                            </TableCell>
                             {projects.map((project) => (
                                 <TableCell
-                                    style={(teamTotal(project.project_id) === 'less') ? { backgroundColor: FAILURE } : (teamTotal(project.project_id) === 'equal') ? { backgroundColor: SUCCESS } : (teamTotal(project.project_id) === 'greater') ? { backgroundColor: WARNING } : { backgroundColor: "#FFFF59" } }
+                                    style={
+                                        teamTotal(project.project_id) === "less"
+                                            ? { backgroundColor: FAILURE }
+                                            : teamTotal(project.project_id) ===
+                                                "equal"
+                                            ? { backgroundColor: SUCCESS }
+                                            : teamTotal(project.project_id) ===
+                                                "greater"
+                                            ? { backgroundColor: WARNING }
+                                            : { backgroundColor: "#FFFF59" }
+                                    }
                                     align="right"
                                 >
                                     {getTotalAssigned(project.project_id)}
                                 </TableCell>
                             ))}
                         </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.map((row) => (
+                            <TableRow
+                                sx={{ m: 2 }}
+                                style={{ height: 25, padding: 2 }}
+                                key={row.student_id}
+                            >
+                                <TableCell
+                                    style={
+                                        row.assigned
+                                            ? {
+                                                    width: 350,
+                                                    backgroundColor: SUCCESS,
+                                            }
+                                            : { backgroundColor: FAILURE }
+                                    }
+                                >
+                                    {row.student_fname} {row.student_lname},{" "}
+                                    {row.student_email}, {row.student_emplid}
+                                </TableCell>
+                                <TableCell
+                                    style={{ backgroundColor: "#ededed" }}
+                                    align="right"
+                                >
+                                    {row.student_gpa}
+                                </TableCell>
+                                <TableCell
+                                    style={{
+                                        backgroundColor: "#ededed",
+                                        borderRight: "1px solid #ededed",
+                                    }}
+                                    align="right"
+                                >
+                                    {row.project_name}
+                                </TableCell>
+                                {projects.map((project) => (
+                                    <TableCell
+                                        key={project.project_id}
+                                        style={
+                                            studentInProject(
+                                                row.student_id,
+                                                project.project_id
+                                            ) === true
+                                                ? {
+                                                        cursor: "pointer",
+                                                        backgroundColor: SUCCESS,
+                                                }
+                                                : {
+                                                        cursor: "pointer",
+                                                        backgroundColor: "white",
+                                                }
+                                        }
+                                        onClick={() =>
+                                            toggleStudent(
+                                                row.student_id,
+                                                project.project_id
+                                            )
+                                        }
+                                        align="right"
+                                    >
+                                        {getProjectPref(
+                                            row.student_id,
+                                            project.project_id
+                                        )}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        ))}
+
                         <TableRow>
+                            <TableCell rowSpan={2} />
+                            <TableCell rowSpan={2} />
+
                             <TableCell> First Choice: </TableCell>
                             {projects.map((project) => (
                                 <TableCell
@@ -403,6 +502,8 @@ export default function TeamAssignment({ courseInfo }) {
                             ))}
                         </TableRow>
                         <TableRow>
+                            <TableCell rowSpan={2} />
+                            <TableCell rowSpan={2} />
                             <TableCell> Third Choice: </TableCell>
                             {projects.map((project) => (
                                 <TableCell

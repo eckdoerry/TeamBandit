@@ -1,7 +1,6 @@
-.cont{
-
-}
-
-.cont2{
-    background-color: #BAFFB2;
+.sticky{
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: #002454;
 }

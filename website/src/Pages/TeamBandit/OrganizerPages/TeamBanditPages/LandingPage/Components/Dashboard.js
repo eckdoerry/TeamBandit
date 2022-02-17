@@ -23,7 +23,7 @@ const Dashboard = ({organizerInfo}) => {
 
     const getProjects = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/projects/homepage/${organizerInfo.organizer_id}`, {method: "GET", headers: {token: localStorage.token}});
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/projects/homepage/${organizerInfo.organizer_id}`, {method: "GET", headers: {token: localStorage.token}});
             const jsonData = await response.json();
         
             setRows(jsonData);

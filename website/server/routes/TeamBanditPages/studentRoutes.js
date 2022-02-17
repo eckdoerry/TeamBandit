@@ -77,7 +77,20 @@ router.get("/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
         
-        const students = await pool.query("SELECT * FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id WHERE students.organizer_id = $1 AND studentcourses.course_id = $2 ORDER BY students.student_id ASC ", [req.user, course_id]);
+        const students = await pool.query("SELECT * FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id  WHERE students.organizer_id = $1 AND studentcourses.course_id = $2 ORDER BY students.student_id ASC ", [req.user, course_id]);
+
+        res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+})
+
+// Gets all students associated with a course
+router.get("/teams-assignment/:course_id", authorization, async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        
+        const students = await pool.query("SELECT students.student_id, students.student_projectpref1, students.student_projectpref2, students.student_projectpref3, students.student_fname, students.student_lname, students.student_email, students.student_gpa, projects.project_name FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id LEFT JOIN studentteambridgetable ON studentteambridgetable.student_id = students.student_id LEFT JOIN projects ON studentteambridgetable.project_id = projects.project_id WHERE students.organizer_id = $1 AND studentcourses.course_id = $2 ORDER BY students.student_id ASC ", [req.user, course_id]);
 
         res.json(students.rows);
     } catch (error) {

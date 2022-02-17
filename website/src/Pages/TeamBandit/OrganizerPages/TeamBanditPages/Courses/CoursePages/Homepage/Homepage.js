@@ -16,7 +16,7 @@ export default function Homepage({ courseInfo }) {
     const getProjects = async () => {
         try {
             const response = await fetch(
-                `http://localhost:5000/projects/${courseInfo.course_id}`,
+                `${process.env.REACT_APP_BASEURL}/projects/${courseInfo.course_id}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();

@@ -37,7 +37,7 @@ const AddClient = ({setClientsChange}) => {
         myHeaders.append("token", localStorage.token);
 
         const body = { clientName, email, company, notes };
-        const response = await fetch("http://localhost:5000/clients/addclient", {
+        const response = await fetch(`${process.env.REACT_APP_BASEURL}/clients/addclient`, {
             method: "POST",
             headers: myHeaders,
             body: JSON.stringify(body)
