@@ -7,7 +7,7 @@
 
 # testing
 client/coverage
-*/public/uploads/*
+*/uploads
 
 # production
 */build
