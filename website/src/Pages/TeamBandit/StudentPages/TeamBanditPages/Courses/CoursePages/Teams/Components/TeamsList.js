@@ -4,9 +4,6 @@ import {
 } from "react-router-dom";
 import { toast } from 'react-toastify';
 
-// Page Components
-import EditTeam from "./EditTeam";
-
 // MUI Imports
 import Typography from '@mui/material/Typography';
 
@@ -21,13 +18,6 @@ import { DataGrid,
 const Teams = ({courseInfo}) => {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
-            
-
-    const editButton = (params) => {
-        return (
-            <EditTeam team={params.row} setRowChange={setRowChange} courseInfo={courseInfo}/>
-        )
-    };
 
     // @TODO: A team with spaces gets all funky, but it works
     const teamPage = (params) => {
@@ -54,15 +44,6 @@ const Teams = ({courseInfo}) => {
             field: 'team_size',
             headerName: 'Team Size',
             flex: 1,
-        },
-        {
-            field: 'edit',
-            headerName: 'Edit',
-            sortable: false,
-            filterable: false,
-            flex: 1,
-            renderCell: editButton,
-            disableClickEventBubbling: true,
         },
     ];
             
