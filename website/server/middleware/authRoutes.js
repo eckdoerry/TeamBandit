@@ -23,6 +23,7 @@ app.use("/emailhub", require("../routes/TeamBanditPages/emailRoutes"));
 
 // General Routes
 app.use("/general", require("../routes/TeamBanditPages/generalRoutes"));
+app.use("/fileuploads", require("../routes/uploadRoutes"));
 
 // END ROUTES //
 
