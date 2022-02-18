@@ -1,0 +1,17 @@
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.avatar{
+    float:right;
+}
+
+.toolbar{
+    width:100%;
+    position: flex;
+    z-index: 0;
+}
