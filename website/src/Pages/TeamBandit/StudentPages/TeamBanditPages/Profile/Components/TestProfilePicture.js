@@ -11,7 +11,6 @@ const TestProfilePicture = ({setStudentChange}) => {
 
   const updateProfilePicture = async e => {
     e.preventDefault();
-    console.log(file);
     try {
         const formData = new FormData();
         formData.append("avatar", file);
@@ -20,22 +19,14 @@ const TestProfilePicture = ({setStudentChange}) => {
         myHeaders.append("token", localStorage.token);
 
         const response = await fetch(`${process.env.REACT_APP_BASEURL}/fileuploads/studentAvatar`, {method: "PUT", body: formData, headers: myHeaders});
-        console.log(await response.json());
 
-        toast.success("Student profile picture was successfully updated!");
+        toast.success(await response.json());
         setStudentChange(true);
     } catch (error) {
         console.error(error.message);
         toast.error("Failed to update profile picture!");
     }
   };
-
-  /*
-  <form action={`${process.env.REACT_APP_BASEURL}/fileuploads/upload`} method="POST" encType="multipart/form-data">
-    <input type="file" name="avatar" accept="images/*"/>
-    <button>Submit</button>
-  </form>
-  */
 
     return (
       <div>
