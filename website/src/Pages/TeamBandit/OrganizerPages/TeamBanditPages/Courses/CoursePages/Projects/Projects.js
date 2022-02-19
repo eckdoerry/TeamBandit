@@ -6,9 +6,9 @@ import styles from "./Projects.module.css";
 // Project Pages
 import ProjectList from "./Components/ProjectList";
 
-const Projects = ({courseInfo}) => {
+const Projects = ({courseInfo, setRoute}) => {
     return(
-        <ProjectList courseInfo={courseInfo}/>
+        <ProjectList courseInfo={courseInfo} setRoute={setRoute}/>
     );
 }
 

@@ -75,6 +75,23 @@ router.delete("/courses/:id", authorization, async(req, res) => {
     }
 });
 
+// Gets all courses associated with current student
+router.get("/student", authorization, async(req, res) => {
+    try {
+        
+        const user = await pool.query(
+            "SELECT courses.course_id, courses.course_description, courses.course_title, courses.course_semester FROM courses LEFT JOIN studentCourses ON studentCourses.course_id = courses.course_id WHERE studentCourses.student_id = $1 ORDER BY course_id ASC ",
+            [req.user]
+        );
+
+        res.json(user.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
 // END COURSE ROUTES //
 
 module.exports = router;

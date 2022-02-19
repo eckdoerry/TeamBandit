@@ -18,6 +18,23 @@ router.get("/:course_id", authorization, async(req, res) => {
     }
 });
 
+// Updates a student based on student id
+router.put("/mentors/:id", authorization, async(req, res) => {
+    try {
+
+        const updateStudents = await pool.query("UPDATE mentors SET mentor_name = $1, mentor_email = $2 WHERE mentor_id = $3 AND organizer_id = $4", [req.body['mentor_name'], req.body['mentor_email'], req.params['id'], req.user]);
+
+        if(updateStudents.rows.length === 0)
+        {
+            return res.json("This mentor is not yours!");
+        }
+
+        res.json("Mentor list was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
 // Adds a mentor to the mentors database, or adds the course interaction to the bridge table
 router.post("/mentors", authorization, async(req,res) =>{
     try{

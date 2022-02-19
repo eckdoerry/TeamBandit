@@ -78,7 +78,7 @@ const CourseCard = ({ courseInfo, setCoursesChange }) => {
 
     async function deleteCourse(id) {
         try {
-            await fetch(`http://localhost:5000/courses/courses/${id}`, {
+            await fetch(`${process.env.REACT_APP_BASEURL}/courses/courses/${id}`, {
                 method: "DELETE",
                 headers: { token: localStorage.token },
             });
@@ -106,7 +106,7 @@ const CourseCard = ({ courseInfo, setCoursesChange }) => {
 
             const body = { title, semester, description };
             await fetch(
-                `http://localhost:5000/courses/courses/${courseInfo.course_id}`,
+                `${process.env.REACT_APP_BASEURL}/courses/courses/${courseInfo.course_id}`,
                 {
                     method: "PUT",
                     headers: myHeaders,

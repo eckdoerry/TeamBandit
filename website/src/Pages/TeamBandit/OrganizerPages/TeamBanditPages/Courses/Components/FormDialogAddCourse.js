@@ -36,15 +36,13 @@ const FormDialogAddCourse = ({ setCoursesChange }) => {
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("token", localStorage.token);
 
-            const body = { title, semester, description };
-            const response = await fetch(
-                "http://localhost:5000/courses/courses",
-                {
-                    method: "POST",
-                    headers: myHeaders,
-                    body: JSON.stringify(body),
-                }
-            );
+
+        const body = { title, semester, description };
+        const response = await fetch(`${process.env.REACT_APP_BASEURL}/courses/courses`, {
+            method: "POST",
+            headers: myHeaders,
+            body: JSON.stringify(body)
+        });
 
             const parseResponse = await response.json();
 

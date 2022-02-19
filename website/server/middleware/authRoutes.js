@@ -18,10 +18,12 @@ app.use("/students", require("../routes/TeamBanditPages/studentRoutes"));
 app.use("/projects", require("../routes/TeamBanditPages/projectRoutes"));
 app.use("/mentors", require("../routes/TeamBanditPages/mentorRoutes"));
 app.use("/clients", require("../routes/TeamBanditPages/clientRoutes"));
+app.use("/teams", require("../routes/TeamBanditPages/teamRoutes"));
 app.use("/emailhub", require("../routes/TeamBanditPages/emailRoutes"));
 
 // General Routes
 app.use("/general", require("../routes/TeamBanditPages/generalRoutes"));
+app.use("/fileuploads", require("../routes/uploadRoutes"));
 
 // END ROUTES //
 

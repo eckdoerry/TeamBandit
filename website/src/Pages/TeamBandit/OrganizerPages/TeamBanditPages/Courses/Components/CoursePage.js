@@ -27,6 +27,7 @@ const pages = [
     "Info and Policies",
     "Projects",
     "Students",
+    "Teams",
     "Assignments",
     "Mentors",
     "Settings",
@@ -84,7 +85,7 @@ const CoursePage = ({ courseInfo, setCoursesChange }) => {
                             sx={{ display: "flex", flexDirection: "row" }}
                         >
                             <Button
-                                sx={{ m: 2, mr: 5}}
+                                sx={{ mt: 2, mb: 2, mr: 5}}
                                 variant="contained"
                                 onClick={toggleDrawer(anchor, false)}
                                 startIcon={<ArrowBackIcon />}
@@ -191,6 +192,7 @@ const CoursePage = ({ courseInfo, setCoursesChange }) => {
                     <CourseRouter
                         route={route}
                         courseInfo={courseInfo}
+                        setRoute={setRoute}
                         setCoursesChange={setCoursesChange}
                     />
                 </Drawer>

@@ -36,7 +36,7 @@ const EditBioDialog = ({setOrganizerChange}) => {
       myHeaders.append("token", localStorage.token);
 
       const body = { bioText };
-      const response = await fetch("http://localhost:5000/general/bio", {
+      const response = await fetch(`${process.env.REACT_APP_BASEURL}/general/bio`, {
           method: "PUT",
           headers: myHeaders,
           body: JSON.stringify(body)
