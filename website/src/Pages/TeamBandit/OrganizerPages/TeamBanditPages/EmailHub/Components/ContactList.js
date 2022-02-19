@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import styles from "../EmailHub.module.css";
 import Paper from "@mui/material/Paper";
+import Stack from '@mui/material/Stack';
 import { styled } from "@mui/material/styles";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -13,10 +14,10 @@ const Item = styled(Paper)(({ theme }) => ({
     lineHeight: "10px",
 }));
 
-const MessageList = (props) => {
+const ContactList = (props) => {
     // JS
     // GET LIST OF ALL CONTACTS WITH UNIQUE SUBJECTS
-    const [messageList, setMessageList] = useState([]);
+    const [contactList, setContactList] = useState([]);
 
     const getEmailClients = async () => {
         try {
@@ -27,7 +28,7 @@ const MessageList = (props) => {
 
             const parseData = await response.json();
 
-            setMessageList(parseData);
+            setContactList(parseData);
         } catch (error) {
             console.error(error.message);
         }
@@ -43,8 +44,8 @@ const MessageList = (props) => {
 
     // JSX
     return (
-        <div className={styles.contact_list}>
-            {messageList.map((message, index) => (
+        <Stack spacing = {1} className={styles.contact_list}>
+            {contactList.map((message, index) => (
                 <Item
                     className={styles.contact_card}
                     key={index}
@@ -58,8 +59,8 @@ const MessageList = (props) => {
                     </p>
                 </Item>
             ))}
-        </div>
+        </Stack>
     );
 };
 
-export default MessageList;
+export default ContactList;

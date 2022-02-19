@@ -2,7 +2,7 @@ import { React, useState, useEffect } from "react";
 import styles from "./EmailHub.module.css";
 
 // COMPONENTS
-import MessageList from "./Components/MessageList";
+import ContactList from "./Components/ContactList";
 import ChatLog from "./Components/ChatLog";
 
 const EmailHub = () => {
@@ -12,11 +12,11 @@ const EmailHub = () => {
     const setSelectedChainHandler = (newEmail) => {
         setSelectedChain(newEmail);
     };
-
+    
     // JSX
     return (
         <div className={styles.page}>
-            <MessageList onChangeChain={setSelectedChainHandler} />
+            <ContactList onChangeChain={setSelectedChainHandler}/>
             <ChatLog className={styles.log} clientEmail={selectedChain} />
         </div>
     );

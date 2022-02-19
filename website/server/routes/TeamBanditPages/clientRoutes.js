@@ -27,7 +27,6 @@ router.post("/addclient", authorization, async(req,res) =>{
         const { clientName, email, company, notes } = req.body;
         const newClient = await pool.query("INSERT INTO clients (client_name, client_email, client_company, client_notes, organizer_id) VALUES($1, $2, $3, $4, $5) RETURNING *", [clientName, email, company, notes, req.user]);
 
-        console.log(newClient.rows);
         res.json(newClient.rows);
     } catch (err) {
         console.error(err.message);
@@ -59,8 +58,6 @@ router.delete("/deleteclient/:id", authorization, async(req, res) => {
         const {id} = req.params;
 
         const deleteClient = await pool.query("DELETE FROM clients WHERE client_id = $1 AND organizer_id = $2 RETURNING *", [id, req.user]);
-
-        console.log(deleteClient);
 
         if( deleteClient.rows.length === 0 )
         {
