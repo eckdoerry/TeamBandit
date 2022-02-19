@@ -17,12 +17,14 @@ router.get("/", authorization, async (req, res) => {
     }
 });
 
-router.get("/emails", authorization, async (req, res) => {
+router.get("/:email", authorization, async (req, res) => {
     try {
-        console.log(req);
+        const {email} = req.params;
+        console.log(email)
+
         const user = await pool.query(
             "SELECT message FROM messages WHERE (RECIPIENT = $1 OR SENDER = $1) AND (RECIPIENT = $2 OR SENDER = $2)",
-            [req.user]
+            [req.user], [email]
         );
 
         console.log(user.rows);

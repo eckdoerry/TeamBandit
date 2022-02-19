@@ -20,7 +20,7 @@ const ChatLog = (props) => {
     const getEmails = async () => {
         try {
             const response = await fetch(
-                "http://localhost:5000/emailhub/emails",
+                `http://localhost:5000/emailhub/${props.clientEmail}`,
                 {
                     method: "GET",
                     headers: { token: localStorage.token },
@@ -30,6 +30,7 @@ const ChatLog = (props) => {
             const parseData = await response.json();
 
             setMessageChain(parseData);
+
         } catch (error) {
             console.error(error.message);
         }
