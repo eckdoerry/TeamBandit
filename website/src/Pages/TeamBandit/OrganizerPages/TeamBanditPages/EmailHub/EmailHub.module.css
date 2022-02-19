@@ -1,25 +1,41 @@
 .contact_list {
-    width: 25%;
+    height: 83vh;
+    width: 24%;
     overflow: scroll;
-    font-size: 2rem;
-    font-weight: 100;
-    padding: 0;
-    margin: 0;
-    height: 85vh;
+}
+
+.message {
+    height: 83vh;
+    width: 76%;
+    overflow: scroll;
+    border: solid #000;
+    border-width: 5px;
 }
 
 .contact_card {
-    height: 3rem;
-    font-size: 1rem;
-    padding: 1rem;
-}
-
-.contact_card {
-    padding: 3rem 0;
-    padding: 48px 24px;
     background-color: #f7f7f7;
-    color: black;
 }
+
 .contact_card:nth-child(odd) {
     background-color: #ededed;
+}
+
+.lineheight{
+    line-height: 1rem;
+}
+
+.contact_name {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.contact_email{
+    font-size: .8rem;
+    font-weight: light;
+}
+
+.page {
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
 }
