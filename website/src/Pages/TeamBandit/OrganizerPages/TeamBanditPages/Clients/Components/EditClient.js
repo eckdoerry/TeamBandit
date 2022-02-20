@@ -1,95 +1,99 @@
-import React, { Fragment, useState } from "react";
+import React, {useState} from "react";
 
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import EditIcon from "@mui/icons-material/Edit";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
+import EditIcon from '@mui/icons-material/Edit';
 
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 
 const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     width: 700,
-    bgcolor: "background.paper",
+    bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
 };
 
-const EditClient = ({ client, setClientsChange }) => {
-    // Variables
-    const [clientName, setClientName] = useState(client.client_name);
-    const [email, setEmail] = useState(client.client_email);
-    const [company, setCompany] = useState(client.client_company);
-    const [notes, setNotes] = useState(client.client_notes);
+const EditClient = ({client, setClientsChange}) => {
 
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
+    const [clientFName, setClientFName] = useState("");
+    const [clientLName, setClientLName] = useState("");
+    const [clientOrganization, setClientOrganization] = useState("");
+    const [clientEmail, setClientEmail] = useState("");
+    const [clientPhoneNumber, setClientPhoneNumber] = useState("");
+    const [clientNotes, setClientNotes] = useState("");
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {
+        setOpen(true);
+        setClientFName(client.client_fname);
+        setClientLName(client.client_lname);
+        setClientOrganization(client.client_organization);
+        setClientEmail(client.client_email);
+        setClientPhoneNumber(client.client_phonenumber);
+        setClientNotes(client.client_notes);
+    }
     const handleClose = () => {
         setOpen(false);
-        setClientName(client.client_name);
-        setEmail(client.client_email);
-        setCompany(client.client_company);
-        setNotes(client.client_notes);
+        setClientFName(client.client_fname);
+        setClientLName(client.client_lname);
+        setClientOrganization(client.client_organization);
+        setClientEmail(client.client_email);
+        setClientPhoneNumber(client.client_phonenumber);
+        setClientNotes(client.client_notes);
     };
 
-    const onSubmitForm = async (e) => {
+    const onSubmitForm = async e => {
         e.preventDefault();
-        if (!clientName || !company || !email) {
+        if (!clientFName || !clientLName || !clientOrganization || !clientEmail){
             alert("Please fill out all required fields");
             return;
         }
         try {
             const myHeaders = new Headers();
-
+    
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("token", localStorage.token);
-
-            const body = { clientName, email, company, notes };
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/clients/editclient`,
-                {
-                    method: "PUT",
-                    headers: myHeaders,
-                    body: JSON.stringify(body),
-                }
-            );
-
+    
+            const body = { clientFName, clientLName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes };
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/clients/editclient`, {
+                method: "PUT",
+                headers: myHeaders,
+                body: JSON.stringify(body)
+            });
+    
             setClientsChange(true);
-            setClientName("");
-            setCompany("");
-            setEmail("");
-            setNotes("");
+            setClientFName("");
+            setClientLName("");
+            setClientOrganization("");
+            setClientEmail("");
+            setClientPhoneNumber("");
+            setClientNotes("");
             updateClient(e);
         } catch (err) {
-            console.error(err.message);
-            toast.error("Failed to add client!");
+          console.error(err.message);
+          toast.error("Failed to add client!");
         }
         handleClose();
-    };
+      };
 
     //edit description function
-    const updateClient = async (e) => {
+    const updateClient = async e => {
         e.preventDefault();
         try {
-            const body = { clientName, email, company, notes };
+            const body = {clientFName, clientLName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes};
             const myHeaders = new Headers();
 
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("token", localStorage.token);
 
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/clients/editclient/${client.client_id}`,
-                {
-                    method: "PUT",
-                    headers: myHeaders,
-                    body: JSON.stringify(body),
-                }
-            );
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/clients/editclient/${client.client_id}`, {method: "PUT", headers: myHeaders, body: JSON.stringify(body)});
 
             const resp = await response.json();
             toast.success(resp);
@@ -103,12 +107,7 @@ const EditClient = ({ client, setClientsChange }) => {
 
     return (
         <div>
-            <Button
-                variant="outlined"
-                color="warning"
-                onClick={handleOpen}
-                startIcon={<EditIcon />}
-            >
+            <Button variant="outlined" color="warning" onClick={handleOpen} startIcon={<EditIcon />}>
                 Edit
             </Button>
             <Modal
@@ -119,94 +118,91 @@ const EditClient = ({ client, setClientsChange }) => {
             >
                 <Box sx={style}>
                     <Box>
-                        <Typography
-                            id="modal-modal-title"
-                            variant="h6"
-                            component="h2"
-                        >
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
                             Edit Client
                         </Typography>
                     </Box>
 
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Fill out the forms you would like to change:
-                    </Typography>
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    Fill out the forms you would like to change:
+                </Typography>
 
-                    <TextField
-                        required
-                        sx={{ m: 2 }}
-                        variant="filled"
-                        id="filled-password-input"
-                        label="Name"
-                        type="text"
-                        value={clientName}
-                        error={clientName === ""}
-                        helperText={
-                            clientName === "" ? "Client name is required" : " "
-                        }
-                        onChange={(e) => setClientName(e.target.value)}
-                    />
-                    <TextField
-                        required
-                        sx={{ m: 2 }}
-                        variant="filled"
-                        id="filled-password-input"
-                        label="Email"
-                        type="text"
-                        value={email}
-                        helperText={
-                            clientName === "" ? "Client email is required" : " "
-                        }
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <TextField
-                        required
-                        sx={{ m: 2 }}
-                        variant="filled"
-                        id="filled-password-input"
-                        label="Company"
-                        type="text"
-                        value={company}
-                        helperText={
-                            clientName === ""
-                                ? "Client company is required"
-                                : " "
-                        }
-                        onChange={(e) => setCompany(e.target.value)}
-                    />
-                    <TextField
-                        sx={{ m: 2 }}
-                        variant="filled"
-                        id="filled-password-input"
-                        label="Notes"
-                        type="text"
-                        value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
-                    />
+                <TextField 
+                required
+                autofocus
+                sx={{ m: 2 }} 
+                variant="filled" 
+                id ="filled-password-input" 
+                label="Last name" 
+                type = "text" 
+                value = {clientLName} 
+                error={clientLName === ""} 
+                helperText={clientLName === "" ? 'Client last name is required' : ' '}
+                onChange = {e => setClientLName(e.target.value)}/>
+                
+                <TextField 
+                required 
+                sx={{ m: 2 }} 
+                variant="filled" 
+                id ="filled-password-input" 
+                label="First name" 
+                type = "text" 
+                value = {clientFName} 
+                error={clientFName === ""} 
+                helperText={clientFName === "" ? 'Client first name is required' : ' '}
+                onChange = {e => setClientFName(e.target.value)}/>
 
-                    <Button
-                        sx={{ m: 2 }}
-                        variant="contained"
-                        color="warning"
-                        onClick={onSubmitForm}
-                    >
-                        {" "}
-                        Edit{" "}
-                    </Button>
+                <TextField 
+                required 
+                sx={{ m: 2 }} 
+                variant="filled" 
+                id ="filled-password-input" 
+                label="Organization" 
+                type = "text" 
+                value = {clientOrganization} 
+                error={clientOrganization === ""} 
+                helperText={clientOrganization === "" ? 'Client organization is required' : ' '}
+                onChange = {e => setClientOrganization(e.target.value)}/>
 
-                    <Button
-                        sx={{ m: 2 }}
-                        variant="contained"
-                        color="error"
-                        onClick={handleClose}
-                    >
-                        {" "}
-                        Close{" "}
-                    </Button>
+                <TextField 
+                required 
+                sx={{ m: 2 }} 
+                variant="filled" 
+                id ="filled-password-input" 
+                label="Email" 
+                type = "text" 
+                value = {clientEmail} 
+                error={clientEmail === ""} 
+                helperText={clientEmail === "" ? 'Client email is required' : ' '}
+                onChange = {e => setClientEmail(e.target.value)}/>
+
+                <TextField 
+                sx={{ m: 2 }} 
+                variant="filled" 
+                id ="filled-password-input" 
+                label="Phone Number" 
+                type = "text" 
+                value = {clientPhoneNumber}
+                onChange = {e => setClientPhoneNumber(e.target.value)}/>
+                
+                <TextField 
+                sx={{ m: 2 }} 
+                variant="filled" 
+                id ="filled-password-input" 
+                label="Notes" 
+                type = "text" 
+                value = {clientNotes}
+                onChange = {e => setClientNotes(e.target.value)}/>
+
+
+                <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {onSubmitForm}> Edit </Button>
+
+
+                <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Close </Button>
                 </Box>
             </Modal>
         </div>
     );
-};
+}
 
 export default EditClient;

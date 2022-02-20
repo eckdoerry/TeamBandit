@@ -1,147 +1,167 @@
-import { useState, React } from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import { useState, React } from 'react';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 
-const AddClient = ({ setClientsChange }) => {
-    const [open, setOpen] = useState(false);
-    const [clientName, setClientName] = useState("");
-    const [company, setCompany] = useState("");
-    const [email, setEmail] = useState("");
-    const [notes, setNotes] = useState("");
+const AddClient = ({setClientsChange}) => {
+  const [open, setOpen] = useState(false);
+  const [clientFName, setClientFName] = useState("");
+  const [clientLName, setClientLName] = useState("");
+  const [clientOrganization, setClientOrganization] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [clientPhoneNumber, setClientPhoneNumber] = useState("");
+  const [clientNotes, setClientNotes] = useState("");
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-    const handleClose = (event) => {
-        setOpen(false);
-    };
+  const handleClose = (event) => {
+    setOpen(false);
+  };
 
-    const onSubmitForm = async (e) => {
-        e.preventDefault();
-        if (!clientName || !company || !email) {
-            alert("Please fill out all required fields");
-            return;
-        }
-        try {
-            const myHeaders = new Headers();
+  const onSubmitForm = async e => {
+    e.preventDefault();
+    if (!clientFName || !clientLName || !clientOrganization || !clientEmail){
+      alert("Please fill out all required fields");
+      return;
+    }
+    try {
+        const myHeaders = new Headers();
 
-            myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("token", localStorage.token);
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("token", localStorage.token);
 
-            const body = { clientName, email, company, notes };
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/clients/addclient`,
-                {
-                    method: "POST",
-                    headers: myHeaders,
-                    body: JSON.stringify(body),
-                }
-            );
+        const body = { clientFName, clientLName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes };
+        const response = await fetch(`${process.env.REACT_APP_BASEURL}/clients/addclient`, {
+            method: "POST",
+            headers: myHeaders,
+            body: JSON.stringify(body)
+        });
 
-            //const parseResponse = await response.json();
+        //const parseResponse = await response.json();
 
-            toast.success("Client added successfully!");
+        toast.success("Client added successfully!");
 
-            setClientsChange(true);
-            setClientName("");
-            setCompany("");
-            setEmail("");
-            setNotes("");
-        } catch (err) {
-            console.error(err.message);
-            toast.error("Failed to add client!");
-        }
-        handleClose();
-    };
+        setClientsChange(true);
+        setClientFName("");
+        setClientLName("");
+        setClientOrganization("");
+        setClientEmail("");
+        setClientPhoneNumber("");
+        setClientNotes("");
+    } catch (err) {
+      console.error(err.message);
+      toast.error("Failed to add client!");
+    }
+    handleClose();
+  };
 
-    return (
-        <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Add Client
-            </Button>
+  return (
+    <div>
+      <Button variant="outlined" onClick={handleClickOpen}>
+        Add Client
+      </Button>
 
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Add a New Client</DialogTitle>
+      <Dialog open={open} onClose={handleClose}>
 
-                <DialogContent>
-                    <DialogContentText>
-                        Enter client information here
-                    </DialogContentText>
+        <DialogTitle>Add a New Client</DialogTitle>
 
-                    <TextField
-                        required
-                        autoFocus
-                        margin="dense"
-                        label="Client Name"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={clientName}
-                        error={clientName === ""}
-                        helperText={
-                            clientName === "" ? "Client name is required" : " "
-                        }
-                        onChange={(e) => setClientName(e.target.value)}
-                    />
+        <DialogContent>
 
-                    <TextField
-                        required
-                        margin="dense"
-                        label="Company/Location"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={company}
-                        error={company === ""}
-                        helperText={
-                            company === ""
-                                ? "Client company/location is required"
-                                : " "
-                        }
-                        onChange={(e) => setCompany(e.target.value)}
-                    />
+          <DialogContentText>
+            Enter client information here
+          </DialogContentText>
 
-                    <TextField
-                        type="email"
-                        margin="dense"
-                        label="Client Email"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={email}
-                        error={email === ""}
-                        helperText={
-                            email === "" ? "Client email is required" : " "
-                        }
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
+          <TextField
+            required
+            autoFocus
+            margin="dense"
+            label="Client Last Name"
+            type="text"
+            fullWidth
+            variant="standard"
+            value = {clientLName}
+            error={clientLName === ""}
+            helperText={clientLName === "" ? 'Client last name is required' : ' '}
+            onChange={(e) => setClientLName(e.target.value)}
+          />
 
-                    <TextField
-                        margin="dense"
-                        label="Notes"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
-                    />
-                </DialogContent>
+          <TextField
+            required
+            margin="dense"
+            label="Client First Name"
+            type="text"
+            fullWidth
+            variant="standard"
+            value = {clientFName}
+            error={clientFName === ""}
+            helperText={clientFName === "" ? 'Client first name is required' : ' '}
+            onChange={(e) => setClientFName(e.target.value)}
+          />
 
-                <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={onSubmitForm}>Add Client</Button>
-                </DialogActions>
-            </Dialog>
-        </div>
-    );
-};
+          <TextField
+            required
+            margin="dense"
+            label="Organization"
+            type="text"
+            fullWidth
+            variant="standard"
+            value = {clientOrganization}
+            error={clientOrganization === ""}
+            helperText={clientOrganization === "" ? 'Client organization is required' : ' '}
+            onChange={(e) => setClientOrganization(e.target.value)}
+          />
+
+          <TextField
+            margin="dense"
+            label="Client Email"
+            type="email"
+            fullWidth
+            variant="standard"
+            value = {clientEmail}
+            error={clientEmail === ""}
+            helperText={clientEmail === "" ? 'Client email is required' : ' '}
+            onChange={(e) => setClientEmail(e.target.value)}
+          />
+
+          <TextField
+            margin="dense"
+            label="Phone Number"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={clientPhoneNumber}
+            onChange={(e) => setClientPhoneNumber(e.target.value)}
+          />
+
+           <TextField
+            margin="dense"
+            label="Notes"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={clientNotes}
+            onChange={(e) => setClientNotes(e.target.value)}
+          />
+
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick = {onSubmitForm}>Add Client</Button>
+        </DialogActions>
+
+      </Dialog>
+
+    </div>
+  );
+}
 
 export default AddClient;

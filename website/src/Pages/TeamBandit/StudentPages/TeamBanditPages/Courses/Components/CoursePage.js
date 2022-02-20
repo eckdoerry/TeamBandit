@@ -25,6 +25,7 @@ const pages = [
     "Homepage",
     "Schedule",
     "Info and Policies",
+    "Projects",
     "Teams",
     "Assignments",
 ];

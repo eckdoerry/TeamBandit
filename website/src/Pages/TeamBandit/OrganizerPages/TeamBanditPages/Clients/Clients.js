@@ -77,49 +77,56 @@ const Clients = () => {
     };
 
     const clientFields = [
-        {
-            field: "client_name",
-            headerName: "Client Name",
-            flex: 1,
-        },
-        {
-            field: "client_email",
-            headerName: "Email",
-            flex: 1,
-        },
-        {
-            field: "client_company",
-            headerName: "Company",
-            flex: 1,
-        },
-        {
-            field: "project",
-            headerName: "Project",
-            flex: 1,
-        },
-        {
-            field: "client_notes",
-            headerName: "Notes",
-            flex: 1,
-        },
-        {
-            field: "edit",
-            headerName: "",
-            sortable: false,
-            filterable: false,
-            flex: 1,
-            renderCell: editButton,
-            disableClickEventBubbling: true,
-        },
-        {
-            field: "delete",
-            headerName: "",
-            sortable: false,
-            filterable: false,
-            flex: 1,
-            renderCell: deleteButton,
-            disableClickEventBubbling: true,
-        },
+
+      {
+        field: 'client_lname',
+        headerName: 'Last name',
+        flex: 1
+      },
+      {
+        field: 'client_fname',
+        headerName: 'First name',
+        flex: 1
+      },
+      {
+        field: 'client_email',
+        headerName: 'Email',
+        flex: 1
+      },
+      {
+        field: 'client_organization',
+        headerName: 'Organization',
+        flex: 1
+      },
+      {
+        field: 'client_phonenumber',
+        headerName: 'Phone Number',
+        flex: 1
+      },
+      {
+        field: 'client_notes',
+        headerName: 'Notes',
+        flex: 1
+      },
+      {
+        field: 'edit',
+        headerName: '',
+        sortable: false,
+        filterable: false,
+        flex: 1,
+        renderCell: editButton,
+        disableClickEventBubbling: true
+    },
+    {
+        field: 'delete',
+        headerName: '',
+        sortable: false,
+        filterable: false,
+        flex: 1,
+        renderCell: deleteButton,
+        disableClickEventBubbling: true
+    }
+
     ];
 
     const CustomToolbar = () => {
