@@ -70,7 +70,7 @@ const AddProject = ({courseInfo, setRowChange}) => {
 
             var courseId = courseInfo.course_id;
             var mentorName = project_mentor.mentor_name;
-            var sponsorName = project_sponsor.client_name;
+            var sponsorName = project_sponsor.client_fname;
 
             const body = {project_name, project_short_name, mentorName, sponsorName, courseId};
             const myHeaders = new Headers();
@@ -220,7 +220,7 @@ const AddProject = ({courseInfo, setRowChange}) => {
                     if (selected.length === 0) {
                     return <em>Project Sponsor</em>;
                     }
-                    return selected.client_name;
+                    return selected.client_fname;
                 }}
                 MenuProps={MenuProps}
                 inputProps={{ 'aria-label': 'Without label' }}
@@ -233,7 +233,7 @@ const AddProject = ({courseInfo, setRowChange}) => {
                     key={client.client_id}
                     value={client}
                     >
-                    {client.client_name}
+                    {client.client_fname}
                     </MenuItem>
                 ))}
                 </Select>

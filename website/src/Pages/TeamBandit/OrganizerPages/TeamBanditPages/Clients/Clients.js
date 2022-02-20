@@ -64,8 +64,13 @@ const Clients = () => {
 
     const clientFields = [
       {
-        field: 'client_name',
-        headerName: 'Client Name',
+        field: 'client_lname',
+        headerName: 'Last name',
+        flex: 1
+      },
+      {
+        field: 'client_fname',
+        headerName: 'First name',
         flex: 1
       },
       {
@@ -74,13 +79,13 @@ const Clients = () => {
         flex: 1
       },
       {
-        field: 'client_company',
-        headerName: 'Company',
+        field: 'client_organization',
+        headerName: 'Organization',
         flex: 1
       },
       {
-        field: 'project',
-        headerName: 'Project',
+        field: 'client_phonenumber',
+        headerName: 'Phone Number',
         flex: 1
       },
       {

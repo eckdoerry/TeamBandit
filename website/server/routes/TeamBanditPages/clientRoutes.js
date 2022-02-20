@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const pool = require("../../db");
 const authorization = require('../../middleware/authorization');
-const validInfo = require("../../middleware/validInfo");
 
 // ROUTES //
 
@@ -10,7 +9,7 @@ router.get("/", authorization, async(req, res) => {
     try {
 
         const user = await pool.query(
-            "SELECT client_id, client_name, client_email, client_company, client_notes, organizer_id FROM clients ORDER BY client_id ASC"
+            "SELECT client_id, client_lname, client_fname, client_email, client_organization, client_phonenumber, client_notes, organizer_id FROM clients ORDER BY client_id ASC"
         );
 
         res.json(user.rows);
@@ -24,8 +23,8 @@ router.get("/", authorization, async(req, res) => {
 // add a client
 router.post("/addclient", authorization, async(req,res) =>{
     try{
-        const { clientName, email, company, notes } = req.body;
-        const newClient = await pool.query("INSERT INTO clients (client_name, client_email, client_company, client_notes, organizer_id) VALUES($1, $2, $3, $4, $5) RETURNING *", [clientName, email, company, notes, req.user]);
+        const { clientLName, clientFName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes } = req.body;
+        const newClient = await pool.query("INSERT INTO clients (client_lname, client_fname, client_email, client_organization, client_phonenumber, client_notes, organizer_id) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *", [clientLName, clientFName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes, req.user]);
 
         res.json(newClient.rows);
     } catch (err) {
@@ -37,8 +36,8 @@ router.post("/addclient", authorization, async(req,res) =>{
 router.put("/editclient/:id", authorization, async(req, res) => {
     try {
         const {id} = req.params;
-        const {clientName, email, company, notes} = req.body;
-        const updateClient = await pool.query("UPDATE clients SET client_name = $1, client_email = $2, client_company = $3, client_notes = $4 WHERE client_id = $5 AND organizer_id = $6 RETURNING *", [clientName, email, company, notes, id, req.user]);
+        const {clientLName, clientFName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes} = req.body;
+        const updateClient = await pool.query("UPDATE clients SET client_lname = $1, client_fname = $2, client_email = $3, client_organization = $4, client_phonenumber = $5, client_notes = $6 WHERE client_id = $7 AND organizer_id = $8 RETURNING *", [clientLName, clientFName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes, id, req.user]);
 
         if(updateClient.rows.length === 0)
         {
@@ -64,7 +63,7 @@ router.delete("/deleteclient/:id", authorization, async(req, res) => {
             return res.json("This client is not yours!");
         }
 
-        res.json("Course was deleted!");
+        res.json("Client was deleted!");
 
     } catch (error) {
         console.error(error.message);
