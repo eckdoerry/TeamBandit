@@ -12,7 +12,6 @@ import Paper from "@mui/material/Paper";
 
 const CourseTable = ({ coursesInfo, setCoursesChange }) => {
     return (
-        <>
             <TableContainer component={Paper}>
                 <Table aria-label="simple table">
                     <TableHead>
@@ -34,7 +33,6 @@ const CourseTable = ({ coursesInfo, setCoursesChange }) => {
                     </TableBody>
                 </Table>
             </TableContainer>
-        </>
     );
 };
 
