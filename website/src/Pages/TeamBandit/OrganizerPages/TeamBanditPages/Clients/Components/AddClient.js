@@ -11,10 +11,12 @@ import { toast } from 'react-toastify';
 
 const AddClient = ({setClientsChange}) => {
   const [open, setOpen] = useState(false);
-  const [clientName, setClientName] = useState("");
-  const [company, setCompany] = useState("");
-  const [email, setEmail] = useState("");
-  const [notes, setNotes] = useState("");
+  const [clientFName, setClientFName] = useState("");
+  const [clientLName, setClientLName] = useState("");
+  const [clientOrganization, setClientOrganization] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [clientPhoneNumber, setClientPhoneNumber] = useState("");
+  const [clientNotes, setClientNotes] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,7 +28,7 @@ const AddClient = ({setClientsChange}) => {
 
   const onSubmitForm = async e => {
     e.preventDefault();
-    if (!clientName || !company || !email){
+    if (!clientFName || !clientLName || !clientOrganization || !clientEmail){
       alert("Please fill out all required fields");
       return;
     }
@@ -36,7 +38,7 @@ const AddClient = ({setClientsChange}) => {
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("token", localStorage.token);
 
-        const body = { clientName, email, company, notes };
+        const body = { clientFName, clientLName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes };
         const response = await fetch(`${process.env.REACT_APP_BASEURL}/clients/addclient`, {
             method: "POST",
             headers: myHeaders,
@@ -48,10 +50,12 @@ const AddClient = ({setClientsChange}) => {
         toast.success("Client added successfully!");
 
         setClientsChange(true);
-        setClientName("");
-        setCompany("");
-        setEmail("");
-        setNotes("");
+        setClientFName("");
+        setClientLName("");
+        setClientOrganization("");
+        setClientEmail("");
+        setClientPhoneNumber("");
+        setClientNotes("");
     } catch (err) {
       console.error(err.message);
       toast.error("Failed to add client!");
@@ -79,40 +83,62 @@ const AddClient = ({setClientsChange}) => {
             required
             autoFocus
             margin="dense"
-            label="Client Name"
+            label="Client Last Name"
             type="text"
             fullWidth
             variant="standard"
-            value = {clientName}
-            error={clientName === ""}
-            helperText={clientName === "" ? 'Client name is required' : ' '}
-            onChange={(e) => setClientName(e.target.value)}
+            value = {clientLName}
+            error={clientLName === ""}
+            helperText={clientLName === "" ? 'Client last name is required' : ' '}
+            onChange={(e) => setClientLName(e.target.value)}
           />
 
           <TextField
             required
             margin="dense"
-            label="Company/Location"
+            label="Client First Name"
             type="text"
             fullWidth
             variant="standard"
-            value = {company}
-            error={company === ""}
-            helperText={company === "" ? 'Client company/location is required' : ' '}
-            onChange={(e) => setCompany(e.target.value)}
+            value = {clientFName}
+            error={clientFName === ""}
+            helperText={clientFName === "" ? 'Client first name is required' : ' '}
+            onChange={(e) => setClientFName(e.target.value)}
           />
 
           <TextField
-            type="email"
+            required
             margin="dense"
-            label="Client Email"
+            label="Organization"
             type="text"
             fullWidth
             variant="standard"
-            value = {email}
-            error={email === ""}
-            helperText={email === "" ? 'Client email is required' : ' '}
-            onChange={(e) => setEmail(e.target.value)}
+            value = {clientOrganization}
+            error={clientOrganization === ""}
+            helperText={clientOrganization === "" ? 'Client organization is required' : ' '}
+            onChange={(e) => setClientOrganization(e.target.value)}
+          />
+
+          <TextField
+            margin="dense"
+            label="Client Email"
+            type="email"
+            fullWidth
+            variant="standard"
+            value = {clientEmail}
+            error={clientEmail === ""}
+            helperText={clientEmail === "" ? 'Client email is required' : ' '}
+            onChange={(e) => setClientEmail(e.target.value)}
+          />
+
+          <TextField
+            margin="dense"
+            label="Phone Number"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={clientPhoneNumber}
+            onChange={(e) => setClientPhoneNumber(e.target.value)}
           />
 
            <TextField
@@ -121,8 +147,8 @@ const AddClient = ({setClientsChange}) => {
             type="text"
             fullWidth
             variant="standard"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            value={clientNotes}
+            onChange={(e) => setClientNotes(e.target.value)}
           />
 
         </DialogContent>

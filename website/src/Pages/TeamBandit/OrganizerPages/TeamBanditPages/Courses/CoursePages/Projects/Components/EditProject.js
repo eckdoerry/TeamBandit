@@ -237,7 +237,7 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
                             if (selected.length === 0) {
                                 return <em>Project Sponsor</em>;
                             }
-                            return selected.client_name;
+                            return selected.client_fname;
                         }}
                         MenuProps={MenuProps}
                         inputProps={{ "aria-label": "Without label" }}
@@ -246,8 +246,8 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
                             <em>Project Sponsor</em>
                         </MenuItem>
                         {clients.map((client) => (
-                            <MenuItem key={client.client_id} value={client.client_name}>
-                                {client.client_name}
+                            <MenuItem key={client.client_id} value={client.client_fname}>
+                                {client.client_fname}
                             </MenuItem>
                         ))}
                     </Select>

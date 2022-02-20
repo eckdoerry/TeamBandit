@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {useState} from "react";
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -22,26 +22,36 @@ const style = {
 
 const EditClient = ({client, setClientsChange}) => {
 
+    const [clientFName, setClientFName] = useState("");
+    const [clientLName, setClientLName] = useState("");
+    const [clientOrganization, setClientOrganization] = useState("");
+    const [clientEmail, setClientEmail] = useState("");
+    const [clientPhoneNumber, setClientPhoneNumber] = useState("");
+    const [clientNotes, setClientNotes] = useState("");
 
-    // Variables
-    const [clientName, setClientName] = useState(client.client_name);
-    const [email, setEmail] = useState(client.client_email);
-    const [company, setCompany] = useState(client.client_company);
-    const [notes, setNotes] = useState(client.client_notes);
-
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {
+        setOpen(true);
+        setClientFName(client.client_fname);
+        setClientLName(client.client_lname);
+        setClientOrganization(client.client_organization);
+        setClientEmail(client.client_email);
+        setClientPhoneNumber(client.client_phonenumber);
+        setClientNotes(client.client_notes);
+    }
     const handleClose = () => {
         setOpen(false);
-        setClientName(client.client_name);
-        setEmail(client.client_email);
-        setCompany(client.client_company);
-        setNotes(client.client_notes);
+        setClientFName(client.client_fname);
+        setClientLName(client.client_lname);
+        setClientOrganization(client.client_organization);
+        setClientEmail(client.client_email);
+        setClientPhoneNumber(client.client_phonenumber);
+        setClientNotes(client.client_notes);
     };
 
     const onSubmitForm = async e => {
         e.preventDefault();
-        if (!clientName || !company || !email){
+        if (!clientFName || !clientLName || !clientOrganization || !clientEmail){
             alert("Please fill out all required fields");
             return;
         }
@@ -51,7 +61,7 @@ const EditClient = ({client, setClientsChange}) => {
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("token", localStorage.token);
     
-            const body = { clientName, email, company, notes };
+            const body = { clientFName, clientLName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes };
             const response = await fetch(`${process.env.REACT_APP_BASEURL}/clients/editclient`, {
                 method: "PUT",
                 headers: myHeaders,
@@ -59,10 +69,12 @@ const EditClient = ({client, setClientsChange}) => {
             });
     
             setClientsChange(true);
-            setClientName("");
-            setCompany("");
-            setEmail("");
-            setNotes("");
+            setClientFName("");
+            setClientLName("");
+            setClientOrganization("");
+            setClientEmail("");
+            setClientPhoneNumber("");
+            setClientNotes("");
             updateClient(e);
         } catch (err) {
           console.error(err.message);
@@ -75,7 +87,7 @@ const EditClient = ({client, setClientsChange}) => {
     const updateClient = async e => {
         e.preventDefault();
         try {
-            const body = {clientName, email, company, notes};
+            const body = {clientFName, clientLName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes};
             const myHeaders = new Headers();
 
             myHeaders.append("Content-Type", "application/json");
@@ -115,18 +127,43 @@ const EditClient = ({client, setClientsChange}) => {
                     Fill out the forms you would like to change:
                 </Typography>
 
+                <TextField 
+                required
+                autofocus
+                sx={{ m: 2 }} 
+                variant="filled" 
+                id ="filled-password-input" 
+                label="Last name" 
+                type = "text" 
+                value = {clientLName} 
+                error={clientLName === ""} 
+                helperText={clientLName === "" ? 'Client last name is required' : ' '}
+                onChange = {e => setClientLName(e.target.value)}/>
+                
+                <TextField 
+                required 
+                sx={{ m: 2 }} 
+                variant="filled" 
+                id ="filled-password-input" 
+                label="First name" 
+                type = "text" 
+                value = {clientFName} 
+                error={clientFName === ""} 
+                helperText={clientFName === "" ? 'Client first name is required' : ' '}
+                onChange = {e => setClientFName(e.target.value)}/>
 
                 <TextField 
                 required 
                 sx={{ m: 2 }} 
                 variant="filled" 
                 id ="filled-password-input" 
-                label="Name" 
+                label="Organization" 
                 type = "text" 
-                value = {clientName} 
-                error={clientName === ""} 
-                helperText={clientName === "" ? 'Client name is required' : ' '}
-                onChange = {e => setClientName(e.target.value)}/>
+                value = {clientOrganization} 
+                error={clientOrganization === ""} 
+                helperText={clientOrganization === "" ? 'Client organization is required' : ' '}
+                onChange = {e => setClientOrganization(e.target.value)}/>
+
                 <TextField 
                 required 
                 sx={{ m: 2 }} 
@@ -134,27 +171,28 @@ const EditClient = ({client, setClientsChange}) => {
                 id ="filled-password-input" 
                 label="Email" 
                 type = "text" 
-                value = {email} 
-                helperText={clientName === "" ? 'Client email is required' : ' '}
-                onChange = {e => setEmail(e.target.value)}/>
+                value = {clientEmail} 
+                error={clientEmail === ""} 
+                helperText={clientEmail === "" ? 'Client email is required' : ' '}
+                onChange = {e => setClientEmail(e.target.value)}/>
+
                 <TextField 
-                required 
                 sx={{ m: 2 }} 
                 variant="filled" 
                 id ="filled-password-input" 
-                label="Company" 
+                label="Phone Number" 
                 type = "text" 
-                value = {company} 
-                helperText={clientName === "" ? 'Client company is required' : ' '}
-                onChange = {e => setCompany(e.target.value)}/>
+                value = {clientPhoneNumber}
+                onChange = {e => setClientPhoneNumber(e.target.value)}/>
+                
                 <TextField 
                 sx={{ m: 2 }} 
                 variant="filled" 
                 id ="filled-password-input" 
                 label="Notes" 
                 type = "text" 
-                value = {notes}
-                onChange = {e => setNotes(e.target.value)}/>
+                value = {clientNotes}
+                onChange = {e => setClientNotes(e.target.value)}/>
 
 
                 <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {onSubmitForm}> Edit </Button>
