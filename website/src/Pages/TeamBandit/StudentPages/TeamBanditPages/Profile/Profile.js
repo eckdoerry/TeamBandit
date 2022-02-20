@@ -14,17 +14,16 @@ const Profile = ({studentInfo, setStudentChange}) => {
         <>
             <h1>Profile</h1>
 
-            <h2>Profile Photo</h2>
-        
-            <TestProfilePicture setStudentChange={setStudentChange}/>
+            <div>
+                <h2>Profile Picture</h2>
+                <TestProfilePicture studentInfo={studentInfo} setStudentChange={setStudentChange}/>
+            </div>
 
-            <br />
-
-            <h2>Your bio:</h2>
-
-            <p>{studentInfo.student_bio}</p>
-
-            <EditBioDialog setStudentChange={setStudentChange}/>
+            <div>
+                <h2>Bio:</h2>
+                <p>{studentInfo.student_bio}</p>
+                <EditBioDialog studentInfo={studentInfo} setStudentChange={setStudentChange}/>
+            </div>
         </>
     );
 }

@@ -11,16 +11,18 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import { toast } from 'react-toastify';
 
-const EditBioDialog = ({setStudentChange}) => {
+const EditBioDialog = ({studentInfo, setStudentChange}) => {
   const [open, setOpen] = useState(false);
   const [bioText, setBioText] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
+    setBioText(studentInfo.student_bio);
   };
 
   const handleClose = (event) => {
     setOpen(false);
+    setBioText(studentInfo.student_bio);
   };
 
   const onSubmitForm = async (e) => {
