@@ -237,6 +237,10 @@ const AddProject = ({courseInfo, setRowChange}) => {
                     </MenuItem>
                 ))}
                 </Select>
+
+                <Typography >
+                    Project Overview PDF
+                </Typography>
                         
                 <Button sx={{ m: 3 }} variant="contained" color="success"  onClick={(e) => (handleClose(), addProject(e))} startIcon={<AddIcon />} > Add </Button>        
                 <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose} startIcon={<CloseIcon/>}> Close </Button>

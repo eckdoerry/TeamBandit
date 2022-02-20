@@ -61,12 +61,23 @@ const Projects = ({ courseInfo, setRoute }) => {
         );
     };
 
+    /*
     const projectPage = (params) => {
         return (
             <Link target="_blank" to={`/project-pages/${params.row.project_name}`}>
                 {" "}
                 {params.row.project_name}{" "}
             </Link>
+        );
+    };
+    */
+
+    const projectPage = (params) => {
+        return (
+            <a target="_blank" rel="noreferrer" href={`/uploads/documents/projectOverviews/${params.row.projectoverview_filename}`}>
+                {" "}
+                {params.row.project_name}{" "}
+            </a>
         );
     };
 
@@ -183,6 +194,7 @@ const Projects = ({ courseInfo, setRoute }) => {
         <div style={{display:'flex'}}>
                 <AddProject
                             courseInfo={courseInfo}
+                            rows={rows}
                             setRowChange={setRowChange}
                         />
                 <TeamsAssignment setRoute={setRoute} />
