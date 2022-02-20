@@ -2,6 +2,8 @@ import {useState, React} from 'react';
 
 import { toast } from 'react-toastify';
 
+import Button from '@mui/material/Button';
+
 const TestProfilePicture = ({setStudentChange}) => {
   const [file, setFile] = useState(null);
   
@@ -31,8 +33,21 @@ const TestProfilePicture = ({setStudentChange}) => {
     return (
       <div>
         <form onSubmit={updateProfilePicture} encType="multipart/form-data">
-          <input type="file" name="avatar" onChange={onFileChange} />
-          <button type="submit">Upload</button>
+          <Button variant="outlined">
+            <input type="file" name="avatar" onChange={onFileChange}/>
+            
+            <br />
+            <br />
+            <br />
+          </Button>
+
+          <br />
+
+          <br />
+
+          <br />
+
+          <Button type="submit" variant="outlined">Upload</Button>
         </form>
       </div>
     );
