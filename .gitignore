@@ -8,7 +8,7 @@
 # testing
 client/coverage
 public/uploads/documents/*
-public/uploads/images/*
+*/uploads
 
 # production
 */build
