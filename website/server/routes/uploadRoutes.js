@@ -41,25 +41,55 @@ router.put("/studentAvatar", profilePictureUpload.single("avatar"), authorizatio
 });
 
 
-const projectDescriptionStorage = multer.diskStorage({
+
+
+
+
+const projectOverviewStorage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, '../../public/uploads/documents/projectDescriptions/');
+    cb(null, '../../public/uploads/documents/projectOverviews/');
   },
   filename: function(req, file, cb) {
     cb(null, uuid() + "." + file.mimetype.split("/")[1]);
   }
 });
 
-const projectDescriptionUpload = multer({storage: projectDescriptionStorage});
+const projectOverviewUpload = multer({storage: projectOverviewStorage});
 
 // Updates Students Bio
-router.put("/projectDescription", projectDescriptionUpload.single("projectDescription"), authorization, async(req, res) => {
+router.put("/projectOverview/:project_id", projectOverviewUpload.single("projectOverview"), authorization, async(req, res) => {
   try {
-      res.json("Your profile picture was successfully updated!");
-  } catch (error) {
-      console.error(error.message);
-  }
+    const {project_id} = req.params;
+    const oldProfilePicPath = await pool.query("SELECT organizer_id, project_id, projectoverview_filename FROM projects WHERE project_id = $1 AND organizer_id = $2", [project_id, req.user]);
+    const updateProfilePic = await pool.query("UPDATE projects SET projectoverview_filename = $1 WHERE project_id = $2 AND organizer_id = $3 RETURNING *", [req.file.filename, project_id, req.user]);
+    
+    if(updateProfilePic.rows.length === 0)
+    {
+        return res.json("This project is not yours!");
+    }
+
+    // Removes old project overview pdf
+    if (fs.existsSync("../../public/uploads/documents/projectOverviews/" + oldProfilePicPath.rows[0].projectoverview_filename))
+    {
+      fs.unlinkSync("../../public/uploads/documents/projectOverviews/" + oldProfilePicPath.rows[0].projectoverview_filename);
+    }
+    
+    res.json("Project Overview was successfully updated!");
+} catch (error) {
+    console.error(error.message);
+}
 });
+
+
+
+
+
+
+
+
+
+
+
 
 // Updates Students Bio
 router.put("/deleteStudentProfilePicture/:id", authorization, async(req, res) => {

@@ -9,7 +9,7 @@ router.get("/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
         
-        const students = await pool.query("SELECT projects.project_id, projects.project_name, projects.project_short_name, projects.project_mentor, projects.project_sponsor, teams.team_name FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.organizer_id = $1 AND projects.course_id = $2 ORDER BY projects.project_id ASC ", [req.user, course_id]);
+        const students = await pool.query("SELECT projects.project_id, projects.project_name, projects.project_short_name, projects.project_mentor, projects.project_sponsor, projects.projectoverview_filename, teams.team_name FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.organizer_id = $1 AND projects.course_id = $2 ORDER BY projects.project_id ASC ", [req.user, course_id]);
 
         res.json(students.rows);
     } catch (error) {
@@ -178,6 +178,17 @@ router.get("/getAssignedStudents/:course_id", authorization, async(req, res) => 
         const student = await pool.query("SELECT project_id, team_id, student_id FROM studentteambridgetable");
 
         res.json(student.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+router.get("/project-name/:projectname", authorization, async(req, res) => {
+    try {
+        const {projectname} = req.params;
+        const project = await pool.query("SELECT projectoverview_filename FROM projects WHERE project_name = $1", [projectname]);
+
+        res.json(project.rows[0]);
     } catch (error) {
         console.error(error.message);
     }

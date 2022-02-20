@@ -46,6 +46,7 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
     const [project_sponsor, setProjectSponsor] = useState(
         ""
     );
+    const [project_overview, setProjectOverview] = useState(null);
 
     // Value change
     const [valueChange, setValueChange] = useState(false);
@@ -63,6 +64,29 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
         setProjectMentor(project.project_mentor);
         setProjectSponsor(project.project_sponsor);
     };
+
+    const onFileChange = (e) => {
+        setProjectOverview(e.target.files[0]); 
+    }
+
+    const updateProjectOverview = async (e) => {
+        e.preventDefault();
+        try {
+            const formData = new FormData();
+            formData.append("projectOverview", project_overview);
+  
+            const myHeaders = new Headers();
+            myHeaders.append("token", localStorage.token);
+
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/fileuploads/projectOverview/${project.project_id}`, {method: "PUT", body: formData, headers: myHeaders});
+  
+            toast.success(await response.json());
+            setRowChange(true);
+        } catch (error) {
+            console.error(error.message);
+            toast.error("Failed to update!");
+        }
+      };
 
     const updateProject = async (e) => {
         e.preventDefault();
@@ -252,11 +276,15 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
                         ))}
                     </Select>
 
+                    <form encType="multipart/form-data">
+                        <input type="file" accept="application/pdf" name="projectOverview" onChange={onFileChange}/>
+                    </form>
+
                     <Button
                         sx={{ m: 3 }}
                         variant="contained"
                         color="warning"
-                        onClick={(e) => (handleClose(), updateProject(e))}
+                        onClick={(e) => (handleClose(), updateProject(e), updateProjectOverview(e))}
                         startIcon={<EditIcon />}
                     >
                         {" "}

@@ -16,7 +16,12 @@ const InfoAndPolicies = ({courseInfo}) => {
     {
         setNumPages( numPages );
     }
+
+    return(
+        <object data={MyPDF} type="application/pdf" style={{minHeight:"100vh", width:"100%"}}>You are unable to view this document</object>
+    );
     
+    /*
     return(
         <div style={{padding: '25px'}}>
             <Document  file={MyPDF} onLoadError={console.error} onLoadSuccess={onDocumentLoadSuccess}>
@@ -28,6 +33,7 @@ const InfoAndPolicies = ({courseInfo}) => {
             </Document>
         </div>
     );
+    */
 }
 
 export default InfoAndPolicies;

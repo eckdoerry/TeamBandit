@@ -7,68 +7,30 @@ import { React, useState, useEffect } from "react";
 const ProjectPage = () => {
     const windowValue = window.location.pathname.replace("/project-pages/", "");
     const regExp = /%20/g;
-    const team = windowValue.replace(regExp, " ");
+    const projectname = windowValue.replace(regExp, " ");
 
-    const [teamInfo, setTeamInfo] = useState([]);
-    const [teamMembers, setTeamMembers] = useState([]);
-
-    const getTeam = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/teams/team-name/${team}`,
-                { method: "GET", headers: { token: localStorage.token } }
-            );
-            const jsonData = await response.json();
-
-            setTeamInfo(jsonData);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
-    const getTeamMembers = async () => {
-        try {
-
-            const teamId = await fetch(
-                `${process.env.REACT_APP_BASEURL}/teams/team-name/${team}`,
-                { method: "GET", headers: { token: localStorage.token } }
-            );
-
-            const teamIddata = await teamId.json();
-
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/teams/team-members/${teamIddata[0].team_id}`,
-                { method: "GET", headers: { token: localStorage.token } }
-            );
-            const jsonData = await response.json();
-
-            setTeamMembers(jsonData);
-            console.log(teamMembers);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
+    const [projectInfo, setProjectInfo] = useState([]);
 
     useEffect(() => {
-        getTeam();
-        getTeamMembers();
-    }, []);
+        const getProjectOverview = async () => {
+            try {
+                const response = await fetch(
+                    `${process.env.REACT_APP_BASEURL}/projects/project-name/${projectname}`,
+                    { method: "GET", headers: { token: localStorage.token } }
+                );
+                const jsonData = await response.json();
+    
+                setProjectInfo(jsonData);
+            } catch (err) {
+                console.error(err.message);
+            }
+        };
+        getProjectOverview();
+    });
 
-    if (teamInfo[0] != null) {
-        return (
-            <div style={{ padding: "200px" }}>
-                <h1> Team Name: {teamInfo[0].team_name} </h1>
-                <h2> Team Size</h2>
-                <p> {teamInfo[0].team_size} </p>
-                <h2> Team Members </h2>
-                {teamMembers.map((teamMember) => (
-                    <p key={teamMember.student_id}>{teamMember.student_fname} {teamMember.student_lname}</p>
-                ))}
-            </div>
-        );
-    } else {
-        return <h1> ERROR TEAM DOES NOT EXIST </h1>;
-    }
+    return (
+        <object data={`/uploads/documents/projectOverviews/${projectInfo.projectoverview_filename}`} type="application/pdf" style={{minHeight:"100vh", width:"100%"}}>You are unable to view this document</object>
+    );
 };
 
 export default ProjectPage;
