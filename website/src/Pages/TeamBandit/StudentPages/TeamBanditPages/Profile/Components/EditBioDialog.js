@@ -57,7 +57,9 @@ const EditBioDialog = ({setStudentChange}) => {
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Edit your Bio
+
+        Change
+        
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Bio</DialogTitle>

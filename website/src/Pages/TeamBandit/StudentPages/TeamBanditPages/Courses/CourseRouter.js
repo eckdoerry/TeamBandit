@@ -10,6 +10,7 @@ import Homepage from './CoursePages/Homepage/Homepage';
 import InfoAndPolicies from './CoursePages/InfoAndPolicies/InfoAndPolicies';
 import Schedule from './CoursePages/Schedule/Schedule';
 import Teams from './CoursePages/Teams/Teams';
+import Projects from "./CoursePages/Projects/Projects";
 
 const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
 
@@ -34,6 +35,14 @@ const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
         return (
             <Fragment>
                 <InfoAndPolicies courseInfo={courseInfo}/>
+            </Fragment>
+        )
+    }
+    else if(route.page === "Projects") 
+    {
+        return (
+            <Fragment>
+                <Projects courseInfo={courseInfo} setRoute={route}/>
             </Fragment>
         )
     }

@@ -11,6 +11,10 @@ const LandingPage = ({studentInfo}) => {
         <div>
             <WelcomeMessage studentInfo={studentInfo}/>
             <Dashboard studentInfo={studentInfo}/>
+
+
+
+
         </div>
     );
 };
