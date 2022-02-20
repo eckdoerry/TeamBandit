@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {
     Link
 } from "react-router-dom";
-import { toast } from 'react-toastify';
 
 // MUI Imports
 import Typography from '@mui/material/Typography';
@@ -16,6 +15,7 @@ import { DataGrid,
 } from '@mui/x-data-grid';
 
 const Teams = ({courseInfo}) => {
+    console.log(courseInfo);
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
 
@@ -23,7 +23,7 @@ const Teams = ({courseInfo}) => {
     const teamPage = (params) => {
 
         return (
-            <Link to ={`/team-pages/${params.row.team_name}`}> {params.row.team_name} </Link>
+            <Link target="_blank" to={`/team-pages/${params.row.team_name}`}> {params.row.team_name} </Link>
         );
     };
             
@@ -61,7 +61,7 @@ const Teams = ({courseInfo}) => {
     
     const getTeams = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BASEURL}/teams/${courseInfo.course_id}`, {method: "GET", headers: {token: localStorage.token}});
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/teams/students/${courseInfo.course_id}`, {method: "GET", headers: {token: localStorage.token}});
             const jsonData = await response.json();
         
             setRows(jsonData);

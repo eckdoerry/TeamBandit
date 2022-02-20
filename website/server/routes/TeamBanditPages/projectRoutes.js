@@ -17,6 +17,19 @@ router.get("/:course_id", authorization, async(req, res) => {
     }
 });
 
+//FOR STUDENTS Get all projects associated with current course id
+router.get("/students/:course_id", authorization, async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        
+        const students = await pool.query("SELECT projects.project_id, projects.project_name, projects.project_short_name, projects.project_mentor, projects.project_sponsor, teams.team_name FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.course_id = $1 ORDER BY projects.project_id ASC ", [course_id]);
+
+        res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
 // Updates a student based on student id
 router.put("/projects/:id", authorization, async(req, res) => {
     try {
