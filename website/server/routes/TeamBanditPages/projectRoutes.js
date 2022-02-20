@@ -183,6 +183,17 @@ router.get("/getAssignedStudents/:course_id", authorization, async(req, res) => 
     }
 });
 
+router.get("/project-name/:projectname", authorization, async(req, res) => {
+    try {
+        const {projectname} = req.params;
+        const project = await pool.query("SELECT projectoverview_filename FROM projects WHERE project_name = $1", [projectname]);
+
+        res.json(project.rows[0]);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
 // END PROJECT ROUTES //
 
 module.exports = router;
