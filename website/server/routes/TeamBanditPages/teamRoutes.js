@@ -22,6 +22,19 @@ router.get("/:course_id", authorization, async(req, res) => {
     }
 })
 
+// FOR STUDENTS Gets all teams based off of course_id and project id 
+router.get("/students/:course_id", authorization, async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        
+        const teams = await pool.query("SELECT * FROM teams LEFT JOIN projects ON teams.project_id = projects.project_id WHERE teams.course_id = $1 ORDER BY teams.team_id ASC ", [course_id]);
+
+        res.json(teams.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+})
+
 // Gets all teams based off of course_id and project id 
 router.get("/team-name/:team_name", async(req, res) => {
     try {
