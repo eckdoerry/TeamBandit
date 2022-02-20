@@ -33,13 +33,13 @@ const Teams = ({courseInfo}) => {
     const teamPage = (params) => {
 
         return (
-            <Link to ={`/team-pages/${params.row.team_name}`}> {params.row.team_name} </Link>
+            <Link target="_blank" to ={`/team-pages/${params.row.team_name}`}> {params.row.team_name} </Link>
         );
     };
 
     const projectPage = (params) => {
         return (
-            <Link to={`/project-pages/${params.row.project_name}`}>
+            <Link target="_blank" to={`/project-pages/${params.row.project_name}`}>
                 {" "}
                 {params.row.project_name}{" "}
             </Link>

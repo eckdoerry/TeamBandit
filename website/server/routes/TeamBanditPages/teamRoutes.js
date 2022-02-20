@@ -22,13 +22,28 @@ router.get("/:course_id", authorization, async(req, res) => {
     }
 })
 
+
+// Updates a student based on student id
+router.put("/updateColor/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET page_color = $1 WHERE team_id = $2", [req.body['color'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This color is not yours!");
+        }
+
+        res.json("COLOR was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
 // Gets all teams based off of course_id and project id 
 router.get("/team-name/:team_name", async(req, res) => {
     try {
         const {team_name} = req.params;
 
-        
-        
         const teams = await pool.query("SELECT * FROM teams WHERE team_name = $1 ORDER BY team_id ASC ", [team_name]);
 
         res.json(teams.rows);
@@ -44,6 +59,19 @@ router.get("/team-members/:team_id", async(req, res) => {
         
         const teams = await pool.query("SELECT students.student_fname, students.student_lname FROM studentteambridgetable LEFT JOIN students ON studentteambridgetable.student_id = students.student_id WHERE studentteambridgetable.team_id = $1", [team_id]);
         
+        res.json(teams.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+})
+
+// Gets all teams based off of course_id and project id 
+router.get("/project-info/:team_id", async(req, res) => {
+    try {
+        const {team_id} = req.params;
+        
+        const teams = await pool.query("SELECT projects.project_mentor, projects.project_sponsor FROM teams LEFT JOIN projects ON teams.project_id = projects.project_id WHERE teams.team_id = $1", [team_id]);
+        console.log(teams.rows);
         res.json(teams.rows);
     } catch (error) {
         console.error(error.message);

@@ -1,0 +1,10 @@
+.page {
+    height: auto;
+}
+
+.pages {
+    display:flex;
+    width: auto;
+    height: auto;
+
+}
