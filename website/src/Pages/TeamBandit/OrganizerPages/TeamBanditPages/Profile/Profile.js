@@ -17,13 +17,13 @@ const Profile = ({organizerInfo, setOrganizerChange}) => {
 
             <div>
                 <h2>Profile Picture</h2>
-                <EditProfilePicture studentInfo={organizerInfo} setOrganizerChange={setOrganizerChange}/>
+                <EditProfilePicture organizerInfo={organizerInfo} setOrganizerChange={setOrganizerChange}/>
             </div>
 
             <div>
                 <h2>Bio:</h2>
                 <p>{organizerInfo.student_bio}</p>
-                <EditBioDialog studentInfo={organizerInfo} setOrganizerChange={setOrganizerChange}/>
+                <EditBioDialog organizerInfo={organizerInfo} setOrganizerChange={setOrganizerChange}/>
             </div>
         </>
     );
