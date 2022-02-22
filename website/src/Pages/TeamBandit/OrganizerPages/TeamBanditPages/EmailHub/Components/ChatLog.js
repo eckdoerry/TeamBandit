@@ -44,7 +44,7 @@ const ChatLog = (props) => {
         <div className={`${styles.message} ${styles.lineheight}`}>
             {messageChain.map((message, index) => (
                 <Item
-                    className={`${styles.contact_card} ${styles.lineheight}`}
+                    className={message.sender === props.clientEmail ? `${styles.text}` : `${styles.textSent}`}
                     key={index}
                 >
                     <p className={styles.lineheight}>{message.message}</p>

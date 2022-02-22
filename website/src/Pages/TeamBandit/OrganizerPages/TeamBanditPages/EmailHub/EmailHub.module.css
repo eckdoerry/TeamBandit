@@ -12,6 +12,16 @@
     border-width: 5px;
 }
 
+.text {
+    background-color: #ededed !important;
+    margin: .25rem;
+}
+
+.textSent {
+    background-color: #FAC01A !important;
+    margin: .25rem;
+}
+
 .contact_card {
     background-color: #f7f7f7;
 }
