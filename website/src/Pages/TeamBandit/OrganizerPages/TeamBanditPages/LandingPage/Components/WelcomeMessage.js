@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Card, Typography } from "@mui/material";
+
 const WelcomeMessage = ({organizerInfo}) => {
 
     // Get the current date in real time
@@ -27,8 +29,9 @@ const WelcomeMessage = ({organizerInfo}) => {
         }
     
     return(
-        <div>
-            <h1 className='test'>Good {timeOfDay}, {organizerInfo.organizer_fname}!</h1>
+        <div style={{paddingLeft:'25px', paddingRight:'25px'}}>
+            <Typography variant="h3"> Good {timeOfDay}, {organizerInfo.organizer_fname}! </Typography>
+            <p style={{borderBottom: '5px solid black'}}></p>
         </div>
     );  
 }

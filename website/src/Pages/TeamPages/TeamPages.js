@@ -14,9 +14,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper"
+import Paper from "@mui/material/Paper";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import ColorPicker from 'material-ui-color-picker'
+import ColorPicker from "material-ui-color-picker";
 
 function Copyright() {
     return (
@@ -59,27 +59,32 @@ const TeamPage = () => {
             const jsonData = await response.json();
 
             setTeamInfo(jsonData);
-            setColorValue(jsonData[0].page_color)
+            setColorValue(jsonData[0].page_color);
         } catch (err) {
             console.error(err.message);
         }
     };
 
-
     const updateColor = async (color) => {
-        
         try {
-            const body = {color};
+            const body = { color };
 
             const myHeaders = new Headers();
 
             myHeaders.append("Content-Type", "application/json");
 
-            await fetch(`${process.env.REACT_APP_BASEURL}/teams/updateColor/${teamInfo[0].team_id}`, {method: "PUT", headers: myHeaders, body: JSON.stringify(body)});
-            
+            await fetch(
+                `${process.env.REACT_APP_BASEURL}/teams/updateColor/${teamInfo[0].team_id}`,
+                {
+                    method: "PUT",
+                    headers: myHeaders,
+                    body: JSON.stringify(body),
+                }
+            );
+
             setColorValue(color);
         } catch (err) {
-            console.error(err.message)
+            console.error(err.message);
         }
     };
 
@@ -131,24 +136,29 @@ const TeamPage = () => {
         getProjectInfo();
     }, []);
 
-    
-    
     if (teamInfo[0] != null && projectInfo[0] != null) {
         return (
             <div>
                 <ColorPicker
-                name='color'
-                defaultValue='#def54'
-                value={colorValue}
-                onChange={color => updateColor(color)}
-                
+                    name="color"
+                    defaultValue="#def54"
+                    value={colorValue}
+                    onChange={(color) => updateColor(color)}
                 />
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
-                    <AppBar style={{backgroundColor: `${colorValue}`}} position="relative">
-                        <Toolbar style={{backgroundColor: `${colorValue}`}}>
+                    <AppBar
+                        style={{ backgroundColor: `${colorValue}` }}
+                        position="relative"
+                    >
+                        <Toolbar style={{ backgroundColor: `${colorValue}` }}>
                             <Paper variant="outlined">
-                                <img src={require('./logo.png')} alt="" width = "50px" height = "50px" />
+                                <img
+                                    src={require("./logo.png")}
+                                    alt=""
+                                    width="50px"
+                                    height="50px"
+                                />
                             </Paper>
                             <Typography variant="h6" color="inherit" noWrap>
                                 {teamInfo[0].team_name}
@@ -156,92 +166,118 @@ const TeamPage = () => {
                         </Toolbar>
                     </AppBar>
                     <main>
-                    <div >
+                        <div>
                             {/* Hero unit */}
                             <Box
-                                
                                 sx={{
                                     bgcolor: "background.paper",
                                     pt: 8,
                                     pb: 6,
                                 }}
                             >
-                            <Container style={{display: "flex", justifyContent: "center", width: "100%"}} maxWidth="sm">
-                                <Paper style = {{margin: "50px"}} variant="outlined">
-                                        <img src={require('./logo.png')}  alt="Logo" width = "500px" height = "500px" />
-                                </Paper>
-                                <div style= {{padding:"50px", width:"100%"}}>
-                                    <Typography
-                                        component="h1"
-                                        variant="h2"
-                                        align="center"
-                                        color="text.primary"
-                                        gutterBottom
+                                <Container
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        width: "100%",
+                                    }}
+                                    maxWidth="sm"
+                                >
+                                    <Paper
+                                        style={{ margin: "50px" }}
+                                        variant="outlined"
                                     >
-                                        {teamInfo[0].team_name}
-                                    </Typography>
-                                    <Typography
-                                        variant="h5"
-                                        align="center"
-                                        color="text.secondary"
-                                        paragraph
+                                        <img
+                                            src={require("./logo.png")}
+                                            alt="Logo"
+                                            width="500px"
+                                            height="500px"
+                                        />
+                                    </Paper>
+                                    <div
+                                        style={{
+                                            padding: "50px",
+                                            width: "100%",
+                                        }}
                                     >
-                                        {teamInfo[0].team_description}
-                                    </Typography>
-                                    </div>
-                                    <div style={{padding:"50px"}}>
-                                    <Typography
-                                        component="h1"
-                                        variant="h2"
-                                        align="center"
-                                        color="text.primary"
-                                        gutterBottom
-                                    >
-                                        Team Members
-                                    </Typography>
-                                    {teamMembers.map((teamMember) => (
-                                        <Typography variant="h5"
-                                        align="center"
-                                        color="text.secondary" key={teamMember.student_id}>
-                                            {teamMember.student_fname} {teamMember.student_lname}
+                                        <Typography
+                                            component="h1"
+                                            variant="h2"
+                                            align="center"
+                                            color="text.primary"
+                                            gutterBottom
+                                        >
+                                            {teamInfo[0].team_name}
                                         </Typography>
-                                    ))}
+                                        <Typography
+                                            variant="h5"
+                                            align="center"
+                                            color="text.secondary"
+                                            paragraph
+                                        >
+                                            {teamInfo[0].team_description}
+                                        </Typography>
                                     </div>
-                                    <div style={{padding:"50px"}}>
-                                    <Typography
-                                        component="h1"
-                                        variant="h2"
-                                        align="center"
-                                        color="text.primary"
-                                        gutterBottom
-                                    >
-                                        Project Sponsor
-                                    </Typography>
-                                    
-                                        <Typography variant="h5"
-                                        align="center"
-                                        color="text.secondary">
+                                    <div style={{ padding: "50px" }}>
+                                        <Typography
+                                            component="h1"
+                                            variant="h2"
+                                            align="center"
+                                            color="text.primary"
+                                            gutterBottom
+                                        >
+                                            Team Members
+                                        </Typography>
+                                        {teamMembers.map((teamMember) => (
+                                            <Typography
+                                                variant="h5"
+                                                align="center"
+                                                color="text.secondary"
+                                                key={teamMember.student_id}
+                                            >
+                                                {teamMember.student_fname}{" "}
+                                                {teamMember.student_lname}
+                                            </Typography>
+                                        ))}
+                                    </div>
+                                    <div style={{ padding: "50px" }}>
+                                        <Typography
+                                            component="h1"
+                                            variant="h2"
+                                            align="center"
+                                            color="text.primary"
+                                            gutterBottom
+                                        >
+                                            Project Sponsor
+                                        </Typography>
+
+                                        <Typography
+                                            variant="h5"
+                                            align="center"
+                                            color="text.secondary"
+                                        >
                                             {projectInfo[0].project_sponsor}
                                         </Typography>
-                                    
                                     </div>
-                                    <div style={{padding:"50px"}}>
-                                    <Typography
-                                        component="h1"
-                                        variant="h2"
-                                        align="center"
-                                        color="text.primary"
-                                        gutterBottom
-                                    >
-                                        Team Mentor
-                                    </Typography>
-                                    <Typography variant="h5"
-                                        align="center"
-                                        color="text.secondary">
+                                    <div style={{ padding: "50px" }}>
+                                        <Typography
+                                            component="h1"
+                                            variant="h2"
+                                            align="center"
+                                            color="text.primary"
+                                            gutterBottom
+                                        >
+                                            Team Mentor
+                                        </Typography>
+                                        <Typography
+                                            variant="h5"
+                                            align="center"
+                                            color="text.secondary"
+                                        >
                                             {projectInfo[0].project_mentor}
                                         </Typography>
                                     </div>
-                                    </Container>
+                                </Container>
                             </Box>
                         </div>
                     </main>
