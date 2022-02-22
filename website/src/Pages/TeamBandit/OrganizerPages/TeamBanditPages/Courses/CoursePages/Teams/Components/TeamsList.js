@@ -9,6 +9,7 @@ import EditTeam from "./EditTeam";
 
 // MUI Imports
 import Typography from '@mui/material/Typography';
+import Paper from "@mui/material/Paper";
 
 import { DataGrid,
     GridToolbarContainer,
@@ -33,16 +34,58 @@ const Teams = ({courseInfo}) => {
     const teamPage = (params) => {
 
         return (
+            <div>
             <Link target="_blank" to ={`/team-pages/${params.row.team_name}`}> {params.row.team_name} </Link>
+            <div style={{display:'flex', alignItems: 'center'}}>
+                    <div>
+                    <Paper variant="outlined">
+                                    <img
+                                        src={require("../../../../../../../../Images/logo.png")}
+                                        alt=""
+                                        width="100px"
+                                        height="100px"
+                                    />
+                                </Paper>
+                    </div>
+                    <div>
+                        <ul>
+                            <li>Max Mosier</li>
+                            <li>Quinn Melssen</li>
+                            <li>Liam Scholl</li>
+                            <li>Dakota Battle</li>
+                        </ul>
+                    </div>
+                            
+                </div>
+                </div>
         );
     };
 
     const projectPage = (params) => {
         return (
-            <Link target="_blank" to={`/project-pages/${params.row.project_name}`}>
-                {" "}
-                {params.row.project_name}{" "}
-            </Link>
+            <div>
+                <Link target="_blank" to={`/project-pages/${params.row.project_name}`}>
+                    {" "}
+                    {params.row.project_name}{" "}
+                </Link>
+                
+            </div>
+        );
+    };
+
+    const projectSponsor = (params) => {
+        return (
+            <div >
+                <p><strong>Max L. Mosier </strong> <br></br> <br></br> Founder & CEO <br></br> Phat Games</p>
+            </div>
+        );
+    };
+
+    const teamMentor = (params) => {
+        return (
+            <div>
+                <a href="#"> Quinn Melssen</a>
+            </div>
         );
     };
             
@@ -50,19 +93,26 @@ const Teams = ({courseInfo}) => {
     const columns = [
         {
         field: 'project_name',
-        headerName: 'Project Name',
+        headerName: 'Project Title',
         renderCell: projectPage,
         flex: 1,
         },
         {
-            field: 'team_name',
-            headerName: 'Team Name',
+            field: 'project_sponsor',
+            headerName: 'Project Sponsor',
+            renderCell: projectSponsor,
+            flex: 1,
+        },
+        {
+            field: 'student_team',
+            headerName: 'Student Team',
             renderCell: teamPage,
             flex: 1,
         },
         {
-            field: 'team_size',
-            headerName: 'Team Size',
+            field: 'team_name',
+            headerName: 'Team Mentor',
+            renderCell: teamMentor,
             flex: 1,
         },
         {
@@ -82,7 +132,6 @@ const Teams = ({courseInfo}) => {
             <Typography sx={{ m: 1 }} variant="h4">Teams</Typography>
             <GridToolbarColumnsButton  sx={{ m: 1 }} />
             <GridToolbarFilterButton sx={{ m: 1 }} />
-            <GridToolbarDensitySelector sx={{ m: 1 }} />
             <GridToolbarExport sx={{ m: 1 }} />
         </GridToolbarContainer>
         );
@@ -110,6 +159,7 @@ const Teams = ({courseInfo}) => {
             <DataGrid
                 rows={rows}
                 columns={columns}
+                rowHeight={'100%'}
                 getRowId={(rows) => rows.team_id}
                 components = {{Toolbar: CustomToolbar,}}
                 disableSelectionOnClick
