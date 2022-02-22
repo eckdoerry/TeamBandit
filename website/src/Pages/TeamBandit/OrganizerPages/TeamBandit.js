@@ -29,7 +29,10 @@ import MenuItem from "@mui/material/MenuItem";
 import SettingsIcon from "@mui/icons-material/Settings";
 import HomeIcon from "@mui/icons-material/Home";
 import PeopleIcon from "@mui/icons-material/People";
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import SchoolIcon from "@mui/icons-material/School";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import EmailIcon from "@mui/icons-material/Email";
 
 // DRAWER FUNCTIONS //
 const drawerWidth = 240;
@@ -132,7 +135,7 @@ export default function MiniDrawer({ setAuth }) {
     const [open, setOpen] = React.useState(false);
 
     // ENUM string for routes
-    const [route, setRoute] = useState("Home");
+    const [route, setRoute] = useState("Courses");
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -185,6 +188,42 @@ export default function MiniDrawer({ setAuth }) {
                     <Typography variant="h6" noWrap component="div">
                         TeamBandit
                     </Typography>
+                    <div style={{display:'flex', alignItems:'center', paddingLeft:'25px', opacity:'0.35'}}>
+                    <SchoolIcon />
+                    <Typography variant="h8" noWrap >
+                        Total Courses:
+                    </Typography>
+                    <Typography variant="h8" noWrap >
+                        5
+                    </Typography>
+                    </div>
+                    <div style={{display:'flex', alignItems:'center', paddingLeft:'25px', opacity:'0.35'}}>
+                    <AccountBoxIcon />
+                    <Typography variant="h8" noWrap >
+                        Total Clients:
+                    </Typography>
+                    <Typography variant="h8" noWrap >
+                        100
+                    </Typography>
+                    </div>
+                    <div style={{display:'flex', alignItems:'center', paddingLeft:'25px', opacity:'0.35'}}>
+                    <ContentPasteIcon />
+                    <Typography variant="h8" noWrap >
+                        Total Projects:
+                    </Typography>
+                    <Typography variant="h8" noWrap >
+                        120
+                    </Typography>
+                    </div>
+                    <div style={{display:'flex', alignItems:'center', paddingLeft:'25px', opacity:'0.35'}}>
+                    <PeopleIcon />
+                    <Typography variant="h8" noWrap >
+                        Total Students:
+                    </Typography>
+                    <Typography variant="h8" noWrap >
+                        524
+                    </Typography>
+                    </div>
 
                     <Box sx={{ flexGrow: 1 }}>
                         <Tooltip title="Open settings">
@@ -255,7 +294,7 @@ export default function MiniDrawer({ setAuth }) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {["Home", "Email Hub", "Clients", "Courses"].map(
+                    {["Courses", "Clients", "Email Hub"].map(
                         (text, index) => (
                             <ListItem
                                 button
@@ -266,7 +305,7 @@ export default function MiniDrawer({ setAuth }) {
                                 }}
                             >
                                 <ListItemIcon>
-                                    {index === 0 ? (
+                                    {index === 4 ? (
                                         <Tooltip
                                             title="Home"
                                             placement="right"
@@ -274,15 +313,16 @@ export default function MiniDrawer({ setAuth }) {
                                         >
                                             <HomeIcon />
                                         </Tooltip>
-                                    ) : index === 1 ? (
+                                    ) : index === 0 ? (
                                         <Tooltip
-                                            title="Emails"
+                                            title="Courses"
                                             placement="right"
                                             arrow
                                         >
-                                            <InboxIcon />
+                                            <SchoolIcon />
                                         </Tooltip>
-                                    ) : index === 2 ? (
+                                        
+                                    ) : index === 1 ? (
                                         <Tooltip
                                             title="Clients"
                                             placement="right"
@@ -292,11 +332,11 @@ export default function MiniDrawer({ setAuth }) {
                                         </Tooltip>
                                     ) : (
                                         <Tooltip
-                                            title="Courses"
+                                            title="Emails"
                                             placement="right"
                                             arrow
                                         >
-                                            <SchoolIcon />
+                                            <InboxIcon />
                                         </Tooltip>
                                     )}
                                 </ListItemIcon>

@@ -15,8 +15,8 @@ function App() {
       defaultMode: "month",    // or week | day | timeline
       minWidth: 540,
       maxWidth: 540,
-      minHeight: 540,
-      maxHeight: 540
+      minHeight: 1000,
+      maxHeight: 1000
     },
     alertProps: {
       open: true,

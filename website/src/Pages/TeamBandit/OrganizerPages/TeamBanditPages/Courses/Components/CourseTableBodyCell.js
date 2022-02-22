@@ -21,7 +21,10 @@ const CourseTableBodyCell = ({ courseInfo, setCoursesChange }) => {
                 {courseInfo.organizer_fname + " " + courseInfo.organizer_lname}
             </TableCell>
             <TableCell>{courseInfo.course_semester}</TableCell>
-            <TableCell>{courseInfo.course_description}</TableCell>
+            <TableCell>100</TableCell>
+            <TableCell>100</TableCell>
+            <TableCell>100</TableCell>
+            <TableCell>7:00pm 2/22/2022</TableCell>
         </TableRow>
     );
 };

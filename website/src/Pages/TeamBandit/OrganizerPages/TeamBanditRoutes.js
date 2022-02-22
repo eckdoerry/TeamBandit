@@ -34,7 +34,7 @@ const TeamBanditRouter = ({route, organizerInfo, setOrganizerChange}) => {
             </Fragment>
         )
     }
-    else if(route.text === "Courses") 
+    else if(route.text === "Courses" || route === "Courses") 
     {
         return (
             <Fragment>

@@ -296,7 +296,7 @@ export default function TeamAssignment({ courseInfo }) {
 
     
     return (
-        <div style={{ padding: "25px" }}>
+        <div style={{ padding: "25px", overflow:'auto' }}>
             <TableContainer style={{ overflowX: "initial" }}>
                 <Table aria-label="spanning table">
                     <TableHead className="sticky">
