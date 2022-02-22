@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 import Button from '@mui/material/Button';
 
-const TestProfilePicture = ({studentInfo, setStudentChange}) => {
+const EditProfilePicture = ({organizerInfo, setOrganizerChange}) => {
   const [file, setFile] = useState(null);
   
   const onFileChange = (e) => {
@@ -20,10 +20,10 @@ const TestProfilePicture = ({studentInfo, setStudentChange}) => {
           const myHeaders = new Headers();
           myHeaders.append("token", localStorage.token);
 
-          const response = await fetch(`${process.env.REACT_APP_BASEURL}/fileuploads/studentAvatar`, {method: "PUT", body: formData, headers: myHeaders});
+          const response = await fetch(`${process.env.REACT_APP_BASEURL}/fileuploads/organizerAvatar`, {method: "PUT", body: formData, headers: myHeaders});
 
           toast.success(await response.json());
-          setStudentChange(true);
+          setOrganizerChange(true);
       } catch (error) {
           console.error(error.message);
           toast.error("Failed to update profile picture!");
@@ -33,7 +33,7 @@ const TestProfilePicture = ({studentInfo, setStudentChange}) => {
     const deleteProfilePicture = async (id) => {
       try {
 
-        const response = await fetch(`${process.env.REACT_APP_BASEURL}/fileuploads/deleteStudentProfilePicture/${id}`, {
+        const response = await fetch(`${process.env.REACT_APP_BASEURL}/fileuploads/deleteOrganizerProfilePicture/${id}`, {
               method: "PUT",
               headers: { token: localStorage.token }
           });
@@ -41,7 +41,7 @@ const TestProfilePicture = ({studentInfo, setStudentChange}) => {
           const resp = await response.json();
 
           toast.success(resp);
-          setStudentChange(true);
+          setOrganizerChange(true);
       } catch (error) {
           console.error(error.message);
           toast.error("Failed to delete profile picture!");
@@ -53,10 +53,10 @@ const TestProfilePicture = ({studentInfo, setStudentChange}) => {
         <form onSubmit={updateProfilePicture} encType="multipart/form-data">
           <input type="file" accept="images/*" name="avatar" onChange={onFileChange}/>
           <Button type="submit" variant="outlined">Upload</Button>
-          <Button variant="outlined" onClick={() => deleteProfilePicture(studentInfo.student_id)}>Delete Current Profile Picture</Button>
+          <Button variant="outlined" onClick={() => deleteProfilePicture(organizerInfo.organizer_id)}>Delete Current Profile Picture</Button>
         </form>
       </div>
     );
 }
 
-export default TestProfilePicture
+export default EditProfilePicture

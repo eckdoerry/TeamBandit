@@ -7,7 +7,7 @@ const authorization = require('../../middleware/authorization');
 // Grabs Organizer Information from the Organizers table
 router.get("/", authorization, async(req, res) => {
     try {
-        const user = await pool.query("SELECT organizer_fname, organizer_lname, organizer_email, organizer_id, organizer_bio FROM organizers WHERE organizer_id = $1", [req.user]);
+        const user = await pool.query("SELECT organizer_fname, organizer_lname, organizer_email, organizer_id, organizer_bio, profilepic_filepath FROM organizers WHERE organizer_id = $1", [req.user]);
 
     res.json(user.rows[0]);
 

@@ -16,7 +16,31 @@ const profilePictureStorage = multer.diskStorage({
 
 const profilePictureUpload = multer({storage: profilePictureStorage});
 
-// Updates Students Bio
+// Updates Organizer Profile Pic
+router.put("/organizerAvatar", profilePictureUpload.single("avatar"), authorization, async(req, res) => {
+  try {
+
+      const oldProfilePicPath = await pool.query("SELECT organizer_id, profilepic_filepath FROM organizers WHERE organizer_id = $1", [req.user]);
+      const updateProfilePic = await pool.query("UPDATE organizers SET profilepic_filepath = $1 WHERE organizer_id = $2 RETURNING *", [req.file.filename, req.user]);
+      
+      if(updateProfilePic.rows.length === 0)
+      {
+          return res.json("This profile is not yours!");
+      }
+
+      // Removes old profile pic
+      if (fs.existsSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath))
+      {
+        fs.unlinkSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath);
+      }
+      
+      res.json("Your profile picture was successfully updated!");
+  } catch (error) {
+      console.error(error.message);
+  }
+});
+
+// Updates Student Profile Pic
 router.put("/studentAvatar", profilePictureUpload.single("avatar"), authorization, async(req, res) => {
   try {
 
@@ -56,7 +80,7 @@ const projectOverviewStorage = multer.diskStorage({
 
 const projectOverviewUpload = multer({storage: projectOverviewStorage});
 
-// Updates Students Bio
+// Updates Project Overview PDF
 router.put("/projectOverview/:project_id", projectOverviewUpload.single("projectOverview"), authorization, async(req, res) => {
   try {
     const {project_id} = req.params;
