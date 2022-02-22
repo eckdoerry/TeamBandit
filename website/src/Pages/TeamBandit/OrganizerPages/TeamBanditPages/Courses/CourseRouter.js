@@ -6,8 +6,6 @@ import AlertTitle from '@mui/material/AlertTitle';
 
 // Course Pages //
 import Assignments from './CoursePages/Assignments/Assignments';
-import Homepage from './CoursePages/Homepage/Homepage';
-import InfoAndPolicies from './CoursePages/InfoAndPolicies/InfoAndPolicies';
 import Projects from './CoursePages/Projects/Projects';
 import Schedule from './CoursePages/Schedule/Schedule';
 import Settings from './CoursePages/Settings/Settings';
@@ -18,15 +16,8 @@ import TeamsAssignment from './CoursePages/TeamAssignment/TeamAssignment';
 
 const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
 
-    if(route.page === 'Homepage' || route === 'Homepage') 
-    {
-        return (
-            <Fragment>
-                <Homepage courseInfo={courseInfo}/>
-            </Fragment>
-        )
-    }
-    else if(route.page === "Projects") 
+    
+    if(route === "Projects") 
     {
         return (
             <Fragment>
@@ -34,7 +25,7 @@ const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
             </Fragment>
         )
     }
-    else if(route.page === "Students") 
+    else if(route === "Students") 
     {
         return (
             <Fragment>
@@ -42,7 +33,7 @@ const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
             </Fragment>
         )
     }
-    else if(route.page === "Schedule") 
+    else if(route === "Schedule") 
     {
         return (
             <Fragment>
@@ -50,15 +41,7 @@ const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
             </Fragment>
         )
     }
-    else if(route.page === "Info and Policies") 
-    {
-        return (
-            <Fragment>
-                <InfoAndPolicies courseInfo={courseInfo}/>
-            </Fragment>
-        )
-    }
-    else if(route.page === "Assignments") 
+    else if(route === "Assignments") 
     {
         return (
             <Fragment>
@@ -66,7 +49,7 @@ const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
             </Fragment>
         )
     }
-    else if(route.page === "Mentors") 
+    else if(route === "Mentors") 
     {
         return (
             <Fragment>
@@ -74,7 +57,7 @@ const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
             </Fragment>
         )
     }
-    else if(route.page === "Teams") 
+    else if(route === "Teams") 
     {
         return (
             <Fragment>
@@ -90,7 +73,7 @@ const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
             </Fragment>
         )
     }
-    else if(route.page === "Settings") 
+    else if(route === "Settings") 
     {
         return (
             <Fragment>

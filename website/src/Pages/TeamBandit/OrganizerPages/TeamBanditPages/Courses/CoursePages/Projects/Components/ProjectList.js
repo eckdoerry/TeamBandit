@@ -86,7 +86,7 @@ const Projects = ({ courseInfo, setRoute }) => {
             field: "project_name",
             headerName: "Project Name",
             renderCell: projectPage,
-            flex: 1,
+            flex: 2,
         },
         {
             field: "project_short_name",
@@ -138,8 +138,7 @@ const Projects = ({ courseInfo, setRoute }) => {
     const CustomToolbar = () => {
         return (
             
-            
-                <GridToolbarContainer>
+                <GridToolbarContainer style={{ backgroundColor: "#FAC01A" }} >
                     <Typography sx={{ m: 1 }} variant="h4">
                         Projects
                     </Typography>
@@ -147,6 +146,12 @@ const Projects = ({ courseInfo, setRoute }) => {
                     <GridToolbarFilterButton sx={{ m: 1 }} />
                     <GridToolbarDensitySelector sx={{ m: 1 }} />
                     <GridToolbarExport sx={{ m: 1 }} />
+                    <AddProject
+                            courseInfo={courseInfo}
+                            rows={rows}
+                            setRowChange={setRowChange}
+                        />
+                    <TeamsAssignment setRoute={setRoute} />
                 </GridToolbarContainer>
         );
     };
@@ -191,14 +196,6 @@ const Projects = ({ courseInfo, setRoute }) => {
 
     return (
         <>
-        <div style={{display:'flex'}}>
-                <AddProject
-                            courseInfo={courseInfo}
-                            rows={rows}
-                            setRowChange={setRowChange}
-                        />
-                <TeamsAssignment setRoute={setRoute} />
-            </div>
         <div
             style={{
                 padding: "25px",

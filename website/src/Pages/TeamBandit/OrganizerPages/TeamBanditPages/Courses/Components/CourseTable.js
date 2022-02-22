@@ -15,12 +15,15 @@ const CourseTable = ({ coursesInfo, setCoursesChange }) => {
         <>
             <TableContainer component={Paper}>
                 <Table aria-label="simple table">
-                    <TableHead>
+                    <TableHead >
                         <TableRow>
-                            <TableCell>Course Name</TableCell>
-                            <TableCell>Course Organizer</TableCell>
-                            <TableCell>Course Semester</TableCell>
-                            <TableCell>Course Description</TableCell>
+                            <TableCell style={{ background: "#002454", color: 'white'}}>Course Name</TableCell>
+                            <TableCell style={{ background: "#002454", color: 'white'}}>Course Organizer</TableCell>
+                            <TableCell style={{ background: "#002454", color: 'white'}}>Course Semester</TableCell>
+                            <TableCell style={{ background: "#002454", color: 'white'}}>Total Projects</TableCell>
+                            <TableCell style={{ background: "#002454", color: 'white'}}>Total Students</TableCell>
+                            <TableCell style={{ background: "#002454", color: 'white'}}>Unread Emails</TableCell>
+                            <TableCell style={{ background: "#002454", color: 'white'}}>Date Created</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

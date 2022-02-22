@@ -46,7 +46,6 @@ const FormDialogAddCourse = ({ setCoursesChange }) => {
 
             const parseResponse = await response.json();
 
-            console.log(parseResponse);
             toast.success("Course added successfully!");
 
             setCoursesChange(true);

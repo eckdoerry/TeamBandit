@@ -115,7 +115,7 @@ const Clients = () => {
 
     const CustomToolbar = () => {
       return (
-      <GridToolbarContainer>
+      <GridToolbarContainer style={{ background: "#002454"}}>
           <GridToolbarColumnsButton  sx={{ m: 1 }} />
           <GridToolbarFilterButton sx={{ m: 1 }} />
           <GridToolbarExport sx={{ m: 1 }} />
