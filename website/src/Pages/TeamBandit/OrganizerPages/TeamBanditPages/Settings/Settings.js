@@ -1,9 +1,12 @@
 import {Fragment, React} from "react";
 
-const Settings = () => {
+import EditPassword from "./Components/EditPassword";
+
+const Settings = ({organizerInfo, setOrganizerChange}) => {
     return(
         <Fragment>
-            <p>Settings</p>
+            <h1>Settings</h1>
+            <EditPassword organizerInfo={organizerInfo} setOrganizerChange={setOrganizerChange}/>
         </Fragment>
     );
 }

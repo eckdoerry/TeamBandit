@@ -62,7 +62,7 @@ const TeamBanditRouter = ({route, organizerInfo, setOrganizerChange}) => {
     {
         return (
             <Fragment>
-                <Settings/>
+                <Settings organizerInfo={organizerInfo} setOrganizerChange={setOrganizerChange}/>
             </Fragment>
         )
     }

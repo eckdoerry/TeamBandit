@@ -159,7 +159,7 @@ const Teams = ({courseInfo}) => {
             <DataGrid
                 rows={rows}
                 columns={columns}
-                rowHeight={'100%'}
+                rowHeight={"100%"}
                 getRowId={(rows) => rows.team_id}
                 components = {{Toolbar: CustomToolbar,}}
                 disableSelectionOnClick
