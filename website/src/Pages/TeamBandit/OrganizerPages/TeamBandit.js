@@ -233,8 +233,8 @@ export default function MiniDrawer({ setAuth }) {
                                 sx={{ p: 0 }}
                             >
                                 <Avatar
-                                    alt={organizerInfo.organizer_fname}
-                                    src="/static/images/avatar/2.jpg"
+                                    alt={organizerInfo.student_fname}
+                                    src={"/uploads/images/profilePictures/" + organizerInfo.profilepic_filepath}
                                 />
                             </IconButton>
                         </Tooltip>

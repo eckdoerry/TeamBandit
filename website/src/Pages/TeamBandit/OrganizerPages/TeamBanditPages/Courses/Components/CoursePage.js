@@ -17,13 +17,13 @@ import CourseRouter from "../CourseRouter";
 
 // Table of the contents
 const pages = [
-    "Projects",
-    "Schedule",
-    "Students",
-    "Teams",
-    "Assignments",
-    "Mentors",
-    "Settings",
+    {key: 1, page: "Projects"},
+    {key: 2, page: "Schedule"},
+    {key: 3, page: "Students"},
+    {key: 4, page: "Teams"},
+    {key: 5, page: "Assignments"},
+    {key: 6, page: "Mentors"},
+    {key: 7, page: "Settings"}
 ];
 
 const CoursePage = ({ courseInfo, setCoursesChange }) => {
@@ -33,7 +33,7 @@ const CoursePage = ({ courseInfo, setCoursesChange }) => {
     const [value, setValue] = useState(0);
     const handleChange = (event, newValue) => {
         setValue(newValue);
-        setRoute(pages[newValue]);
+        setRoute(pages[newValue].page);
     };
 
     const [state, setState] = useState({
@@ -105,7 +105,7 @@ const CoursePage = ({ courseInfo, setCoursesChange }) => {
                             selectionFollowsFocus
                         >
                             {pages.map((page) => (
-                                <Tab label={page} />
+                                <Tab key={page.key} label={page.page} />
                             ))}
                         </Tabs>
                     </AppBar>

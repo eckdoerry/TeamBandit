@@ -70,17 +70,6 @@ const Projects = ({ courseInfo, setRoute }) => {
         );
     };
 
-    /*
-    const projectPage = (params) => {
-        return (
-            <a target="_blank" rel="noreferrer" href={`/uploads/documents/projectOverviews/${params.row.projectoverview_filename}`}>
-                {" "}
-                {params.row.project_name}{" "}
-            </a>
-        );
-    };
-    */
-
     const columns = [
         {
             field: "project_name",
@@ -144,7 +133,7 @@ const Projects = ({ courseInfo, setRoute }) => {
                     </Typography>
                     <GridToolbarColumnsButton sx={{ m: 1 }} />
                     <GridToolbarFilterButton sx={{ m: 1 }} />
-                    <GridToolbarDensitySelector sx={{ m: 1 }} />
+                    <GridToolbarDensitySelector sx={{ m: 2 }} />
                     <GridToolbarExport sx={{ m: 1 }} />
                     <AddProject
                             courseInfo={courseInfo}

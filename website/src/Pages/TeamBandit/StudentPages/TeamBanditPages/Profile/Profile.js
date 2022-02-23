@@ -7,7 +7,7 @@ import { React } from "react";
 //import styles from "./Profile.module.css";
 
 import EditBioDialog from "./Components/EditBioDialog";
-import TestProfilePicture from "./Components/TestProfilePicture";
+import EditProfilePicture from "./Components/EditProfilePicture";
 
 const Profile = ({studentInfo, setStudentChange}) => {
     return(
@@ -16,7 +16,7 @@ const Profile = ({studentInfo, setStudentChange}) => {
 
             <div>
                 <h2>Profile Picture</h2>
-                <TestProfilePicture studentInfo={studentInfo} setStudentChange={setStudentChange}/>
+                <EditProfilePicture studentInfo={studentInfo} setStudentChange={setStudentChange}/>
             </div>
 
             <div>
