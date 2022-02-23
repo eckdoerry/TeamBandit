@@ -113,7 +113,7 @@ function DisplayCorrectForm({ location, setAuth, setUser }) {
     if (location === "sign-in") {
         return <SignInForm setAuth={setAuth} setUser={setUser} />;
     } else if (location === "sign-up") {
-        return <SignUpForm setAuth={setAuth} />;
+        return <SignUpForm setAuth={setAuth} setUser={setUser} />;
     } else {
         return (
             <div>

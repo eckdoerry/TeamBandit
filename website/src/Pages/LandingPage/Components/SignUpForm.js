@@ -10,7 +10,7 @@ import styles from "./SignUpForm.module.css"
  * @param setAuth Authorizes the user once they register
  * @TODO: Implement the checkbox doing something or we should take it out 
  */
-const SignUpForm = ({setAuth}) => {
+const SignUpForm = ({setAuth, setUser}) => {
     
     const [inputs, setInputs] = useState({
         email: "",
@@ -40,11 +40,11 @@ const SignUpForm = ({setAuth}) => {
             const response = await fetch(`${process.env.REACT_APP_BASEURL}/auth/register`, { method: "POST", headers: {"Content-Type" : "application/json"}, body: JSON.stringify(body)});
             
             const parseRes = await response.json();
-            console.log(parseRes)
+            
             if(parseRes.token)
             {
                 localStorage.setItem("token", parseRes.token);
-
+                setUser('organizer');
                 setAuth(true);
                 toast.success("Registered Successfully!");
             } else {
