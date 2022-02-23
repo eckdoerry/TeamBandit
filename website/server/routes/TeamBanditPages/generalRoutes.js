@@ -17,6 +17,58 @@ router.get("/", authorization, async(req, res) => {
     }
 });
 
+// Grabs Organizer Information from the Organizers table
+router.get("/course-total", authorization, async(req, res) => {
+    try {
+        const user = await pool.query("SELECT course_title FROM courses WHERE organizer_id = $1", [req.user]);
+
+    res.json(user.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+// Grabs Organizer Information from the Organizers table
+router.get("/client-total", authorization, async(req, res) => {
+    try {
+        const user = await pool.query("SELECT client_fname FROM clients WHERE organizer_id = $1", [req.user]);
+
+    res.json(user.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+// Grabs Organizer Information from the Organizers table
+router.get("/project-total", authorization, async(req, res) => {
+    try {
+        const user = await pool.query("SELECT project_name FROM projects WHERE organizer_id = $1", [req.user]);
+
+    res.json(user.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+// Grabs Organizer Information from the Organizers table
+router.get("/student-total", authorization, async(req, res) => {
+    try {
+        const user = await pool.query("SELECT student_id FROM students WHERE organizer_id = $1", [req.user]);
+
+    res.json(user.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
 // Updates Organizers Bio
 router.put("/bio", authorization, async(req, res) => {
     try {

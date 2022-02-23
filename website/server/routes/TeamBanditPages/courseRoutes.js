@@ -9,7 +9,7 @@ router.get("/", authorization, async(req, res) => {
     try {
         
         const user = await pool.query(
-            "SELECT organizers.organizer_fname, organizers.organizer_lname, courses.course_id, courses.course_description, courses.course_title, courses.course_semester FROM organizers LEFT JOIN courses ON organizers.organizer_id = courses.organizer_id WHERE organizers.organizer_id = $1 ORDER BY course_id ASC ",
+            "SELECT organizers.organizer_fname, organizers.organizer_lname, courses.course_id, courses.course_description, courses.course_title, courses.course_semester, courses.creation_date FROM organizers LEFT JOIN courses ON organizers.organizer_id = courses.organizer_id WHERE organizers.organizer_id = $1 ORDER BY course_id ASC ",
             [req.user]
         );
 
@@ -18,6 +18,32 @@ router.get("/", authorization, async(req, res) => {
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Server Error");
+    }
+});
+
+// Gets all courses assocaited with current organizer
+router.get("/project-total/:course_id", authorization, async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        
+        const projects = await pool.query("SELECT project_name FROM projects WHERE organizer_id = $1 AND course_id = $2 ", [req.user, course_id]);
+        
+        res.json(projects.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Gets all courses assocaited with current organizer
+router.get("/student-total/:course_id", authorization, async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        
+        const students = await pool.query("SELECT student_fname FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id  WHERE students.organizer_id = $1 AND studentcourses.course_id = $2", [req.user, course_id]);
+        
+        res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
     }
 });
 

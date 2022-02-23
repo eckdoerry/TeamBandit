@@ -60,7 +60,7 @@ const FormDialogAddCourse = ({ setCoursesChange }) => {
     };
 
     return (
-        <div>
+        <div style={{paddingLeft: '25px', paddingTop:'25px'}}>
             <Button variant="outlined" onClick={handleClickOpen}>
                 Add a New Course
             </Button>
