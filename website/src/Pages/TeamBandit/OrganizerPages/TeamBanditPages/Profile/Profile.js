@@ -1,31 +1,30 @@
 import { React } from "react";
-// @TODO: Currently commenting these out to remove
-// UNUSED warnings
-//import Avatar from "@mui/material/Avatar";
-//import Button from "@mui/material/Button";
-//import { toast } from "react-toastify";
-//import styles from "./Profile.module.css";
+
 
 import EditBioDialog from "./Components/EditBioDialog";
 import EditProfilePicture from "./Components/EditProfilePicture";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 
 
 const Profile = ({organizerInfo, setOrganizerChange}) => {
     return(
-        <>
-            <h1>Profile</h1>
+        <div style={{ width: "100%", height: "100%"}}>
+            <Typography variant="h2" gutterBottom>Profile Settings</Typography>
+            <Paper style={{padding: '25px'}} elevation={3}>
 
             <div>
-                <h2>Profile Picture</h2>
+            <Typography style={{borderBottom: '1px solid black', borderBottomWidth: 'thin', width: '15%'}} variant="h4" gutterBottom> Profile Picture </Typography>
                 <EditProfilePicture organizerInfo={organizerInfo} setOrganizerChange={setOrganizerChange}/>
             </div>
 
             <div>
-                <h2>Bio:</h2>
+            <Typography style={{borderBottom: '1px solid black', borderBottomWidth: 'thin', width: '15%'}} variant="h4" gutterBottom> Biography </Typography>
                 <p>{organizerInfo.student_bio}</p>
                 <EditBioDialog organizerInfo={organizerInfo} setOrganizerChange={setOrganizerChange}/>
             </div>
-        </>
+            </Paper>
+        </div>
     );
 }
 

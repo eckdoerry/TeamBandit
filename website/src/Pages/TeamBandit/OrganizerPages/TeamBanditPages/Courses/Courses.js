@@ -31,10 +31,12 @@ const Courses = () => {
 
     return(
         <Fragment>
+            <div style={{display: 'flex', alignItems: 'center'}}>
             <h1>Courses</h1>
-            <div className={styles.courseBtns}>
-                <FormDialogAddCourse setCoursesChange = {setCoursesChange}/>
+            
+            <FormDialogAddCourse setCoursesChange = {setCoursesChange}/>
             </div>
+            
             <CourseTable coursesInfo={courses} setCoursesChange={setCoursesChange}/>
         </Fragment>
     );

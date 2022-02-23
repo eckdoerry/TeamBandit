@@ -22,7 +22,6 @@ const CourseTable = ({ coursesInfo, setCoursesChange }) => {
                             <TableCell style={{ background: "#002454", color: 'white'}}>Course Semester</TableCell>
                             <TableCell style={{ background: "#002454", color: 'white'}}>Total Projects</TableCell>
                             <TableCell style={{ background: "#002454", color: 'white'}}>Total Students</TableCell>
-                            <TableCell style={{ background: "#002454", color: 'white'}}>Unread Emails</TableCell>
                             <TableCell style={{ background: "#002454", color: 'white'}}>Date Created</TableCell>
                         </TableRow>
                     </TableHead>

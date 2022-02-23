@@ -32,7 +32,6 @@ import PeopleIcon from "@mui/icons-material/People";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import SchoolIcon from "@mui/icons-material/School";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import EmailIcon from "@mui/icons-material/Email";
 
 // DRAWER FUNCTIONS //
 const drawerWidth = 240;
@@ -111,22 +110,88 @@ export default function MiniDrawer({ setAuth }) {
     const [organizerInfo, setOrganizerInfo] = useState([]);
     const [organizerChange, setOrganizerChange] = useState(false);
 
-    // Updates Page @TODO: Not sure if getOrganizer needs to be in useEffect, I think it can be outside
-    useEffect(() => {
-        const getOrganizer = async () => {
-            try {
-                const response = await fetch(`${process.env.REACT_APP_BASEURL}/general/`, {method: "GET", headers: {token: localStorage.token}});
-    
-                const parseData = await response.json();
-    
-                setOrganizerInfo(parseData);
-                console.log(organizerInfo);
-    
-            } catch (error) {
-                console.error(error.message);
-            }
+    const [courses, setCourses] = useState([]);
+    const [clients, setClients] = useState([]);
+    const [projects, setProjects] = useState([]);
+    const [students, setStudents] = useState([]);
+
+    const getOrganizer = async () => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/general/`, {method: "GET", headers: {token: localStorage.token}});
+
+            const parseData = await response.json();
+
+            setOrganizerInfo(parseData);
+            console.log(organizerInfo);
+
+        } catch (error) {
+            console.error(error.message);
         }
+    }
+
+    const getCourses = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/general/course-total/`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+            const jsonData = await response.json();
+
+            setCourses(jsonData);
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
+
+    const getClients = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/general/client-total/`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+            const jsonData = await response.json();
+
+            setClients(jsonData);
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
+
+    const getProjects = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/general/project-total/`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+            const jsonData = await response.json();
+
+            setProjects(jsonData);
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
+
+    const getStudents = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/general/student-total/`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+            const jsonData = await response.json();
+
+            setStudents(jsonData);
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
+
+    useEffect(() => {
+        
         getOrganizer();
+        getCourses();
+        getClients();
+        getProjects();
+        getStudents();
         setOrganizerChange(false);
     }, [organizerChange]);
 
@@ -194,7 +259,7 @@ export default function MiniDrawer({ setAuth }) {
                         Total Courses:
                     </Typography>
                     <Typography variant="h8" noWrap >
-                        5
+                        {courses.length}
                     </Typography>
                     </div>
                     <div style={{display:'flex', alignItems:'center', paddingLeft:'25px', opacity:'0.35'}}>
@@ -203,7 +268,7 @@ export default function MiniDrawer({ setAuth }) {
                         Total Clients:
                     </Typography>
                     <Typography variant="h8" noWrap >
-                        100
+                        {clients.length}
                     </Typography>
                     </div>
                     <div style={{display:'flex', alignItems:'center', paddingLeft:'25px', opacity:'0.35'}}>
@@ -212,7 +277,7 @@ export default function MiniDrawer({ setAuth }) {
                         Total Projects:
                     </Typography>
                     <Typography variant="h8" noWrap >
-                        120
+                        {projects.length}
                     </Typography>
                     </div>
                     <div style={{display:'flex', alignItems:'center', paddingLeft:'25px', opacity:'0.35'}}>
@@ -221,7 +286,7 @@ export default function MiniDrawer({ setAuth }) {
                         Total Students:
                     </Typography>
                     <Typography variant="h8" noWrap >
-                        524
+                        {students.length}
                     </Typography>
                     </div>
 
