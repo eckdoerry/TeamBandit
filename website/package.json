@@ -38,7 +38,9 @@
         "web-vitals": "^2.1.2"
     },
     "scripts": {
-        "start-client": "(react-scripts start) & (cd server && cd middleware && node authRoutes.js)",
+        "start-client": "run-script-os",
+        "start-client:darwin:linux": "(react-scripts start) & (cd server && cd middleware && node authRoutes.js)",
+        "start-client:win32": "(react-scripts start) ; (cd server -and cd middleware -and node authRoutes.js)",
         "start": "npm run build && (cd server && forever start index.js )",
         "build": "react-scripts build",
         "test": "react-scripts test",

@@ -71,6 +71,10 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
 
     const updateProjectOverview = async (e) => {
         e.preventDefault();
+        if (!project_overview)
+        {
+            return;
+        }
         try {
             const formData = new FormData();
             formData.append("projectOverview", project_overview);

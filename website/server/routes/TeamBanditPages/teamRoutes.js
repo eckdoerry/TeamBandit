@@ -85,7 +85,7 @@ router.get("/project-info/:team_id", async(req, res) => {
     try {
         const {team_id} = req.params;
         
-        const teams = await pool.query("SELECT projects.project_mentor, projects.project_sponsor FROM teams LEFT JOIN projects ON teams.project_id = projects.project_id WHERE teams.team_id = $1", [team_id]);
+        const teams = await pool.query("SELECT projects.mentor_id, projects.client_id FROM teams LEFT JOIN projects ON teams.project_id = projects.project_id WHERE teams.team_id = $1", [team_id]);
         console.log(teams.rows);
         res.json(teams.rows);
     } catch (error) {
