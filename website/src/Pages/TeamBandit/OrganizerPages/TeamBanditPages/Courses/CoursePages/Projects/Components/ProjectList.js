@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
 
 // Datagrid
 import {
@@ -14,7 +15,6 @@ import {
     GridToolbarColumnsButton,
     GridToolbarFilterButton,
     GridToolbarExport,
-    GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
 // Page Components
@@ -53,11 +53,29 @@ const Projects = ({ courseInfo, setRoute }) => {
     };
 
     const teamPage = (params) => {
+        console.log(params.row.team_name);
         return (
-            <Link target="_blank" to={`/team-pages/${params.row.team_name}`}>
-                {" "}
-                {params.row.team_name}{" "}
-            </Link>
+            <div>
+                <Link target="_blank" to ={`/team-pages/${params.row.team_name}`}> {params.row.team_name} </Link>
+                <div style={{display:'flex', flexDirection:'row', alignItems: 'center'}}>
+                    <div>
+                        <img
+                            src={require("../../../../../../../../Images/logo.png")}
+                            alt=""
+                            width="100px"
+                            height="100px"
+                        />
+                    </div>
+                    <div>
+                        <ul>
+                            <li>Max Mosier</li>
+                            <li>Quinn Melssen</li>
+                            <li>Liam Scholl</li>
+                            <li>Dakota Battle</li>
+                        </ul>
+                    </div>  
+                </div>
+            </div>
         );
     };
 
@@ -73,37 +91,26 @@ const Projects = ({ courseInfo, setRoute }) => {
     const columns = [
         {
             field: "project_name",
-            headerName: "Project Name",
+            headerName: "Project Title",
             renderCell: projectPage,
             flex: 2,
         },
         {
-            field: "project_short_name",
-            headerName: "Project Short Name",
+            field: "client_name",
+            headerName: "Project Sponsor",
             flex: 1,
         },
         {
             field: "team_name",
             headerName: "Student Team",
             renderCell: teamPage,
-            flex: 1,
+            flex: 2,
         },
         {
-            field: "project_mentor",
+            field: "mentor_name",
             headerName: "Team Mentor",
             flex: 1,
         },
-        {
-            field: "project_sponsor",
-            headerName: "Project Sponsor",
-            flex: 1,
-        },
-        {
-            field: "status_tracker",
-            headerName: "Status Tracker",
-            flex: 1,
-        },
-
         {
             field: "edit",
             headerName: "Edit",
@@ -133,13 +140,12 @@ const Projects = ({ courseInfo, setRoute }) => {
                     </Typography>
                     <GridToolbarColumnsButton sx={{ m: 1 }} />
                     <GridToolbarFilterButton sx={{ m: 1 }} />
-                    <GridToolbarDensitySelector sx={{ m: 2 }} />
                     <GridToolbarExport sx={{ m: 1 }} />
                     <AddProject
-                            courseInfo={courseInfo}
-                            rows={rows}
-                            setRowChange={setRowChange}
-                        />
+                        courseInfo={courseInfo}
+                        rows={rows}
+                        setRowChange={setRowChange}
+                    />
                     <TeamsAssignment setRoute={setRoute} />
                 </GridToolbarContainer>
         );
@@ -173,6 +179,7 @@ const Projects = ({ courseInfo, setRoute }) => {
             const jsonData = await response.json();
 
             setRows(jsonData);
+            console.log(jsonData);
         } catch (err) {
             console.error(err.message);
         }
@@ -185,22 +192,23 @@ const Projects = ({ courseInfo, setRoute }) => {
 
     return (
         <>
-        <div
-            style={{
-                padding: "25px",
-                display: "flex",
-                height: "100%",
-                width: "100%",
-            }}
-        >
-            <DataGrid
-                rows={rows}
-                columns={columns}
-                getRowId={(rows) => rows.project_id}
-                components={{ Toolbar: CustomToolbar }}
-                disableSelectionOnClick
-            />
-        </div>
+            <div
+                style={{
+                    padding: "25px",
+                    display: "flex",
+                    height: "100%",
+                    width: "100%",
+                }}
+            >
+                <DataGrid
+                    rows={rows}
+                    columns={columns}
+                    rowHeight={"100%"}
+                    getRowId={(rows) => rows.project_id}
+                    components={{ Toolbar: CustomToolbar }}
+                    disableSelectionOnClick
+                />
+            </div>
         </>
     );
 };
