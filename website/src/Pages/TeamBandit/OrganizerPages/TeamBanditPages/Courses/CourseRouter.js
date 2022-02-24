@@ -45,7 +45,7 @@ const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
     {
         return (
             <Fragment>
-                <Assignments/>
+                <Assignments courseInfo={courseInfo} setRoute={setRoute}/>
             </Fragment>
         )
     }
