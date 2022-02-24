@@ -161,4 +161,46 @@ router.put("/deleteStudentProfilePicture/:id", authorization, async(req, res) =>
   }
 });
 
+
+
+
+
+
+
+
+const teamLogoStorage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, '../../public/uploads/images/teamLogos/');
+  },
+  filename: function(req, file, cb) {
+    cb(null, uuid() + "." + file.mimetype.split("/")[1]);
+  }
+});
+
+const teamLogoUpload = multer({storage: teamLogoStorage});
+
+// Updates Team Logo
+router.put("/teamLogo", teamLogoUpload.single("teamLogo"), authorization, async(req, res) => {
+  try {
+
+      const oldTeamLogo = await pool.query("SELECT team_lead, team_logo FROM teams WHERE team_lead = $1", [req.user]);
+      const updateTeamLogo = await pool.query("UPDATE teams SET team_logo = $1 WHERE team_lead = $2 RETURNING *", [req.file.filename, req.user]);
+      
+      if(updateTeamLogo.rows.length === 0)
+      {
+          return res.json("This team is not yours!");
+      }
+
+      // Removes old profile pic
+      if (fs.existsSync("../../public/uploads/images/teamLogos/" + oldTeamLogo.rows[0].team_logo))
+      {
+        fs.unlinkSync("../../public/uploads/images/teamLogos/" + oldTeamLogo.rows[0].team_logo);
+      }
+      
+      res.json("Your team logo was successfully updated!");
+  } catch (error) {
+      console.error(error.message);
+  }
+});
+
 module.exports = router;

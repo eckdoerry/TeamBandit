@@ -198,7 +198,7 @@ const Projects = ({ courseInfo, setRoute }) => {
             field: "team_name",
             headerName: "Student Team",
             renderCell: teamPage,
-            flex: 2,
+            flex: 3,
         },
         {
             field: "mentor_name",

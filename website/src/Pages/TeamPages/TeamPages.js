@@ -127,7 +127,7 @@ const TeamPage = () => {
                         <Toolbar style={{ backgroundColor: `${colorValue}` }}>
                             <Paper variant="outlined">
                                 <img
-                                    src={require("./logo.png")}
+                                    src={teamInfo[0].team_logo ? "/public/uploads/images/teamLogos/" + teamInfo[0].team_logo : null}
                                     alt=""
                                     width="50px"
                                     height="50px"
@@ -161,7 +161,7 @@ const TeamPage = () => {
                                         variant="outlined"
                                     >
                                         <img
-                                            src={require("./logo.png")}
+                                            src={teamInfo[0].team_logo ? "/public/uploads/images/teamLogos/" + teamInfo[0].team_logo : null}
                                             alt="Logo"
                                             width="500px"
                                             height="500px"

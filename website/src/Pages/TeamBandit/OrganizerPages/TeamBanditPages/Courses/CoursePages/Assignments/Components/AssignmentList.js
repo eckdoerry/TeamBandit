@@ -81,7 +81,7 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
                 <DataGrid
                     rows={rows}
                     columns={columns}
-                    rowHeight={"100%"}
+                    rowHeight={150}
                     getRowId={(rows) => rows.assignment_id}
                     components={{ Toolbar: CustomToolbar }}
                     disableSelectionOnClick
