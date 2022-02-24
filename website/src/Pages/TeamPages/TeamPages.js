@@ -65,29 +65,7 @@ const TeamPage = () => {
         }
     };
 
-    const updateColor = async (color) => {
-        try {
-            const body = { color };
-
-            const myHeaders = new Headers();
-
-            myHeaders.append("Content-Type", "application/json");
-
-            await fetch(
-                `${process.env.REACT_APP_BASEURL}/teams/updateColor/${teamInfo[0].team_id}`,
-                {
-                    method: "PUT",
-                    headers: myHeaders,
-                    body: JSON.stringify(body),
-                }
-            );
-
-            setColorValue(color);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
+   
     const getTeamMembers = async () => {
         try {
             const teamId = await fetch(
@@ -139,12 +117,7 @@ const TeamPage = () => {
     if (teamInfo[0] != null && projectInfo[0] != null) {
         return (
             <div>
-                <ColorPicker
-                    name="color"
-                    defaultValue="#def54"
-                    value={colorValue}
-                    onChange={(color) => updateColor(color)}
-                />
+                
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
                     <AppBar

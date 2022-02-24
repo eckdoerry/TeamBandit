@@ -20,10 +20,9 @@ const pages = [
     {key: 1, page: "Projects"},
     {key: 2, page: "Schedule"},
     {key: 3, page: "Students"},
-    {key: 4, page: "Teams"},
-    {key: 5, page: "Assignments"},
-    {key: 6, page: "Mentors"},
-    {key: 7, page: "Settings"}
+    {key: 4, page: "Assignments"},
+    {key: 5, page: "Mentors"},
+    {key: 6, page: "Settings"}
 ];
 
 const CoursePage = ({ courseInfo, setCoursesChange }) => {

@@ -22,6 +22,21 @@ router.get("/:course_id", authorization, async(req, res) => {
     }
 })
 
+router.get("/isTeamLead/:fname/:lname", async(req, res) => {
+    try {
+        const {fname, lname} = req.params;
+
+        const student = await pool.query("SELECT student_id FROM students WHERE student_lname = $1 AND student_fname = $2", [lname, fname]);
+        
+        const teamLead = await pool.query("SELECT teams.team_lead FROM teams WHERE teams.team_lead = $1 ", [student.rows[0].student_id]);
+
+
+        res.json(teamLead.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+})
+
 
 
 // Updates a student based on student id
@@ -35,6 +50,22 @@ router.put("/updateColor/:id", async(req, res) => {
         }
 
         res.json("COLOR was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateTeamName/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET team_name = $1 WHERE team_id = $2", [req.body['teamName'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
     } catch (error) {
         console.error(error.message);
     }

@@ -86,6 +86,32 @@ router.get("/:course_id", authorization, async(req, res) => {
 })
 
 // Gets all students associated with a course
+router.get("/team-association/:student_id", async(req, res) => {
+    try {
+        const {student_id} = req.params;
+        
+        const students = await pool.query("SELECT project_id, team_id FROM studentteambridgetable WHERE student_id = $1 ", [student_id]);
+
+        res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+})
+
+// Gets all students associated with a course
+router.get("/is-team-lead/:student_id/:team_id", async(req, res) => {
+    try {
+        const {student_id, team_id} = req.params;
+        
+        const students = await pool.query("SELECT team_name, page_color, team_logo FROM teams WHERE team_id = $1 AND team_lead = $2", [team_id, student_id]);
+
+        res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+})
+
+// Gets all students associated with a course
 router.get("/teams-assignment/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
