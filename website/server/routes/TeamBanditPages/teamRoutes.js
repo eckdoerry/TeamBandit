@@ -22,6 +22,21 @@ router.get("/:course_id", authorization, async(req, res) => {
     }
 })
 
+router.get("/isTeamLead/:fname/:lname", async(req, res) => {
+    try {
+        const {fname, lname} = req.params;
+
+        const student = await pool.query("SELECT student_id FROM students WHERE student_lname = $1 AND student_fname = $2", [lname, fname]);
+        
+        const teamLead = await pool.query("SELECT teams.team_lead FROM teams WHERE teams.team_lead = $1 ", [student.rows[0].student_id]);
+
+
+        res.json(teamLead.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+})
+
 
 
 // Updates a student based on student id

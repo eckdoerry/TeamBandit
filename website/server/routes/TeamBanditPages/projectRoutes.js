@@ -31,6 +31,19 @@ router.get("/mentors/:course_id", authorization, async(req, res) => {
 });
 
 //Get all projects associated with current course id
+router.get("/getTeams/:course_id", authorization, async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        
+        const teams = await pool.query("SELECT team_lead, team_id FROM teams WHERE organizer_id = $1 AND course_id = $2", [req.user, course_id]);
+
+        res.json(teams.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+//Get all projects associated with current course id
 router.get("/sponsors/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;

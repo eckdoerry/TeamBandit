@@ -21,6 +21,7 @@ import {
 import AddProject from "./AddProject";
 import TeamsAssignment from "./TeamAssignmentButton";
 import EditProject from "./EditProject";
+import { getListItemUtilityClass } from "@mui/material";
 
 const Projects = ({ courseInfo, setRoute }) => {
     const [rows, setRows] = useState([]);
@@ -28,6 +29,7 @@ const Projects = ({ courseInfo, setRoute }) => {
 
     const [sponsors, setSponsors] = useState([]);
     const [mentors, setMentors] = useState([]);
+    const [teams, setTeams] = useState([]);
 
     const [allAssignedStudents, setAllAssignedStudents] = useState([]);
 
@@ -83,7 +85,7 @@ const Projects = ({ courseInfo, setRoute }) => {
                     <div>
                         <ul>
                             {studentsOnTeam.map((student) => (
-                            <li key={student}>{student}</li>
+                                <li key={student}>{displayStudent(student)}</li>
                             ))}
                             
                         </ul>
@@ -91,6 +93,39 @@ const Projects = ({ courseInfo, setRoute }) => {
                 </div>
             </div>
         );
+    };
+
+    const displayStudent =  (student) => {
+        const studentName = student.split(' ');
+
+        if(isTeamLead(studentName[0], studentName[1]) === true)
+        {
+            return `Team Lead: ${student}` 
+        }
+        else
+        {
+            return student;
+        }
+    };
+
+    const isTeamLead =  (fname, lname) => {
+        var student_id = -1;
+
+        for(var i = 0; i < allAssignedStudents.length; i++)
+        {
+            if(allAssignedStudents[i].student_fname === fname && allAssignedStudents[i].student_lname === lname)
+            {
+                student_id = allAssignedStudents[i].student_id;
+            }
+        }
+        for(var i = 0; i < teams.length; i++)
+        {
+            if(teams[i].team_lead == student_id)
+            {
+                return true;
+            }
+        }
+        return false;
     };
 
     const projectPage = (params) => {
@@ -286,11 +321,26 @@ const Projects = ({ courseInfo, setRoute }) => {
         }
     };
 
+    const getTeams = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/projects/getTeams/${courseInfo.course_id}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+            const jsonData = await response.json();
+
+            setTeams(jsonData);
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
+
     useEffect(() => {
         getProjects();
         getAssignedStudents();
         getSponsors();
         getMentors();
+        getTeams();
         setRowChange(false);
     }, [rowChange]);
 
