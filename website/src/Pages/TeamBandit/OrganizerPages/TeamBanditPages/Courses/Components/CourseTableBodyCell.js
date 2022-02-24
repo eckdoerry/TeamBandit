@@ -41,8 +41,12 @@ const CourseTableBodyCell = ({ courseInfo, setCoursesChange }) => {
         getStudents();
         getProjects();
     }, []);
-
-    const adjustedDate = courseInfo.creation_date.replace("T07:00:00.000Z", "");
+    
+    var adjustedDate = "";
+    if(courseInfo.course_id !== null)
+    {
+        adjustedDate = courseInfo.creation_date.replace("T07:00:00.000Z", "");
+    }
 
     return (
         <TableRow

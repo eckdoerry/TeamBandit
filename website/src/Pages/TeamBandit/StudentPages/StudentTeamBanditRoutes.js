@@ -44,7 +44,7 @@ const TeamBanditRouter = ({route, studentInfo, setStudentChange}) => {
     {
         return (
             <Fragment>
-                <Settings/>
+                <Settings studentInfo={studentInfo}/>
             </Fragment>
         )
     }

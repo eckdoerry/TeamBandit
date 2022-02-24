@@ -26,6 +26,11 @@ const Projects = ({ courseInfo, setRoute }) => {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
 
+    const [sponsors, setSponsors] = useState([]);
+    const [mentors, setMentors] = useState([]);
+
+    const [allAssignedStudents, setAllAssignedStudents] = useState([]);
+
     const deleteButton = (params) => {
         return (
             <strong>
@@ -53,9 +58,18 @@ const Projects = ({ courseInfo, setRoute }) => {
     };
 
     const teamPage = (params) => {
-        console.log(params.row.team_name);
+        const studentsOnTeam = [];
+        var project_id = params.row.project_id;
+        for(var i = 0; i < allAssignedStudents.length; i++)
+        {
+            if(allAssignedStudents[i].project_id === project_id)
+            {
+                studentsOnTeam.push(`${allAssignedStudents[i].student_fname} ${allAssignedStudents[i].student_lname}`)
+            }
+        }
+
         return (
-            <div>
+            <div style={{height:'100%'}}>
                 <Link target="_blank" to ={`/team-pages/${params.row.team_name}`}> {params.row.team_name} </Link>
                 <div style={{display:'flex', flexDirection:'row', alignItems: 'center'}}>
                     <div>
@@ -68,10 +82,10 @@ const Projects = ({ courseInfo, setRoute }) => {
                     </div>
                     <div>
                         <ul>
-                            <li>Max Mosier</li>
-                            <li>Quinn Melssen</li>
-                            <li>Liam Scholl</li>
-                            <li>Dakota Battle</li>
+                            {studentsOnTeam.map((student) => (
+                            <li key={student}>{student}</li>
+                            ))}
+                            
                         </ul>
                     </div>  
                 </div>
@@ -88,6 +102,50 @@ const Projects = ({ courseInfo, setRoute }) => {
         );
     };
 
+    const displayMentor = (params) => {
+        var mentorName = "";
+        var mentorEmail = "";
+        for(var i = 0; i < mentors.length; i++)
+        {
+            if(mentors[i].mentor_id === params.row.mentor_id)
+            {
+                mentorName = `${mentors[i].mentor_name}`;
+                mentorEmail = `${mentors[i].mentor_email}`;
+            }
+        }
+        return(
+            <div>
+                <Typography>{mentorName}</Typography>
+                <a href="">{mentorEmail}</a>
+            </div>
+        );
+    }
+
+    const displaySponsor = (params) => {
+        var sponsorName = "";
+        var sponsorNote = "";
+        var sponsorOrg = "";
+        for(var i = 0; i < sponsors.length; i++)
+        {
+            if(sponsors[i].client_id === params.row.client_id)
+            {
+                sponsorName = `${sponsors[i].client_fname} ${sponsors[i].client_lname}`;
+                sponsorNote = `${sponsors[i].client_notes}`;
+                sponsorOrg = `${sponsors[i].client_organization}`;
+            }
+        }
+        return(
+            <div>
+                <div style={{display:'flex'}}>
+                    <Typography style={{fontWeight: 'bold'}} >{sponsorName} </Typography>
+                    <Typography style={{paddingLeft: '5px'}}>{sponsorNote}</Typography>
+                </div>
+                <br></br>
+                <Typography>{sponsorOrg}</Typography>
+            </div>
+        );
+    }
+
     const columns = [
         {
             field: "project_name",
@@ -98,7 +156,8 @@ const Projects = ({ courseInfo, setRoute }) => {
         {
             field: "client_name",
             headerName: "Project Sponsor",
-            flex: 1,
+            renderCell: displaySponsor,
+            flex: 2,
         },
         {
             field: "team_name",
@@ -109,6 +168,7 @@ const Projects = ({ courseInfo, setRoute }) => {
         {
             field: "mentor_name",
             headerName: "Team Mentor",
+            renderCell: displayMentor,
             flex: 1,
         },
         {
@@ -179,7 +239,48 @@ const Projects = ({ courseInfo, setRoute }) => {
             const jsonData = await response.json();
 
             setRows(jsonData);
-            console.log(jsonData);
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
+
+    const getSponsors = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/projects/sponsors/${courseInfo.course_id}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+            const jsonData = await response.json();
+
+            setSponsors(jsonData);
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
+
+    const getMentors = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/projects/mentors/${courseInfo.course_id}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+            const jsonData = await response.json();
+
+            setMentors(jsonData);
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
+
+    const getAssignedStudents = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/projects/getAssignedStudents/${courseInfo.course_id}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+            const jsonData = await response.json();
+
+            setAllAssignedStudents(jsonData);
         } catch (err) {
             console.error(err.message);
         }
@@ -187,6 +288,9 @@ const Projects = ({ courseInfo, setRoute }) => {
 
     useEffect(() => {
         getProjects();
+        getAssignedStudents();
+        getSponsors();
+        getMentors();
         setRowChange(false);
     }, [rowChange]);
 
@@ -203,7 +307,7 @@ const Projects = ({ courseInfo, setRoute }) => {
                 <DataGrid
                     rows={rows}
                     columns={columns}
-                    rowHeight={"100%"}
+                    rowHeight={150}
                     getRowId={(rows) => rows.project_id}
                     components={{ Toolbar: CustomToolbar }}
                     disableSelectionOnClick

@@ -40,6 +40,22 @@ router.put("/updateColor/:id", async(req, res) => {
     }
 });
 
+// Updates a student based on student id
+router.put("/updateTeamName/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET team_name = $1 WHERE team_id = $2", [req.body['teamName'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
 // FOR STUDENTS Gets all teams based off of course_id and project id 
 router.get("/students/:course_id", authorization, async(req, res) => {
     try {

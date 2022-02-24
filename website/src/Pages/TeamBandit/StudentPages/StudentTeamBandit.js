@@ -106,22 +106,23 @@ export default function MiniDrawer({ setAuth }) {
     const [studentInfo, setStudentInfo] = useState([]);
     const [studentChange, setStudentChange] = useState(false);
 
-    // Updates Page @TODO: Not sure if getStudent needs to be in useEffect, I think it can be outside
-    useEffect(() => {
-        const getStudent = async () => {
-            try {
-                const response = await fetch(`${process.env.REACT_APP_BASEURL}/general/student`, {method: "GET", headers: {token: localStorage.token}});
-                const parseData = await response.json();
-    
-                setStudentInfo(parseData);
-    
-            } catch (error) {
-                console.error(error.message);
-            }
+    const getStudent = async () => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/general/student`, {method: "GET", headers: {token: localStorage.token}});
+            const parseData = await response.json();
+
+            setStudentInfo(parseData);
+
+        } catch (error) {
+            console.error(error.message);
         }
+    };
+
+    useEffect(() => {
+        
         getStudent();
-        setStudentChange(false);
-    }, [studentChange]);
+        
+    }, []);
 
     // JS
     const theme = useTheme();
