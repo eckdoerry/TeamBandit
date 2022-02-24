@@ -11,7 +11,6 @@ import Schedule from './CoursePages/Schedule/Schedule';
 import Settings from './CoursePages/Settings/Settings';
 import Students from './CoursePages/Students/Students';
 import Mentors from './CoursePages/Mentors/Mentors';
-import Teams from './CoursePages/Teams/Teams';
 import TeamsAssignment from './CoursePages/TeamAssignment/TeamAssignment';
 
 const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
@@ -54,14 +53,6 @@ const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
         return (
             <Fragment>
                 <Mentors courseInfo={courseInfo}/>
-            </Fragment>
-        )
-    }
-    else if(route === "Teams") 
-    {
-        return (
-            <Fragment>
-                <Teams courseInfo={courseInfo}/>
             </Fragment>
         )
     }

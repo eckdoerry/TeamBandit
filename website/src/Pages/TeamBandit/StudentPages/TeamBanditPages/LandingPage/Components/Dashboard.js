@@ -9,9 +9,7 @@ import './Dashboard.css';
 // nested components to be displayed within
 const Dashboard = ({studentInfo}) => {
 
-    const [rows, setRows] = useState([]);
-    const [rowChange, setRowChange] = useState(false);
-
+    
 
     return (
         <div>

@@ -9,7 +9,46 @@ router.get("/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
         
-        const students = await pool.query("SELECT projects.project_id, projects.project_name, projects.project_short_name, projects.mentor_id, projects.client_id, projects.projectoverview_filename, teams.team_name FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.organizer_id = $1 AND projects.course_id = $2 ORDER BY projects.project_id ASC ", [req.user, course_id]);
+        const students = await pool.query("SELECT projects.project_id, projects.project_name, projects.mentor_id, projects.client_id, projects.projectoverview_filename, teams.team_name FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.organizer_id = $1 AND projects.course_id = $2 ORDER BY projects.project_id ASC ", [req.user, course_id]);
+
+        res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+//Get all projects associated with current course id
+router.get("/mentors/:course_id", authorization, async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        
+        const students = await pool.query("SELECT mentor_id, mentor_name, mentor_email FROM mentors WHERE organizer_id = $1", [req.user]);
+
+        res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+//Get all projects associated with current course id
+router.get("/getTeams/:course_id", authorization, async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        
+        const teams = await pool.query("SELECT team_lead, team_id FROM teams WHERE organizer_id = $1 AND course_id = $2", [req.user, course_id]);
+
+        res.json(teams.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+//Get all projects associated with current course id
+router.get("/sponsors/:course_id", authorization, async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        
+        const students = await pool.query("SELECT client_id, client_fname, client_lname, client_organization, client_notes FROM clients WHERE organizer_id = $1", [req.user]);
 
         res.json(students.rows);
     } catch (error) {
@@ -22,7 +61,7 @@ router.get("/students/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
         
-        const students = await pool.query("SELECT projects.project_id, projects.project_name, projects.project_short_name, projects.mentor_id, projects.client_id, teams.team_name FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.course_id = $1 ORDER BY projects.project_id ASC ", [course_id]);
+        const students = await pool.query("SELECT projects.project_id, projects.project_name,  projects.mentor_id, projects.client_id, teams.team_name FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.course_id = $1 ORDER BY projects.project_id ASC ", [course_id]);
 
         res.json(students.rows);
     } catch (error) {
@@ -33,9 +72,9 @@ router.get("/students/:course_id", authorization, async(req, res) => {
 // Updates a project
 router.put("/projects/:id", authorization, async(req, res) => {
     try {
-
-        const updateProjects = await pool.query("UPDATE projects SET project_name = $1, project_short_name = $2, mentor_id = $3, client_id = $4 WHERE project_id = $5 AND organizer_id = $6", [req.body['project_name'], req.body['project_short_name'], req.body['mentor_id'], req.body['client_id'],  req.params['id'], req.user]);
-
+        
+        const updateProjects = await pool.query("UPDATE projects SET project_name = $1,  mentor_id = $2, client_id = $3 WHERE project_id = $4 AND organizer_id = $5", [req.body['project_name'],  req.body['projectMentor'], req.body['projectSponsor'],  req.params['id'], req.user]);
+        await pool.query("UPDATE teams SET team_lead = $1 WHERE project_id = $2", [req.body['teamLead'], req.params['id']]);
         if(updateProjects.rows.length === 0)
         {
             return res.json("This project is not yours!");
@@ -107,9 +146,9 @@ router.delete("/projects/:id", authorization, async(req, res) => {
 // Adds a new Project to the Projects table
 router.post("/projects", authorization, async(req,res) =>{
     try{
-        const { project_name, project_short_name, mentorName, sponsorName, courseId } = req.body;
+        const { project_name, mentorId, sponsorId, courseId } = req.body;
         
-        const newCourse = await pool.query("INSERT INTO projects (course_id, organizer_id, project_name, project_short_name, mentor_id, client_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING *", [courseId, req.user, project_name, project_short_name, mentorName, sponsorName]);
+        const newCourse = await pool.query("INSERT INTO projects (course_id, organizer_id, project_name, mentor_id, client_id) VALUES($1, $2, $3, $4, $5) RETURNING *", [courseId, req.user, project_name, mentorId, sponsorId]);
         
         // Create new team
         await pool.query("INSERT INTO teams (organizer_id, course_id, project_id) VALUES ($1, $2, $3)", [req.user, courseId, newCourse.rows[0].project_id]);
@@ -175,7 +214,7 @@ router.post("/toggleStudent", authorization, async(req,res) =>{
 router.get("/getAssignedStudents/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
-        const student = await pool.query("SELECT project_id, team_id, student_id FROM studentteambridgetable");
+        const student = await pool.query("SELECT studentteambridgetable.project_id, studentteambridgetable.team_id, studentteambridgetable.student_id, students.student_fname, students.student_lname FROM studentteambridgetable LEFT JOIN students ON studentteambridgetable.student_id = students.student_id");
 
         res.json(student.rows);
     } catch (error) {

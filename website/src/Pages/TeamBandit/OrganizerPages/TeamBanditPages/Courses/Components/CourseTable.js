@@ -11,6 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 const CourseTable = ({ coursesInfo, setCoursesChange }) => {
+    
     return (
         <>
             <TableContainer component={Paper}>
@@ -26,7 +27,7 @@ const CourseTable = ({ coursesInfo, setCoursesChange }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {coursesInfo.map((courseInfo) => (
+                        {coursesInfo.length === 0 ? null : coursesInfo.map((courseInfo) => (
                             <CourseTableBodyCell
                                 key={courseInfo.course_id}
                                 courseInfo={courseInfo}
