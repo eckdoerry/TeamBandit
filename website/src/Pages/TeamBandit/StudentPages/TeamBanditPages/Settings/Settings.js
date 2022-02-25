@@ -13,10 +13,17 @@ import { toast } from "react-toastify";
 
 const Settings = ({ studentInfo }) => {
     const [studentTeam, setStudentTeam] = useState([]);
+    const [studentTeamChange, setStudentTeamChange] = useState(false);
     const [isTeamLead, setTeamLead] = useState(false);
     const [colorValue, setColorValue] = useState("#00000");
     const [teamAssociation, setTeamAssociation] = useState([]);
     const [teamName, setTeamName] = useState("");
+    const [teamLogo, setTeamLogo] = useState(null);
+    const [teamLogoFilename, setTeamLogoFilename] = useState(null);
+
+    const onFileChange = (e) => {
+        setTeamLogo(e.target.files[0]); 
+    }
 
     const getTeamLead = async () => {
         try {
@@ -37,11 +44,11 @@ const Settings = ({ studentInfo }) => {
             } else {
                 setTeamLead(false);
             }
-
             setStudentTeam(otherData);
             setTeamAssociation(jsonData);
             setColorValue(otherData[0].page_color);
             setTeamName(otherData[0].team_name);
+            setTeamLogoFilename(otherData[0].team_logo);
         } catch (err) {
             console.error(err.message);
         }
@@ -65,6 +72,7 @@ const Settings = ({ studentInfo }) => {
             );
             
             setColorValue(color);
+            setStudentTeamChange(true);
         } catch (err) {
             console.error(err.message);
             
@@ -91,15 +99,40 @@ const Settings = ({ studentInfo }) => {
 
             setTeamName(teamName);
             toast.success("Team name was successfully changed!");
+            setStudentTeamChange(true);
         } catch (err) {
             console.error(err.message);
             toast.error("Team name did not change!");
         }
     };
 
+    const updateTeamLogo = async (e) => {
+        e.preventDefault();
+        if (!teamLogo)
+        {
+            return;
+        }
+        try {
+            const formData = new FormData();
+            formData.append("teamLogo", teamLogo);
+  
+            const myHeaders = new Headers();
+            myHeaders.append("token", localStorage.token);
+
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/fileuploads/teamLogo`, {method: "PUT", body: formData, headers: myHeaders});
+  
+            toast.success(await response.json());
+            setStudentTeamChange(true);
+        } catch (error) {
+            console.error(error.message);
+            toast.error("Failed to update!");
+        }
+    };
+
     useEffect(() => {
         getTeamLead();
-    }, []);
+        setStudentTeamChange(false);
+    }, [studentTeamChange]);
 
     if (isTeamLead) {
         return (
@@ -156,10 +189,14 @@ const Settings = ({ studentInfo }) => {
                         {" "}
                         Change Team Logo{" "}
                     </Typography>
-                    <Typography style={{ padding: "5px" }}>
-                        {" "}
-                        for liam to implement{" "}
-                    </Typography>
+                    <form onSubmit={updateTeamLogo} encType="multipart/form-data">
+                        <input type="file" accept="images/*" name="teamLogo" onChange={onFileChange}/>
+                        <Button style={{ padding: "5px" }} type="submit">Upload</Button>
+                    </form>
+                    <img
+                        src={"/uploads/images/teamLogos/" + teamLogoFilename}
+                        alt=""
+                    />
                 </Paper>
             </div>
         );

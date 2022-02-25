@@ -20,6 +20,7 @@ app.use("/mentors", require("../routes/TeamBanditPages/mentorRoutes"));
 app.use("/clients", require("../routes/TeamBanditPages/clientRoutes"));
 app.use("/teams", require("../routes/TeamBanditPages/teamRoutes"));
 app.use("/emailhub", require("../routes/TeamBanditPages/emailRoutes"));
+app.use("/assignments", require("../routes/TeamBanditPages/assignmentRoutes"));
 
 // General Routes
 app.use("/general", require("../routes/TeamBanditPages/generalRoutes"));
