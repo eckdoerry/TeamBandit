@@ -100,6 +100,20 @@ router.get("/student", authorization, async(req, res) => {
     }
 });
 
+// Grabs Student Information from the Students table
+router.get("/isCourse/:course_id", async(req, res) => {
+    try {
+
+        const course = await pool.query("SELECT course_title FROM courses WHERE course_id = $1", [req.params['course_id']]);
+        
+        res.json(course.rows[0]);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
 // Updates Students Bio
 router.put("/studentbio", authorization, async(req, res) => {
     try {
@@ -117,6 +131,94 @@ router.put("/studentbio", authorization, async(req, res) => {
         console.error(error.message);
     }
 });
+
+// TEAM PAGE ROUTES //
+
+//Get all projects associated with current course id
+router.get("/projects/:course_id", async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        
+        const organizer = await pool.query("SELECT organizer_id FROM courses WHERE course_id = $1", [course_id]);
+        
+        const students = await pool.query("SELECT projects.project_id, projects.project_name, projects.mentor_id, projects.client_id, projects.projectoverview_filename, teams.team_name, teams.team_logo FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.organizer_id = $1 AND projects.course_id = $2 ORDER BY projects.project_id ASC ", [organizer.rows[0].organizer_id, course_id]);
+        
+        res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+//Get all projects associated with current course id
+router.get("/mentors/:course_id", async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        const organizer = await pool.query("SELECT organizer_id FROM courses WHERE course_id = $1", [course_id]);
+        
+        const students = await pool.query("SELECT mentor_id, mentor_name, mentor_email FROM mentors WHERE organizer_id = $1", [organizer.rows[0].organizer_id]);
+
+        res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+//Get all projects associated with current course id
+router.get("/getTeams/:course_id", async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        const organizer = await pool.query("SELECT organizer_id FROM courses WHERE course_id = $1", [course_id]);
+        
+        const teams = await pool.query("SELECT team_lead, team_id FROM teams WHERE organizer_id = $1 AND course_id = $2", [organizer.rows[0].organizer_id, course_id]);
+
+        res.json(teams.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+//Get all projects associated with current course id
+router.get("/sponsors/:course_id",  async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        const organizer = await pool.query("SELECT organizer_id FROM courses WHERE course_id = $1", [course_id]);
+        
+        const students = await pool.query("SELECT client_id, client_fname, client_lname, client_organization, client_notes FROM clients WHERE organizer_id = $1", [organizer.rows[0].organizer_id]);
+
+        res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+//FOR STUDENTS Get all projects associated with current course id
+router.get("/students/:course_id", async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        const organizer = await pool.query("SELECT organizer_id FROM courses WHERE course_id = $1", [course_id]);
+        
+        const students = await pool.query("SELECT projects.project_id, projects.project_name,  projects.mentor_id, projects.client_id, teams.team_name FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.course_id = $1 ORDER BY projects.project_id ASC ", [course_id]);
+
+        res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+router.get("/getAssignedStudents/:course_id", async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        const organizer = await pool.query("SELECT organizer_id FROM courses WHERE course_id = $1", [course_id]);
+
+        const student = await pool.query("SELECT studentteambridgetable.project_id, studentteambridgetable.team_id, studentteambridgetable.student_id, students.student_fname, students.student_lname FROM studentteambridgetable LEFT JOIN students ON studentteambridgetable.student_id = students.student_id");
+
+        res.json(student.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// --------------- //
 
 // END GENERAL ROUTES //
 

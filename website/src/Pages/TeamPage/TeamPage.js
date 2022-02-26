@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
-
-// MUI Imports
-import Typography from "@mui/material/Typography";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { React, useState, useEffect } from "react";
+import {Link} from "react-router-dom";
+import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 // Datagrid
 import {
@@ -17,51 +19,38 @@ import {
     GridToolbarExport,
 } from "@mui/x-data-grid";
 
-// Page Components
-import AddProject from "./AddProject";
-import TeamsAssignment from "./TeamAssignmentButton";
-import EditProject from "./EditProject";
-import { getListItemUtilityClass } from "@mui/material";
+import TeamBanditLogo from "../../Images/logo.png";
 
-const Projects = ({ courseInfo, setRoute }) => {
+function Copyright() {
+    return (
+        <Typography variant="body2" color="text.secondary" align="center">
+            {"Copyright © "}
+            <Link color="inherit" href="https://mui.com/">
+                TeamBandit
+            </Link>{" "}
+            {new Date().getFullYear()}
+            {"."}
+        </Typography>
+    );
+}
+
+const theme = createTheme();
+
+const TeamPage = () => {
+    const windowValue = window.location.pathname.replace("/team-page/", "");
+    const regExp = /%20/g;
+    const course_id = windowValue.replace(regExp, " ");
+
     const [rows, setRows] = useState([]);
-    const [rowChange, setRowChange] = useState(false);
-
     const [sponsors, setSponsors] = useState([]);
     const [mentors, setMentors] = useState([]);
     const [teams, setTeams] = useState([]);
+    const [isCourse, setIsCourse] = useState(false);
 
     const [allAssignedStudents, setAllAssignedStudents] = useState([]);
 
-    const deleteButton = (params) => {
-        return (
-            <strong>
-                <Button
-                    variant="outlined"
-                    color="error"
-                    onClick={() => deleteProject(params.row.project_id)}
-                    startIcon={<DeleteIcon />}
-                >
-                    {" "}
-                    Delete{" "}
-                </Button>
-            </strong>
-        );
-    };
-
-    const editButton = (params) => {
-        return (
-            <EditProject
-                project={params.row}
-                setRowChange={setRowChange}
-                courseInfo={courseInfo}
-            />
-        );
-    };
-
     const teamPage = (params) => {
         const studentsOnTeam = [];
-        console.log(params);
         var project_id = params.row.project_id;
         for(var i = 0; i < allAssignedStudents.length; i++)
         {
@@ -135,6 +124,7 @@ const Projects = ({ courseInfo, setRoute }) => {
     };
 
     const projectPage = (params) => {
+        
         return (
             <Link target="_blank" to={`/project-pages/${params.row.project_name}`}>
                 {" "}
@@ -183,7 +173,6 @@ const Projects = ({ courseInfo, setRoute }) => {
                 </div>
                 <br></br>
                 <Typography>{sponsorOrg}</Typography>
-                
             </div>
         );
     }
@@ -213,24 +202,6 @@ const Projects = ({ courseInfo, setRoute }) => {
             renderCell: displayMentor,
             flex: 1,
         },
-        {
-            field: "edit",
-            headerName: "Edit",
-            sortable: false,
-            filterable: false,
-            flex: 1,
-            renderCell: editButton,
-            disableClickEventBubbling: true,
-        },
-        {
-            field: "delete",
-            headerName: "Delete",
-            sortable: false,
-            filterable: false,
-            flex: 1,
-            renderCell: deleteButton,
-            disableClickEventBubbling: true,
-        },
     ];
 
     const CustomToolbar = () => {
@@ -242,51 +213,18 @@ const Projects = ({ courseInfo, setRoute }) => {
                     </Typography>
                     <GridToolbarColumnsButton sx={{ m: 1 }} />
                     <GridToolbarFilterButton sx={{ m: 1 }} />
-                    <GridToolbarExport sx={{ m: 1 }} />
-                    <AddProject
-                        courseInfo={courseInfo}
-                        rows={rows}
-                        setRowChange={setRowChange}
-                    />
-                    <TeamsAssignment setRoute={setRoute} />
-                    <Typography sx={{ m: 1 }} variant="h6">
-                        Public Address:
-                    </Typography>
-                    <Link target="_blank" to={`/team-page/${courseInfo.course_id}`}>
-                {" "}
-                { `http://34.216.91.228/team-page/${courseInfo.course_id}/`}{" "}
-            </Link>
                 </GridToolbarContainer>
         );
-    };
-
-    // Delete function
-    const deleteProject = async (id) => {
-        try {
-            await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/projects/${id}/`,
-                {
-                    method: "DELETE",
-                    headers: { token: localStorage.token },
-                }
-            );
-
-            toast.success("Project was deleted!");
-            setRowChange(true);
-        } catch (error) {
-            console.error(error.message);
-            toast.error("Failed to delete project!");
-        }
     };
 
     const getProjects = async () => {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/${courseInfo.course_id}`,
+                `${process.env.REACT_APP_BASEURL}/general/projects/${course_id}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();
-
+            
             setRows(jsonData);
         } catch (err) {
             console.error(err.message);
@@ -296,7 +234,7 @@ const Projects = ({ courseInfo, setRoute }) => {
     const getSponsors = async () => {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/sponsors/${courseInfo.course_id}`,
+                `${process.env.REACT_APP_BASEURL}/general/sponsors/${course_id}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();
@@ -310,7 +248,7 @@ const Projects = ({ courseInfo, setRoute }) => {
     const getMentors = async () => {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/mentors/${courseInfo.course_id}`,
+                `${process.env.REACT_APP_BASEURL}/general/mentors/${course_id}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();
@@ -324,7 +262,7 @@ const Projects = ({ courseInfo, setRoute }) => {
     const getAssignedStudents = async () => {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/getAssignedStudents/${courseInfo.course_id}`,
+                `${process.env.REACT_APP_BASEURL}/general/getAssignedStudents/${course_id}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();
@@ -338,12 +276,36 @@ const Projects = ({ courseInfo, setRoute }) => {
     const getTeams = async () => {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/getTeams/${courseInfo.course_id}`,
+                `${process.env.REACT_APP_BASEURL}/general/getTeams/${course_id}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();
 
             setTeams(jsonData);
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
+
+    const isACourse = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/general/isCourse/${course_id}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+            const jsonData = await response.json();
+
+            
+            if(jsonData != null)
+            {
+                console.log(true)
+                setIsCourse(true);
+            }
+            else {
+                console.log(false)
+                setIsCourse(false);
+            }
+            
         } catch (err) {
             console.error(err.message);
         }
@@ -355,11 +317,27 @@ const Projects = ({ courseInfo, setRoute }) => {
         getSponsors();
         getMentors();
         getTeams();
-        setRowChange(false);
-    }, [rowChange]);
+        isACourse();
+    }, [isCourse]);
 
-    return (
-            <div
+    
+    if (isCourse == true && rows != []) {
+        return (
+            <div>
+            <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <AppBar
+                        style={{ backgroundColor: `#002454` }}
+                        position="relative"
+                    >
+                        <Toolbar style={{ backgroundColor: `#002454` }}>
+                            <Typography variant="h6" color="inherit" noWrap>
+                                TeamBandit
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                </ThemeProvider>
+                <div
                 style={{
                     padding: "25px",
                     display: "flex",
@@ -367,16 +345,75 @@ const Projects = ({ courseInfo, setRoute }) => {
                     width: "100%",
                 }}
             >
+            
                 <DataGrid
                     rows={rows}
                     columns={columns}
+                    autoHeight
                     rowHeight={150}
                     getRowId={(rows) => rows.project_id}
                     components={{ Toolbar: CustomToolbar }}
                     disableSelectionOnClick
                 />
             </div>
-    );
+            </div>
+        );
+    } else {
+        return (
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                    width: "100%",
+                }}
+            >
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <AppBar
+                        style={{ backgroundColor: `#002454` }}
+                        position="relative"
+                    >
+                        <Toolbar style={{ backgroundColor: `#002454` }}>
+                            <Typography variant="h6" color="inherit" noWrap>
+                                TeamBandit
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                </ThemeProvider>
+                <Typography
+                    variant="h1"
+                    style={{
+                        color: "#002454",
+                        textShadow: "1px 1px 2px black",
+                    }}
+                >
+                    {" "}
+                    404{" "}
+                </Typography>
+                <Typography
+                    variant="h4"
+                    style={{
+                        color: "#FAC01A",
+                        textShadow: "1px 1px 2px black",
+                    }}
+                >
+                    {" "}
+                    This Course Does Not Exist{" "}
+                </Typography>
+                
+                    <img
+                        src={TeamBanditLogo}
+                        alt="Logo"
+                        width="250px"
+                        height="250px"
+                    />
+                <Link to="/"><Button variant="contained" style={{backgroundColor:"#002454"}}> GO BACK TO HOME PAGE </Button></Link>
+            </div>
+        );
+    }
 };
 
-export default Projects;
+export default TeamPage;

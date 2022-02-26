@@ -9,6 +9,7 @@ import Info from "./Pages/InfoPage/Info";
 import PrivacyPolicy from "./Pages/PrivacyPolicyPage/PrivacyPolicy";
 import UserRoutes from "./Pages/TeamBandit/UserRoutes";
 import TeamPages from "./Pages/TeamPages/TeamPages";
+import TeamPage from "./Pages/TeamPage/TeamPage";
 import ProjectPages from "./Pages/ProjectPages/ProjectPages";
 
 // Toastify gets configured on the first page, this is the notification thing
@@ -69,6 +70,7 @@ function App() {
                         <Route exact path = "/privacy-policy" element={<PrivacyPolicy/>}/>
                         <Route exact path = "/team-bandit" element={isAuthenticated ? <UserRoutes userIdentifier={userIdentifier} setAuth={setAuth}/> : <Navigate to="/"/>}/>
                         <Route exact path = "/team-pages/:teamName" element={<TeamPages/>}/>
+                        <Route exact path = "/team-page/:courseName" element={<TeamPage/>}/>
                         <Route exact path = "/project-pages/:projectName" element={<ProjectPages/>}/>
                     </Routes>
                 </div>
