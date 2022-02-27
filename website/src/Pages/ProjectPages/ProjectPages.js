@@ -42,26 +42,25 @@ const ProjectPage = () => {
     const [projectInfo, setProjectInfo] = useState([]);
 
     const getProjectOverview = async () => {
-            try {
-                const response = await fetch(
-                    `${process.env.REACT_APP_BASEURL}/projects/project-name/${projectname}`,
-                    { method: "GET", headers: { token: localStorage.token } }
-                );
-                const jsonData = await response.json();
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/projects/project-name/${projectname}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+            const jsonData = await response.json();
 
-                setProjectInfo(jsonData);
-                console.log(jsonData);
-            } catch (err) {
-                console.error(err.message);
-            }
-        };
+            setProjectInfo(jsonData);
+            console.log(jsonData);
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
 
     useEffect(() => {
-        
         getProjectOverview();
-    }, []);
+    });
 
-    if (projectInfo[0] != null) {
+    if (projectInfo !== null) {
     return (
         <div style={{ display: "flex" }}>
             <div style={{ width: "100%" }}>

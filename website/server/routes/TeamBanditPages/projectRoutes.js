@@ -9,7 +9,7 @@ router.get("/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
         
-        const students = await pool.query("SELECT projects.project_id, projects.project_name, projects.mentor_id, projects.client_id, projects.projectoverview_filename, teams.team_name, teams.team_logo FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.organizer_id = $1 AND projects.course_id = $2 ORDER BY projects.project_id ASC ", [req.user, course_id]);
+        const students = await pool.query("SELECT projects.project_id, projects.project_name, projects.mentor_id, projects.client_id, projects.projectoverview_filename, teams.team_name, teams.team_logo, teams.team_lead FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.organizer_id = $1 AND projects.course_id = $2 ORDER BY projects.project_id ASC ", [req.user, course_id]);
         
         res.json(students.rows);
     } catch (error) {
