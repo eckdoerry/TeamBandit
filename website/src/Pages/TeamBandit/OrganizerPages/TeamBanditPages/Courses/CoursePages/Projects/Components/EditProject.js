@@ -127,7 +127,7 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
 
             if( team_lead === "")
             {
-                teamLead = null;
+                teamLead = project.team_lead;
             }
             else
             {
