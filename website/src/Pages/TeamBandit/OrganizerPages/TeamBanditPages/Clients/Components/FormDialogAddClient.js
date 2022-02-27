@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import { toast } from 'react-toastify';
 
-const AddClient = ({setClientsChange}) => {
+const FormDialogAddClient = ({setClientsChange}) => {
   const [open, setOpen] = useState(false);
   const [clientFName, setClientFName] = useState("");
   const [clientLName, setClientLName] = useState("");
@@ -17,6 +17,7 @@ const AddClient = ({setClientsChange}) => {
   const [clientEmail, setClientEmail] = useState("");
   const [clientPhoneNumber, setClientPhoneNumber] = useState("");
   const [clientNotes, setClientNotes] = useState("");
+  const [failedSubmit, setFailedSubmit] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,6 +31,7 @@ const AddClient = ({setClientsChange}) => {
     e.preventDefault();
     if (!clientFName || !clientLName || !clientOrganization || !clientEmail){
       alert("Please fill out all required fields");
+      setFailedSubmit(true);
       return;
     }
     try {
@@ -88,7 +90,7 @@ const AddClient = ({setClientsChange}) => {
             fullWidth
             variant="standard"
             value = {clientLName}
-            error={clientLName === ""}
+            error={clientLName === "" && failedSubmit}
             helperText={clientLName === "" ? 'Client last name is required' : ' '}
             onChange={(e) => setClientLName(e.target.value)}
           />
@@ -101,7 +103,7 @@ const AddClient = ({setClientsChange}) => {
             fullWidth
             variant="standard"
             value = {clientFName}
-            error={clientFName === ""}
+            error={clientFName === "" && failedSubmit}
             helperText={clientFName === "" ? 'Client first name is required' : ' '}
             onChange={(e) => setClientFName(e.target.value)}
           />
@@ -114,7 +116,7 @@ const AddClient = ({setClientsChange}) => {
             fullWidth
             variant="standard"
             value = {clientOrganization}
-            error={clientOrganization === ""}
+            error={clientOrganization === "" && failedSubmit}
             helperText={clientOrganization === "" ? 'Client organization is required' : ' '}
             onChange={(e) => setClientOrganization(e.target.value)}
           />
@@ -126,7 +128,7 @@ const AddClient = ({setClientsChange}) => {
             fullWidth
             variant="standard"
             value = {clientEmail}
-            error={clientEmail === ""}
+            error={clientEmail === "" && failedSubmit}
             helperText={clientEmail === "" ? 'Client email is required' : ' '}
             onChange={(e) => setClientEmail(e.target.value)}
           />
@@ -164,4 +166,4 @@ const AddClient = ({setClientsChange}) => {
   );
 }
 
-export default AddClient;
+export default FormDialogAddClient;

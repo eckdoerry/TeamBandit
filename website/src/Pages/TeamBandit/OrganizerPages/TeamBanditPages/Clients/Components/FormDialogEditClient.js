@@ -20,7 +20,7 @@ const style = {
     p: 4,
 };
 
-const EditClient = ({client, setClientsChange}) => {
+const FormDialogEditClient = ({client, setClientsChange}) => {
 
     const [clientFName, setClientFName] = useState("");
     const [clientLName, setClientLName] = useState("");
@@ -205,4 +205,4 @@ const EditClient = ({client, setClientsChange}) => {
     );
 }
 
-export default EditClient;
+export default FormDialogEditClient;

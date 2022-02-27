@@ -5,10 +5,10 @@ import { DataGrid,
   GridToolbarFilterButton,
   GridToolbarExport,
 } from '@mui/x-data-grid';
-import AddClient from './Components/AddClient';
+import FormDialogAddClient from './Components/FormDialogAddClient';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditClient from "./Components/EditClient";
+import FormDialogEditClient from "./Components/FormDialogEditClient";
 
 import { toast } from 'react-toastify';
 
@@ -19,7 +19,7 @@ const Clients = () => {
 
     const editButton = (params) => {
       return (
-        <EditClient client={params.row} setClientsChange={setClientsChange}/>
+        <FormDialogEditClient client={params.row} setClientsChange={setClientsChange}/>
       )
     };
 
@@ -135,7 +135,7 @@ const Clients = () => {
           <div className='PageHeader'>
           <h1>Clients</h1>
 
-          <AddClient setClientsChange = {setClientsChange}/>
+          <FormDialogAddClient setClientsChange = {setClientsChange}/>
           </div>
 
             <br />

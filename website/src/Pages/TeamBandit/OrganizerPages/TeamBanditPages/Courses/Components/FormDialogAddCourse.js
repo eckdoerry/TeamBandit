@@ -15,6 +15,7 @@ const FormDialogAddCourse = ({ setCoursesChange }) => {
     const [title, setTitle] = useState("");
     const [semester, setSemester] = useState("");
     const [description, setDescription] = useState("");
+    const [failedSubmit, setFailedSubmit] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -28,6 +29,7 @@ const FormDialogAddCourse = ({ setCoursesChange }) => {
         e.preventDefault();
         if (!title) {
             alert("Please add a Course Name");
+            setFailedSubmit(true);
             return;
         }
         try {
@@ -83,7 +85,7 @@ const FormDialogAddCourse = ({ setCoursesChange }) => {
                         fullWidth
                         variant="standard"
                         value={title}
-                        error={title === ""}
+                        error={title === "" && failedSubmit}
                         helperText={
                             title === "" ? "This is a required field" : " "
                         }
