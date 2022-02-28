@@ -30,7 +30,6 @@ const FormDialogAddClient = ({setClientsChange}) => {
   const onSubmitForm = async e => {
     e.preventDefault();
     if (!clientFName || !clientLName || !clientOrganization || !clientEmail){
-      alert("Please fill out all required fields");
       setFailedSubmit(true);
       return;
     }

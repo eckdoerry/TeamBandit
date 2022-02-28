@@ -28,7 +28,6 @@ const FormDialogAddCourse = ({ setCoursesChange }) => {
     const onSubmitForm = async (e) => {
         e.preventDefault();
         if (!title) {
-            alert("Please add a Course Name");
             setFailedSubmit(true);
             return;
         }
