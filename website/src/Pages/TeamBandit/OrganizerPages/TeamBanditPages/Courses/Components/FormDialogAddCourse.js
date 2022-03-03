@@ -19,15 +19,17 @@ const FormDialogAddCourse = ({ setCoursesChange }) => {
 
     const handleClickOpen = () => {
         setOpen(true);
+        setFailedSubmit(false);
     };
 
     const handleClose = (event) => {
         setOpen(false);
+        setFailedSubmit(false);
     };
 
     const onSubmitForm = async (e) => {
         e.preventDefault();
-        if (!title) {
+        if (!title || !semester) {
             setFailedSubmit(true);
             return;
         }
@@ -86,17 +88,22 @@ const FormDialogAddCourse = ({ setCoursesChange }) => {
                         value={title}
                         error={title === "" && failedSubmit}
                         helperText={
-                            title === "" ? "This is a required field" : " "
+                            title === "" && failedSubmit ? "Course name is required" : " "
                         }
                         onChange={(e) => setTitle(e.target.value)}
                     />
                     <TextField
+                        required
                         margin="dense"
                         label="Course Semester"
                         type="text"
                         fullWidth
                         variant="standard"
                         onChange={(e) => setSemester(e.target.value)}
+                        error={semester === "" && failedSubmit}
+                        helperText={
+                            semester === "" && failedSubmit ? "Course semester is required" : " "
+                        }
                     />
                     <TextField
                         margin="dense"
