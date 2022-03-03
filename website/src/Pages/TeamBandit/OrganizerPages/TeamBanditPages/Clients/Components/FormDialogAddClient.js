@@ -21,10 +21,12 @@ const FormDialogAddClient = ({setClientsChange}) => {
 
   const handleClickOpen = () => {
     setOpen(true);
+    setFailedSubmit(false);
   };
 
   const handleClose = (event) => {
     setOpen(false);
+    setFailedSubmit(false);
   };
 
   const onSubmitForm = async e => {
@@ -90,7 +92,7 @@ const FormDialogAddClient = ({setClientsChange}) => {
             variant="standard"
             value = {clientLName}
             error={clientLName === "" && failedSubmit}
-            helperText={clientLName === "" ? 'Client last name is required' : ' '}
+            helperText={clientLName === "" && failedSubmit ? 'Client last name is required' : ' '}
             onChange={(e) => setClientLName(e.target.value)}
           />
 
@@ -103,7 +105,7 @@ const FormDialogAddClient = ({setClientsChange}) => {
             variant="standard"
             value = {clientFName}
             error={clientFName === "" && failedSubmit}
-            helperText={clientFName === "" ? 'Client first name is required' : ' '}
+            helperText={clientFName === "" && failedSubmit ? 'Client first name is required' : ' '}
             onChange={(e) => setClientFName(e.target.value)}
           />
 
@@ -116,11 +118,12 @@ const FormDialogAddClient = ({setClientsChange}) => {
             variant="standard"
             value = {clientOrganization}
             error={clientOrganization === "" && failedSubmit}
-            helperText={clientOrganization === "" ? 'Client organization is required' : ' '}
+            helperText={clientOrganization === "" && failedSubmit ? 'Client organization is required' : ' '}
             onChange={(e) => setClientOrganization(e.target.value)}
           />
 
           <TextField
+            required
             margin="dense"
             label="Client Email"
             type="email"
@@ -128,7 +131,7 @@ const FormDialogAddClient = ({setClientsChange}) => {
             variant="standard"
             value = {clientEmail}
             error={clientEmail === "" && failedSubmit}
-            helperText={clientEmail === "" ? 'Client email is required' : ' '}
+            helperText={clientEmail === "" && failedSubmit ? 'Client email is required' : ' '}
             onChange={(e) => setClientEmail(e.target.value)}
           />
 
