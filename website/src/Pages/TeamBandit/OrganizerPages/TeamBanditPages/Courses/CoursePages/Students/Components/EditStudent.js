@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { toast } from 'react-toastify';
 
@@ -21,7 +22,7 @@ const style = {
     p: 4,
 };
 
-const EditStudent = ({student, setRowChange}) => {
+const EditStudent = ({courseInfo, student, setRowChange}) => {
     
     // Variables 
     const [student_fname, setFname] = useState(student.student_fname);
@@ -62,6 +63,29 @@ const EditStudent = ({student, setRowChange}) => {
         }
     };
 
+    // Delete function
+    const deleteStudent = async (id) => {
+        try {
+            const course_id = courseInfo.course_id;
+            
+            const PLEASE = {course_id};
+            
+            
+            await fetch(`${process.env.REACT_APP_BASEURL}/students/students/${id}/${course_id}`, {
+                method: "DELETE",
+                headers: { token: localStorage.token },
+                body: JSON.stringify(PLEASE)
+            });
+
+
+            toast.success("Student was deleted!");
+            setRowChange(true);
+        } catch (error) {
+            console.error(error.message);
+            toast.error("Failed to delete student!");
+        }
+    }
+
     return (
         <div>
             <Button variant="outlined" color="warning" onClick={handleOpen} startIcon={<EditIcon />}>
@@ -92,6 +116,7 @@ const EditStudent = ({student, setRowChange}) => {
                 <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="GPA" type = "text" value = {student_gpa} onChange = {e => setGPA(e.target.value)}/>        
                 <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {(e) => (handleClose(), updateStudent(e))}> Edit </Button>
                 <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Close </Button>
+                <Button variant="outlined" color="error" onClick = {() => deleteStudent(student.student_id)} startIcon={<DeleteIcon />}> PERMANENTLY DELETE </Button>
                 </Box>
             </Modal>
         </div>

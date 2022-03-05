@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { toast } from 'react-toastify';
 
@@ -21,7 +22,7 @@ const style = {
     p: 4,
 };
 
-const EditMentor = ({mentor, setRowChange}) => {
+const EditMentor = ({courseInfo, mentor, setRowChange}) => {
     
     // Variables 
     const [mentor_name, setMentorName] = useState(mentor.mentor_name);
@@ -35,6 +36,24 @@ const EditMentor = ({mentor, setRowChange}) => {
         setMentorName(mentor.mentor_name);
         setMentorEmail(mentor.mentor_email);
     };
+
+    // Delete function
+    const deleteMentor= async (id) => {
+        try {
+
+            await fetch(`${process.env.REACT_APP_BASEURL}/mentors/mentors/${id}/${courseInfo.course_id}`, {
+                method: "DELETE",
+                headers: { token: localStorage.token }
+            });
+
+
+            toast.success("Mentor was deleted!");
+            setRowChange(true);
+        } catch (error) {
+            console.error(error.message);
+            toast.error("Failed to delete mentor!");
+        }
+    }
 
     //edit description function
     const updateMentor = async e => {
@@ -83,6 +102,7 @@ const EditMentor = ({mentor, setRowChange}) => {
                 <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="Mentor Email" type = "text" value = {mentor_email} onChange = {e => setMentorEmail(e.target.value)}/>
                 <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {(e) => (handleClose(), updateMentor(e))}> Edit </Button>
                 <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Close </Button>
+                <Button variant="outlined" color="error" onClick = {() => deleteMentor(mentor.mentor_id)} startIcon={<DeleteIcon />}> PERMANENTLY DELETE </Button>
                 </Box>
             </Modal>
         </div>

@@ -105,14 +105,6 @@ const FormDialogAddCourse = ({ setCoursesChange }) => {
                             semester === "" && failedSubmit ? "Course semester is required" : " "
                         }
                     />
-                    <TextField
-                        margin="dense"
-                        label="Course Description"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>

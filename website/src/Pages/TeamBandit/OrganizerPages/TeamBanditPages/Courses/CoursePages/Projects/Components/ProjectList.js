@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 
 // MUI Imports
 import Typography from "@mui/material/Typography";
-import DeleteIcon from "@mui/icons-material/Delete";
+
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
+import Box from '@mui/material/Box';
 
 // Datagrid
 import {
@@ -21,7 +22,6 @@ import {
 import AddProject from "./AddProject";
 import TeamsAssignment from "./TeamAssignmentButton";
 import EditProject from "./EditProject";
-import { getListItemUtilityClass } from "@mui/material";
 
 const Projects = ({ courseInfo, setRoute }) => {
     const [rows, setRows] = useState([]);
@@ -32,22 +32,6 @@ const Projects = ({ courseInfo, setRoute }) => {
     const [teams, setTeams] = useState([]);
 
     const [allAssignedStudents, setAllAssignedStudents] = useState([]);
-
-    const deleteButton = (params) => {
-        return (
-            <strong>
-                <Button
-                    variant="outlined"
-                    color="error"
-                    onClick={() => deleteProject(params.row.project_id)}
-                    startIcon={<DeleteIcon />}
-                >
-                    {" "}
-                    Delete{" "}
-                </Button>
-            </strong>
-        );
-    };
 
     const editButton = (params) => {
         return (
@@ -61,13 +45,13 @@ const Projects = ({ courseInfo, setRoute }) => {
 
     const teamPage = (params) => {
         const studentsOnTeam = [];
-        console.log(params);
+        
         var project_id = params.row.project_id;
         for(var i = 0; i < allAssignedStudents.length; i++)
         {
             if(allAssignedStudents[i].project_id === project_id)
             {
-                studentsOnTeam.push(`${allAssignedStudents[i].student_fname} ${allAssignedStudents[i].student_lname}`)
+                studentsOnTeam.push(allAssignedStudents[i]);
             }
         }
 
@@ -91,7 +75,7 @@ const Projects = ({ courseInfo, setRoute }) => {
                     <div>
                         <ul>
                             {studentsOnTeam.map((student) => (
-                                <li key={student}>{displayStudent(student)}</li>
+                                displayStudent(student)
                             ))}
                             
                         </ul>
@@ -102,28 +86,22 @@ const Projects = ({ courseInfo, setRoute }) => {
     };
 
     const displayStudent =  (student) => {
-        const studentName = student.split(' ');
-
-        if(isTeamLead(studentName[0], studentName[1]) === true)
+        
+        const string = `mailto:` + student.student_email;
+        if(isTeamLead(student.student_id) === true)
         {
-            return `Team Lead: ${student}` 
+            return(
+                <li><a href={string}>{student.student_fname} {student.student_lname} (Lead)</a></li>
+            ); 
         }
         else
         {
-            return student;
+            return (<li>{student.student_fname} {student.student_lname}</li>);
         }
     };
 
-    const isTeamLead =  (fname, lname) => {
-        var student_id = -1;
+    const isTeamLead =  (student_id) => {
 
-        for(var i = 0; i < allAssignedStudents.length; i++)
-        {
-            if(allAssignedStudents[i].student_fname === fname && allAssignedStudents[i].student_lname === lname)
-            {
-                student_id = allAssignedStudents[i].student_id;
-            }
-        }
         for(var i = 0; i < teams.length; i++)
         {
             if(teams[i].team_lead == student_id)
@@ -135,11 +113,20 @@ const Projects = ({ courseInfo, setRoute }) => {
     };
 
     const projectPage = (params) => {
+        
         return (
+            <div>
+            <Typography variant="h5">{params.row.project_name}</Typography>
+            <div style={{display:'flex'}}>
             <Link target="_blank" to={`/project-pages/${params.row.project_name}`}>
-                {" "}
-                {params.row.project_name}{" "}
+                Project Description
             </Link>
+            <Link style={{paddingLeft:'7px'}}target="_blank" to={`/team-pages/${params.row.team_name}`}>
+                Student Team Page
+            </Link>
+            </div>
+            
+            </div>
         );
     };
 
@@ -193,24 +180,28 @@ const Projects = ({ courseInfo, setRoute }) => {
             field: "project_name",
             headerName: "Project Title",
             renderCell: projectPage,
+            cellClassName: 'death',
             flex: 2,
         },
         {
             field: "client_name",
             headerName: "Project Sponsor",
             renderCell: displaySponsor,
+            cellClassName: 'death',
             flex: 2,
         },
         {
             field: "team_name",
             headerName: "Student Team",
             renderCell: teamPage,
+            cellClassName: 'death',
             flex: 3,
         },
         {
             field: "mentor_name",
             headerName: "Team Mentor",
             renderCell: displayMentor,
+            cellClassName: 'death',
             flex: 1,
         },
         {
@@ -220,15 +211,6 @@ const Projects = ({ courseInfo, setRoute }) => {
             filterable: false,
             flex: 1,
             renderCell: editButton,
-            disableClickEventBubbling: true,
-        },
-        {
-            field: "delete",
-            headerName: "Delete",
-            sortable: false,
-            filterable: false,
-            flex: 1,
-            renderCell: deleteButton,
             disableClickEventBubbling: true,
         },
     ];
@@ -258,25 +240,6 @@ const Projects = ({ courseInfo, setRoute }) => {
             </Link>
                 </GridToolbarContainer>
         );
-    };
-
-    // Delete function
-    const deleteProject = async (id) => {
-        try {
-            await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/projects/${id}/`,
-                {
-                    method: "DELETE",
-                    headers: { token: localStorage.token },
-                }
-            );
-
-            toast.success("Project was deleted!");
-            setRowChange(true);
-        } catch (error) {
-            console.error(error.message);
-            toast.error("Failed to delete project!");
-        }
     };
 
     const getProjects = async () => {
@@ -367,6 +330,16 @@ const Projects = ({ courseInfo, setRoute }) => {
                     width: "100%",
                 }}
             >
+            <Box
+                sx={{
+                    height:'100%',
+                    width:'100%',
+                    '& .death': {
+                        borderRight: 1,
+                        borderColor: '#d3d3d3'
+                    },
+                }}
+            >
                 <DataGrid
                     rows={rows}
                     columns={columns}
@@ -375,6 +348,7 @@ const Projects = ({ courseInfo, setRoute }) => {
                     components={{ Toolbar: CustomToolbar }}
                     disableSelectionOnClick
                 />
+                </Box>
             </div>
     );
 };

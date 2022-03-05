@@ -27,7 +27,7 @@ const CourseTable = ({ coursesInfo, setCoursesChange }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {coursesInfo.length === 0 ? null : coursesInfo.map((courseInfo) => (
+                        {(coursesInfo.length == 0 || coursesInfo[0].course_id == null) ? null : coursesInfo.map((courseInfo) => (
                             <CourseTableBodyCell
                                 key={courseInfo.course_id}
                                 courseInfo={courseInfo}

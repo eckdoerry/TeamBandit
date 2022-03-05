@@ -10,6 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 
 import Select from "@mui/material/Select";
 import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 import { toast } from "react-toastify";
@@ -180,7 +181,7 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
         
         for(var i = 0; i < clients.length; i++)
         {
-            console.log(`${clients[i].client_fname} ${clients[i].client_lname}`)
+            
             if( `${clients[i].client_fname} ${clients[i].client_lname}` == client_name)
             {
                 return clients[i].client_id;
@@ -290,7 +291,24 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
         
     };
 
-    
+    // Delete function
+    const deleteProject = async (id) => {
+        try {
+            await fetch(
+                `${process.env.REACT_APP_BASEURL}/projects/projects/${id}/`,
+                {
+                    method: "DELETE",
+                    headers: { token: localStorage.token },
+                }
+            );
+
+            toast.success("Project was deleted!");
+            setRowChange(true);
+        } catch (error) {
+            console.error(error.message);
+            toast.error("Failed to delete project!");
+        }
+    };
 
     useEffect(() => {
         getMentors();
@@ -458,6 +476,15 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
                         {" "}
                         Close{" "}
                     </Button>
+                    <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => deleteProject(project.project_id)}
+                    startIcon={<DeleteIcon />}
+                >
+                    {" "}
+                    PERMANENTLY DELETE{" "}
+                </Button>
                 </Box>
             </Modal>
         </Fragment>

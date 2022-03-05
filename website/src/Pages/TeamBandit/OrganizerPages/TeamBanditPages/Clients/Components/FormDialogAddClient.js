@@ -67,7 +67,7 @@ const FormDialogAddClient = ({setClientsChange}) => {
   };
 
   return (
-    <div>
+    <div style={{paddingLeft: '25px', paddingBottom:'5px'}}>
       <Button variant="outlined" onClick={handleClickOpen}>
         Add Client
       </Button>

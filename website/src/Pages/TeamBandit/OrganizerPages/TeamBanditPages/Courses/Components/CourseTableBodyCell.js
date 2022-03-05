@@ -53,18 +53,18 @@ const CourseTableBodyCell = ({ courseInfo, setCoursesChange }) => {
             key={courseInfo.course_id}
             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-            <TableCell component="th" scope="row">
+            <TableCell component="th" scope="row" style={{borderRight: '1px solid #d3d3d3'}}>
                 <CoursePage
                     courseInfo={courseInfo}
                     setCoursesChange={setCoursesChange}
                 />
             </TableCell>
-            <TableCell>
+            <TableCell style={{borderRight: '1px solid #d3d3d3'}}>
                 {courseInfo.organizer_fname + " " + courseInfo.organizer_lname}
             </TableCell>
-            <TableCell>{courseInfo.course_semester}</TableCell>
-            <TableCell>{projects.length}</TableCell>
-            <TableCell>{students.length}</TableCell>
+            <TableCell style={{borderRight: '1px solid #d3d3d3'}}>{courseInfo.course_semester}</TableCell>
+            <TableCell style={{borderRight: '1px solid #d3d3d3'}}>{projects.length}</TableCell>
+            <TableCell style={{borderRight: '1px solid #d3d3d3'}}>{students.length}</TableCell>
             <TableCell>{adjustedDate}</TableCell>
         </TableRow>
     );

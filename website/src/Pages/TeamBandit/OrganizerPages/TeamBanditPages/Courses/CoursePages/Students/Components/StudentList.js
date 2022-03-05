@@ -7,7 +7,8 @@ import AddStudent from "./AddStudent";
 
 // MUI Imports
 import Typography from '@mui/material/Typography';
-import DeleteIcon from '@mui/icons-material/Delete';
+import Box from '@mui/material/Box';
+
 import Button from '@mui/material/Button';
 import { DataGrid,
     GridToolbarContainer,
@@ -21,17 +22,10 @@ const Students = ({courseInfo}) => {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
             
-    const deleteButton = (params) => {
-        return (
-            <strong>
-                <Button variant="outlined" color="error" onClick = {() => deleteStudent(params.row.student_id)} startIcon={<DeleteIcon />}> Delete </Button>
-            </strong>
-        )
-    };
 
     const editButton = (params) => {
         return (
-            <EditStudent student={params.row} setRowChange={setRowChange} courseInfo={courseInfo}/>
+            <EditStudent courseInfo={courseInfo} student={params.row} setRowChange={setRowChange}/>
         )
     };
             
@@ -39,26 +33,31 @@ const Students = ({courseInfo}) => {
         {
         field: 'student_fname',
         headerName: 'First Name',
+        cellClassName: 'death',
         flex: 1,
         },
         {
             field: 'student_lname',
             headerName: 'Last Name',
+            cellClassName: 'death',
             flex: 1,
         },
         {
             field: 'student_emplid',
             headerName: 'Student ID',
+            cellClassName: 'death',
             flex: 1,
         },
         {
             field: 'student_email',
             headerName: 'Email',
+            cellClassName: 'death',
             flex: 1,
         },
         {
             field: 'student_gpa',
             headerName: 'GPA',
+            cellClassName: 'death',
             flex: 1,
         },
         {
@@ -68,15 +67,6 @@ const Students = ({courseInfo}) => {
             filterable: false,
             flex: 1,
             renderCell: editButton,
-            disableClickEventBubbling: true,
-        },
-        {
-            field: 'delete',
-            headerName: 'Delete',
-            sortable: false,
-            filterable: false,
-            flex: 1,
-            renderCell: deleteButton,
             disableClickEventBubbling: true,
         },
     ];
@@ -96,28 +86,7 @@ const Students = ({courseInfo}) => {
                 
             
                 
-    // Delete function
-    const deleteStudent = async (id) => {
-        try {
-            const course_id = courseInfo.course_id;
-            
-            const PLEASE = {course_id};
-            
-            
-            await fetch(`${process.env.REACT_APP_BASEURL}/students/students/${id}/${course_id}`, {
-                method: "DELETE",
-                headers: { token: localStorage.token },
-                body: JSON.stringify(PLEASE)
-            });
-
-
-            toast.success("Student was deleted!");
-            setRowChange(true);
-        } catch (error) {
-            console.error(error.message);
-            toast.error("Failed to delete student!");
-        }
-    }
+    
     
     const getStudents = async () => {
         try {
@@ -138,6 +107,16 @@ const Students = ({courseInfo}) => {
             
     return(
         <div style={{ padding: '25px', display:'flex', height: '100%', width: '100%' }}>
+        <Box
+                sx={{
+                    height:'100%',
+                    width:'100%',
+                    '& .death': {
+                        borderRight: 1,
+                        borderColor: '#d3d3d3'
+                    },
+                }}
+            >
             <DataGrid
                 rows={rows}
                 columns={columns}
@@ -145,6 +124,7 @@ const Students = ({courseInfo}) => {
                 components = {{Toolbar: CustomToolbar,}}
                 disableSelectionOnClick
             />
+            </Box>
         </div>
         
     );

@@ -221,15 +221,12 @@ const InputTodo = ({courseInfo, setRowChange}) => {
                                     e.preventDefault();
                                     setHighlighted(false);
 
-                                    console.log(e.dataTransfer.files);
-
                                     Array.from(e.dataTransfer.files)
                                     .filter((file) => file.type === "application/vnd.ms-excel")
                                     .forEach(async (file) => {
                                     const text = await file.text();
                                     const result = parse(text, {header: true});
                                     setContacts(existing => [...existing, ...result.data]);
-                                    console.log(result);
                                     
                                     });
 
@@ -254,7 +251,6 @@ const InputTodo = ({courseInfo, setRowChange}) => {
                                 loadCSV.then(function(resultOfPromise){
                                     const parsedResult = parse(resultOfPromise, {header: true});
                                     setContacts(existing => [...existing, ...parsedResult.data]);
-                                    console.log(parsedResult);
                                 });
                                 }}
                                 />
