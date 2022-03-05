@@ -10,7 +10,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-const CourseTable = ({ coursesInfo, setCoursesChange }) => {
+const CourseTable = ({ studentInfo, coursesInfo, setCoursesChange }) => {
     return (
             <TableContainer component={Paper}>
                 <Table aria-label="simple table">
@@ -26,6 +26,7 @@ const CourseTable = ({ coursesInfo, setCoursesChange }) => {
                         {coursesInfo.map((courseInfo) => (
                             <CourseTableBodyCell
                                 key={courseInfo.course_id}
+                                studentInfo={studentInfo}
                                 courseInfo={courseInfo}
                                 setCoursesChange={setCoursesChange}
                             />

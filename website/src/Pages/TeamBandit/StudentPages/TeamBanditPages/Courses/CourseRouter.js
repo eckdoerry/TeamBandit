@@ -12,7 +12,7 @@ import Schedule from './CoursePages/Schedule/Schedule';
 import Teams from './CoursePages/Teams/Teams';
 import Projects from "./CoursePages/Projects/Projects";
 
-const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
+const CourseRouter = ({route, courseInfo, studentInfo, setCoursesChange, setRoute}) => {
 
     if(route.page === 'Homepage' || route === 'Homepage') 
     {
@@ -42,7 +42,7 @@ const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
     {
         return (
             <Fragment>
-                <Projects courseInfo={courseInfo} setRoute={route}/>
+                <Projects studentInfo={studentInfo} courseInfo={courseInfo} setRoute={route}/>
             </Fragment>
         )
     }

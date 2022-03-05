@@ -60,7 +60,7 @@ const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
     {
         return (
             <Fragment>
-                <TeamsAssignment courseInfo={courseInfo}/>
+                <TeamsAssignment courseInfo={courseInfo} setRoute={setRoute} />
             </Fragment>
         )
     }

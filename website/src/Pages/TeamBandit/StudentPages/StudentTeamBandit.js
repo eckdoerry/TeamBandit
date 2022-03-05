@@ -128,7 +128,7 @@ export default function MiniDrawer({ setAuth }) {
     const [open, setOpen] = React.useState(false);
 
     // ENUM string for routes
-    const [route, setRoute] = useState("Home");
+    const [route, setRoute] = useState("Courses");
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -251,7 +251,7 @@ export default function MiniDrawer({ setAuth }) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {["Home", "Courses"].map(
+                    {["Courses"].map(
                         (text, index) => (
                             <ListItem
                                 button
@@ -262,15 +262,7 @@ export default function MiniDrawer({ setAuth }) {
                                 }}
                             >
                                 <ListItemIcon>
-                                    {index === 0 ? (
-                                        <Tooltip
-                                            title="Home"
-                                            placement="right"
-                                            arrow
-                                        >
-                                            <HomeIcon />
-                                        </Tooltip>
-                                    ) : (
+                                    
                                         <Tooltip
                                             title="Courses"
                                             placement="right"
@@ -278,7 +270,7 @@ export default function MiniDrawer({ setAuth }) {
                                         >
                                             <SchoolIcon />
                                         </Tooltip>
-                                    )}
+                                    
                                 </ListItemIcon>
                                 <ListItemText primary={text} />
                             </ListItem>

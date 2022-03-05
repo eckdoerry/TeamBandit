@@ -3,9 +3,9 @@ import {React} from "react";
 // Project Pages
 import ProjectList from "./Components/ProjectList";
 
-const Projects = ({courseInfo, setRoute}) => {
+const Projects = ({studentInfo, courseInfo, setRoute}) => {
     return(
-        <ProjectList courseInfo={courseInfo} setRoute={setRoute}/>
+        <ProjectList studentInfo={studentInfo} courseInfo={courseInfo} setRoute={setRoute}/>
     );
 }
 

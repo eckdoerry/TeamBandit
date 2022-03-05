@@ -30,7 +30,7 @@ const pages = [
     "Assignments",
 ];
 
-const CoursePage = ({ courseInfo, setCoursesChange }) => {
+const CoursePage = ({ studentInfo, courseInfo, setCoursesChange }) => {
     const [state, setState] = useState({
         right: false,
     });
@@ -188,6 +188,7 @@ const CoursePage = ({ courseInfo, setCoursesChange }) => {
                     {/*This will return whatever page we want displayed :)*/}
                     <CourseRouter
                         route={route}
+                        studentInfo={studentInfo}
                         courseInfo={courseInfo}
                         setRoute={setRoute}
                         setCoursesChange={setCoursesChange}

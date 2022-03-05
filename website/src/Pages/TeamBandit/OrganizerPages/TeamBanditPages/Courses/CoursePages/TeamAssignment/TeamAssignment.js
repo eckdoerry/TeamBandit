@@ -11,6 +11,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
+import Button from '@mui/material/Button';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -43,7 +45,7 @@ function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-export default function TeamAssignment({ courseInfo }) {
+export default function TeamAssignment({ courseInfo, setRoute }) {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
     const [projects, setProjects] = useState([]);
@@ -98,6 +100,10 @@ export default function TeamAssignment({ courseInfo }) {
                     return "2";
                 } else if (rows[i].student_projectpref3 == project_id) {
                     return "3";
+                } else if (rows[i].student_projectpref4 == project_id) {
+                    return "4";
+                } else if (rows[i].student_projectpref5 == project_id) {
+                    return "5";
                 } else {
                     return "";
                 }
@@ -153,6 +159,25 @@ export default function TeamAssignment({ courseInfo }) {
         var total = 0;
         for (var i = 0; i < rows.length; i++) {
             if (rows[i].student_projectpref3 == project_id) {
+                total++;
+            }
+        }
+        return total;
+    };
+
+    const getFourthChoice = (project_id) => {
+        var total = 0;
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i].student_projectpref4 == project_id) {
+                total++;
+            }
+        }
+        return total;
+    };
+    const getFifthChoice = (project_id) => {
+        var total = 0;
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i].student_projectpref5 == project_id) {
                 total++;
             }
         }
@@ -297,6 +322,7 @@ export default function TeamAssignment({ courseInfo }) {
     
     return (
         <div style={{ padding: "25px", overflow:'auto' }}>
+            <Button style={{textAlign: 'center', whiteSpace: 'nowrap'}} sx={{ m: 3 }} variant="contained" color="secondary" startIcon={<ArrowBackIcon />} onClick = {() => setRoute("Projects")}> Back to Projects </Button>
             <TableContainer style={{ overflowX: "initial" }}>
                 <Table aria-label="spanning table">
                     <TableHead className="sticky">
@@ -511,6 +537,31 @@ export default function TeamAssignment({ courseInfo }) {
                                     align="right"
                                 >
                                     {getThirdChoice(project.project_id)}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                        <TableRow>
+                            
+                            <TableCell> Fourth Choice: </TableCell>
+                            {projects.map((project) => (
+                                <TableCell
+                                    key={project.project_id}
+                                    align="right"
+                                >
+                                    {getFourthChoice(project.project_id)}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                        <TableRow>
+                            <TableCell rowSpan={2} />
+                            <TableCell rowSpan={2} />
+                            <TableCell> Fifth Choice: </TableCell>
+                            {projects.map((project) => (
+                                <TableCell
+                                    key={project.project_id}
+                                    align="right"
+                                >
+                                    {getFifthChoice(project.project_id)}
                                 </TableCell>
                             ))}
                         </TableRow>
