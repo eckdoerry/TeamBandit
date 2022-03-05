@@ -1,206 +1,265 @@
 const router = require("express").Router();
 const pool = require("../db");
 const authorization = require('../middleware/authorization');
-const multer = require("multer");
 const uuid = require("uuid").v4;
 const fs = require("fs");
 
-const profilePictureStorage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, '../../public/uploads/images/profilePictures/');
-  },
-  filename: function(req, file, cb) {
-    cb(null, uuid() + "." + file.mimetype.split("/")[1]);
-  }
-});
-
-const profilePictureUpload = multer({storage: profilePictureStorage});
-
-// Updates Organizer Profile Pic
-router.put("/organizerAvatar", profilePictureUpload.single("avatar"), authorization, async(req, res) => {
+router.put("/organizerAvatar", authorization, async(req, res) => {
   try {
+      if(!req.files) {
+        res.json("No files selected!");
+    } else {
+        const oldProfilePicPath = await pool.query("SELECT organizer_id, profilepic_filepath FROM organizers WHERE organizer_id = $1", [req.user]);
 
-      const oldProfilePicPath = await pool.query("SELECT organizer_id, profilepic_filepath FROM organizers WHERE organizer_id = $1", [req.user]);
-      const updateProfilePic = await pool.query("UPDATE organizers SET profilepic_filepath = $1 WHERE organizer_id = $2 RETURNING *", [req.file.filename, req.user]);
-      
-      if(updateProfilePic.rows.length === 0)
-      {
-          return res.json("This profile is not yours!");
-      }
+        // Removes old profile pic
+        if (fs.existsSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath))
+        {
+            fs.unlinkSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath);
+        }
 
-      // Removes old profile pic
-      if (fs.existsSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath))
-      {
-        fs.unlinkSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath);
+        //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
+        let avatar = req.files.avatar;
+
+        const new_filename = "organizer_" + req.user.toString() + "_" + uuid().toString() + "." + avatar.mimetype.split("/")[1];
+        
+        //Use the mv() method to place the file in upload directory
+        avatar.mv("../../public/uploads/images/profilePictures/" + new_filename);
+
+        const updateProfilePic = await pool.query("UPDATE organizers SET profilepic_filepath = $1 WHERE organizer_id = $2 RETURNING *", [new_filename, req.user]);
+      
+        if(updateProfilePic.rows.length === 0)
+        {
+            return res.json("This profile is not yours!");
+        }
+
+        //send response
+        res.json("Your profile picture was successfully updated!");
       }
       
-      res.json("Your profile picture was successfully updated!");
+      
   } catch (error) {
       console.error(error.message);
   }
 });
 
 // Updates Student Profile Pic
-router.put("/studentAvatar", profilePictureUpload.single("avatar"), authorization, async(req, res) => {
-  try {
+router.put("/studentAvatar", authorization, async(req, res) => {
+    try {
+        if(!req.files) 
+        {
+            res.json("No files selected!");
+        } 
+        else 
+        {
+            const oldProfilePicPath = await pool.query("SELECT student_id, profilepic_filepath FROM students WHERE student_id = $1", [req.user]);
 
-      const oldProfilePicPath = await pool.query("SELECT student_id, profilepic_filepath FROM students WHERE student_id = $1", [req.user]);
-      const updateProfilePic = await pool.query("UPDATE students SET profilepic_filepath = $1 WHERE student_id = $2 RETURNING *", [req.file.filename, req.user]);
-      
-      if(updateProfilePic.rows.length === 0)
-      {
-          return res.json("This profile is not yours!");
-      }
+            // Removes old profile pic
+            if (fs.existsSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath))
+            {
+                fs.unlinkSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath);
+            }
 
-      // Removes old profile pic
-      if (fs.existsSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath))
-      {
-        fs.unlinkSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath);
-      }
-      
-      res.json("Your profile picture was successfully updated!");
-  } catch (error) {
-      console.error(error.message);
-  }
+            //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
+            let avatar = req.files.avatar;
+
+            const new_filename = "student_" + req.user.toString() + "_" + uuid().toString() + "." + avatar.mimetype.split("/")[1];
+            
+            //Use the mv() method to place the file in upload directory
+            avatar.mv("../../public/uploads/images/profilePictures/" + new_filename);
+
+            const updateProfilePic = await pool.query("UPDATE students SET profilepic_filepath = $1 WHERE student_id = $2 RETURNING *", [new_filename, req.user]);
+          
+            if(updateProfilePic.rows.length === 0)
+            {
+                return res.json("This profile is not yours!");
+            }
+
+            //send response
+            res.json("Your profile picture was successfully updated!");
+        }
+    } 
+    catch (error) 
+    {
+        console.error(error.message);
+    }
 });
-
-
-
-
-
-
-const projectOverviewStorage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, '../../public/uploads/documents/projectOverviews/');
-  },
-  filename: function(req, file, cb) {
-    cb(null, uuid() + "." + file.mimetype.split("/")[1]);
-  }
-});
-
-const projectOverviewUpload = multer({storage: projectOverviewStorage});
 
 // Updates Project Overview PDF
-router.put("/projectOverview/:project_id", projectOverviewUpload.single("projectOverview"), authorization, async(req, res) => {
-  try {
-    const {project_id} = req.params;
-    const oldProfilePicPath = await pool.query("SELECT organizer_id, project_id, projectoverview_filename FROM projects WHERE project_id = $1 AND organizer_id = $2", [project_id, req.user]);
-    const updateProfilePic = await pool.query("UPDATE projects SET projectoverview_filename = $1 WHERE project_id = $2 AND organizer_id = $3 RETURNING *", [req.file.filename, project_id, req.user]);
-    
-    if(updateProfilePic.rows.length === 0)
-    {
-        return res.json("This project is not yours!");
-    }
+router.put("/projectOverview/:project_id", authorization, async(req, res) => {
+    try {
+        const {project_id} = req.params;
+        if(!req.files) 
+        {
+            res.json("No files selected!");
+        } 
+        else 
+        {
+            const oldProjectOverviewPath = await pool.query("SELECT organizer_id, projectoverview_filename FROM projects WHERE organizer_id = $1", [req.user]);
 
-    // Removes old project overview pdf
-    if (fs.existsSync("../../public/uploads/documents/projectOverviews/" + oldProfilePicPath.rows[0].projectoverview_filename))
+            // Removes old profile pic
+            if (fs.existsSync("../../public/uploads/documents/projectOverviews/" + oldProjectOverviewPath.rows[0].projectoverview_filename))
+            {
+                fs.unlinkSync("../../public/uploads/documents/projectOverviews/" + oldProjectOverviewPath.rows[0].projectoverview_filename);
+            }
+
+            let projectOverview = req.files.projectOverview;
+
+            const new_filename = "projectOverview_" + project_id.toString() + "_" + req.user.toString() + "_" + uuid().toString() + "." + projectOverview.mimetype.split("/")[1];
+            
+            //Use the mv() method to place the file in upload directory
+            projectOverview.mv("../../public/uploads/documents/projectOverviews/" + new_filename);
+
+            const updateProjectOverview = await pool.query("UPDATE projects SET projectoverview_filename = $1 WHERE project_id = $2 AND organizer_id = $3 RETURNING *", [new_filename, project_id, req.user]);
+          
+            if(updateProjectOverview.rows.length === 0)
+            {
+                return res.json("This project is not yours!");
+            }
+
+            //send response
+            res.json("Your project overview was successfully updated!");
+        }
+    } 
+    catch (error) 
     {
-      fs.unlinkSync("../../public/uploads/documents/projectOverviews/" + oldProfilePicPath.rows[0].projectoverview_filename);
+        console.error(error.message);
     }
-    
-    res.json("Project Overview was successfully updated!");
-} catch (error) {
-    console.error(error.message);
-}
 });
 
+// Updates Project Overview PDF
+router.put("/assignmentInstructions/:assignment_id", authorization, async(req, res) => {
+    try {
+        const {assignment_id} = req.params;
+        if(!req.files) 
+        {
+            res.json("No files selected!");
+        } 
+        else 
+        {
+            const oldAssignmentInstructionsPath = await pool.query("SELECT organizer_id, assignment_instructions FROM assignments WHERE organizer_id = $1", [req.user]);
 
+            // Removes old profile pic
+            if (fs.existsSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentInstructionsPath.rows[0].projectoverview_filename))
+            {
+                fs.unlinkSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentInstructionsPath.rows[0].projectoverview_filename);
+            }
 
+            let assignmentInstructions = req.files.assignmentInstructions;
 
+            const new_filename = "assignmentInstructions_" + assignment_id.toString() + "_" + req.user.toString() + "_" + uuid().toString() + "." + assignmentInstructions.mimetype.split("/")[1];
+            
+            //Use the mv() method to place the file in upload directory
+            assignmentInstructions.mv("../../public/uploads/documents/assignmentInstructions/" + new_filename);
 
+            const updateProjectOverview = await pool.query("UPDATE assignments SET assignment_instructions = $1 WHERE assignment_id = $2 AND organizer_id = $3 RETURNING *", [new_filename, assignment_id, req.user]);
+          
+            if(updateProjectOverview.rows.length === 0)
+            {
+                return res.json("This project is not yours!");
+            }
 
-
-
+            //send response
+            res.json("Your project overview was successfully updated!");
+        }
+    } 
+    catch (error) 
+    {
+        console.error(error.message);
+    }
+});
 
 // Deletes Organizer Profile Picture
-router.put("/deleteOrganizerProfilePicture/:id", authorization, async(req, res) => {
-  try {
-      const oldProfilePicPath = await pool.query("SELECT organizer_id, profilepic_filepath FROM organizers WHERE organizer_id = $1", [req.user]);
-      const updateProfilePic = await pool.query("UPDATE organizers SET profilepic_filepath = $1 WHERE organizer_id = $2 RETURNING *", [null, req.user]);
+router.put("/deleteOrganizerProfilePicture", authorization, async(req, res) => {
+    try {
+        const oldProfilePicPath = await pool.query("SELECT organizer_id, profilepic_filepath FROM organizers WHERE organizer_id = $1", [req.user]);
+        const updateProfilePic = await pool.query("UPDATE organizers SET profilepic_filepath = $1 WHERE organizer_id = $2 RETURNING *", [null, req.user]);
       
-      if(updateProfilePic.rows.length === 0)
-      {
-          return res.json("This profile is not yours!");
-      }
+        if(updateProfilePic.rows.length === 0)
+        {
+            return res.json("This profile is not yours!");
+        }
 
-      // Removes old profile pic
-      if (fs.existsSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath))
-      {
-        fs.unlinkSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath);
-      }
-      
-      res.json("Your profile picture was successfully deleted!");
+        // Removes old profile pic
+        if (fs.existsSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath))
+        {
+            fs.unlinkSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath);
+        }
 
-  } catch (error) {
+        //send response
+        res.json("Your profile picture was successfully deleted!");
+    } 
+    catch (error) 
+    {
         console.error(error.message);
-  }
+    }
 });
 
 
 // Deletes Student Profile Picture
-router.put("/deleteStudentProfilePicture/:id", authorization, async(req, res) => {
-  try {
-      const oldProfilePicPath = await pool.query("SELECT student_id, profilepic_filepath FROM students WHERE student_id = $1", [req.user]);
-      const updateProfilePic = await pool.query("UPDATE students SET profilepic_filepath = $1 WHERE student_id = $2 RETURNING *", [null, req.user]);
+router.put("/deleteStudentProfilePicture", authorization, async(req, res) => {
+    try {
+        const oldProfilePicPath = await pool.query("SELECT student_id, profilepic_filepath FROM students WHERE student_id = $1", [req.user]);
+        const updateProfilePic = await pool.query("UPDATE students SET profilepic_filepath = $1 WHERE student_id = $2 RETURNING *", [null, req.user]);
       
-      if(updateProfilePic.rows.length === 0)
-      {
-          return res.json("This profile is not yours!");
-      }
+        if(updateProfilePic.rows.length === 0)
+        {
+            return res.json("This profile is not yours!");
+        }
 
-      // Removes old profile pic
-      if (fs.existsSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath))
-      {
-        fs.unlinkSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath);
-      }
-      
-      res.json("Your profile picture was successfully deleted!");
+        // Removes old profile pic
+        if (fs.existsSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath))
+        {
+            fs.unlinkSync("../../public/uploads/images/profilePictures/" + oldProfilePicPath.rows[0].profilepic_filepath);
+        }
 
-  } catch (error) {
+        //send response
+        res.json("Your profile picture was successfully deleted!");
+    } 
+    catch (error) 
+    {
         console.error(error.message);
-  }
+    }
 });
-
-
-
-
-
-
-
-
-const teamLogoStorage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, '../../public/uploads/images/teamLogos/');
-  },
-  filename: function(req, file, cb) {
-    cb(null, uuid() + "." + file.mimetype.split("/")[1]);
-  }
-});
-
-const teamLogoUpload = multer({storage: teamLogoStorage});
 
 // Updates Team Logo
-router.put("/teamLogo", teamLogoUpload.single("teamLogo"), authorization, async(req, res) => {
-  try {
+router.put("/teamLogo", authorization, async(req, res) => {
+    try 
+    {
+        if(!req.files) 
+        {
+            res.json("No files selected!");
+        } 
+        else 
+        {
+            const oldTeamLogoPath = await pool.query("SELECT team_lead, team_logo FROM teams WHERE team_lead = $1", [req.user]);
 
-      const oldTeamLogo = await pool.query("SELECT team_lead, team_logo FROM teams WHERE team_lead = $1", [req.user]);
-      const updateTeamLogo = await pool.query("UPDATE teams SET team_logo = $1 WHERE team_lead = $2 RETURNING *", [req.file.filename, req.user]);
-      
-      if(updateTeamLogo.rows.length === 0)
-      {
-          return res.json("This team is not yours!");
-      }
+            // Removes old profile pic
+            if (fs.existsSync("../../public/uploads/images/teamLogos/" + oldTeamLogoPath.rows[0].team_logo))
+            {
+                fs.unlinkSync("../../public/uploads/images/teamLogos/" + oldTeamLogoPath.rows[0].team_logo);
+            }
 
-      // Removes old profile pic
-      if (fs.existsSync("../../public/uploads/images/teamLogos/" + oldTeamLogo.rows[0].team_logo))
-      {
-        fs.unlinkSync("../../public/uploads/images/teamLogos/" + oldTeamLogo.rows[0].team_logo);
-      }
-      
-      res.json("Your team logo was successfully updated!");
-  } catch (error) {
-      console.error(error.message);
-  }
+            let teamLogo = req.files.teamLogo;
+
+            const new_filename = "teamLogo_" + req.user.toString() + "_" + uuid().toString() + "." + teamLogo.mimetype.split("/")[1];
+            
+            //Use the mv() method to place the file in upload directory (i.e. "uploads")
+            teamLogo.mv("../../public/uploads/images/teamLogos/" + new_filename);
+
+            const updateTeamLogo = await pool.query("UPDATE teams SET team_logo = $1 WHERE team_lead = $2 RETURNING *", [new_filename, req.user]);
+          
+            if(updateTeamLogo.rows.length === 0)
+            {
+                return res.json("This team is not yours!");
+            }
+
+            //send response
+            res.json("Your team logo was successfully updated!");
+        }
+    } 
+    catch (error) {
+        console.error(error.message);
+    }
 });
 
 module.exports = router;

@@ -119,10 +119,9 @@ export default function MiniDrawer({ setAuth }) {
     };
 
     useEffect(() => {
-        
         getStudent();
-        
-    }, []);
+        setStudentChange(false);
+    }, [studentChange]);
 
     // JS
     const theme = useTheme();

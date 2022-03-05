@@ -135,9 +135,7 @@ const TeamPage = () => {
                         <div>
                             <Box
                                 sx={{
-                                    bgcolor: "background.paper",
-                                    pt: 8,
-                                    pb: 6,
+                                    bgcolor: "background.paper"
                                 }}
                             >
                                 <Container
@@ -146,7 +144,6 @@ const TeamPage = () => {
                                         justifyContent: "center",
                                         width: "100%",
                                     }}
-                                    maxWidth="sm"
                                 >
                                     <img
                                         src={
@@ -161,10 +158,7 @@ const TeamPage = () => {
                                     />
 
                                     <div
-                                        style={{
-                                            padding: "50px",
-                                            width: "100%",
-                                        }}
+                                        style={{}}
                                     >
                                         <Typography
                                             component="h1"

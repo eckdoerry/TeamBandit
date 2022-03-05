@@ -1,6 +1,11 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const fileUpload = require('express-fileupload');
+
+app.use(fileUpload({
+  createParentPath: true
+}));
 
 // Middleware
 
