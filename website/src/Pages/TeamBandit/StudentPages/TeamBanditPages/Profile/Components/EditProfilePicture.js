@@ -30,10 +30,10 @@ const EditProfilePicture = ({studentInfo, setStudentChange}) => {
       }
     };
 
-    const deleteProfilePicture = async (id) => {
+    const deleteProfilePicture = async e => {
       try {
 
-        const response = await fetch(`${process.env.REACT_APP_BASEURL}/fileuploads/deleteStudentProfilePicture/${id}`, {
+        const response = await fetch(`${process.env.REACT_APP_BASEURL}/fileuploads/deleteStudentProfilePicture`, {
               method: "PUT",
               headers: { token: localStorage.token }
           });
@@ -53,7 +53,7 @@ const EditProfilePicture = ({studentInfo, setStudentChange}) => {
         <form onSubmit={updateProfilePicture} encType="multipart/form-data">
           <input type="file" accept="images/*" name="avatar" onChange={onFileChange}/>
           <Button type="submit" variant="outlined">Upload</Button>
-          <Button variant="outlined" onClick={() => deleteProfilePicture(studentInfo.student_id)}>Delete Current Profile Picture</Button>
+          <Button variant="outlined" onClick={() => deleteProfilePicture()}>Delete Current Profile Picture</Button>
         </form>
       </div>
     );
