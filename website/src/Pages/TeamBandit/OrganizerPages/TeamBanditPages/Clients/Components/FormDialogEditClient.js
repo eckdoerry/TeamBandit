@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { toast } from 'react-toastify';
 
@@ -77,12 +78,12 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
             setClientNotes("");
             updateClient(e);
         } catch (err) {
-          console.error(err.message);
-          toast.error("Failed to add client!");
+            console.error(err.message);
+            toast.error("Failed to add client!");
         }
         handleClose();
-      };
-
+    };
+ 
     //edit description function
     const updateClient = async e => {
         e.preventDefault();
@@ -103,6 +104,26 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
             toast.error("Failed to update client!");
         }
         handleClose();
+    };
+
+    const deleteClient = async (id) => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/clients/deleteclient/${id}`,
+                {
+                    method: "DELETE",
+                    headers: { token: localStorage.token },
+                }
+            );
+
+            const resp = await response.json();
+
+            toast.success(resp);
+            setClientsChange(true);
+        } catch (error) {
+            console.error(error.message);
+            toast.error("Failed to delete client!");
+        }
     };
 
     return (
@@ -194,11 +215,22 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
                 value = {clientNotes}
                 onChange = {e => setClientNotes(e.target.value)}/>
 
-
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    
+                </Typography>
                 <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {onSubmitForm}> Edit </Button>
 
 
                 <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Close </Button>
+                <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => deleteClient(client.client_id)}
+                    startIcon={<DeleteIcon />}
+                >
+                    {" "}
+                    PERMANENTLY DELETE{" "}
+                </Button>
                 </Box>
             </Modal>
         </div>

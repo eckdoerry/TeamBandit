@@ -214,7 +214,7 @@ router.post("/toggleStudent", authorization, async(req,res) =>{
 router.get("/getAssignedStudents/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
-        const student = await pool.query("SELECT studentteambridgetable.project_id, studentteambridgetable.team_id, studentteambridgetable.student_id, students.student_fname, students.student_lname FROM studentteambridgetable LEFT JOIN students ON studentteambridgetable.student_id = students.student_id");
+        const student = await pool.query("SELECT studentteambridgetable.project_id, studentteambridgetable.team_id, studentteambridgetable.student_id, students.student_fname, students.student_lname, students.student_email FROM studentteambridgetable LEFT JOIN students ON studentteambridgetable.student_id = students.student_id");
 
         res.json(student.rows);
     } catch (error) {

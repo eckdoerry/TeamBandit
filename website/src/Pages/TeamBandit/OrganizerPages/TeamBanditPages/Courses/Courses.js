@@ -1,9 +1,8 @@
 import {Fragment, React, useState, useEffect} from "react";
 
-import styles from "./Courses.module.css";
-
 import FormDialogAddCourse from "./Components/FormDialogAddCourse";
 import CourseTable from "./Components/CourseTable";
+import Typography from "@mui/material/Typography";
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
@@ -32,8 +31,9 @@ const Courses = () => {
     return(
         <Fragment>
             <div style={{display: 'flex', alignItems: 'center'}}>
-            <h1>Courses</h1>
-            
+                <Typography variant="h3" gutterBottom>
+                    Courses
+                </Typography>
             <FormDialogAddCourse setCoursesChange = {setCoursesChange}/>
             </div>
             

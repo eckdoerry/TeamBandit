@@ -3,8 +3,9 @@ import { toast } from 'react-toastify';
 
 // MUI Imports
 import Typography from '@mui/material/Typography';
-import DeleteIcon from '@mui/icons-material/Delete';
+
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
 // Data Grid
 import { DataGrid,
@@ -22,14 +23,6 @@ import AddMentor from "./Components/AddMentor";
 const Projects = ({courseInfo}) => {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
-
-    const deleteButton = (params) => {
-        return (
-            <strong>
-                <Button variant="outlined" color="error" onClick = {() => deleteMentor(params.row.project_id)} startIcon={<DeleteIcon />}> Delete </Button>
-            </strong>
-        );
-    };
     
     const editButton = (params) => {
         return (
@@ -41,11 +34,13 @@ const Projects = ({courseInfo}) => {
         {
         field: 'mentor_name',
         headerName: 'Mentor Name',
+        cellClassName: 'death',
         flex: 1,
         },
         {
             field: 'mentor_email',
             headerName: 'Mentor Email',
+            cellClassName: 'death',
             flex: 1,
         },
         {
@@ -55,15 +50,6 @@ const Projects = ({courseInfo}) => {
             filterable: false,
             flex: 1,
             renderCell: editButton,
-            disableClickEventBubbling: true,
-        },
-        {
-            field: 'delete',
-            headerName: 'Delete',
-            sortable: false,
-            filterable: false,
-            flex: 1,
-            renderCell: deleteButton,
             disableClickEventBubbling: true,
         },
     ];
@@ -81,29 +67,10 @@ const Projects = ({courseInfo}) => {
         );
     };
     
-    // Delete function
-    const deleteMentor= async (id) => {
-        try {
-
-            await fetch(`${process.env.REACT_APP_BASEURL}/mentors/mentors/${id}/${courseInfo.course_id}`, {
-                method: "DELETE",
-                headers: { token: localStorage.token }
-            });
-
-
-            toast.success("Mentor was deleted!");
-            setRowChange(true);
-        } catch (error) {
-            console.error(error.message);
-            toast.error("Failed to delete mentor!");
-        }
-    }
-    
     const getMentors = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_BASEURL}/mentors/${courseInfo.course_id}`, {method: "GET", headers: {token: localStorage.token}});
             const jsonData = await response.json();
-            console.log(jsonData);
             setRows(jsonData);
             } catch (err) {
             console.error(err.message);
@@ -117,6 +84,16 @@ const Projects = ({courseInfo}) => {
 
     return(
         <div style={{ padding: '25px', display:'flex', height: '100%', width: '100%' }}>
+        <Box
+                sx={{
+                    height:'100%',
+                    width:'100%',
+                    '& .death': {
+                        borderRight: 1,
+                        borderColor: '#d3d3d3'
+                    },
+                }}
+            >
             <DataGrid
                 rows={rows}
                 columns={columns}
@@ -124,6 +101,7 @@ const Projects = ({courseInfo}) => {
                 components = {{Toolbar: CustomToolbar,}}
                 disableSelectionOnClick
             />
+            </Box>
         </div>
         
     );
