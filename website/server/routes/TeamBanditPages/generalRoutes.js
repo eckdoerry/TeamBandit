@@ -90,7 +90,7 @@ router.put("/bio", authorization, async(req, res) => {
 // Grabs Student Information from the Students table
 router.get("/student", authorization, async(req, res) => {
     try {
-        const user = await pool.query("SELECT student_fname, student_lname, student_email, student_id, student_bio, profilepic_filepath FROM students WHERE student_id = $1", [req.user]);
+        const user = await pool.query("SELECT student_fname, student_lname, student_email, student_id, student_bio, profilepic_filepath, student_projectpref1, student_projectpref2, student_projectpref3, student_projectpref4, student_projectpref5 FROM students WHERE student_id = $1", [req.user]);
 
     res.json(user.rows[0]);
 

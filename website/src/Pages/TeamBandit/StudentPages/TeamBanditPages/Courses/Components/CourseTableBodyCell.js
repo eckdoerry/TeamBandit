@@ -5,7 +5,7 @@ import CoursePage from "./CoursePage";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 
-const CourseTableBodyCell = ({ courseInfo, setCoursesChange }) => {
+const CourseTableBodyCell = ({ studentInfo, courseInfo, setCoursesChange }) => {
     return (
         <TableRow
             key={courseInfo.course_id}
@@ -13,6 +13,7 @@ const CourseTableBodyCell = ({ courseInfo, setCoursesChange }) => {
         >
             <TableCell component="th" scope="row">
                 <CoursePage
+                    studentInfo={studentInfo}
                     courseInfo={courseInfo}
                     setCoursesChange={setCoursesChange}
                 />

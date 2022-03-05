@@ -51,12 +51,13 @@ const TeamPage = () => {
 
     const teamPage = (params) => {
         const studentsOnTeam = [];
+        
         var project_id = params.row.project_id;
         for(var i = 0; i < allAssignedStudents.length; i++)
         {
             if(allAssignedStudents[i].project_id === project_id)
             {
-                studentsOnTeam.push(`${allAssignedStudents[i].student_fname} ${allAssignedStudents[i].student_lname}`)
+                studentsOnTeam.push(allAssignedStudents[i]);
             }
         }
 
@@ -80,7 +81,7 @@ const TeamPage = () => {
                     <div>
                         <ul>
                             {studentsOnTeam.map((student) => (
-                                <li key={student}>{displayStudent(student)}</li>
+                                displayStudent(student)
                             ))}
                             
                         </ul>
@@ -91,28 +92,22 @@ const TeamPage = () => {
     };
 
     const displayStudent =  (student) => {
-        const studentName = student.split(' ');
-
-        if(isTeamLead(studentName[0], studentName[1]) === true)
+        
+        const string = `mailto:` + student.student_email;
+        if(isTeamLead(student.student_id) === true)
         {
-            return `Team Lead: ${student}` 
+            return(
+                <li><a href={string}>{student.student_fname} {student.student_lname} (Lead)</a></li>
+            ); 
         }
         else
         {
-            return student;
+            return (<li>{student.student_fname} {student.student_lname}</li>);
         }
     };
 
-    const isTeamLead =  (fname, lname) => {
-        var student_id = -1;
+    const isTeamLead =  (student_id) => {
 
-        for(var i = 0; i < allAssignedStudents.length; i++)
-        {
-            if(allAssignedStudents[i].student_fname === fname && allAssignedStudents[i].student_lname === lname)
-            {
-                student_id = allAssignedStudents[i].student_id;
-            }
-        }
         for(var i = 0; i < teams.length; i++)
         {
             if(teams[i].team_lead == student_id)
@@ -126,10 +121,18 @@ const TeamPage = () => {
     const projectPage = (params) => {
         
         return (
+            <div>
+            <Typography variant="h5">{params.row.project_name}</Typography>
+            <div style={{display:'flex'}}>
             <Link target="_blank" to={`/project-pages/${params.row.project_name}`}>
-                {" "}
-                {params.row.project_name}{" "}
+                Project Description
             </Link>
+            <Link style={{paddingLeft:'7px'}}target="_blank" to={`/team-pages/${params.row.team_name}`}>
+                Student Team Page
+            </Link>
+            </div>
+            
+            </div>
         );
     };
 

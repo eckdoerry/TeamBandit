@@ -1,123 +1,80 @@
-import React, {useState} from 'react'
+import React, { useState } from "react";
 
-import Scheduler from "react-mui-scheduler"
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
-// Material UI Imports
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-
-
-function App() {
-  const [state, setState] = useState({
-    options: {
-      transitionMode: "zoom", // or fade
-      startWeekOn: "Mon",     // or Sun
-      defaultMode: "month",    // or week | day | timeline
-      minWidth: 540,
-      maxWidth: 540,
-      minHeight: 1000,
-      maxHeight: 1000
-    },
-    alertProps: {
-      open: true,
-      color: "info",          // info | success | warning | error
-      severity: "info",       // info | success | warning | error
-      message: "🚀 Let's start with awesome react-mui-scheduler 🔥 🔥 🔥" ,
-      showActionButton: true,
-      showNotification: true,
-      delay: 1500
-    },
-    toolbarProps: {
-      showSearchBar: true,
-      showSwitchModeButtons: true,
-      showDatePicker: true
-    }
-  })
-  
-  const events = [
-    {
-      id: "event-1",
-      label: "Medical consultation",
-      groupLabel: "Dr Shaun Murphy",
-      user: "Dr Shaun Murphy",
-      color: "#f28f6a",
-      startHour: "04:00 AM",
-      endHour: "05:00 AM",
-      date: "2022-02-12",
-      createdAt: new Date(),
-      createdBy: "Kristina Mayer"
-    },
-    {
-      id: "event-2",
-      label: "Medical consultation",
-      groupLabel: "Dr Claire Brown",
-      user: "Dr Claire Brown",
-      color: "#099ce5",
-      startHour: "09:00 AM",
-      endHour: "10:00 AM",
-      date: "2022-02-29",
-      createdAt: new Date(),
-      createdBy: "Kristina Mayer"
-    },
-    {
-      id: "event-3",
-      label: "Medical consultation",
-      groupLabel: "Dr Menlendez Hary",
-      user: "Dr Menlendez Hary",
-      color: "#263686",
-      startHour: "13 PM",
-      endHour: "14 PM",
-      date: "2022-03-4",
-      createdAt: new Date(),
-      createdBy: "Kristina Mayer"
-    },
-    {
-      id: "event-4",
-      label: "Consultation prénatale",
-      groupLabel: "Dr Shaun Murphy",
-      user: "Dr Shaun Murphy",
-      color: "#f28f6a",
-      startHour: "08:00 AM",
-      endHour: "09:00 AM",
-      date: "2022-3-05",
-      createdAt: new Date(),
-      createdBy: "Kristina Mayer"
-    }
-  ]
-  
-  const handleCellClick = (event, row, day) => {
-    // Do something...
-  }
-  
-  const handleEventClick = (event, item) => {
-    // Do something...
-  }
-  
-  const handleEventsChange = (item) => {
-    // Do something...
-  }
-  
-  const handleAlertCloseButtonClicked = (item) => {
-    // Do something...
-  }
-  
-  return (
-      <div style={{padding: '25px'}}>
-      <Alert severity="error">
-                    <AlertTitle>Not yet Implemented</AlertTitle>
-                    Currently no functionality!
-    </Alert>
-    <Scheduler
-      events={events}
-      options={state?.options}
-      alertProps={state?.alertProps}
-      toolbarProps={state?.toolbarProps}
-      onEventsChange={handleEventsChange}
-      onCellClick={handleCellClick}
-      onTaskClick={handleEventClick}
-      onAlertCloseButtonClicked={handleAlertCloseButtonClicked}
-    />
-    </div>
-  )
+function Schedule() {
+    return (
+        <div style={{ padding: "25px" }}>
+            <TableContainer component={Paper}>
+                <Table aria-label="simple table">
+                    <TableHead>
+                        <TableRow style={{backgroundColor: 'rgb(250, 192, 26)'}}>
+                            <TableCell> Week </TableCell>
+                            <TableCell align="center"> Topics and Assignments </TableCell>
+                            <TableCell align="left"> Deliverables </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>  
+                      <TableRow>
+                        <TableCell style={{backgroundColor: '#ffffcc', borderRight: '1px solid #d3d3d3'}}> Week 1: (1/10) </TableCell>
+                        <TableCell style={{borderRight: '1px solid #d3d3d3', textAlign: 'center'}}> <strong> Welcome! First day of class: </strong> Thursday January 13, 2022 <br/> Kickoff Meetings: Opening Comments and Introduction, Thurs 1/13, Friday 1/14 </TableCell>
+                        <TableCell></TableCell>  
+                      </TableRow>
+                      <TableRow>
+                        <TableCell style={{backgroundColor: '#ffffcc', borderRight: '1px solid #d3d3d3'}}> Week 2: (1/17) </TableCell>
+                        <TableCell style={{borderRight: '1px solid #d3d3d3', textAlign: 'center'}}> Task: Communication Strategy Memo <br/> Assmt: Software Design Document </TableCell>
+                        <TableCell> Due: Communication Memo task</TableCell>  
+                      </TableRow>
+                      <TableRow>
+                        <TableCell style={{backgroundColor: '#ffffcc', borderRight: '1px solid #d3d3d3'}}> Week 3: (1/24) </TableCell>
+                        <TableCell style={{borderRight: '1px solid #d3d3d3', textAlign: 'center'}}></TableCell>
+                        <TableCell></TableCell>  
+                      </TableRow>
+                      <TableRow>
+                        <TableCell style={{backgroundColor: '#ffffcc', borderRight: '1px solid #d3d3d3'}}> Week 4: (1/31) </TableCell>
+                        <TableCell style={{borderRight: '1px solid #d3d3d3', textAlign: 'center'}}> Design Doc Draft Due to mentor </TableCell>
+                        <TableCell> Due: Draft of Design Doc </TableCell>  
+                      </TableRow>
+                      <TableRow>
+                        <TableCell style={{backgroundColor: '#ffffcc', borderRight: '1px solid #d3d3d3'}}> Week 5: (2/7) </TableCell>
+                        <TableCell style={{borderRight: '1px solid #d3d3d3', textAlign: 'center'}}> Design DOc, final version due </TableCell>
+                        <TableCell> Due: Final Design Doc <br/> Due: Peer Eval # 1, by Friday 3pm </TableCell>  
+                      </TableRow>
+                      <TableRow>
+                        <TableCell style={{backgroundColor: '#ffffcc', borderRight: '1px solid #d3d3d3'}}> Week 6: (2/14) </TableCell>
+                        <TableCell style={{borderRight: '1px solid #d3d3d3', textAlign: 'center'}}> Task: UGRADS Registration </TableCell>
+                        <TableCell></TableCell>  
+                      </TableRow>
+                      <TableRow>
+                        <TableCell style={{backgroundColor: '#ffffcc', borderRight: '1px solid #d3d3d3'}}> Week 7: (2/21) </TableCell>
+                        <TableCell style={{borderRight: '1px solid #d3d3d3', textAlign: 'center'}}> DR2 Presentation Guideline Spec </TableCell>
+                        <TableCell> Due: UGRADS registration by Friday, close of business </TableCell>  
+                      </TableRow>
+                      <TableRow>
+                        <TableCell style={{backgroundColor: '#ffffcc', borderRight: '1px solid #d3d3d3'}}> Week 8: (2/28) </TableCell>
+                        <TableCell style={{borderRight: '1px solid #d3d3d3', textAlign: 'center'}}> Design Review II presentations (as videos) <br/> DR2: Special video format instructions <br/> Assmt: Full Prototype Tech Demo Milestone Spec. <br/> (Demo "Flight Plan") Template </TableCell>
+                        <TableCell> Due Friday: DR2, Step1, videos posted <br/> Prep for Alpha Prototype Demo! </TableCell>  
+                      </TableRow>
+                      <TableRow>
+                        <TableCell style={{backgroundColor: '#ffffcc', borderRight: '1px solid #d3d3d3'}}> Week 9: (3/7) </TableCell>
+                        <TableCell style={{borderRight: '1px solid #d3d3d3', textAlign: 'center'}}> Alpha Demos this week </TableCell>
+                        <TableCell> Due: Schedule/hold tech demo with mentor before Spring Break <br/> Due Friday: DR2, step2, your review due back to your assigned teams <br/> Due: Peer Eval#2, by Friday 3pm </TableCell>  
+                      </TableRow>
+                      <TableRow>
+                        <TableCell style={{backgroundColor: '#ffffcc', borderRight: '1px solid #d3d3d3'}}> Week 10: (3/14) </TableCell>
+                        <TableCell style={{backgroundColor: '#C7E5BB', borderRight: '1px solid #d3d3d3', textAlign: 'center'}}> <strong> SPRING BREAK </strong> </TableCell>
+                        <TableCell style={{backgroundColor: '#C7E5BB'}}></TableCell>  
+                      </TableRow>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </div>
+    );
 }
-export default App;
+export default Schedule;

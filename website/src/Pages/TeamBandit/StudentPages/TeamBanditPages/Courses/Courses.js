@@ -4,7 +4,7 @@ import styles from "./Courses.module.css";
 
 import CourseTable from "./Components/CourseTable";
 
-const Courses = () => {
+const Courses = ({studentInfo}) => {
     const [courses, setCourses] = useState([]);
     const [coursesChange, setCoursesChange] = useState(false);
 
@@ -31,7 +31,7 @@ const Courses = () => {
     return(
         <Fragment>
             <h1>Courses</h1>
-            <CourseTable coursesInfo={courses} setCoursesChange={setCoursesChange}/>
+            <CourseTable studentInfo={studentInfo} coursesInfo={courses} setCoursesChange={setCoursesChange}/>
         </Fragment>
     );
 }

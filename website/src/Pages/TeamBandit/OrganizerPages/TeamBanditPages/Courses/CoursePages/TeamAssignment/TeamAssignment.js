@@ -98,6 +98,10 @@ export default function TeamAssignment({ courseInfo }) {
                     return "2";
                 } else if (rows[i].student_projectpref3 == project_id) {
                     return "3";
+                } else if (rows[i].student_projectpref4 == project_id) {
+                    return "4";
+                } else if (rows[i].student_projectpref5 == project_id) {
+                    return "5";
                 } else {
                     return "";
                 }
@@ -153,6 +157,25 @@ export default function TeamAssignment({ courseInfo }) {
         var total = 0;
         for (var i = 0; i < rows.length; i++) {
             if (rows[i].student_projectpref3 == project_id) {
+                total++;
+            }
+        }
+        return total;
+    };
+
+    const getFourthChoice = (project_id) => {
+        var total = 0;
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i].student_projectpref4 == project_id) {
+                total++;
+            }
+        }
+        return total;
+    };
+    const getFifthChoice = (project_id) => {
+        var total = 0;
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i].student_projectpref5 == project_id) {
                 total++;
             }
         }
@@ -511,6 +534,31 @@ export default function TeamAssignment({ courseInfo }) {
                                     align="right"
                                 >
                                     {getThirdChoice(project.project_id)}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                        <TableRow>
+                            
+                            <TableCell> Fourth Choice: </TableCell>
+                            {projects.map((project) => (
+                                <TableCell
+                                    key={project.project_id}
+                                    align="right"
+                                >
+                                    {getFourthChoice(project.project_id)}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                        <TableRow>
+                            <TableCell rowSpan={2} />
+                            <TableCell rowSpan={2} />
+                            <TableCell> Fifth Choice: </TableCell>
+                            {projects.map((project) => (
+                                <TableCell
+                                    key={project.project_id}
+                                    align="right"
+                                >
+                                    {getFifthChoice(project.project_id)}
                                 </TableCell>
                             ))}
                         </TableRow>

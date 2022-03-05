@@ -16,19 +16,11 @@ import Settings from "./TeamBanditPages/Settings/Settings";
  */
 const TeamBanditRouter = ({route, studentInfo, setStudentChange}) => {
     
-    if(route.text === 'Home' || route === 'Home') 
+    if(route.text === "Courses" || route === 'Courses') 
     {
         return (
             <Fragment>
-                <LandingPage studentInfo={studentInfo}/>
-            </Fragment>
-        )
-    }
-    else if(route.text === "Courses") 
-    {
-        return (
-            <Fragment>
-                <Courses/>
+                <Courses studentInfo={studentInfo}/>
             </Fragment>
         )
     }
