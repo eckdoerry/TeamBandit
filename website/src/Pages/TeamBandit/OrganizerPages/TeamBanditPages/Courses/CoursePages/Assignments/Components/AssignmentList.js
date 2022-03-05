@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+
+import AddAssignment from "./AddAssignment";
 
 // MUI Imports
 import Typography from "@mui/material/Typography";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
 
 // Datagrid
 import {
@@ -32,6 +29,11 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
             headerName: "Due Date",
             flex: 2,
         },
+        {
+            field: "assignment_description",
+            headerName: "Description",
+            flex: 2,
+        },
     ];
 
     const CustomToolbar = () => {
@@ -44,6 +46,11 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
                     <GridToolbarColumnsButton sx={{ m: 1 }} />
                     <GridToolbarFilterButton sx={{ m: 1 }} />
                     <GridToolbarExport sx={{ m: 1 }} />
+                    <AddAssignment
+                        courseInfo={courseInfo}
+                        rows={rows}
+                        setRowChange={setRowChange}
+                    />
                 </GridToolbarContainer>
         );
     };

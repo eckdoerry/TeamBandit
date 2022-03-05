@@ -126,6 +126,48 @@ router.put("/projectOverview/:project_id", authorization, async(req, res) => {
     }
 });
 
+// Updates Project Overview PDF
+router.put("/assignmentInstructions/:assignment_id", authorization, async(req, res) => {
+    try {
+        const {assignment_id} = req.params;
+        if(!req.files) 
+        {
+            res.json("No files selected!");
+        } 
+        else 
+        {
+            const oldAssignmentInstructionsPath = await pool.query("SELECT organizer_id, assignment_instructions FROM assignments WHERE organizer_id = $1", [req.user]);
+
+            // Removes old profile pic
+            if (fs.existsSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentInstructionsPath.rows[0].projectoverview_filename))
+            {
+                fs.unlinkSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentInstructionsPath.rows[0].projectoverview_filename);
+            }
+
+            let assignmentInstructions = req.files.assignmentInstructions;
+
+            const new_filename = "assignmentInstructions_" + assignment_id.toString() + "_" + req.user.toString() + "_" + uuid().toString() + "." + assignmentInstructions.mimetype.split("/")[1];
+            
+            //Use the mv() method to place the file in upload directory
+            assignmentInstructions.mv("../../public/uploads/documents/assignmentInstructions/" + new_filename);
+
+            const updateProjectOverview = await pool.query("UPDATE assignments SET assignment_instructions = $1 WHERE assignment_id = $2 AND organizer_id = $3 RETURNING *", [new_filename, assignment_id, req.user]);
+          
+            if(updateProjectOverview.rows.length === 0)
+            {
+                return res.json("This project is not yours!");
+            }
+
+            //send response
+            res.json("Your project overview was successfully updated!");
+        }
+    } 
+    catch (error) 
+    {
+        console.error(error.message);
+    }
+});
+
 // Deletes Organizer Profile Picture
 router.put("/deleteOrganizerProfilePicture", authorization, async(req, res) => {
     try {
