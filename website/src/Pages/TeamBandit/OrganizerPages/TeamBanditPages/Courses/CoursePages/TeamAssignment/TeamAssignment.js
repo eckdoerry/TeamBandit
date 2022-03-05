@@ -11,6 +11,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
+import Button from '@mui/material/Button';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -43,7 +45,7 @@ function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-export default function TeamAssignment({ courseInfo }) {
+export default function TeamAssignment({ courseInfo, setRoute }) {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
     const [projects, setProjects] = useState([]);
@@ -320,6 +322,7 @@ export default function TeamAssignment({ courseInfo }) {
     
     return (
         <div style={{ padding: "25px", overflow:'auto' }}>
+            <Button style={{textAlign: 'center', whiteSpace: 'nowrap'}} sx={{ m: 3 }} variant="contained" color="secondary" startIcon={<ArrowBackIcon />} onClick = {() => setRoute("Projects")}> Back to Projects </Button>
             <TableContainer style={{ overflowX: "initial" }}>
                 <Table aria-label="spanning table">
                     <TableHead className="sticky">
