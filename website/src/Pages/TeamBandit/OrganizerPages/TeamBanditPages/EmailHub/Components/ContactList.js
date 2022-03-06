@@ -38,6 +38,10 @@ const ContactList = (props) => {
         props.onChangeChain(string);
     };
 
+    const changeInboxViewhandler = (inboxViewBool) => {
+        props.onChangeInboxView(inboxViewBool);
+    }
+
     useEffect(() => {
         getEmailClients();
     }, []);
@@ -45,12 +49,21 @@ const ContactList = (props) => {
     // JSX
     return (
         <Stack spacing = {1} className={styles.contact_list}>
+            <Item
+                    className={styles.contact_card}
+                    onClick={() => {
+                        changeInboxViewhandler(true);
+                    }}
+                >
+                    <p className={styles.contact_name}> Inbox </p>
+                </Item>
             {contactList.map((message, index) => (
                 <Item
                     className={styles.contact_card}
                     key={index}
                     onClick={() => {
                         changeChainHandler(message.client_email);
+                        changeInboxViewhandler(false);
                     }}
                 >
                     <p className={styles.contact_name}>{message.client_name}</p>
