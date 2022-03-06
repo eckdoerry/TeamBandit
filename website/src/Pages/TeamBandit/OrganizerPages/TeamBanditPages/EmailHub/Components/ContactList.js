@@ -55,7 +55,7 @@ const ContactList = (props) => {
                         changeInboxViewhandler(true);
                     }}
                 >
-                    <p className={styles.contact_name}> Inbox </p>
+                    <p className={styles.inbox_name}> Inbox </p>
                 </Item>
             {contactList.map((message, index) => (
                 <Item

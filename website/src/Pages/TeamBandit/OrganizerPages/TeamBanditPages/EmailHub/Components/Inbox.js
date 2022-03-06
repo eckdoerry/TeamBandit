@@ -1,8 +1,8 @@
 import { React, useState, useEffect } from "react";
 import styles from "../EmailHub.module.css";
 import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
+import Checkbox from '@mui/material/Checkbox';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -45,8 +45,11 @@ const Inbox = () => {
     return (
         <div className={`${styles.message} ${styles.lineheight}`}>
             {messageChain.map((message, index) => (
-                <Item className={styles.text} key={index}>
-                    <p className={styles.lineheight}>{message.message}</p>
+                <Item className={message.read === true ? `${styles.inboxEmail}` : `${styles.inboxEmailUnread}`} key={index}>
+                    <Checkbox size = "small"></Checkbox>
+                    <p>{message.sender}</p>
+                    <p>TeamBandit</p>
+                    <p>{message.datetime}</p>
                 </Item>
             ))}
         </div>
