@@ -19,11 +19,11 @@ router.get("/", authorization, async (req, res) => {
 
 router.get("/getchain/:clientEmail", authorization, async (req, res) => {
     try {
-        const {clientEmail} = req.params;
+        const { clientEmail } = req.params;
         const organizerEmail = await pool.query(
             "select organizer_email from organizers where organizer_id = $1",
             [req.user]
-        )
+        );
 
         const user = await pool.query(
             "SELECT message,sender FROM messages WHERE (RECIPIENT = $1 AND SENDER = $2) OR (RECIPIENT = $2 AND SENDER = $1)",
@@ -37,17 +37,16 @@ router.get("/getchain/:clientEmail", authorization, async (req, res) => {
     }
 });
 
-router.get("/getchain/all", authorization, async (req, res) => {
+router.get("/getinbox", authorization, async (req, res) => {
     try {
-        console.log("oi")
         const organizerEmail = await pool.query(
             "select organizer_email from organizers where organizer_id = $1",
             [req.user]
-        )
+        );
 
         const user = await pool.query(
             "SELECT message,sender FROM messages WHERE RECIPIENT = $1",
-            [clientEmail]
+            [organizerEmail.rows[0].organizer_email]
         );
 
         res.json(user.rows);

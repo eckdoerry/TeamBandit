@@ -22,14 +22,15 @@ const Inbox = () => {
     const getEmails = async () => {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/emailhub/getchain/all`,
+                `${process.env.REACT_APP_BASEURL}/emailhub/getinbox`,
                 {
                     method: "GET",
                     headers: { token: localStorage.token },
                 }
             );
-            
             const parseData = await response.json();
+
+            setMessageChain(parseData);
         } catch (error) {
             console.error(error.message);
         }
@@ -38,20 +39,18 @@ const Inbox = () => {
     useEffect(() => {
         getEmails();
         setMessagesChange(false);
-    },[messagesChange]);
+    }, [messagesChange]);
+    
     // JSX
     return (
-    <div className={`${styles.message} ${styles.lineheight}`}>
+        <div className={`${styles.message} ${styles.lineheight}`}>
             {messageChain.map((message, index) => (
-                <Item
-                    className={styles.text}
-                    key={index}
-                >
+                <Item className={styles.text} key={index}>
                     <p className={styles.lineheight}>{message.message}</p>
                 </Item>
             ))}
         </div>
-    )
+    );
 };
 
 export default Inbox;
