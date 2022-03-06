@@ -4,6 +4,7 @@ import AddAssignment from "./AddAssignment";
 
 // MUI Imports
 import Typography from "@mui/material/Typography";
+import { Link } from "react-router-dom";
 
 // Datagrid
 import {
@@ -18,10 +19,22 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
 
+    const assignmentPage = (params) => {
+        
+        return (
+            <div style={{display:'flex'}}>
+                <Link target="_blank" to={`/assignment/${params.row.assignment_name}-${params.row.assignment_id}`}>
+                {params.row.assignment_name}
+                </Link>
+            </div>
+        );
+    };
+
     const columns = [
         {
             field: "assignment_name",
-            headerName: "Assignment Title",
+            headerName: "Assignment",
+            renderCell: assignmentPage,
             flex: 2,
         },
         {
@@ -37,11 +50,6 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
         {
             field: "submission_type",
             headerName: "Type",
-            flex: 2,
-        },
-        {
-            field: "assignment_filename",
-            headerName: "PDF Instructions",
             flex: 2,
         },
     ];
@@ -67,7 +75,6 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
 
     const getAssignments = async () => {
         try {
-            console.log(courseInfo);
             const response = await fetch(
                 `${process.env.REACT_APP_BASEURL}/assignments/`,
                 { method: "GET", headers: { token: localStorage.token } }

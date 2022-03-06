@@ -9,10 +9,26 @@ router.get("/", authorization, async(req, res) => {
     try {
 
         const user = await pool.query(
-            "SELECT organizer_id, assignment_id, assignment_name, assignment_due_date, assignment_description, submission_type, assignment_filename FROM assignments WHERE organizer_id = $1 ORDER BY assignment_id ASC", [req.user]
+            "SELECT organizer_id, assignment_id, assignment_name, assignment_due_date, assignment_description, submission_type, assignment_filename, course_id FROM assignments WHERE organizer_id = $1 ORDER BY assignment_id ASC", [req.user]
         );
 
         res.json(user.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+// get a single assignment
+router.get("/assignment/:assignment_id", authorization, async(req, res) => {
+    try {
+        const {assignment_id} = req.params;
+        const user = await pool.query(
+            "SELECT assignment_filename FROM assignments WHERE assignment_id = $1", [assignment_id]
+        );
+
+        res.json(user.rows[0]);
 
     } catch (error) {
         console.error(error.message);
