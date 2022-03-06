@@ -14,26 +14,26 @@
 
 .text {
     background-color: #ededed !important;
-    margin: .25rem !important;;
+    margin: 0.25rem !important;
 }
 
 .text_sent {
-    background-color: #FAC01A !important;
-    margin: .25rem !important;
+    background-color: #fac01a !important;
+    margin: 0.25rem !important;
 }
 
 .inboxEmail {
     background-color: #ededed !important;
-    margin: .25rem !important;
-    display:flex;
+    margin: 0.25rem !important;
+    display: flex;
     justify-content: space-between;
 }
 
 .inboxEmailUnread {
     background-color: #ededed !important;
-    margin: .25rem !important;
+    margin: 0.25rem !important;
     font-weight: bolder !important;
-    display:flex;
+    display: flex;
     justify-content: space-between;
     color: black !important;
 }
@@ -46,7 +46,7 @@
     background-color: #ededed;
 }
 
-.lineheight{
+.lineheight {
     line-height: 1rem;
 }
 
@@ -60,8 +60,8 @@
     font-weight: bold;
 }
 
-.contact_email{
-    font-size: .8rem;
+.contact_email {
+    font-size: 0.8rem;
     font-weight: light;
 }
 
@@ -71,3 +71,34 @@
     flex-direction: row;
 }
 
+.leftpane {
+    width: 25%;
+    height: 100%;
+    float: left;
+    border-collapse: collapse;
+}
+
+.middlepane {
+    width: 50%;
+    height: 100%;
+    float: left;
+    border-collapse: collapse;
+}
+
+.rightpane {
+    width: 25%;
+    height: 100%;
+    position: relative;
+    float: right;
+    border-collapse: collapse;
+}
+
+.modal_style {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 400px !important;
+    background-color: white !important;
+    border: 2px solid #000 !important;
+};

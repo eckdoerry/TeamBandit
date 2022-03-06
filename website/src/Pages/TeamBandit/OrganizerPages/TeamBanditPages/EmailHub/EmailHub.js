@@ -20,7 +20,7 @@ const EmailHub = () => {
     };
 
     // JSX
-    if (inboxView == true) {
+    if (inboxView === true) {
         return (
             <div className={styles.page}>
                 <ContactList
