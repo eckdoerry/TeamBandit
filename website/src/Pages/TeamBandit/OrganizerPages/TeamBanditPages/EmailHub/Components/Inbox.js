@@ -24,7 +24,14 @@ const Inbox = () => {
 
     // MODAL STATES
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    const [modalData, setModalData] = useState({sender: "",
+    subject: "",
+    date: "",
+    message: ""});
+
+    const handleOpen = (emailkey) => {
+        setOpen(true);
+    };
     const handleClose = () => setOpen(false);
 
     // PULL ALL EMAILS WHERE CURRENT ORGANIZER IS THE RECIPIENT
@@ -61,11 +68,19 @@ const Inbox = () => {
                             : `${styles.inboxEmailUnread}`
                     }
                     key={index}
-                    onClick={handleOpen}
+                    onClick={() => {
+                        handleOpen();
+                        setModalData({
+                            sender: message.sender,
+                            subject: message.subject,
+                            date: message.datetime,
+                            message: message.message,
+                        });
+                    }}
                 >
                     <Checkbox size="small"></Checkbox>
                     <p className={styles.leftpane}>{message.sender}</p>
-                    <p className={styles.middlepane}>TeamBandit</p>
+                    <p className={styles.middlepane}>{message.subject}</p>
                     <p className={styles.rightpane}>{message.datetime}</p>
                 </Item>
             ))}
@@ -76,9 +91,11 @@ const Inbox = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box className = {styles.modal_style}>
-                    <p> Sender:</p>
-                    
+                <Box className={styles.modal_style}>
+                    <p>Sender: {modalData.sender}</p>
+                    <p>Subject: {modalData.subject}</p>
+                    <p>Date: {modalData.date}</p>
+                    <p>Message:<br/> {modalData.message}</p>
                 </Box>
             </Modal>
         </div>
