@@ -20,7 +20,7 @@ const ChatLog = (props) => {
     const getEmails = async () => {
         try {
             const response = await fetch(
-                `http://localhost:5000/emailhub/getchain/${props.clientEmail}`,
+                `${process.env.REACT_APP_BASEURL}/emailhub/getchain/${props.clientEmail}`,
                 {
                     method: "GET",
                     headers: { token: localStorage.token },
@@ -44,7 +44,7 @@ const ChatLog = (props) => {
         <div className={`${styles.message} ${styles.lineheight}`}>
             {messageChain.map((message, index) => (
                 <Item
-                    className={message.sender === props.clientEmail ? `${styles.text}` : `${styles.textSent}`}
+                    className={message.sender === props.clientEmail ? `${styles.text}` : `${styles.text_sent}`}
                     key={index}
                 >
                     <p className={styles.lineheight}>{message.message}</p>
