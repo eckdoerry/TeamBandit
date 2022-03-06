@@ -34,6 +34,16 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
             headerName: "Description",
             flex: 2,
         },
+        {
+            field: "submission_type",
+            headerName: "Type",
+            flex: 2,
+        },
+        {
+            field: "assignment_filename",
+            headerName: "PDF Instructions",
+            flex: 2,
+        },
     ];
 
     const CustomToolbar = () => {
