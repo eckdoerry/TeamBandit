@@ -32,6 +32,18 @@ router.post("/addclient", authorization, async(req,res) =>{
     }
 });
 
+// add a client
+router.post("/csv", authorization, async(req,res) =>{
+    try{
+        const { client_lname_csv, client_fname_csv, client_email_csv, client_organization_csv, client_phone_csv, client_notes_csv } = req.body;
+        const newClient = await pool.query("INSERT INTO clients (client_lname, client_fname, client_email, client_organization, client_phonenumber, client_notes, organizer_id) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *", [client_lname_csv, client_fname_csv, client_email_csv, client_organization_csv, client_phone_csv, client_notes_csv, req.user]);
+
+        res.json(newClient.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
 // update a client
 router.put("/editclient/:id", authorization, async(req, res) => {
     try {
