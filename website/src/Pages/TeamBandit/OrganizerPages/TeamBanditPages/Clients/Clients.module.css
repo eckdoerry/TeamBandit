@@ -1,0 +1,100 @@
+* {
+    box-sizing: border-box;
+}
+
+.courseContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 10px;
+}
+
+.courseBtns {
+    display: flex;
+    flex-direction: row;
+}
+
+.addCourseBtn2 {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.mainCoursePage {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 5px solid blue;
+}
+
+.courseContent {
+    position: relative;
+}
+
+.changeFont {
+    color: black !important;
+}
+
+.csv {
+    align-content: center;
+    padding: 40px;
+}
+
+.uploader {
+    width: fill;
+    padding: 45px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.table-pad {
+    padding: 1.5rem;
+    width: fill;
+}
+
+.appHeader {
+    background-color: white;
+    min-height: 100vh;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    width: 100%;
+}
+
+.appDashboard {
+    background-color: white;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    justify-content: center;
+}
+
+.appLink {
+    box-shadow: 2px 2px 4px #000000;
+    color: #003466;
+    border-style: solid;
+    border-width: 2px;
+
+    padding: 1.5rem;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.appHighlighted {
+    box-shadow: 2px 2px 4px #000000;
+    color: black;
+    background-color: #003466;
+    border-style: none;
+    border-width: 2px;
+
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 1.5rem;
+}
+
+.p {
+    color: black;
+}

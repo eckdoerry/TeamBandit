@@ -122,7 +122,6 @@ export default function MiniDrawer({ setAuth }) {
             const parseData = await response.json();
 
             setOrganizerInfo(parseData);
-            console.log(organizerInfo);
 
         } catch (error) {
             console.error(error.message);
