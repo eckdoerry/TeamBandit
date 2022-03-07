@@ -18,7 +18,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import styles from "../Courses.module.css";
 
 // Routes
-import CourseRouter from "../CourseRouter";
+import CourseRouter from "../CourseRouterStudent";
 
 // Table of the contents
 const pages = [
@@ -29,7 +29,7 @@ const pages = [
     "Assignments",
 ];
 
-const CoursePage = ({ studentInfo, courseInfo, setCoursesChange }) => {
+const CoursePageStudent = ({ studentInfo, courseInfo, setCoursesChange }) => {
     const [state, setState] = useState({
         right: false,
     });
@@ -198,4 +198,4 @@ const CoursePage = ({ studentInfo, courseInfo, setCoursesChange }) => {
     );
 };
 
-export default CoursePage;
+export default CoursePageStudent;

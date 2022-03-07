@@ -6,7 +6,7 @@ import './Components/WelcomeMessage';
 import WelcomeMessage from "./Components/WelcomeMessage";
 import Dashboard from "./Components/Dashboard";
 
-const LandingPage = ({studentInfo}) => {
+const LandingPageStudent = ({studentInfo}) => {
     return(
         <div>
             <WelcomeMessage studentInfo={studentInfo}/>
@@ -19,4 +19,4 @@ const LandingPage = ({studentInfo}) => {
     );
 };
 
-export default LandingPage;
+export default LandingPageStudent;

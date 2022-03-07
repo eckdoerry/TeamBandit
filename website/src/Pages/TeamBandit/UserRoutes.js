@@ -5,7 +5,7 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 
 // TeamBandit Pages 
-import StudenTeamBandit from "./StudentPages/StudentTeamBandit";
+import StudenTeamBandit from "./StudentPages/TeamBanditStudent";
 import MentorTeamBandit from "./MentorPages/MentorTeamBandit";
 import TeamBandit from "./OrganizerPages/TeamBandit";
 

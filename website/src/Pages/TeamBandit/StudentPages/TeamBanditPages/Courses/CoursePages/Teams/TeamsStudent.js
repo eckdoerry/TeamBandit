@@ -11,11 +11,11 @@ import MenuItem from '@mui/material/MenuItem';
 import { toast } from "react-toastify";
 
 // Page Components
-import TeamsList from './Components/StudentTeamsList';
+import TeamsListStudent from './Components/TeamsListStudent';
 
 const Teams = ({courseInfo}) => {
     return(
-        <TeamsList courseInfo={courseInfo}/>
+        <TeamsListStudent courseInfo={courseInfo}/>
     );
 }
 

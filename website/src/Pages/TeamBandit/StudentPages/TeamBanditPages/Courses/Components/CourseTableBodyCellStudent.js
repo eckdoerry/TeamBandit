@@ -1,18 +1,18 @@
 import React from "react";
-import CoursePage from "./CoursePage";
+import CoursePageStudent from "./CoursePageStudent";
 
 // MUI Imports
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 
-const CourseTableBodyCell = ({ studentInfo, courseInfo, setCoursesChange }) => {
+const CourseTableBodyCellStudent = ({ studentInfo, courseInfo, setCoursesChange }) => {
     return (
         <TableRow
             key={courseInfo.course_id}
             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
             <TableCell component="th" scope="row">
-                <CoursePage
+                <CoursePageStudent
                     studentInfo={studentInfo}
                     courseInfo={courseInfo}
                     setCoursesChange={setCoursesChange}
@@ -27,4 +27,4 @@ const CourseTableBodyCell = ({ studentInfo, courseInfo, setCoursesChange }) => {
     );
 };
 
-export default CourseTableBodyCell;
+export default CourseTableBodyCellStudent;

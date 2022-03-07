@@ -6,26 +6,26 @@ import { React } from "react";
 //import { toast } from "react-toastify";
 //import styles from "./Profile.module.css";
 
-import EditBioDialog from "./Components/EditBioDialog";
-import EditProfilePicture from "./Components/EditProfilePicture";
+import EditBioDialogStudent from "./Components/EditBioDialogStudent";
+import EditProfilePictureStudent from "./Components/EditProfilePictureStudent";
 
-const Profile = ({studentInfo, setStudentChange}) => {
+const ProfileStudent = ({studentInfo, setStudentChange}) => {
     return(
         <>
             <h1>Profile</h1>
 
             <div>
                 <h2>Profile Picture</h2>
-                <EditProfilePicture studentInfo={studentInfo} setStudentChange={setStudentChange}/>
+                <EditProfilePictureStudent studentInfo={studentInfo} setStudentChange={setStudentChange}/>
             </div>
 
             <div>
                 <h2>Bio:</h2>
                 <p>{studentInfo.student_bio}</p>
-                <EditBioDialog studentInfo={studentInfo} setStudentChange={setStudentChange}/>
+                <EditBioDialogStudent studentInfo={studentInfo} setStudentChange={setStudentChange}/>
             </div>
         </>
     );
 }
 
-export default Profile;
+export default ProfileStudent;
