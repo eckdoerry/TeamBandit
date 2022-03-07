@@ -13,7 +13,7 @@ import {
     GridToolbarExport,
 } from "@mui/x-data-grid";
 
-const AssignmentList = ({ courseInfo, setRoute }) => {
+const StudentAssignmentList = ({ courseInfo, setRoute }) => {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
 
@@ -108,4 +108,4 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
     );
 };
 
-export default AssignmentList;
+export default StudentAssignmentList;

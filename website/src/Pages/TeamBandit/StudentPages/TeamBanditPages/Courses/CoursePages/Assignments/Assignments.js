@@ -1,11 +1,11 @@
 import {Fragment, React} from "react";
 
-import AssignmentList from "./Components/AssignmentList";
+import StudentAssignmentList from "./Components/StudentAssignmentList";
 
 const Assignments = ({ courseInfo, setRoute }) => {
     return(
         <>
-            <AssignmentList courseInfo={courseInfo} setRoute={setRoute}/>
+            <StudentAssignmentList courseInfo={courseInfo} setRoute={setRoute}/>
         </>
     );
 }
