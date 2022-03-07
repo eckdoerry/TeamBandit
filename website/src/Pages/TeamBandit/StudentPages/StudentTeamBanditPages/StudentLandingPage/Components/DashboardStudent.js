@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import './Dashboard.css';
+import './DashboardStudent.css';
 
 
 // TODO: Create the components for each individual element of the dashboard

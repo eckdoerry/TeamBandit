@@ -1,10 +1,9 @@
 import {React} from "react";
-import './LandingPage.module.css';
-import './Components/WelcomeMessage';
+import './LandingPageStudent.module.css';
 
 // Page Components
-import WelcomeMessage from "./Components/WelcomeMessage";
-import Dashboard from "./Components/Dashboard";
+import WelcomeMessage from "./Components/WelcomeMessageStudent";
+import Dashboard from "./Components/DashboardStudent";
 
 const LandingPageStudent = ({studentInfo}) => {
     return(

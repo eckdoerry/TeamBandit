@@ -1,6 +1,6 @@
 import {Fragment, React, useState, useEffect} from "react";
 
-import styles from "./Courses.module.css";
+import styles from "./CoursesStudent.module.css";
 
 import CourseTable from "./Components/CourseTableStudent";
 

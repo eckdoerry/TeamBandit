@@ -15,7 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 // CSS
-import styles from "../Courses.module.css";
+import styles from "../CoursesStudent.module.css";
 
 // Routes
 import CourseRouter from "../CourseRouterStudent";
