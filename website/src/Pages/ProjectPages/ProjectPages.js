@@ -58,7 +58,7 @@ const ProjectPage = () => {
 
     useEffect(() => {
         getProjectOverview();
-    });
+    }, []);
 
     if (projectInfo !== null) {
     return (
