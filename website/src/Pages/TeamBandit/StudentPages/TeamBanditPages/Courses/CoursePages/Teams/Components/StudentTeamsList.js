@@ -49,7 +49,7 @@ const Teams = ({courseInfo}) => {
             
     const CustomToolbar = () => {
         return (
-        <GridToolbarContainer>
+            <GridToolbarContainer style={{ backgroundColor: "#FAC01A" }} >
             <Typography sx={{ m: 1 }} variant="h4">Teams</Typography>
             <GridToolbarColumnsButton  sx={{ m: 1 }} />
             <GridToolbarFilterButton sx={{ m: 1 }} />
