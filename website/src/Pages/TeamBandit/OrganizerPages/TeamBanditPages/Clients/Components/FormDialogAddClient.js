@@ -67,7 +67,7 @@ const FormDialogAddClient = ({ setClientsChange }) => {
     };
 
     const handleIndividualClose = () => {
-    setIndividualAddOpen(false);
+        setIndividualAddOpen(false);
     };
 
     const handleClickOpen = () => {
