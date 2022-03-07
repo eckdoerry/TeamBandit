@@ -6,7 +6,6 @@ import AlertTitle from '@mui/material/AlertTitle';
 
 // Course Pages //
 import Assignments from './CoursePages/Assignments/Assignments';
-import Homepage from './CoursePages/Homepage/Homepage';
 import InfoAndPolicies from './CoursePages/InfoAndPolicies/InfoAndPolicies';
 import Schedule from './CoursePages/Schedule/Schedule';
 import Teams from './CoursePages/Teams/Teams';
@@ -18,7 +17,7 @@ const CourseRouter = ({route, courseInfo, studentInfo, setCoursesChange, setRout
     {
         return (
             <Fragment>
-                <Homepage courseInfo={courseInfo}/>
+                <Schedule/>
             </Fragment>
         )
     }
@@ -66,10 +65,7 @@ const CourseRouter = ({route, courseInfo, studentInfo, setCoursesChange, setRout
     {
         return (
             <Fragment>
-                <Alert severity="error">
-                    <AlertTitle>Error</AlertTitle>
-                    The page is not displayed correctly — <strong>please refresh!</strong>
-                </Alert>
+                <Schedule/>
             </Fragment>
         )
     }
