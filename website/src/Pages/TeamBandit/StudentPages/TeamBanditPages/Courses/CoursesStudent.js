@@ -2,9 +2,9 @@ import {Fragment, React, useState, useEffect} from "react";
 
 import styles from "./Courses.module.css";
 
-import CourseTable from "./Components/CourseTable";
+import CourseTable from "./Components/CourseTableStudent";
 
-const Courses = ({studentInfo}) => {
+const CoursesStudent = ({studentInfo}) => {
     const [courses, setCourses] = useState([]);
     const [coursesChange, setCoursesChange] = useState(false);
 
@@ -36,4 +36,4 @@ const Courses = ({studentInfo}) => {
     );
 }
 
-export default Courses;
+export default CoursesStudent;

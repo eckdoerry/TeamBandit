@@ -1,7 +1,7 @@
 import {React} from "react";
 
 // Project Pages
-import ProjectList from "./Components/ProjectList";
+import ProjectList from "./Components/ProjectListStudent";
 
 const Projects = ({studentInfo, courseInfo, setRoute}) => {
     return(

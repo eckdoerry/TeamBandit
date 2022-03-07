@@ -5,9 +5,9 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 
 // TeamBandit Pages //
-import Courses from "./TeamBanditPages/Courses/Courses";
-import LandingPage from "./TeamBanditPages/LandingPage/LandingPage";
-import Profile from "./TeamBanditPages/Profile/Profile";
+import Courses from "./TeamBanditPages/Courses/CoursesStudent";
+import LandingPage from "./TeamBanditPages/LandingPage/LandingPageStudent";
+import Profile from "./TeamBanditPages/Profile/ProfileStudent";
 import Settings from "./TeamBanditPages/Settings/Settings";
 
 /**

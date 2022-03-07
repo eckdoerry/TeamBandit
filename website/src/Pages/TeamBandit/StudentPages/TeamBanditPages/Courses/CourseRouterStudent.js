@@ -5,13 +5,13 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 
 // Course Pages //
-import Assignments from './CoursePages/Assignments/Assignments';
-import InfoAndPolicies from './CoursePages/InfoAndPolicies/InfoAndPolicies';
-import Schedule from './CoursePages/Schedule/Schedule';
-import Teams from './CoursePages/Teams/Teams';
-import Projects from "./CoursePages/Projects/Projects";
+import Assignments from './CoursePages/Assignments/AssignmentsStudent';
+import InfoAndPolicies from './CoursePages/InfoAndPolicies/InfoAndPoliciesStudent';
+import Schedule from './CoursePages/Schedule/ScheduleStudent';
+import Teams from './CoursePages/Teams/TeamsStudent';
+import Projects from "./CoursePages/Projects/ProjectsStudent";
 
-const CourseRouter = ({route, courseInfo, studentInfo, setCoursesChange, setRoute}) => {
+const CourseRouterStudent = ({route, courseInfo, studentInfo, setCoursesChange, setRoute}) => {
 
     if(route.page === 'Homepage' || route === 'Homepage') 
     {
@@ -72,4 +72,4 @@ const CourseRouter = ({route, courseInfo, studentInfo, setCoursesChange, setRout
     
 }
 
-export default CourseRouter;
+export default CourseRouterStudent;

@@ -1,5 +1,5 @@
 import React from "react";
-import CourseTableBodyCell from "./CourseTableBodyCell";
+import CourseTableBodyCellStudent from "./CourseTableBodyCellStudent";
 
 // MUI Imports
 import Table from "@mui/material/Table";
@@ -24,7 +24,7 @@ const CourseTable = ({ studentInfo, coursesInfo, setCoursesChange }) => {
                     </TableHead>
                     <TableBody>
                         {coursesInfo.map((courseInfo) => (
-                            <CourseTableBodyCell
+                            <CourseTableBodyCellStudent
                                 key={courseInfo.course_id}
                                 studentInfo={studentInfo}
                                 courseInfo={courseInfo}
