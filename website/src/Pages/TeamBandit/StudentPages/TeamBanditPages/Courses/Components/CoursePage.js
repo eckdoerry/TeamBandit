@@ -22,7 +22,6 @@ import CourseRouter from "../CourseRouter";
 
 // Table of the contents
 const pages = [
-    "Homepage",
     "Schedule",
     "Info and Policies",
     "Projects",
@@ -58,7 +57,7 @@ const CoursePage = ({ studentInfo, courseInfo, setCoursesChange }) => {
     };
 
     // ENUM string for routes
-    const [route, setRoute] = useState("Homepage");
+    const [route, setRoute] = useState("Schedule");
 
     return (
         <div>
