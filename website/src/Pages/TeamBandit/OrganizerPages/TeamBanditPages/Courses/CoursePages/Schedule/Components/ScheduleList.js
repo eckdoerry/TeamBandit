@@ -16,21 +16,59 @@ import AddScheduleWeek from "./AddScheduleWeek";
 function ScheduleList({courseInfo}) {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
+    const [assignments, setAssignments] = useState([]);
 
     const assignmentPage = (params) => {
+        // 1 week = 604800000 milliseconds
+
+        var millisecondsOfWeek = new Date(params.row.schedule_week).getTime();
+
         return (
-            <div style={{display:'flex'}}>
-                <Link target="_blank" to={`/assignment/${params.row.assignment_name}-${params.row.assignment_id}`}>
-                {params.row.assignment_name}
-                </Link>
+            <div>
+                {assignments.map((assignment) => (
+                    Math.abs((Date.parse(assignment.assignment_due_date.split('T')[0]) - millisecondsOfWeek)) < 604800000 && (Date.parse(assignment.assignment_due_date.split('T')[0]) - millisecondsOfWeek) >= 0 &&
+                    <Link target="_blank" to={`/assignment/${assignment.assignment_name}-${assignment.assignment_id}`}>
+                        <p>{assignment.assignment_name}</p>
+                    </Link>
+                ))}
             </div>
         );
     };
+
+    const getProperWeekFormat = (params) => {
+        const week = params.row.schedule_week;
+        var weekArray = week.split('-');
+        var newWeek = weekArray[1] + '/' + weekArray[2].split('T')[0];
+        return (
+            <div>
+                {newWeek}
+            </div>
+        );
+    };
+
+    const getAssignments = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/assignments/`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+            const jsonData = await response.json();
+
+            setAssignments(jsonData);
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
+
+    useEffect(() => {
+        getAssignments();
+    }, []);
 
     const columns = [
       {
           field: "schedule_week",
           headerName: "Week",
+          renderCell: getProperWeekFormat,
           flex: 2,
       },
       {
@@ -95,10 +133,10 @@ function ScheduleList({courseInfo}) {
                 }}
             >
                 <DataGrid
-                    //rows={rows}
-                    rows={[{ schedule_week_id: 1, schedule_week: '3/06', schedule_description: 'Description', schedule_deliverables: 'Assignment', assignment_id: 15, assignment_name: "m" }]}
+                    rows={rows}
+                    //rows={[{ schedule_week_id: 1, schedule_week: '3/06', schedule_description: 'Description', schedule_deliverables: 'Assignment', assignment_id: 15, assignment_name: "m" }]}
                     columns={columns}
-                    rowHeight={100}
+                    rowHeight={150}
                     getRowId={(rows) => rows.schedule_week_id}
                     components={{ Toolbar: CustomToolbar }}
                     disableSelectionOnClick

@@ -139,7 +139,7 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
                         sx={{ m: 2 }}
                         type="datetime-local"
                         value={assignment_due_date}
-                        onChange={(e) => setAssignmentDueDate(e.target.value.toString())}
+                        onChange={(e) => setAssignmentDueDate(e.target.value)}
                     />
 
                     <Typography>Assignment Description</Typography>
