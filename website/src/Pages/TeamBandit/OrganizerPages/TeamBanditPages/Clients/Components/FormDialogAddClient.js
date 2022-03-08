@@ -62,12 +62,23 @@ const FormDialogAddClient = ({ setClientsChange }) => {
 
     const [individualAddOpen, setIndividualAddOpen] = useState(false);
 
+    const resetAllFields = () => {
+        setClientFName("");
+        setClientLName("");
+        setClientOrganization("");
+        setClientEmail("");
+        setClientPhoneNumber("");
+        setClientNotes("");
+        setFailedSubmit(false);
+    }
+
     const handleIndividualClickOpen = () => {
         setIndividualAddOpen(true);
     };
 
     const handleIndividualClose = () => {
         setIndividualAddOpen(false);
+        resetAllFields();
     };
 
     const handleClickOpen = () => {
@@ -76,8 +87,7 @@ const FormDialogAddClient = ({ setClientsChange }) => {
     };
 
     const handleClose = (event) => {
-        setOpen(false);
-        setFailedSubmit(false);
+        handleIndividualClose();
     };
 
     const handleToggle = () => {
@@ -180,370 +190,392 @@ const FormDialogAddClient = ({ setClientsChange }) => {
     };
 
     return (
-        <div style={{ paddingLeft: "25px", paddingBottom: "5px" }}>
-            <Button variant="outlined" onClick={handleIndividualClickOpen}>
-                Add Client
-            </Button>
+            <div style={{ paddingLeft: "25px", paddingBottom: "5px" }}>
+                <Button variant="outlined" onClick={handleIndividualClickOpen}>
+                    Add Client
+                </Button>
 
-            <Dialog open={individualAddOpen} onClose={handleIndividualClose}>
-                <DialogTitle>Add a New Client</DialogTitle>
+                <Dialog open={individualAddOpen} onClose={handleIndividualClose}>
+                    <DialogTitle>Add a New Client</DialogTitle>
 
-                <DialogContent>
-                    <DialogContentText>
-                        Enter client information here
-                    </DialogContentText>
+                    <DialogContent>
+                        <DialogContentText>
+                            Enter client information here
+                        </DialogContentText>
 
-                    <TextField
-                        required
-                        autoFocus
-                        margin="dense"
-                        label="Client First Name"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={clientFName}
-                        error={clientFName === "" && failedSubmit}
-                        helperText={
-                            clientFName === "" && failedSubmit
-                                ? "Client first name is required"
-                                : " "
-                        }
-                        onChange={(e) => setClientFName(e.target.value)}
-                    />
+                        <TextField
+                            required
+                            autoFocus
+                            margin="dense"
+                            label="Client First Name"
+                            type="text"
+                            fullWidth
+                            variant="standard"
+                            value={clientFName}
+                            error={clientFName === "" && failedSubmit}
+                            helperText={
+                                clientFName === "" && failedSubmit
+                                    ? "Client first name is required"
+                                    : " "
+                            }
+                            onChange={(e) => setClientFName(e.target.value)}
+                        />
 
-                    <TextField
-                        required
+                        <TextField
+                            required
+                            
+                            margin="dense"
+                            label="Client Last Name"
+                            type="text"
+                            fullWidth
+                            variant="standard"
+                            value={clientLName}
+                            error={clientLName === "" && failedSubmit}
+                            helperText={
+                                clientLName === "" && failedSubmit
+                                    ? "Client last name is required"
+                                    : " "
+                            }
+                            onChange={(e) => setClientLName(e.target.value)}
+                        />
+
                         
-                        margin="dense"
-                        label="Client Last Name"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={clientLName}
-                        error={clientLName === "" && failedSubmit}
-                        helperText={
-                            clientLName === "" && failedSubmit
-                                ? "Client last name is required"
-                                : " "
-                        }
-                        onChange={(e) => setClientLName(e.target.value)}
-                    />
 
-                    
+                        <TextField
+                            required
+                            margin="dense"
+                            label="Organization"
+                            type="text"
+                            fullWidth
+                            variant="standard"
+                            value={clientOrganization}
+                            error={clientOrganization === "" && failedSubmit}
+                            helperText={
+                                clientOrganization === "" && failedSubmit
+                                    ? "Client organization is required"
+                                    : " "
+                            }
+                            onChange={(e) => setClientOrganization(e.target.value)}
+                        />
 
-                    <TextField
-                        required
-                        margin="dense"
-                        label="Organization"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={clientOrganization}
-                        error={clientOrganization === "" && failedSubmit}
-                        helperText={
-                            clientOrganization === "" && failedSubmit
-                                ? "Client organization is required"
-                                : " "
-                        }
-                        onChange={(e) => setClientOrganization(e.target.value)}
-                    />
+                        <TextField
+                            required
+                            margin="dense"
+                            label="Client Email"
+                            type="email"
+                            fullWidth
+                            variant="standard"
+                            value={clientEmail}
+                            error={clientEmail === "" && failedSubmit}
+                            helperText={
+                                clientEmail === "" && failedSubmit
+                                    ? "Client email is required"
+                                    : " "
+                            }
+                            onChange={(e) => setClientEmail(e.target.value)}
+                        />
 
-                    <TextField
-                        required
-                        margin="dense"
-                        label="Client Email"
-                        type="email"
-                        fullWidth
-                        variant="standard"
-                        value={clientEmail}
-                        error={clientEmail === "" && failedSubmit}
-                        helperText={
-                            clientEmail === "" && failedSubmit
-                                ? "Client email is required"
-                                : " "
-                        }
-                        onChange={(e) => setClientEmail(e.target.value)}
-                    />
+                        <TextField
+                            margin="dense"
+                            label="Phone Number"
+                            type="text"
+                            fullWidth
+                            variant="standard"
+                            value={clientPhoneNumber}
+                            onChange={(e) => setClientPhoneNumber(e.target.value)}
+                        />
 
-                    <TextField
-                        margin="dense"
-                        label="Phone Number"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={clientPhoneNumber}
-                        onChange={(e) => setClientPhoneNumber(e.target.value)}
-                    />
+                        <TextField
+                            margin="dense"
+                            label="Notes"
+                            type="text"
+                            fullWidth
+                            variant="standard"
+                            value={clientNotes}
+                            onChange={(e) => setClientNotes(e.target.value)}
+                        />
+                    </DialogContent>
 
-                    <TextField
-                        margin="dense"
-                        label="Notes"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={clientNotes}
-                        onChange={(e) => setClientNotes(e.target.value)}
-                    />
-                </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={onSubmitForm}>Add Client</Button>
+                    </DialogActions>
+                </Dialog>
+                <Button
+                    sx={{ m: 3, pl: 5, pr: 5 }}
+                    style={{ textAlign: "center", whiteSpace: "nowrap" }}
+                    size="large"
+                    variant="outlined"
+                    color="secondary"
+                    onClick={handleToggle}
+                    startIcon={<FileUploadIcon />}
+                >
+                    {" "}
+                    Upload Client List{" "}
+                </Button>
+                <Dialog
+                    maxHeight={"lg"}
+                    maxWidth={"lg"}
+                    open={open}
+                    onClose={handleToggle}
+                >
+                    <div className={styles.csv}>
+                        <div className={styles.appHeader}>
+                            <div className={styles.uploader}>
+                                <div
+                                    className={`${styles.appLink} ${
+                                        highlighted
+                                            ? styles.appHighlighted
+                                            : styles.appNothing
+                                    }`}
+                                    onDragEnter={() => {
+                                        setHighlighted(true);
+                                    }}
+                                    onDragLeave={() => {
+                                        setHighlighted(false);
+                                    }}
+                                    onDragOver={(e) => {
+                                        e.preventDefault();
+                                    }}
+                                    onDrop={(e) => {
+                                        e.preventDefault();
+                                        setHighlighted(false);
 
-                <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={onSubmitForm}>Add Client</Button>
-                </DialogActions>
-            </Dialog>
-            <Button
-                sx={{ m: 3, pl: 5, pr: 5 }}
-                style={{ textAlign: "center", whiteSpace: "nowrap" }}
-                size="large"
-                variant="outlined"
-                color="secondary"
-                onClick={handleToggle}
-                startIcon={<FileUploadIcon />}
-            >
-                {" "}
-                Upload Client List{" "}
-            </Button>
-            <Dialog
-                maxHeight={"lg"}
-                maxWidth={"lg"}
-                open={open}
-                onClose={handleClose}
-            >
-                <div className={styles.csv}>
-                    <div className={styles.appHeader}>
-                        <div className={styles.uploader}>
-                            <div
-                                className={`${styles.appLink} ${
-                                    highlighted
-                                        ? styles.appHighlighted
-                                        : styles.appNothing
-                                }`}
-                                onDragEnter={() => {
-                                    setHighlighted(true);
-                                }}
-                                onDragLeave={() => {
-                                    setHighlighted(false);
-                                }}
-                                onDragOver={(e) => {
-                                    e.preventDefault();
-                                }}
-                                onDrop={(e) => {
-                                    e.preventDefault();
-                                    setHighlighted(false);
-
-                                    Array.from(e.dataTransfer.files)
-                                        .filter(
-                                            (file) =>
-                                                file.type ===
-                                                "application/vnd.ms-excel"
-                                        )
-                                        .forEach(async (file) => {
-                                            const text = await file.text();
-                                            const result = parse(text, {
-                                                header: true,
-                                            });
-                                            setContacts((existing) => [
-                                                ...existing,
-                                                ...result.data,
-                                            ]);
-                                        });
-                                }}
-                            >
-                                DRAG AND DROP FILE HERE
-                            </div>
-
-                            <p className={styles.p}> OR </p>
-
-                            <label htmlFor="contained-button-file">
-                                <ThemeProvider theme={theme}>
-                                    <Input
-                                        accept="text/csv"
-                                        id="contained-button-file"
-                                        multiple
-                                        type="file"
-                                        onChange={(event) => {
-                                            event.preventDefault();
-                                            const loadCSV = Promise.resolve(
-                                                event.target.files[0].text()
-                                            );
-
-                                            loadCSV.then(function (
-                                                resultOfPromise
-                                            ) {
-                                                const parsedResult = parse(
-                                                    resultOfPromise,
-                                                    { header: true }
-                                                );
+                                        Array.from(e.dataTransfer.files)
+                                            .filter(
+                                                (file) =>
+                                                    file.type ===
+                                                    "application/vnd.ms-excel"
+                                            )
+                                            .forEach(async (file) => {
+                                                const text = await file.text();
+                                                const result = parse(text, {
+                                                    header: true,
+                                                });
                                                 setContacts((existing) => [
                                                     ...existing,
-                                                    ...parsedResult.data,
+                                                    ...result.data,
                                                 ]);
                                             });
-                                        }}
-                                    />
-
-                                    <Button
-                                        color="sameBlue"
-                                        variant="contained"
-                                        component="span"
-                                    >
-                                        Upload File
-                                    </Button>
-                                </ThemeProvider>
-                            </label>
-                        </div>
-                        <div className={styles.tablepad}>
-                            <TableContainer component={Paper}>
-                                <Table
-                                    sx={{ minWidth: 1000 }}
-                                    aria-label="simple table"
+                                    }}
                                 >
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell
-                                                style={{
-                                                    backgroundColor: "#F2C12E",
-                                                    color: "black",
-                                                }}
-                                            >
-                                                First Name
-                                            </TableCell>
-                                            <TableCell
-                                                style={{
-                                                    backgroundColor: "#F2C12E",
-                                                    color: "black",
-                                                }}
-                                            >
-                                                Last Name
-                                            </TableCell>
-                                            <TableCell
-                                                style={{
-                                                    backgroundColor: "#F2C12E",
-                                                    color: "black",
-                                                }}
-                                                align="right"
-                                            >
-                                                Email
-                                            </TableCell>
-                                            <TableCell
-                                                style={{
-                                                    backgroundColor: "#F2C12E",
-                                                    color: "black",
-                                                }}
-                                                align="right"
-                                            >
-                                                Organization
-                                            </TableCell>
-                                            <TableCell
-                                                style={{
-                                                    backgroundColor: "#F2C12E",
-                                                    color: "black",
-                                                }}
-                                                align="right"
-                                            >
-                                                Phone Number
-                                            </TableCell>
-                                            <TableCell
-                                                style={{
-                                                    backgroundColor: "#F2C12E",
-                                                    color: "black",
-                                                }}
-                                                align="right"
-                                            >
-                                                Notes
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {contacts.map((contact) => (
-                                            <TableRow
-                                                key={contact.email}
-                                                sx={{
-                                                    "&:last-child td, &:last-child th":
-                                                        { border: 0 },
-                                                }}
-                                            >
+                                    DRAG AND DROP FILE HERE
+                                </div>
+
+                                <p className={styles.p}> OR </p>
+
+                                <label htmlFor="contained-button-file">
+                                    <ThemeProvider theme={theme}>
+                                        <Input
+                                            accept="text/csv"
+                                            id="contained-button-file"
+                                            multiple
+                                            type="file"
+                                            onChange={(event) => {
+                                                event.preventDefault();
+                                                const loadCSV = Promise.resolve(
+                                                    event.target.files[0].text()
+                                                );
+
+                                                loadCSV.then(function (
+                                                    resultOfPromise
+                                                ) {
+                                                    const parsedResult = parse(
+                                                        resultOfPromise,
+                                                        { header: true }
+                                                    );
+                                                    setContacts((existing) => [
+                                                        ...existing,
+                                                        ...parsedResult.data,
+                                                    ]);
+                                                });
+                                            }}
+                                        />
+
+                                        <Button
+                                            color="secondary"
+                                            variant="contained"
+                                            component="span"
+                                        >
+                                            Upload .CSV File
+                                        </Button>
+                                    </ThemeProvider>
+                                </label>
+                            </div>
+                            <div className={styles.tablepad}>
+                                <TableContainer component={Paper}>
+                                    <Table
+                                        sx={{ minWidth: 1000 }}
+                                        aria-label="simple table"
+                                    >
+                                        <TableHead>
+                                            <TableRow>
                                                 <TableCell
                                                     style={{
-                                                        backgroundColor:
-                                                            "#003466",
-                                                        color: "white",
+                                                        backgroundColor: "#F2C12E",
+                                                        color: "black",
                                                     }}
-                                                    component="th"
-                                                    scope="row"
                                                 >
-                                                    {contact.firstName}
+                                                    First Name
                                                 </TableCell>
                                                 <TableCell
                                                     style={{
-                                                        backgroundColor:
-                                                            "#003466",
-                                                        color: "white",
+                                                        backgroundColor: "#F2C12E",
+                                                        color: "black",
                                                     }}
-                                                    component="th"
-                                                    scope="row"
                                                 >
-                                                    {contact.lastName}
+                                                    Last Name
                                                 </TableCell>
                                                 <TableCell
                                                     style={{
-                                                        backgroundColor:
-                                                            "#003466",
-                                                        color: "white",
+                                                        backgroundColor: "#F2C12E",
+                                                        color: "black",
                                                     }}
                                                     align="right"
                                                 >
-                                                    {contact.email}
+                                                    Email
                                                 </TableCell>
                                                 <TableCell
                                                     style={{
-                                                        backgroundColor:
-                                                            "#003466",
-                                                        color: "white",
+                                                        backgroundColor: "#F2C12E",
+                                                        color: "black",
                                                     }}
                                                     align="right"
                                                 >
-                                                    {contact.organization}
+                                                    Organization
                                                 </TableCell>
                                                 <TableCell
                                                     style={{
-                                                        backgroundColor:
-                                                            "#003466",
-                                                        color: "white",
+                                                        backgroundColor: "#F2C12E",
+                                                        color: "black",
                                                     }}
                                                     align="right"
                                                 >
-                                                    {contact.phone}
+                                                    Phone Number
                                                 </TableCell>
                                                 <TableCell
                                                     style={{
-                                                        backgroundColor:
-                                                            "#003466",
-                                                        color: "white",
+                                                        backgroundColor: "#F2C12E",
+                                                        color: "black",
                                                     }}
                                                     align="right"
                                                 >
-                                                    {contact.notes}
+                                                    Notes
                                                 </TableCell>
                                             </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={addList}
-                            >
+                                        </TableHead>
+                                        <TableBody>
+                                            {contacts.map((contact) => (
+                                                <TableRow
+                                                    key={contact.email}
+                                                    sx={{
+                                                        "&:last-child td, &:last-child th":
+                                                            { border: 0 },
+                                                    }}
+                                                >
+                                                    <TableCell
+                                                        style={{
+                                                            backgroundColor:
+                                                                "#003466",
+                                                            color: "white",
+                                                        }}
+                                                        component="th"
+                                                        scope="row"
+                                                    >
+                                                        {contact.firstName}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        style={{
+                                                            backgroundColor:
+                                                                "#003466",
+                                                            color: "white",
+                                                        }}
+                                                        component="th"
+                                                        scope="row"
+                                                    >
+                                                        {contact.lastName}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        style={{
+                                                            backgroundColor:
+                                                                "#003466",
+                                                            color: "white",
+                                                        }}
+                                                        align="right"
+                                                    >
+                                                        {contact.email}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        style={{
+                                                            backgroundColor:
+                                                                "#003466",
+                                                            color: "white",
+                                                        }}
+                                                        align="right"
+                                                    >
+                                                        {contact.organization}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        style={{
+                                                            backgroundColor:
+                                                                "#003466",
+                                                            color: "white",
+                                                        }}
+                                                        align="right"
+                                                    >
+                                                        {contact.phone}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        style={{
+                                                            backgroundColor:
+                                                                "#003466",
+                                                            color: "white",
+                                                        }}
+                                                        align="right"
+                                                    >
+                                                        {contact.notes}
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+
+                                </TableContainer>
+                                
+                                <Button
+                                    variant="contained"
+                                    style={{
+                                        backgroundColor: "#003466",
+                                    }}
+
+                                    onClick={handleToggle}
+                                >
                                 {" "}
-                                Commit Changes{" "}
-                            </Button>
+                                Cancel
+                                {" "}
+                                </Button>
+
+                                {" "}
+                                
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={addList}
+                                >
+                                    {" "}
+                                    Commit Changes
+                                    {" "}
+                                </Button>
+                                
+                                {" "}
+                                
+
+                            </div>
                         </div>
                     </div>
-                </div>
-            </Dialog>
-        </div>
-    );
+                </Dialog>
+            </div>
+           );
 };
 
 export default FormDialogAddClient;
