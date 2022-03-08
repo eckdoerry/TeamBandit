@@ -62,12 +62,23 @@ const FormDialogAddClient = ({ setClientsChange }) => {
 
     const [individualAddOpen, setIndividualAddOpen] = useState(false);
 
+    const resetAllFields = () => {
+        setClientFName("");
+        setClientLName("");
+        setClientOrganization("");
+        setClientEmail("");
+        setClientPhoneNumber("");
+        setClientNotes("");
+        setFailedSubmit(false);
+    }
+
     const handleIndividualClickOpen = () => {
         setIndividualAddOpen(true);
     };
 
     const handleIndividualClose = () => {
         setIndividualAddOpen(false);
+        resetAllFields();
     };
 
     const handleClickOpen = () => {
@@ -76,8 +87,8 @@ const FormDialogAddClient = ({ setClientsChange }) => {
     };
 
     const handleClose = (event) => {
-        setOpen(false);
-        setFailedSubmit(false);
+        handleIndividualClose();
+
     };
 
     const handleToggle = () => {
