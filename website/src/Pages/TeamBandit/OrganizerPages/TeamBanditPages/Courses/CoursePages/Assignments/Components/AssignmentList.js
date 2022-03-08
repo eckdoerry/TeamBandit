@@ -30,6 +30,17 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
         );
     };
 
+    const getProperDateFormat = (params) => {
+        const date = params.row.assignment_due_date;
+        var dateArray = date.split('-');
+        var newDate = dateArray[1] + '/' + dateArray[2].split('T')[0] + " at " + dateArray[2].split('T')[1];
+        return (
+            <div>
+                {newDate}
+            </div>
+        );
+    };
+
     const columns = [
         {
             field: "assignment_name",
@@ -40,6 +51,7 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
         {
             field: "assignment_due_date",
             headerName: "Due Date",
+            renderCell: getProperDateFormat,
             flex: 2,
         },
         {

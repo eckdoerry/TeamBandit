@@ -44,19 +44,21 @@ router.post("/addAssignment", authorization, async(req, res) => {
 
         if (req.files)
         {
-
             const oldAssignmentFilename = await pool.query("SELECT organizer_id, assignment_filename FROM assignments WHERE organizer_id = $1", [req.user]);
-
-            // Removes old profile pic
-            if (fs.existsSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentFilename.rows[0].assignment_filename))
+            console.log("here")
+            if (oldAssignmentFilename.rows[0])
             {
-                fs.unlinkSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentFilename.rows[0].assignment_filename);
+                // Removes old profile pic
+                if (fs.existsSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentFilename.rows[0].assignment_filename))
+                {
+                    fs.unlinkSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentFilename.rows[0].assignment_filename);
+                }
             }
+            console.log("here")
 
             let assignmentInstructions = req.files.assignmentInstructions;
 
             assignment_filename = "assignmentInstructions_" + req.user.toString() + "_" + uuid().toString() + "." + assignmentInstructions.mimetype.split("/")[1];
-            
             //Use the mv() method to place the file in upload directory
             assignmentInstructions.mv("../../public/uploads/documents/assignmentInstructions/" + assignment_filename);
         }

@@ -39,7 +39,6 @@ const AddScheduleWeek = ({ courseInfo, rows, setRowChange }) => {
 
     const addScheduleWeek = async (event) => {
         event.preventDefault();
-        console.log(schedule_description);
         try {
             const formData = new FormData();
             formData.append("schedule_week", schedule_week);
@@ -103,29 +102,6 @@ const AddScheduleWeek = ({ courseInfo, rows, setRowChange }) => {
                         type="date"
                         value={schedule_week}
                         onChange={(e) => setScheduleWeek(e.target.value.toString())}
-                    />
-
-                    <Typography>Topics and Assignments</Typography>
-                    <TextField
-                        id="outlined-multiline-flexible"
-                        fullWidth
-                        sx={{ m: 2 }}
-                        label="Topics and Assignments"
-                        type="text"
-                        multiline
-                        rowsMax="3"
-                        value={schedule_description}
-                        onChange={(e) => setScheduleDescription(e.target.value)}
-                    />
-
-                    <Typography>Deliverables</Typography>
-                    <TextField
-                        fullWidth
-                        sx={{ m: 2 }}
-                        label="Deliverables"
-                        type="text"
-                        value={schedule_deliverables}
-                        onChange={(e) => setScheduleDeliverables(e.target.value)}
                     />
 
                     <Button
