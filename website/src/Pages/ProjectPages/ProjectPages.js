@@ -24,7 +24,7 @@ import {
     Link,
     Switch,
     Redirect,
-    useLocation
+    useLocation,
 } from "react-router-dom";
 
 import TeamBanditLogo from "../../Images/logo.png";
@@ -60,62 +60,86 @@ const ProjectPage = () => {
         getProjectOverview();
     }, []);
 
-    if (projectInfo !== null) {
-    return (
-        <div style={{ display: "flex" }}>
-            <div style={{ width: "100%" }}>
-                <object
-                    data={`/uploads/documents/projectOverviews/${projectInfo.projectoverview_filename}`}
-                    type="application/pdf"
-                    style={{ minHeight: "100vh", width: "100%" }}
+    if (projectInfo !== null && projectInfo.projectoverview_filename === null) {
+        return (
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                    width: "100%",
+                }}
+            >
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <AppBar
+                        style={{ backgroundColor: `#002454` }}
+                        position="relative"
+                    >
+                        <Toolbar style={{ backgroundColor: `#002454` }}>
+                            <Typography variant="h6" color="inherit" noWrap>
+                                TeamBandit
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                </ThemeProvider>
+                <Typography
+                    variant="h1"
+                    style={{
+                        color: "#002454",
+                        textShadow: "1px 1px 2px black",
+                    }}
                 >
-                    You are unable to view this document
-                </object>
+                    {" "}
+                    Error{" "}
+                </Typography>
+                <Typography
+                    variant="h4"
+                    style={{
+                        color: "#FAC01A",
+                        textShadow: "1px 1px 2px black",
+                    }}
+                >
+                    {" "}
+                    This Project does not have a project description{" "}
+                </Typography>
+
+                <img
+                    src={TeamBanditLogo}
+                    alt="Logo"
+                    width="250px"
+                    height="250px"
+                />
+                <Link to="/">
+                    <Button
+                        variant="contained"
+                        style={{ backgroundColor: "#002454" }}
+                    >
+                        {" "}
+                        GO BACK TO HOME PAGE{" "}
+                    </Button>
+                </Link>
             </div>
-            <div style={{ width: "100%" }}>
-                <Typography
-                    component="h1"
-                    variant="h2"
-                    align="center"
-                    color="text.primary"
-                    gutterBottom
-                >
-                    Project Sponsor
-                </Typography>
-                <Typography variant="h5" align="center" color="text.secondary">
-                    Example Sponsor
-                </Typography>
-                <Typography
-                    component="h1"
-                    variant="h2"
-                    align="center"
-                    color="text.primary"
-                    gutterBottom
-                >
-                    Team Members
-                </Typography>
-                <Typography variant="h5" align="center" color="text.secondary">
-                    Example Members
-                </Typography>
-                <Typography
-                    component="h1"
-                    variant="h2"
-                    align="center"
-                    color="text.primary"
-                    gutterBottom
-                >
-                    Team Mentor
-                </Typography>
-                <Typography variant="h5" align="center" color="text.secondary">
-                    Example Mentor
-                </Typography>
+        );
+    } else if (projectInfo !== null) {
+        return (
+            <div style={{ display: "flex" }}>
+                <div style={{ width: "100%" }}>
+                    <object
+                        data={`/uploads/documents/projectOverviews/${projectInfo.projectoverview_filename}`}
+                        type="application/pdf"
+                        style={{ minHeight: "100vh", width: "100%" }}
+                    >
+                        You are unable to view this document
+                    </object>
+                </div>
             </div>
-        </div>
-    );
-    }
-    else{
-        
-            return (<div
+        );
+    } else {
+        return (
+            <div
                 style={{
                     display: "flex",
                     flexDirection: "column",
@@ -158,14 +182,22 @@ const ProjectPage = () => {
                     {" "}
                     This Project Does Not Exist{" "}
                 </Typography>
-                
-                    <img
-                        src={TeamBanditLogo}
-                        alt="Logo"
-                        width="250px"
-                        height="250px"
-                    />
-                <Link to="/"><Button variant="contained" style={{backgroundColor:"#002454"}}> GO BACK TO HOME PAGE </Button></Link>
+
+                <img
+                    src={TeamBanditLogo}
+                    alt="Logo"
+                    width="250px"
+                    height="250px"
+                />
+                <Link to="/">
+                    <Button
+                        variant="contained"
+                        style={{ backgroundColor: "#002454" }}
+                    >
+                        {" "}
+                        GO BACK TO HOME PAGE{" "}
+                    </Button>
+                </Link>
             </div>
         );
     }

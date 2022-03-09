@@ -14,6 +14,9 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Button from '@mui/material/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
+// Stylesheet
+import styles from "./TeamAssignment.module.css";
+
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -61,6 +64,23 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
     const WARNING = "#FFB774";
     const SUCCESS = "#9BFF8C";
     const FAILURE = "#FF8484";
+
+    // LOADING VARIABLES
+    // ---------------------------------------------------------------------------
+    // Loading time needs to get predetermined as currently I don't know how to
+    // 'wait' for all of the information to get pulled. Still works and avoids the
+    // awkward data loading period. TODO: Look into adjusting time
+    // ---------------------------------------------------------------------------
+    const [loading, setLoading] = useState(true);
+    const loadingTime = 2000;
+
+    const setLoadingFalse = () => {
+        setTimeout(() => {
+            setLoading(false);
+        }, loadingTime);
+    };
+
+    // END LOADING VARIABLES
 
     const getStudents = async () => {
         try {
@@ -317,9 +337,17 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
         getTeams();
         getAssignedStudents();
         setRowChange(false);
+        setLoadingFalse();
     }, [rowChange]);
 
-    
+    if (loading) {
+        return (
+            <div style={{display:'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+                <div className={styles.lds}><div></div><div></div><div></div></div>
+            </div>
+        );
+    }
+
     return (
         <div style={{ padding: "25px", overflow:'auto' }}>
             <Button style={{textAlign: 'center', whiteSpace: 'nowrap'}} sx={{ m: 3 }} variant="contained" color="secondary" startIcon={<ArrowBackIcon />} onClick = {() => setRoute("Projects")}> Back to Projects </Button>

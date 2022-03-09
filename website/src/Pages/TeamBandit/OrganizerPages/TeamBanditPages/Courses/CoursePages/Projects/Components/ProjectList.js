@@ -7,7 +7,11 @@ import Typography from "@mui/material/Typography";
 
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
+import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+
+// Stylesheet
+import styles from "../Projects.module.css";
 
 // Datagrid
 import {
@@ -30,6 +34,21 @@ const Projects = ({ courseInfo, setRoute }) => {
     const [sponsors, setSponsors] = useState([]);
     const [mentors, setMentors] = useState([]);
     const [teams, setTeams] = useState([]);
+
+    // Loading variables
+    // ---------------------------------------------------------------------------
+    // Loading time needs to get predetermined as currently I don't know how to 
+    // 'wait' for all of the information to get pulled. Still works and avoids the 
+    // awkward data loading period. TODO: Look into adjusting time
+    // ---------------------------------------------------------------------------
+    const [loading, setLoading] = useState(true);
+    const loadingTime = 750;
+
+    const setLoadingFalse = () => {
+        setTimeout(() => {
+            setLoading(false);
+        }, loadingTime)
+    };
 
     const [allAssignedStudents, setAllAssignedStudents] = useState([]);
 
@@ -57,9 +76,10 @@ const Projects = ({ courseInfo, setRoute }) => {
 
         return (
             <div style={{height:'100%'}}>
-                <Link target="_blank" to ={`/team-pages/${params.row.team_name}`}> {params.row.team_name} </Link>
+                <Link target="_blank" to ={`/team-pages/${params.row.team_name}`}> <Typography variant="h5">{params.row.team_name}</Typography></Link>
                 <div style={{display:'flex', flexDirection:'row', alignItems: 'center'}}>
                     <div>
+                    {params.row.team_logo ? 
                         <img
                             src={
                                     params.row.team_logo
@@ -70,7 +90,9 @@ const Projects = ({ courseInfo, setRoute }) => {
                             alt=""
                             width="100px"
                             height="100px"
-                        />
+                        /> : null
+                    }
+                        
                     </div>
                     <div>
                         <ul>
@@ -91,12 +113,12 @@ const Projects = ({ courseInfo, setRoute }) => {
         if(isTeamLead(student.student_id) === true)
         {
             return(
-                <li><a href={string}>{student.student_fname} {student.student_lname} (Lead)</a></li>
+                <li><a href={string}><Typography variant = "string">{student.student_fname} {student.student_lname} (Lead) </Typography></a></li>
             ); 
         }
         else
         {
-            return (<li>{student.student_fname} {student.student_lname}</li>);
+            return (<li><Typography variant="string"> {student.student_fname} {student.student_lname} </Typography></li>);
         }
     };
 
@@ -319,8 +341,17 @@ const Projects = ({ courseInfo, setRoute }) => {
         getMentors();
         getTeams();
         setRowChange(false);
+        setLoadingFalse();
     }, [rowChange]);
 
+    if(loading)
+    {
+        return(
+            <div style={{display:'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+                <div className={styles.lds}><div></div><div></div><div></div></div>
+            </div>
+        );
+    }
     return (
             <div
                 style={{

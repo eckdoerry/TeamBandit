@@ -262,4 +262,46 @@ router.put("/teamLogo", authorization, async(req, res) => {
     }
 });
 
+
+// Updates Team Backdrop
+router.put("/teamBackdrop", authorization, async(req, res) => {
+    try 
+    {
+        if(!req.files) 
+        {
+            res.json("No files selected!");
+        } 
+        else 
+        {
+            const oldTeamBackdropPath = await pool.query("SELECT team_lead, team_backdrop FROM teams WHERE team_lead = $1", [req.user]);
+
+            // Removes old profile pic
+            if (fs.existsSync("../../public/uploads/images/teamBackdrop/" + oldTeamBackdropPath.rows[0].team_backdrop))
+            {
+                fs.unlinkSync("../../public/uploads/images/teamBackdrop/" + oldTeamBackdropPath.rows[0].team_backdrop);
+            }
+
+            let teamBackdrop = req.files.teamBackdrop;
+
+            const new_filename = "teamBackdrop_" + req.user.toString() + "_" + uuid().toString() + "." + teamBackdrop.mimetype.split("/")[1];
+            
+            //Use the mv() method to place the file in upload directory (i.e. "uploads")
+            teamBackdrop.mv("../../public/uploads/images/teamBackdrop/" + new_filename);
+
+            const updateTeamBackdrop = await pool.query("UPDATE teams SET team_backdrop = $1 WHERE team_lead = $2 RETURNING *", [new_filename, req.user]);
+          
+            if(updateTeamBackdrop.rows.length === 0)
+            {
+                return res.json("This team is not yours!");
+            }
+
+            //send response
+            res.json("Your team logo was successfully updated!");
+        }
+    } 
+    catch (error) {
+        console.error(error.message);
+    }
+});
+
 module.exports = router;

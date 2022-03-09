@@ -15,9 +15,29 @@ import {
     GridToolbarExport,
 } from "@mui/x-data-grid";
 
+// Stylesheet
+import styles from "../Assignments.module.css";
+
 const AssignmentList = ({ courseInfo, setRoute }) => {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
+
+    // LOADING VARIABLES
+    // ---------------------------------------------------------------------------
+    // Loading time needs to get predetermined as currently I don't know how to
+    // 'wait' for all of the information to get pulled. Still works and avoids the
+    // awkward data loading period. TODO: Look into adjusting time
+    // ---------------------------------------------------------------------------
+    const [loading, setLoading] = useState(true);
+    const loadingTime = 500;
+
+    const setLoadingFalse = () => {
+        setTimeout(() => {
+            setLoading(false);
+        }, loadingTime);
+    };
+
+    // END LOADING VARIABLES
 
     const assignmentPage = (params) => {
         
@@ -102,7 +122,16 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
     useEffect(() => {
         getAssignments();
         setRowChange(false);
+        setLoadingFalse();
     }, [rowChange]);
+
+    if (loading) {
+        return (
+            <div style={{display:'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+                <div className={styles.lds}><div></div><div></div><div></div></div>
+            </div>
+        );
+    }
 
     return (
         <>

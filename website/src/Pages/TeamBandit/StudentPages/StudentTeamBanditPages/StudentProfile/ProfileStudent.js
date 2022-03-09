@@ -1,31 +1,57 @@
 import { React } from "react";
-// @TODO: Currently commenting these out to remove
-// UNUSED warnings
-//import Avatar from "@mui/material/Avatar";
-//import Button from "@mui/material/Button";
-//import { toast } from "react-toastify";
-//import styles from "./Profile.module.css";
+
+// MUI Imports
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 import EditBioDialogStudent from "./Components/EditBioDialogStudent";
 import EditProfilePictureStudent from "./Components/EditProfilePictureStudent";
 
-const ProfileStudent = ({studentInfo, setStudentChange}) => {
-    return(
+const ProfileStudent = ({ studentInfo, setStudentChange }) => {
+    return (
         <>
-            <h1>Profile</h1>
+            <Paper style={{ padding: "25px" }} elevation={3}>
+                <Typography
+                    style={{
+                        borderBottom: "1px solid black",
+                        borderBottomWidth: "thin",
+                        width: "15%",
+                    }}
+                    variant="h4"
+                    gutterBottom
+                >
+                    Profile
+                </Typography>
+                <div>
+                    <Typography style={{ padding: "5px" }} variant="h6">
+                        {" "}
+                        Update Profile Picture{" "}
+                    </Typography>
+                    <EditProfilePictureStudent
+                        studentInfo={studentInfo}
+                        setStudentChange={setStudentChange}
+                    />
+                </div>
 
-            <div>
-                <h2>Profile Picture</h2>
-                <EditProfilePictureStudent studentInfo={studentInfo} setStudentChange={setStudentChange}/>
-            </div>
+                <div>
+                    <Typography style={{ padding: "5px" }} variant="h6">
+                        {" "}
+                        Your Team Title{" "}
+                    </Typography>
+                    <Typography style={{ padding: "5px" }} variant="h8">
+                        {studentInfo.student_bio}
+                    </Typography>
 
-            <div>
-                <h2>Bio:</h2>
-                <p>{studentInfo.student_bio}</p>
-                <EditBioDialogStudent studentInfo={studentInfo} setStudentChange={setStudentChange}/>
-            </div>
+                    <EditBioDialogStudent
+                        studentInfo={studentInfo}
+                        setStudentChange={setStudentChange}
+                    />
+                </div>
+            </Paper>
         </>
     );
-}
+};
 
 export default ProfileStudent;
