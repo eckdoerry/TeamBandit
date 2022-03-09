@@ -10,6 +10,9 @@ import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+// Stylesheet
+import styles from "./TeamPage.module.css";
+
 // Datagrid
 import {
     DataGrid,
@@ -48,6 +51,23 @@ const TeamPage = () => {
     const [isCourse, setIsCourse] = useState(false);
 
     const [allAssignedStudents, setAllAssignedStudents] = useState([]);
+
+    // LOADING VARIABLES
+    // ---------------------------------------------------------------------------
+    // Loading time needs to get predetermined as currently I don't know how to
+    // 'wait' for all of the information to get pulled. Still works and avoids the
+    // awkward data loading period. TODO: Look into adjusting time
+    // ---------------------------------------------------------------------------
+    const [loading, setLoading] = useState(true);
+    const loadingTime = 1500;
+
+    const setLoadingFalse = () => {
+        setTimeout(() => {
+            setLoading(false);
+        }, loadingTime);
+    };
+
+    // END LOADING VARIABLES
 
     const teamPage = (params) => {
         const studentsOnTeam = [];
@@ -321,8 +341,26 @@ const TeamPage = () => {
         getMentors();
         getTeams();
         isACourse();
+        setLoadingFalse();
     }, [isCourse]);
 
+    if (loading) {
+        return (
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <div className={styles.lds}>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        );
+    }
     
     if (isCourse == true && rows != []) {
         return (
