@@ -18,11 +18,24 @@ function ScheduleList({courseInfo}) {
     const [rowChange, setRowChange] = useState(false);
     const [assignments, setAssignments] = useState([]);
 
-    const assignmentPage = (params) => {
+    const getProperStartDateFormat = (params) => {
         // 1 week = 604800000 milliseconds
-
         var millisecondsOfWeek = new Date(params.row.schedule_week).getTime();
+        return (
+            <div>
+                {assignments.map((assignment) => (
+                    Math.abs((Date.parse(assignment.assignment_start_date.split('T')[0]) - millisecondsOfWeek)) < 604800000 && (Date.parse(assignment.assignment_start_date.split('T')[0]) - millisecondsOfWeek) >= 0 &&
+                    <Link target="_blank" to={`/assignment/${assignment.assignment_name}-${assignment.assignment_id}`}>
+                        <p>{assignment.assignment_name}</p>
+                    </Link>
+                ))}
+            </div>
+        );
+    };
 
+    const getProperDueDateFormat = (params) => {
+        // 1 week = 604800000 milliseconds
+        var millisecondsOfWeek = new Date(params.row.schedule_week).getTime();
         return (
             <div>
                 {assignments.map((assignment) => (
@@ -74,13 +87,14 @@ function ScheduleList({courseInfo}) {
       {
           field: "schedule_description",
           headerName: "Topics and Assignments",
+          renderCell: getProperStartDateFormat,
           sortable: false,
           flex: 2,
       },
       {
           field: "schedule_deliverables",
           headerName: "Deliverables",
-          renderCell: assignmentPage,
+          renderCell: getProperDueDateFormat,
           sortable: false,
           flex: 2,
       },
@@ -91,7 +105,7 @@ function ScheduleList({courseInfo}) {
           
               <GridToolbarContainer style={{ backgroundColor: "#FAC01A" }} >
                   <Typography sx={{ m: 1 }} variant="h4">
-                      Assignments
+                      Schedule
                   </Typography>
                   <GridToolbarExport sx={{ m: 1 }} />
                   <AddScheduleWeek

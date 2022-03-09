@@ -37,6 +37,7 @@ const submissionTypes = [
 const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
     // Variables
     const [assignment_name, setAssignmentName] = useState("");
+    const [assignment_start_date, setAssignmentStartDate] = useState("");
     const [assignment_due_date, setAssignmentDueDate] = useState("");
     const [assignment_description, setAssignmentDescription] = useState("");
     const [submission_type, setSubmissionType] = useState("");
@@ -47,6 +48,7 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
     const handleClose = () => {
         setOpen(false);
         setAssignmentName("");
+        setAssignmentStartDate("");
         setAssignmentDueDate("");
         setAssignmentDescription("");
         setSubmissionType("");
@@ -67,6 +69,7 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
             const formData = new FormData();
             formData.append("assignmentInstructions", assignment_instructions);
             formData.append("assignment_name", assignment_name);
+            formData.append("assignment_start_date", assignment_start_date);
             formData.append("assignment_due_date", assignment_due_date);
             formData.append("assignment_description", assignment_description);
             formData.append("submission_type", submission_type);
@@ -83,6 +86,7 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
 
             toast.success("Assignment was added successfully!");
             setAssignmentName("");
+            setAssignmentStartDate("");
             setAssignmentDueDate("");
             setAssignmentDescription("");
             setSubmissionType("");
@@ -131,6 +135,15 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
                         type="text"
                         value={assignment_name}
                         onChange={(e) => setAssignmentName(e.target.value)}
+                    />
+
+                    <Typography>Assignment Start Date</Typography>
+                    <TextField
+                        fullWidth
+                        sx={{ m: 2 }}
+                        type="datetime-local"
+                        value={assignment_start_date}
+                        onChange={(e) => setAssignmentStartDate(e.target.value)}
                     />
 
                     <Typography>Assignment Due Date</Typography>
