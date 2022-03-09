@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import AddAssignment from "./AddAssignment";
+import EditAssignment from "./EditAssignment"
 
 // MUI Imports
 import Typography from "@mui/material/Typography";
@@ -50,7 +51,18 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
         );
     };
 
-    const getProperDateFormat = (params) => {
+    const getProperStartDateFormat = (params) => {
+        const date = params.row.assignment_start_date;
+        var dateArray = date.split('-');
+        var newDate = dateArray[1] + '/' + dateArray[2].split('T')[0] + " at " + dateArray[2].split('T')[1];
+        return (
+            <div>
+                {newDate}
+            </div>
+        );
+    };
+
+    const getProperDueDateFormat = (params) => {
         const date = params.row.assignment_due_date;
         var dateArray = date.split('-');
         var newDate = dateArray[1] + '/' + dateArray[2].split('T')[0] + " at " + dateArray[2].split('T')[1];
@@ -58,6 +70,15 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
             <div>
                 {newDate}
             </div>
+        );
+    };
+
+    const editButton = (params) => {
+        return (
+            <EditAssignment
+                assignment={params.row}
+                setRowChange={setRowChange}
+            />
         );
     };
 
@@ -69,9 +90,15 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
             flex: 2,
         },
         {
+            field: "assignment_start_date",
+            headerName: "Start Date",
+            renderCell: getProperStartDateFormat,
+            flex: 2,
+        },
+        {
             field: "assignment_due_date",
             headerName: "Due Date",
-            renderCell: getProperDateFormat,
+            renderCell: getProperDueDateFormat,
             flex: 2,
         },
         {
@@ -83,6 +110,15 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
             field: "submission_type",
             headerName: "Type",
             flex: 2,
+        },
+        {
+            field: "edit",
+            headerName: "Edit",
+            sortable: false,
+            filterable: false,
+            flex: 1,
+            renderCell: editButton,
+            disableClickEventBubbling: true,
         },
     ];
 
