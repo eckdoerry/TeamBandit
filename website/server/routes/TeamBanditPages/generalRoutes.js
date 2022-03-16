@@ -114,6 +114,20 @@ router.get("/isCourse/:course_id", async(req, res) => {
     }
 });
 
+// Grabs Student Information from the Students table
+router.get("/isPublic/:course_id", async(req, res) => {
+    try {
+
+        const course = await pool.query("SELECT course_public FROM courses WHERE course_id = $1", [req.params['course_id']]);
+        
+        res.json(course.rows[0]);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
 // Updates Students Bio
 router.put("/studentbio", authorization, async(req, res) => {
     try {

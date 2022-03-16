@@ -137,7 +137,7 @@ router.get("/team-name/:team_name", async(req, res) => {
     try {
         const {team_name} = req.params;
 
-        const teams = await pool.query("SELECT * FROM teams WHERE team_name = $1 ORDER BY team_id ASC ", [team_name]);
+        const teams = await pool.query("SELECT teams.team_id, teams.team_name, teams.team_logo, teams.organizer_id, teams.course_id, teams.project_id, teams.team_size, teams.page_color, teams.team_lead, teams.team_description, courses.course_public, teams.team_backdrop, teams.font_color, teams.information_link FROM teams LEFT JOIN courses ON teams.course_id = courses.course_id WHERE team_name = $1 ORDER BY team_id ASC ", [team_name]);
 
         res.json(teams.rows);
     } catch (error) {

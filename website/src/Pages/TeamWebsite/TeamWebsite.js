@@ -35,7 +35,7 @@ import { Link } from "react-router-dom";
 import TeamBanditLogo from "../../Images/logo.png";
 
 // Stylesheet
-import styles from "./TeamPages.module.css";
+import styles from "./TeamWebsite.module.css";
 
 const theme = createTheme();
 
@@ -50,7 +50,7 @@ function Copyright() {
 }
 
 const TeamPage = () => {
-    const windowValue = window.location.pathname.replace("/team-pages/", "");
+    const windowValue = window.location.pathname.replace("/team-website/", "");
     const regExp = /%20/g;
     const team = windowValue.replace(regExp, " ");
 
@@ -158,7 +158,52 @@ const TeamPage = () => {
             </div>
         );
     }
-    
+    if(teamInfo[0] != null && !teamInfo[0].course_public)
+    {
+        return(
+<div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                    width: "100%",
+                }}
+            >
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                </ThemeProvider>
+                
+                <Typography
+                    variant="h4"
+                    style={{
+                        color: "#FAC01A",
+                        textShadow: "1px 1px 2px black",
+                    }}
+                >
+                    {" "}
+                    This Team's Webpage is set to Private{" "}
+                </Typography>
+
+                <img
+                    src={TeamBanditLogo}
+                    alt="Logo"
+                    width="250px"
+                    height="250px"
+                />
+                <Link to="/">
+                    <Button
+                        variant="contained"
+                        style={{ backgroundColor: "#002454" }}
+                    >
+                        {" "}
+                        GO BACK TO HOME PAGE{" "}
+                    </Button>
+                </Link>
+            </div>
+        );
+    }
     if (teamInfo[0] != null && projectInfo[0] != null) {
         return (
             <div>

@@ -49,6 +49,7 @@ const TeamPage = () => {
     const [mentors, setMentors] = useState([]);
     const [teams, setTeams] = useState([]);
     const [isCourse, setIsCourse] = useState(false);
+    const [coursePublic, setCoursePublic] = useState(false);
 
     const [allAssignedStudents, setAllAssignedStudents] = useState([]);
 
@@ -321,12 +322,27 @@ const TeamPage = () => {
             
             if(jsonData != null)
             {
-                console.log(true)
                 setIsCourse(true);
             }
             else {
-                console.log(false)
                 setIsCourse(false);
+            }
+            
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
+
+    const isCoursePublic = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/general/isPublic/${course_id}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+            const jsonData = await response.json();
+            if(jsonData != null)
+            {
+                setCoursePublic(jsonData.course_public);
             }
             
         } catch (err) {
@@ -341,6 +357,7 @@ const TeamPage = () => {
         getMentors();
         getTeams();
         isACourse();
+        isCoursePublic();
         setLoadingFalse();
     }, [isCourse]);
 
@@ -358,6 +375,54 @@ const TeamPage = () => {
                     <div></div>
                     <div></div>
                 </div>
+            </div>
+        );
+    }
+
+    if(!coursePublic)
+    {
+        return (
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                    width: "100%",
+                }}
+            >
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <AppBar
+                        style={{ backgroundColor: `#002454` }}
+                        position="relative"
+                    >
+                        <Toolbar style={{ backgroundColor: `#002454` }}>
+                            <Typography variant="h6" color="inherit" noWrap>
+                                TeamBandit
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                </ThemeProvider>
+                <Typography
+                    variant="h4"
+                    style={{
+                        color: "#FAC01A",
+                        textShadow: "1px 1px 2px black",
+                    }}
+                >
+                    {" "}
+                    This Course is set to Private{" "}
+                </Typography>
+                
+                    <img
+                        src={TeamBanditLogo}
+                        alt="Logo"
+                        width="250px"
+                        height="250px"
+                    />
+                <Link to="/"><Button variant="contained" style={{backgroundColor:"#002454"}}> GO BACK TO HOME PAGE </Button></Link>
             </div>
         );
     }
