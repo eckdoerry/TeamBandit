@@ -16,10 +16,8 @@ const CourseTable = ({ studentInfo, coursesInfo, setCoursesChange }) => {
                 <Table aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Course Name</TableCell>
-                            <TableCell>Course Organizer</TableCell>
-                            <TableCell>Course Semester</TableCell>
-                            <TableCell>Course Description</TableCell>
+                            <TableCell style={{ background: "#002454", color: 'white'}}>Course Name</TableCell>
+                            <TableCell style={{ background: "#002454", color: 'white'}}>Course Semester</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

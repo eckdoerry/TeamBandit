@@ -5,11 +5,24 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 
 // Color Picker for React
 import ColorPicker from "material-ui-color-picker";
 
 import { toast } from "react-toastify";
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 900,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+};
 
 const Settings = ({ studentInfo }) => {
 
@@ -30,6 +43,13 @@ const Settings = ({ studentInfo }) => {
 
     const [teamBackdrop, setTeamBackdrop] = useState(null);
     const [teamBackdropFilename, setTeamBackdropFilename] = useState(null);
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => {
+        setOpen(false);
+        // Reset Preferences
+    };
 
     const onTeamLogoChange = (e) => {
         setTeamLogo(e.target.files[0]); 
@@ -272,18 +292,78 @@ const Settings = ({ studentInfo }) => {
                     </Typography>
                     <Typography style={{ padding: "5px" }} variant="h6">
                         {" "}
-                        Change Team Page Color{" "}
+                        Team Page Color{" "}
                     </Typography>
-                    <ColorPicker
-                        style={{ padding: "5px", backgroundColor: `${colorValue}` }}
-                        name="color"
-                        defaultValue="CLICK HERE"
-                        value={colorValue}
-                        onChange={(color) => updateColor(color)}
-                    />
+                    <div style={{width: '500px', height: '50px', backgroundColor: `${colorValue}`, border: '1px solid black'}}>
+                    </div>
                     <Typography style={{ padding: "5px" }} variant="h6">
                         {" "}
-                        Change Team Website Font Color{" "}
+                        Team Website Font Color{" "}
+                    </Typography>
+                    <div style={{width: '500px', height: '50px', backgroundColor: `${fontValue}`, border: '1px solid black'}}>
+                    </div>
+                    
+                    <Typography style={{ padding: "5px" }} variant="h6">
+                        {" "}
+                        Team Name{" "}
+                    </Typography>
+                    <Typography style={{ padding: "5px" }} variant="h8">
+                        {teamName}
+                    </Typography>
+                    <Typography style={{ padding: "5px" }} variant="h6">
+                        {" "}
+                        Project Abstract{" "}
+                    </Typography>
+                    <Typography style={{ padding: "5px" }} variant="paragraph">
+                        {abstract}
+                    </Typography>
+                    <Typography style={{ padding: "5px" }} variant="h6">
+                        {" "}
+                        Team Logo{" "}
+                    </Typography>
+                    
+                    {teamLogoFilename != null ? <img
+                        src={"/uploads/images/teamLogos/" + teamLogoFilename}
+                        alt=""
+                        width="250px"
+                        height="250px"
+                    /> : null}
+                    <Typography style={{ padding: "5px" }} variant="h6">
+                        {" "}
+                        Team Page Backdrop{" "}
+                    </Typography>
+                    {teamBackdropFilename != null ? <img
+                        src={"/uploads/images/teamBackdrop/" + teamBackdropFilename}
+                        alt=""
+                        width="320px"
+                        height="180px"
+                    /> : null}
+
+                    <Button
+                        fullWidth
+                        style={{ padding: "5px" }}
+                        onClick={handleOpen}
+                    >
+                        UPDATE INFORMATION
+                    </Button>
+                </Paper>
+                <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Box>
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Edit Settings
+                        </Typography>
+                    </Box>
+            <div>
+            
+                    <Typography style={{ padding: "5px" }} variant="h6">
+                        {" "}
+                        Change Font Page Color (Click to open color picker){" "}
                     </Typography>
                     <ColorPicker
                         style={{ padding: "5px", backgroundColor: `${fontValue}`}}
@@ -291,6 +371,17 @@ const Settings = ({ studentInfo }) => {
                         defaultValue="CLICK HERE"
                         value={fontValue}
                         onChange={(color) => updateFont(color)}
+                    />
+                    <Typography style={{ padding: "5px" }} variant="h6">
+                        {" "}
+                        Change Team Page Color (Click to open color picker){" "}
+                    </Typography>
+                    <ColorPicker
+                        style={{ padding: "5px", backgroundColor: `${colorValue}` }}
+                        name="color"
+                        defaultValue="CLICK HERE"
+                        value={colorValue}
+                        onChange={(color) => updateColor(color)}
                     />
                     <Typography style={{ padding: "5px" }} variant="h6">
                         {" "}
@@ -315,7 +406,7 @@ const Settings = ({ studentInfo }) => {
                     </Button>
                     <Typography style={{ padding: "5px" }} variant="h6">
                         {" "}
-                        Change Project Abstract{" "}
+                        Change Abstract{" "}
                     </Typography>
                     <TextField
                         style={{ padding: "5px" }}
@@ -342,15 +433,9 @@ const Settings = ({ studentInfo }) => {
                         <input type="file" accept="images/*" name="teamLogo" onChange={onTeamLogoChange}/>
                         <Button style={{ padding: "5px" }} type="submit">Upload</Button>
                     </form>
-                    {teamLogoFilename != null ? <img
-                        src={"/uploads/images/teamLogos/" + teamLogoFilename}
-                        alt=""
-                        width="250px"
-                        height="250px"
-                    /> : null}
                     <Typography style={{ padding: "5px" }} variant="h6">
                         {" "}
-                        Change Team Page Backdrop{" "}
+                        Change Backdrop Image{" "}
                     </Typography>
                     <Typography style={{ padding: "5px" }} variant="caption">
                         {" "}
@@ -360,12 +445,6 @@ const Settings = ({ studentInfo }) => {
                         <input type="file" accept="images/*" name="teamBackdrop" onChange={onTeamBackdropChange}/>
                         <Button style={{ padding: "5px" }} type="submit">Upload</Button>
                     </form>
-                    {teamBackdropFilename != null ? <img
-                        src={"/uploads/images/teamBackdrop/" + teamBackdropFilename}
-                        alt=""
-                        width="320px"
-                        height="180px"
-                    /> : null}
                     <Typography style={{ padding: "5px" }} variant="h6">
                         {" "}
                         Upload Information Video{" "}
@@ -387,7 +466,10 @@ const Settings = ({ studentInfo }) => {
                     >
                         UPDATE VIDEO LINK
                     </Button>
-                </Paper>
+            </div>       
+                <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Close </Button>
+                </Box>
+            </Modal>
             </div>
         );
     } else {
