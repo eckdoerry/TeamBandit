@@ -67,7 +67,7 @@ const Projects = ({ studentInfo, courseInfo, setRoute }) => {
 
         return (
             <div style={{height:'100%'}}>
-                <Link target="_blank" to ={`/team-pages/${params.row.team_name}`}> <Typography variant="h5">{params.row.team_name}</Typography> </Link>
+                <Link target="_blank" to ={`/team-website/${params.row.team_name}`}> <Typography variant="h5">{params.row.team_name}</Typography> </Link>
                 <div style={{display:'flex', flexDirection:'row', alignItems: 'center'}}>
                     <div>
                         {params.row.team_logo != null ? (
@@ -164,24 +164,60 @@ const Projects = ({ studentInfo, courseInfo, setRoute }) => {
         var sponsorName = "";
         var sponsorNote = "";
         var sponsorOrg = "";
-        for(var i = 0; i < sponsors.length; i++)
-        {
-            if(sponsors[i].client_id === params.row.client_id)
-            {
+        var sponsorLocation = "";
+        var sponsorLogo = "";
+
+        for (var i = 0; i < sponsors.length; i++) {
+            if (sponsors[i].client_id === params.row.client_id) {
                 sponsorName = `${sponsors[i].client_fname} ${sponsors[i].client_lname}`;
                 sponsorNote = `${sponsors[i].client_notes}`;
                 sponsorOrg = `${sponsors[i].client_organization}`;
+                sponsorLocation = `${sponsors[i].client_location}`;
+                sponsorLogo = `${sponsors[i].client_logo}`;
             }
         }
-        return(
+
+        return (
             <div>
-                <div style={{display:'flex'}}>
-                    <Typography style={{fontWeight: 'bold'}} >{sponsorName} </Typography>
-                    <Typography style={{paddingLeft: '5px'}}>{sponsorNote}</Typography>
+                <div style={{ display: "flex", width: "100%" }}>
+                    <div style={{ paddingRight: "50px" }}>
+                        <div style={{ display: "flex" }}>
+                            <Typography
+                                variant="h6"
+                                style={{ fontWeight: "bold" }}
+                            >
+                                {sponsorName}{" "}
+                            </Typography>
+                            <Typography
+                                variant="h8"
+                                style={{
+                                    paddingLeft: "5px",
+                                    paddingTop: "7.5px",
+                                }}
+                            >
+                                {sponsorNote}
+                            </Typography>
+                        </div>
+
+                        <Typography>{sponsorOrg}</Typography>
+                        <Typography>{sponsorLocation}</Typography>
+                    </div>
+                    <div style={{ alignItems: "right" }}>
+                        {sponsorLogo != "null" ? (
+                            <img
+                                src={
+                                    sponsorLogo
+                                        ? "/uploads/images/clientLogos/" +
+                                            sponsorLogo
+                                        : null
+                                }
+                                alt=""
+                                width="100px"
+                                height="100px"
+                            />
+                        ) : null}
+                    </div>
                 </div>
-                <br></br>
-                <Typography>{sponsorOrg}</Typography>
-                
             </div>
         );
     }

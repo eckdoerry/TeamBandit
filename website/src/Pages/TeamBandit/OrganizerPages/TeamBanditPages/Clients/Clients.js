@@ -66,6 +66,32 @@ const Clients = () => {
         }
     };
 
+    const clientLogo = (params) => {
+        return (
+            <div style={{ height: "100%" }}>
+                <div
+                    
+                >
+                    
+                        {params.row.client_logo != null ? (
+                            <img
+                                src={
+                                    params.row.client_logo
+                                        ? "/uploads/images/clientLogos/" +
+                                            params.row.client_logo
+                                        : null
+                                }
+                                alt=""
+                                width="50px"
+                                height="50px"
+                            />
+                        ) : null}
+                    
+                </div>
+            </div>
+        );
+    };
+
     
 
     const clientFields = [
@@ -98,6 +124,19 @@ const Clients = () => {
             headerName: "Phone Number",
             cellClassName: 'death',
             flex: 1,
+        },
+        {
+            field: "client_location",
+            headerName: "Location",
+            cellClassName: 'death',
+            flex: 1,
+        },
+        {
+            field: "client_logo",
+            headerName: "Logo",
+            cellClassName: 'death',
+            renderCell: clientLogo,
+            flex: 0.5,
         },
         {
             field: "client_notes",

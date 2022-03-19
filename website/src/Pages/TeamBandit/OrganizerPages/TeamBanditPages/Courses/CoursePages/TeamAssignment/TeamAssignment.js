@@ -134,15 +134,11 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
 
     const teamTotal = (project_id) => {
         var total = 0;
-        var teamSize = 0;
+        var teamSize = courseInfo.team_size;
+
         for (var i = 0; i < assignedStudents.length; i++) {
             if (assignedStudents[i].project_id === project_id) {
                 total++;
-            }
-        }
-        for (var i = 0; i < teams.length; i++) {
-            if (teams[i].project_id === project_id) {
-                teamSize = teams[i].team_size;
             }
         }
 
@@ -362,10 +358,15 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
                             </TableCell>
                             <TableCell
                                 style={{ color: "white" }}
-                                colSpan={1 + projects.length}
+                                colSpan={projects.length - 1}
                                 align="left"
                             >
                                 Projects
+                            </TableCell>
+                            <TableCell
+                                style={{ color: "white" }}
+                            >
+                            Team Size Goal: {courseInfo.team_size}
                             </TableCell>
                         </TableRow>
                         <TableRow
@@ -475,7 +476,7 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
                                                     width: 350,
                                                     backgroundColor: SUCCESS,
                                             }
-                                            : { backgroundColor: FAILURE }
+                                            : { backgroundColor: 'white'}
                                     }
                                 >
                                     {row.student_fname} {row.student_lname},{" "}

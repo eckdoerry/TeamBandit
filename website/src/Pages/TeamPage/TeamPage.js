@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -72,28 +72,40 @@ const TeamPage = () => {
 
     const teamPage = (params) => {
         const studentsOnTeam = [];
-        
+
         var project_id = params.row.project_id;
-        for(var i = 0; i < allAssignedStudents.length; i++)
-        {
-            if(allAssignedStudents[i].project_id === project_id)
-            {
+        for (var i = 0; i < allAssignedStudents.length; i++) {
+            if (allAssignedStudents[i].project_id === project_id) {
                 studentsOnTeam.push(allAssignedStudents[i]);
             }
         }
 
         return (
-            <div style={{height:'100%'}}>
-                <Link target="_blank" to ={`/team-pages/${params.row.team_name}`}> {params.row.team_name} </Link>
-                <div style={{display:'flex', flexDirection:'row', alignItems: 'center'}}>
+            <div style={{ height: "100%" }}>
+                <Link
+                    target="_blank"
+                    to={`/team-website/${params.row.team_name}`}
+                >
+                    {" "}
+                    <Typography variant="h5">
+                        {params.row.team_name}
+                    </Typography>{" "}
+                </Link>
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                    }}
+                >
                     <div>
                         <img
                             src={
-                                    params.row.team_logo
-                                        ? "/uploads/images/teamLogos/" +
-                                            params.row.team_logo
-                                        : null
-                                }
+                                params.row.team_logo
+                                    ? "/uploads/images/teamLogos/" +
+                                      params.row.team_logo
+                                    : null
+                            }
                             alt=""
                             width="100px"
                             height="100px"
@@ -101,38 +113,38 @@ const TeamPage = () => {
                     </div>
                     <div>
                         <ul>
-                            {studentsOnTeam.map((student) => (
+                            {studentsOnTeam.map((student) =>
                                 displayStudent(student)
-                            ))}
-                            
+                            )}
                         </ul>
-                    </div>  
+                    </div>
                 </div>
             </div>
         );
     };
 
-    const displayStudent =  (student) => {
-        
+    const displayStudent = (student) => {
         const string = `mailto:` + student.student_email;
-        if(isTeamLead(student.student_id) === true)
-        {
-            return(
-                <li><a href={string}>{student.student_fname} {student.student_lname} (Lead)</a></li>
-            ); 
-        }
-        else
-        {
-            return (<li>{student.student_fname} {student.student_lname}</li>);
+        if (isTeamLead(student.student_id) === true) {
+            return (
+                <li>
+                    <a href={string}>
+                        {student.student_fname} {student.student_lname} (Lead)
+                    </a>
+                </li>
+            );
+        } else {
+            return (
+                <li>
+                    {student.student_fname} {student.student_lname}
+                </li>
+            );
         }
     };
 
-    const isTeamLead =  (student_id) => {
-
-        for(var i = 0; i < teams.length; i++)
-        {
-            if(teams[i].team_lead == student_id)
-            {
+    const isTeamLead = (student_id) => {
+        for (var i = 0; i < teams.length; i++) {
+            if (teams[i].team_lead == student_id) {
                 return true;
             }
         }
@@ -140,19 +152,24 @@ const TeamPage = () => {
     };
 
     const projectPage = (params) => {
-        
         return (
             <div>
-            <Typography variant="h5">{params.row.project_name}</Typography>
-            <div style={{display:'flex'}}>
-            <Link target="_blank" to={`/project-pages/${params.row.project_name}`}>
-                Project Description
-            </Link>
-            <Link style={{paddingLeft:'7px'}}target="_blank" to={`/team-pages/${params.row.team_name}`}>
-                Student Team Page
-            </Link>
-            </div>
-            
+                <Typography variant="h5">{params.row.project_name}</Typography>
+                <div style={{ display: "flex" }}>
+                    <Link
+                        target="_blank"
+                        to={`/project-pages/${params.row.project_name}`}
+                    >
+                        Project Description
+                    </Link>
+                    <Link
+                        style={{ paddingLeft: "7px" }}
+                        target="_blank"
+                        to={`/team-pages/${params.row.team_name}`}
+                    >
+                        Student Team Page
+                    </Link>
+                </div>
             </div>
         );
     };
@@ -160,84 +177,122 @@ const TeamPage = () => {
     const displayMentor = (params) => {
         var mentorName = "";
         var mentorEmail = "";
-        for(var i = 0; i < mentors.length; i++)
-        {
-            if(mentors[i].mentor_id === params.row.mentor_id)
-            {
+        for (var i = 0; i < mentors.length; i++) {
+            if (mentors[i].mentor_id === params.row.mentor_id) {
                 mentorName = `${mentors[i].mentor_name}`;
                 mentorEmail = `${mentors[i].mentor_email}`;
             }
         }
-        return(
+        return (
             <div>
                 <Typography>{mentorName}</Typography>
                 <a href="">{mentorEmail}</a>
             </div>
         );
-    }
+    };
 
     const displaySponsor = (params) => {
         var sponsorName = "";
         var sponsorNote = "";
         var sponsorOrg = "";
-        for(var i = 0; i < sponsors.length; i++)
-        {
-            if(sponsors[i].client_id === params.row.client_id)
-            {
+        var sponsorLocation = "";
+        var sponsorLogo = "";
+
+        for (var i = 0; i < sponsors.length; i++) {
+            if (sponsors[i].client_id === params.row.client_id) {
                 sponsorName = `${sponsors[i].client_fname} ${sponsors[i].client_lname}`;
                 sponsorNote = `${sponsors[i].client_notes}`;
                 sponsorOrg = `${sponsors[i].client_organization}`;
+                sponsorLocation = `${sponsors[i].client_location}`;
+                sponsorLogo = `${sponsors[i].client_logo}`;
             }
         }
-        return(
+
+        return (
             <div>
-                <div style={{display:'flex'}}>
-                    <Typography style={{fontWeight: 'bold'}} >{sponsorName} </Typography>
-                    <Typography style={{paddingLeft: '5px'}}>{sponsorNote}</Typography>
+                <div style={{ display: "flex", width: "100%" }}>
+                    <div style={{ paddingRight: "50px" }}>
+                        <div style={{ display: "flex" }}>
+                            <Typography
+                                variant="h6"
+                                style={{ fontWeight: "bold" }}
+                            >
+                                {sponsorName}{" "}
+                            </Typography>
+                            <Typography
+                                variant="h8"
+                                style={{
+                                    paddingLeft: "5px",
+                                    paddingTop: "7.5px",
+                                }}
+                            >
+                                {sponsorNote}
+                            </Typography>
+                        </div>
+
+                        <Typography>{sponsorOrg}</Typography>
+                        <Typography>{sponsorLocation}</Typography>
+                    </div>
+                    <div style={{ alignItems: "right" }}>
+                        {sponsorLogo != "null" ? (
+                            <img
+                                src={
+                                    sponsorLogo
+                                        ? "/uploads/images/clientLogos/" +
+                                          sponsorLogo
+                                        : null
+                                }
+                                alt=""
+                                width="100px"
+                                height="100px"
+                            />
+                        ) : null}
+                    </div>
                 </div>
-                <br></br>
-                <Typography>{sponsorOrg}</Typography>
             </div>
         );
-    }
+    };
 
     const columns = [
         {
             field: "project_name",
             headerName: "Project Title",
             renderCell: projectPage,
+            cellClassName: 'death',
             flex: 2,
         },
         {
             field: "client_name",
             headerName: "Project Sponsor",
             renderCell: displaySponsor,
+            cellClassName: 'death',
             flex: 2,
         },
         {
             field: "team_name",
             headerName: "Student Team",
             renderCell: teamPage,
+            cellClassName: 'death',
             flex: 3,
         },
         {
             field: "mentor_name",
             headerName: "Team Mentor",
             renderCell: displayMentor,
+            cellClassName: 'death',
             flex: 1,
         },
     ];
 
     const CustomToolbar = () => {
         return (
-            
-                <GridToolbarContainer style={{ backgroundColor: "#FAC01A" }} >
-                    <Typography sx={{ m: 1 }} variant="h4">
-                        Projects
-                    </Typography>
-                    <GridToolbarColumnsButton sx={{ m: 1 }} />
-                    <GridToolbarFilterButton sx={{ m: 1 }} />
-                </GridToolbarContainer>
+            <GridToolbarContainer style={{ backgroundColor: "#FAC01A" }}>
+                <Typography sx={{ m: 1 }} variant="h4">
+                    Projects
+                </Typography>
+                <GridToolbarColumnsButton sx={{ m: 1 }} />
+                <GridToolbarFilterButton sx={{ m: 1 }} />
+            </GridToolbarContainer>
         );
     };
 
@@ -248,7 +303,7 @@ const TeamPage = () => {
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();
-            
+
             setRows(jsonData);
         } catch (err) {
             console.error(err.message);
@@ -319,15 +374,11 @@ const TeamPage = () => {
             );
             const jsonData = await response.json();
 
-            
-            if(jsonData != null)
-            {
+            if (jsonData != null) {
                 setIsCourse(true);
-            }
-            else {
+            } else {
                 setIsCourse(false);
             }
-            
         } catch (err) {
             console.error(err.message);
         }
@@ -340,11 +391,9 @@ const TeamPage = () => {
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();
-            if(jsonData != null)
-            {
+            if (jsonData != null) {
                 setCoursePublic(jsonData.course_public);
             }
-            
         } catch (err) {
             console.error(err.message);
         }
@@ -379,8 +428,7 @@ const TeamPage = () => {
         );
     }
 
-    if(!coursePublic)
-    {
+    if (!coursePublic) {
         return (
             <div
                 style={{
@@ -415,22 +463,30 @@ const TeamPage = () => {
                     {" "}
                     This Course is set to Private{" "}
                 </Typography>
-                
-                    <img
-                        src={TeamBanditLogo}
-                        alt="Logo"
-                        width="250px"
-                        height="250px"
-                    />
-                <Link to="/"><Button variant="contained" style={{backgroundColor:"#002454"}}> GO BACK TO HOME PAGE </Button></Link>
+
+                <img
+                    src={TeamBanditLogo}
+                    alt="Logo"
+                    width="250px"
+                    height="250px"
+                />
+                <Link to="/">
+                    <Button
+                        variant="contained"
+                        style={{ backgroundColor: "#002454" }}
+                    >
+                        {" "}
+                        GO BACK TO HOME PAGE{" "}
+                    </Button>
+                </Link>
             </div>
         );
     }
-    
+
     if (isCourse == true && rows != []) {
         return (
             <div>
-            <ThemeProvider theme={theme}>
+                <ThemeProvider theme={theme}>
                     <CssBaseline />
                     <AppBar
                         style={{ backgroundColor: `#002454` }}
@@ -444,24 +500,34 @@ const TeamPage = () => {
                     </AppBar>
                 </ThemeProvider>
                 <div
-                style={{
-                    padding: "25px",
-                    display: "flex",
-                    height: "100%",
-                    width: "100%",
+                    style={{
+                        padding: "25px",
+                        display: "flex",
+                        height: "100%",
+                        width: "100%",
+                    }}
+                >
+                <Box
+                sx={{
+                    height:'100%',
+                    width:'100%',
+                    '& .death': {
+                        borderRight: 1,
+                        borderColor: '#d3d3d3'
+                    },
                 }}
             >
-            
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    autoHeight
-                    rowHeight={150}
-                    getRowId={(rows) => rows.project_id}
-                    components={{ Toolbar: CustomToolbar }}
-                    disableSelectionOnClick
-                />
-            </div>
+                    <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        autoHeight
+                        rowHeight={150}
+                        getRowId={(rows) => rows.project_id}
+                        components={{ Toolbar: CustomToolbar }}
+                        disableSelectionOnClick
+                    />
+                    </Box>
+                </div>
             </div>
         );
     } else {
@@ -509,14 +575,22 @@ const TeamPage = () => {
                     {" "}
                     This Course Does Not Exist{" "}
                 </Typography>
-                
-                    <img
-                        src={TeamBanditLogo}
-                        alt="Logo"
-                        width="250px"
-                        height="250px"
-                    />
-                <Link to="/"><Button variant="contained" style={{backgroundColor:"#002454"}}> GO BACK TO HOME PAGE </Button></Link>
+
+                <img
+                    src={TeamBanditLogo}
+                    alt="Logo"
+                    width="250px"
+                    height="250px"
+                />
+                <Link to="/">
+                    <Button
+                        variant="contained"
+                        style={{ backgroundColor: "#002454" }}
+                    >
+                        {" "}
+                        GO BACK TO HOME PAGE{" "}
+                    </Button>
+                </Link>
             </div>
         );
     }

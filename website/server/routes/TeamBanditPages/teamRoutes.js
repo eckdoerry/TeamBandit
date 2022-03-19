@@ -163,7 +163,7 @@ router.get("/project-info/:team_id", async(req, res) => {
     try {
         const {team_id} = req.params;
         
-        const teams = await pool.query("SELECT projects.mentor_id, projects.client_id, mentors.mentor_name, clients.client_fname, clients.client_lname, clients.client_organization FROM teams LEFT JOIN projects ON teams.project_id = projects.project_id LEFT JOIN mentors on projects.mentor_id = mentors.mentor_id LEFT JOIN clients on clients.client_id = projects.client_id WHERE teams.team_id = $1", [team_id]);
+        const teams = await pool.query("SELECT projects.mentor_id, projects.client_id, mentors.mentor_name, clients.client_fname, clients.client_lname, clients.client_organization, clients.client_location, clients.client_logo FROM teams LEFT JOIN projects ON teams.project_id = projects.project_id LEFT JOIN mentors on projects.mentor_id = mentors.mentor_id LEFT JOIN clients on clients.client_id = projects.client_id WHERE teams.team_id = $1", [team_id]);
         res.json(teams.rows);
     } catch (error) {
         console.error(error.message);

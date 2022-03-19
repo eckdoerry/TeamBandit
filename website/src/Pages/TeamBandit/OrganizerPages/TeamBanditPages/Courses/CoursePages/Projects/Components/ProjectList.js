@@ -196,25 +196,60 @@ const Projects = ({ courseInfo, setRoute }) => {
         var sponsorName = "";
         var sponsorNote = "";
         var sponsorOrg = "";
+        var sponsorLocation = "";
+        var sponsorLogo = "";
+
         for (var i = 0; i < sponsors.length; i++) {
             if (sponsors[i].client_id === params.row.client_id) {
                 sponsorName = `${sponsors[i].client_fname} ${sponsors[i].client_lname}`;
                 sponsorNote = `${sponsors[i].client_notes}`;
                 sponsorOrg = `${sponsors[i].client_organization}`;
+                sponsorLocation = `${sponsors[i].client_location}`;
+                sponsorLogo = `${sponsors[i].client_logo}`;
             }
         }
+
         return (
             <div>
-                <div style={{ display: "flex" }}>
-                    <Typography style={{ fontWeight: "bold" }}>
-                        {sponsorName}{" "}
-                    </Typography>
-                    <Typography style={{ paddingLeft: "5px" }}>
-                        {sponsorNote}
-                    </Typography>
+                <div style={{ display: "flex", width: "100%" }}>
+                    <div style={{ paddingRight: "50px" }}>
+                        <div style={{ display: "flex" }}>
+                            <Typography
+                                variant="h6"
+                                style={{ fontWeight: "bold" }}
+                            >
+                                {sponsorName}{" "}
+                            </Typography>
+                            <Typography
+                                variant="h8"
+                                style={{
+                                    paddingLeft: "5px",
+                                    paddingTop: "7.5px",
+                                }}
+                            >
+                                {sponsorNote}
+                            </Typography>
+                        </div>
+
+                        <Typography>{sponsorOrg}</Typography>
+                        <Typography>{sponsorLocation}</Typography>
+                    </div>
+                    <div style={{ alignItems: "right" }}>
+                        {sponsorLogo != "null" ? (
+                            <img
+                                src={
+                                    sponsorLogo
+                                        ? "/uploads/images/clientLogos/" +
+                                            sponsorLogo
+                                        : null
+                                }
+                                alt=""
+                                width="100px"
+                                height="100px"
+                            />
+                        ) : null}
+                    </div>
                 </div>
-                <br></br>
-                <Typography>{sponsorOrg}</Typography>
             </div>
         );
     };
@@ -274,16 +309,26 @@ const Projects = ({ courseInfo, setRoute }) => {
                     setRowChange={setRowChange}
                 />
                 <TeamsAssignment setRoute={setRoute} />
-                {courseInfo.course_public ? 
-                <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                <Typography sx={{ m: 1 }} variant="h6">
-                    Public Address:
-                </Typography>
-                <Link target="_blank" to={`/team-page/${courseInfo.course_id}`}>
-                    {" "}
-                    {`http://34.216.91.228/team-page/${courseInfo.course_id}/`}{" "}
-                </Link>
-                </div> : null}
+                {courseInfo.course_public ? (
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Typography sx={{ m: 1 }} variant="h6">
+                            Public Address:
+                        </Typography>
+                        <Link
+                            target="_blank"
+                            to={`/team-page/${courseInfo.course_id}`}
+                        >
+                            {" "}
+                            {`http://34.216.91.228/team-page/${courseInfo.course_id}/`}{" "}
+                        </Link>
+                    </div>
+                ) : null}
             </GridToolbarContainer>
         );
     };
