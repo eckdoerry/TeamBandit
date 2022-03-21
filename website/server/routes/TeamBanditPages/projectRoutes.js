@@ -48,7 +48,7 @@ router.get("/sponsors/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
         
-        const students = await pool.query("SELECT client_id, client_fname, client_lname, client_organization, client_notes FROM clients WHERE organizer_id = $1", [req.user]);
+        const students = await pool.query("SELECT client_id, client_fname, client_lname, client_organization, client_notes, client_location, client_logo FROM clients WHERE organizer_id = $1", [req.user]);
 
         res.json(students.rows);
     } catch (error) {

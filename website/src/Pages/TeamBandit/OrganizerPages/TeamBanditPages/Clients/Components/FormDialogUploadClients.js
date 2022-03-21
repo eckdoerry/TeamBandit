@@ -58,13 +58,14 @@ const FormDialogUploadClients = ({setClientsChange, setOpen, open}) => {
     const addList = async (e) => {
         e.preventDefault();
         for (const client in contacts) {
-            console.log(contacts[client]);
+            
             const client_fname_csv = contacts[client].firstName;
             const client_lname_csv = contacts[client].lastName;
             const client_email_csv = contacts[client].email;
             const client_organization_csv = contacts[client].organization;
             const client_phone_csv = contacts[client].phone;
             const client_notes_csv = contacts[client].notes;
+            const client_location_csv = contacts[client].location;
 
             try {
                 const body = {
@@ -73,7 +74,8 @@ const FormDialogUploadClients = ({setClientsChange, setOpen, open}) => {
                     client_email_csv,
                     client_organization_csv,
                     client_phone_csv,
-                    client_notes_csv
+                    client_notes_csv,
+                    client_location_csv,
                 };
                 const myHeaders = new Headers();
 
@@ -95,7 +97,7 @@ const FormDialogUploadClients = ({setClientsChange, setOpen, open}) => {
                 console.error(error.message);
                 toast.error("Failed to add client!");
             }
-        };
+        }
     };
 
     return (
@@ -233,6 +235,15 @@ const FormDialogUploadClients = ({setClientsChange, setOpen, open}) => {
                                                 align="right"
                                             >
                                                 Phone Number
+                                            </TableCell>
+                                            <TableCell
+                                                style={{
+                                                    backgroundColor: "#F2C12E",
+                                                    color: "black",
+                                                }}
+                                                align="right"
+                                            >
+                                                Location
                                             </TableCell>
                                             <TableCell
                                                 style={{

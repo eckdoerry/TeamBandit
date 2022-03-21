@@ -137,7 +137,7 @@ router.get("/team-name/:team_name", async(req, res) => {
     try {
         const {team_name} = req.params;
 
-        const teams = await pool.query("SELECT * FROM teams WHERE team_name = $1 ORDER BY team_id ASC ", [team_name]);
+        const teams = await pool.query("SELECT teams.team_id, teams.team_name, teams.team_logo, teams.organizer_id, teams.course_id, teams.project_id, teams.team_size, teams.page_color, teams.team_lead, teams.team_description, courses.course_public, teams.team_backdrop, teams.font_color, teams.information_link FROM teams LEFT JOIN courses ON teams.course_id = courses.course_id WHERE team_name = $1 ORDER BY team_id ASC ", [team_name]);
 
         res.json(teams.rows);
     } catch (error) {
@@ -163,7 +163,7 @@ router.get("/project-info/:team_id", async(req, res) => {
     try {
         const {team_id} = req.params;
         
-        const teams = await pool.query("SELECT projects.mentor_id, projects.client_id, mentors.mentor_name, clients.client_fname, clients.client_lname, clients.client_organization FROM teams LEFT JOIN projects ON teams.project_id = projects.project_id LEFT JOIN mentors on projects.mentor_id = mentors.mentor_id LEFT JOIN clients on clients.client_id = projects.client_id WHERE teams.team_id = $1", [team_id]);
+        const teams = await pool.query("SELECT projects.mentor_id, projects.client_id, mentors.mentor_name, clients.client_fname, clients.client_lname, clients.client_organization, clients.client_location, clients.client_logo FROM teams LEFT JOIN projects ON teams.project_id = projects.project_id LEFT JOIN mentors on projects.mentor_id = mentors.mentor_id LEFT JOIN clients on clients.client_id = projects.client_id WHERE teams.team_id = $1", [team_id]);
         res.json(teams.rows);
     } catch (error) {
         console.error(error.message);

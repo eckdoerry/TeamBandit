@@ -1,3 +1,42 @@
 .pad{
     padding: 25px;
 }
+
+.lds {
+    display: inline-block;
+    position: relative;
+    width: 160px;
+    height: 160px;
+}
+.lds div {
+    display: inline-block;
+    position: absolute;
+    left: 16px;
+    width: 32px;
+    background: #002454;
+    animation: lds 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+.lds div:nth-child(1) {
+    left: 16px;
+    animation-delay: -0.24s;
+}
+.lds div:nth-child(2) {
+    left: 64px;
+    animation-delay: -0.12s;
+    background: #FAC01A;
+}
+.lds div:nth-child(3) {
+    left: 112px;
+    animation-delay: 0;
+}
+@keyframes lds {
+    0% {
+        top: 16px;
+        height: 128px;
+    }
+    50%,
+    100% {
+        top: 48px;
+        height: 64px;
+    }
+}

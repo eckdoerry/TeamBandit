@@ -1,5 +1,7 @@
 import {Fragment, React, useState, useEffect} from "react";
 
+import Typography from "@mui/material/Typography";
+
 import styles from "./CoursesStudent.module.css";
 
 import CourseTable from "./Components/CourseTableStudent";
@@ -7,6 +9,23 @@ import CourseTable from "./Components/CourseTableStudent";
 const CoursesStudent = ({studentInfo}) => {
     const [courses, setCourses] = useState([]);
     const [coursesChange, setCoursesChange] = useState(false);
+
+    // LOADING VARIABLES
+    // ---------------------------------------------------------------------------
+    // Loading time needs to get predetermined as currently I don't know how to
+    // 'wait' for all of the information to get pulled. Still works and avoids the
+    // awkward data loading period. TODO: Look into adjusting time
+    // ---------------------------------------------------------------------------
+    const [loading, setLoading] = useState(true);
+    const loadingTime = 1250;
+
+    const setLoadingFalse = () => {
+        setTimeout(() => {
+            setLoading(false);
+        }, loadingTime);
+    };
+
+    // END LOADING VARIABLES
 
     const getCourses = async () =>
     {
@@ -26,11 +45,24 @@ const CoursesStudent = ({studentInfo}) => {
     useEffect(() => {
         getCourses();
         setCoursesChange(false);
+        setLoadingFalse();
     }, [coursesChange]);
+
+    if ( loading ) {
+        return (
+            <div style={{display:'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+                <div className={styles.lds}><div></div><div></div><div></div></div>
+            </div>
+        );
+    }
 
     return(
         <Fragment>
-            <h1>Courses</h1>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+                <Typography variant="h3" gutterBottom>
+                    Courses
+                </Typography>
+            </div>
             <CourseTable studentInfo={studentInfo} coursesInfo={courses} setCoursesChange={setCoursesChange}/>
         </Fragment>
     );

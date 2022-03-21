@@ -11,18 +11,14 @@ const CourseTableBodyCellStudent = ({ studentInfo, courseInfo, setCoursesChange 
             key={courseInfo.course_id}
             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-            <TableCell component="th" scope="row">
+            <TableCell style={{borderRight: '1px solid #d3d3d3'}} component="th" scope="row">
                 <CoursePageStudent
                     studentInfo={studentInfo}
                     courseInfo={courseInfo}
                     setCoursesChange={setCoursesChange}
                 />
             </TableCell>
-            <TableCell>
-                {courseInfo.organizer_fname + " " + courseInfo.organizer_lname}
-            </TableCell>
             <TableCell>{courseInfo.course_semester}</TableCell>
-            <TableCell>{courseInfo.course_description}</TableCell>
         </TableRow>
     );
 };

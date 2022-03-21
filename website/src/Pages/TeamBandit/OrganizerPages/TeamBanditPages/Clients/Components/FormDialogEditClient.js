@@ -29,6 +29,15 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
     const [clientEmail, setClientEmail] = useState("");
     const [clientPhoneNumber, setClientPhoneNumber] = useState("");
     const [clientNotes, setClientNotes] = useState("");
+    const [clientLocation, setClientLocation] = useState("");
+
+    const [clientLogo, setClientLogo] = useState(null);
+    const [clientLogoFilename, setClientLogoFilename] = useState(null);
+
+
+    const onClientLogoChange = (e) => {
+        setClientLogo(e.target.files[0]); 
+    }
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
@@ -39,6 +48,8 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
         setClientEmail(client.client_email);
         setClientPhoneNumber(client.client_phonenumber);
         setClientNotes(client.client_notes);
+        setClientLocation(client.client_location);
+        setClientLogo(client.client_logo);
     }
     const handleClose = () => {
         setOpen(false);
@@ -48,6 +59,30 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
         setClientEmail(client.client_email);
         setClientPhoneNumber(client.client_phonenumber);
         setClientNotes(client.client_notes);
+        setClientLogo(client.client_logo);
+    };
+
+    const updateClientLogo = async (e) => {
+        e.preventDefault();
+        if (!clientLogo)
+        {
+            return;
+        }
+        try {
+            const formData = new FormData();
+            formData.append("clientLogo", clientLogo);
+
+            const myHeaders = new Headers();
+            myHeaders.append("token", localStorage.token);
+
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/fileuploads/clientLogo/${client.client_id}`, {method: "PUT", body: formData, headers: myHeaders});
+
+            toast.success(await response.json());
+            setClientsChange(true);
+        } catch (error) {
+            console.error(error.message);
+            toast.error("Failed to update!");
+        }
     };
 
     const onSubmitForm = async e => {
@@ -62,7 +97,7 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("token", localStorage.token);
     
-            const body = { clientFName, clientLName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes };
+            const body = { clientFName, clientLName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes, clientLocation };
             const response = await fetch(`${process.env.REACT_APP_BASEURL}/clients/editclient`, {
                 method: "PUT",
                 headers: myHeaders,
@@ -76,6 +111,7 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
             setClientEmail("");
             setClientPhoneNumber("");
             setClientNotes("");
+            setClientLocation("");
             updateClient(e);
         } catch (err) {
             console.error(err.message);
@@ -88,7 +124,7 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
     const updateClient = async e => {
         e.preventDefault();
         try {
-            const body = {clientFName, clientLName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes};
+            const body = {clientFName, clientLName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes, clientLocation};
             const myHeaders = new Headers();
 
             myHeaders.append("Content-Type", "application/json");
@@ -214,14 +250,34 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
                 type = "text" 
                 value = {clientNotes}
                 onChange = {e => setClientNotes(e.target.value)}/>
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                
+                </Typography>
+                <Typography style={{ padding: "5px" }} variant="caption">
+                        {" "}
+                        *Recommend City, State{" "}
+                    </Typography>
+                <TextField 
+                sx={{ m: 2 }} 
+                variant="filled" 
+                id ="filled-password-input" 
+                label="Location" 
+                type = "text" 
+                value = {clientLocation}
+                onChange = {e => setClientLocation(e.target.value)}/>
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                
+                </Typography>
+                    <form onSubmit={updateClientLogo} encType="multipart/form-data">
+                        <input type="file" accept="images/*" name="clientLogo" onChange={onClientLogoChange}/>
+                        <Button style={{ padding: "5px" }} type="submit">Upload</Button>
+                    </form>
 
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    
+                
                 </Typography>
-                <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {onSubmitForm}> Edit </Button>
-
-
-                <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Close </Button>
+                <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {onSubmitForm}> Update </Button>
+                <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Cancel </Button>
                 <Button
                     variant="outlined"
                     color="error"

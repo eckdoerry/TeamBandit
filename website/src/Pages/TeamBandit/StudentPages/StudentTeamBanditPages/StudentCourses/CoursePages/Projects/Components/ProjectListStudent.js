@@ -10,6 +10,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { toast } from "react-toastify";
 
+// Stylesheet
+import styles from "../ProjectsStudent.module.css";
+
 // Datagrid
 import {
     DataGrid,
@@ -20,6 +23,8 @@ import {
     GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
+import ProjectPreferences from "./ProjectPreferences";
+
 const Projects = ({ studentInfo, courseInfo, setRoute }) => {
     
     const [rows, setRows] = useState([]);
@@ -29,38 +34,24 @@ const Projects = ({ studentInfo, courseInfo, setRoute }) => {
     const [mentors, setMentors] = useState([]);
     const [teams, setTeams] = useState([]);
 
-    const [pref1, setPref1] = useState(studentInfo.student_projectpref1);
-    const [pref2, setPref2] = useState(studentInfo.student_projectpref2);
-    const [pref3, setPref3] = useState(studentInfo.student_projectpref3);
-    const [pref4, setPref4] = useState(studentInfo.student_projectpref4);
-    const [pref5, setPref5] = useState(studentInfo.student_projectpref5);
-    const [prefUpdate, setPrefUpdate] = useState(false);
-
     const [allAssignedStudents, setAllAssignedStudents] = useState([]);
 
-    const handleChange = (project_id, preference) => {
-        if( preference == 'first' )
-        {
-            setPref1(project_id);
-        }
-        else if ( preference == 'second' )
-        {
-            setPref2(project_id);
-        }
-        else if ( preference == 'third' )
-        {
-            setPref3(project_id);
-        }
-        else if ( preference == 'fourth' )
-        {
-            setPref4(project_id);
-        }
-        else if ( preference == 'fifth' )
-        {
-            setPref5(project_id);
-        }
-        updatePreferences();
+    // LOADING VARIABLES
+    // ---------------------------------------------------------------------------
+    // Loading time needs to get predetermined as currently I don't know how to
+    // 'wait' for all of the information to get pulled. Still works and avoids the
+    // awkward data loading period. TODO: Look into adjusting time
+    // ---------------------------------------------------------------------------
+    const [loading, setLoading] = useState(true);
+    const loadingTime = 1400;
+
+    const setLoadingFalse = () => {
+        setTimeout(() => {
+            setLoading(false);
+        }, loadingTime);
     };
+
+    // END LOADING VARIABLES
 
     const teamPage = (params) => {
         const studentsOnTeam = [];
@@ -76,20 +67,22 @@ const Projects = ({ studentInfo, courseInfo, setRoute }) => {
 
         return (
             <div style={{height:'100%'}}>
-                <Link target="_blank" to ={`/team-pages/${params.row.team_name}`}> {params.row.team_name} </Link>
+                <Link target="_blank" to ={`/team-website/${params.row.team_name}`}> <Typography variant="h5">{params.row.team_name}</Typography> </Link>
                 <div style={{display:'flex', flexDirection:'row', alignItems: 'center'}}>
                     <div>
-                        <img
-                            src={
+                        {params.row.team_logo != null ? (
+                            <img
+                                src={
                                     params.row.team_logo
                                         ? "/uploads/images/teamLogos/" +
                                             params.row.team_logo
                                         : null
                                 }
-                            alt=""
-                            width="100px"
-                            height="100px"
-                        />
+                                alt=""
+                                width="100px"
+                                height="100px"
+                            />
+                        ) : null}
                     </div>
                     <div>
                         <ul>
@@ -132,32 +125,6 @@ const Projects = ({ studentInfo, courseInfo, setRoute }) => {
     };
 
     const projectPage = (params) => {
-        var preference = "";
-
-        if( params.row.project_id == pref1 )
-        {
-            preference = "first";
-        }
-        else if ( params.row.project_id == pref2 )
-        {
-            preference = "second";
-        }
-        else if ( params.row.project_id == pref3 )
-        {
-            preference = "third";
-        }
-        else if ( params.row.project_id == pref4 )
-        {
-            preference = "fourth";
-        }
-        else if ( params.row.project_id == pref5 )
-        {
-            preference = "fifth";
-        }
-        
-        const handleBridge = (event) => {
-            handleChange(params.row.project_id, event.target.value);
-        }
 
         return (
             <div>
@@ -169,25 +136,6 @@ const Projects = ({ studentInfo, courseInfo, setRoute }) => {
             <Link style={{paddingLeft:'7px'}}target="_blank" to={`/team-pages/${params.row.team_name}`}>
                 Student Team Page
             </Link>
-            </div>
-            <Typography variant="h7">Select Project Preference:</Typography>
-            <div>
-            <FormControl fullWidth>
-                <InputLabel id="pref"> Project Pref </InputLabel>
-                <Select
-                    labelId="pref"
-                    id = "preferenceSelect"
-                    value = {preference}
-                    label ="Preference"
-                    onChange={handleBridge}
-                >
-                    <MenuItem value={"first"}> First Choice </MenuItem>
-                    <MenuItem value={"second"}> Second Choice </MenuItem>
-                    <MenuItem value={"third"}> Third Choice </MenuItem>
-                    <MenuItem value={"fourth"}> Fourth Choice </MenuItem>
-                    <MenuItem value={"fifth"}> Fifth Choice </MenuItem>
-                </Select>
-            </FormControl>
             </div>
             </div>
         );
@@ -216,24 +164,60 @@ const Projects = ({ studentInfo, courseInfo, setRoute }) => {
         var sponsorName = "";
         var sponsorNote = "";
         var sponsorOrg = "";
-        for(var i = 0; i < sponsors.length; i++)
-        {
-            if(sponsors[i].client_id === params.row.client_id)
-            {
+        var sponsorLocation = "";
+        var sponsorLogo = "";
+
+        for (var i = 0; i < sponsors.length; i++) {
+            if (sponsors[i].client_id === params.row.client_id) {
                 sponsorName = `${sponsors[i].client_fname} ${sponsors[i].client_lname}`;
                 sponsorNote = `${sponsors[i].client_notes}`;
                 sponsorOrg = `${sponsors[i].client_organization}`;
+                sponsorLocation = `${sponsors[i].client_location}`;
+                sponsorLogo = `${sponsors[i].client_logo}`;
             }
         }
-        return(
+
+        return (
             <div>
-                <div style={{display:'flex'}}>
-                    <Typography style={{fontWeight: 'bold'}} >{sponsorName} </Typography>
-                    <Typography style={{paddingLeft: '5px'}}>{sponsorNote}</Typography>
+                <div style={{ display: "flex", width: "100%" }}>
+                    <div style={{ paddingRight: "50px" }}>
+                        <div style={{ display: "flex" }}>
+                            <Typography
+                                variant="h6"
+                                style={{ fontWeight: "bold" }}
+                            >
+                                {sponsorName}{" "}
+                            </Typography>
+                            <Typography
+                                variant="h8"
+                                style={{
+                                    paddingLeft: "5px",
+                                    paddingTop: "7.5px",
+                                }}
+                            >
+                                {sponsorNote}
+                            </Typography>
+                        </div>
+
+                        <Typography>{sponsorOrg}</Typography>
+                        <Typography>{sponsorLocation}</Typography>
+                    </div>
+                    <div style={{ alignItems: "right" }}>
+                        {sponsorLogo != "null" ? (
+                            <img
+                                src={
+                                    sponsorLogo
+                                        ? "/uploads/images/clientLogos/" +
+                                            sponsorLogo
+                                        : null
+                                }
+                                alt=""
+                                width="100px"
+                                height="100px"
+                            />
+                        ) : null}
+                    </div>
                 </div>
-                <br></br>
-                <Typography>{sponsorOrg}</Typography>
-                
             </div>
         );
     }
@@ -278,13 +262,7 @@ const Projects = ({ studentInfo, courseInfo, setRoute }) => {
             <GridToolbarColumnsButton sx={{ m: 1 }} />
             <GridToolbarFilterButton sx={{ m: 1 }} />
             <GridToolbarExport sx={{ m: 1 }} />
-            <Typography sx={{ m: 1 }} variant="h6">
-                Public Address:
-            </Typography>
-            <Link target="_blank" to={`/team-page/${courseInfo.course_id}`}>
-        {" "}
-        { `http://34.216.91.228/team-page/${courseInfo.course_id}/`}{" "}
-    </Link>
+            <ProjectPreferences studentInfo={studentInfo} rows={rows} setRowChange={setRowChange}/>
         </GridToolbarContainer>
         );
     };
@@ -359,38 +337,7 @@ const Projects = ({ studentInfo, courseInfo, setRoute }) => {
         }
     };
 
-    const updatePreferences = async () => {
-        
-        try {
-
-            const body = {
-                pref1,
-                pref2,
-                pref3,
-                pref4,
-                pref5
-            };
-            const myHeaders = new Headers();
-
-            myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("token", localStorage.token);
-
-            await fetch(
-                `${process.env.REACT_APP_BASEURL}/students/preferences/${studentInfo.student_id}`,
-                {
-                    method: "PUT",
-                    headers: myHeaders,
-                    body: JSON.stringify(body),
-                }
-            );
-
-            toast.success("Preferences were successfully updated!");
-            setPrefUpdate(true);
-        } catch (error) {
-            console.error(error.message);
-            toast.error("Failed to update project!");
-        }
-    };
+    
 
     useEffect(() => {
         getProjects();
@@ -398,11 +345,20 @@ const Projects = ({ studentInfo, courseInfo, setRoute }) => {
         getSponsors();
         getMentors();
         getTeams();
+        setLoadingFalse();
     }, []);
 
     useEffect(() => {
-        setPrefUpdate(false);
-    }, [prefUpdate]);
+        setRowChange(false);
+    }, [rowChange]);
+
+    if (loading) {
+        return (
+            <div style={{display:'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+                <div className={styles.lds}><div></div><div></div><div></div></div>
+            </div>
+        );
+    }
 
     return (
         <Fragment>

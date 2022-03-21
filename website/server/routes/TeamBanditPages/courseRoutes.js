@@ -9,7 +9,7 @@ router.get("/", authorization, async(req, res) => {
     try {
         
         const user = await pool.query(
-            "SELECT organizers.organizer_fname, organizers.organizer_lname, courses.course_id, courses.course_description, courses.course_title, courses.course_semester, courses.creation_date FROM organizers LEFT JOIN courses ON organizers.organizer_id = courses.organizer_id WHERE organizers.organizer_id = $1 ORDER BY course_id ASC ",
+            "SELECT organizers.organizer_fname, organizers.organizer_lname, courses.course_id, courses.course_description, courses.course_title, courses.course_semester, courses.creation_date, courses.course_public, courses.team_size FROM organizers LEFT JOIN courses ON organizers.organizer_id = courses.organizer_id WHERE organizers.organizer_id = $1 ORDER BY course_id ASC ",
             [req.user]
         );
 
@@ -52,9 +52,9 @@ router.get("/student-total/:course_id", authorization, async(req, res) => {
 router.put("/courses/:id", authorization, async(req, res) => {
     try {
         const {id} = req.params;
-        const {title, semester, description} = req.body;
+        const {title, semester, isPublic, teamSize} = req.body;
 
-        const updateTodo = await pool.query("UPDATE courses SET course_description = $1, course_title = $4, course_semester = $5 WHERE course_id = $2 AND organizer_id = $3 RETURNING *", [description, id, req.user, title, semester]);
+        const updateTodo = await pool.query("UPDATE courses SET course_public = $1, course_title = $4, course_semester = $5, team_size = $6 WHERE course_id = $2 AND organizer_id = $3 RETURNING *", [isPublic, id, req.user, title, semester, teamSize]);
 
         if(updateTodo.rows.length === 0)
         {

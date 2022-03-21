@@ -114,8 +114,8 @@ const EditStudent = ({courseInfo, student, setRowChange}) => {
                 <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="Student ID" type = "text" value = {student_emplid} onChange = {e => setStudentID(e.target.value)}/>
                 <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="Email Address" type = "text" value = {student_email} onChange = {e => setEmailAddress(e.target.value)}/>
                 <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="GPA" type = "text" value = {student_gpa} onChange = {e => setGPA(e.target.value)}/>        
-                <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {(e) => (handleClose(), updateStudent(e))}> Edit </Button>
-                <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Close </Button>
+                <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {(e) => (handleClose(), updateStudent(e))}> Update </Button>
+                <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Cancel </Button>
                 <Button variant="outlined" color="error" onClick = {() => deleteStudent(student.student_id)} startIcon={<DeleteIcon />}> PERMANENTLY DELETE </Button>
                 </Box>
             </Modal>

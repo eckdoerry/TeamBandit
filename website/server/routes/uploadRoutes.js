@@ -289,7 +289,7 @@ router.put("/teamBackdrop", authorization, async(req, res) => {
             teamBackdrop.mv("../../public/uploads/images/teamBackdrop/" + new_filename);
 
             const updateTeamBackdrop = await pool.query("UPDATE teams SET team_backdrop = $1 WHERE team_lead = $2 RETURNING *", [new_filename, req.user]);
-          
+
             if(updateTeamBackdrop.rows.length === 0)
             {
                 return res.json("This team is not yours!");
@@ -297,6 +297,47 @@ router.put("/teamBackdrop", authorization, async(req, res) => {
 
             //send response
             res.json("Your team logo was successfully updated!");
+        }
+    } 
+    catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates Team Backdrop
+router.put("/clientLogo/:id", authorization, async(req, res) => {
+    try 
+    {
+        if(!req.files) 
+        {
+            res.json("No files selected!");
+        } 
+        else 
+        {
+            const oldClientLogoPath = await pool.query("SELECT client_logo FROM clients WHERE client_id = $1", [req.params.id]);
+
+            // Removes old profile pic
+            if (fs.existsSync("../../public/uploads/images/clientLogos/" + oldClientLogoPath.rows[0].client_logo))
+            {
+                fs.unlinkSync("../../public/uploads/images/clientLogos/" + oldClientLogoPath.rows[0].client_logo);
+            }
+
+            let clientLogo = req.files.clientLogo;
+
+            const new_filename = "clientLogo_" + req.user.toString() + "_" + uuid().toString() + "." + clientLogo.mimetype.split("/")[1];
+            
+            //Use the mv() method to place the file in upload directory (i.e. "uploads")
+            clientLogo.mv("../../public/uploads/images/clientLogos/" + new_filename);
+
+            const updateClientLogo = await pool.query("UPDATE clients SET client_logo = $1 WHERE client_id = $2 RETURNING *", [new_filename, req.params.id]);
+
+            if(updateClientLogo.rows.length === 0)
+            {
+                return res.json("This client is not yours!");
+            }
+
+            //send response
+            res.json("The client logo was successfully updated!");
         }
     } 
     catch (error) {

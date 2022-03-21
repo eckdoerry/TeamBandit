@@ -56,6 +56,7 @@ const FormDialogAddClient = ({ setClientsChange }) => {
     const [clientEmail, setClientEmail] = useState("");
     const [clientPhoneNumber, setClientPhoneNumber] = useState("");
     const [clientNotes, setClientNotes] = useState("");
+    const [clientLocation, setClientLocation] = useState("");
     const [failedSubmit, setFailedSubmit] = useState(false);
 
     // CSV STUFF
@@ -120,6 +121,7 @@ const FormDialogAddClient = ({ setClientsChange }) => {
                 clientOrganization,
                 clientPhoneNumber,
                 clientNotes,
+                clientLocation,
             };
             const response = await fetch(
                 `${process.env.REACT_APP_BASEURL}/clients/addclient`,
@@ -141,54 +143,12 @@ const FormDialogAddClient = ({ setClientsChange }) => {
             setClientEmail("");
             setClientPhoneNumber("");
             setClientNotes("");
+            setClientLocation("");
         } catch (err) {
             console.error(err.message);
             toast.error("Failed to add client!");
         }
         handleClose();
-    };
-
-    const addList = async (e) => {
-        e.preventDefault();
-        for (const client in contacts) {
-            console.log(contacts[client]);
-            const client_fname_csv = contacts[client].firstName;
-            const client_lname_csv = contacts[client].lastName;
-            const client_email_csv = contacts[client].email;
-            const client_organization_csv = contacts[client].organization;
-            const client_phone_csv = contacts[client].phone;
-            const client_notes_csv = contacts[client].notes;
-
-            try {
-                const body = {
-                    client_fname_csv,
-                    client_lname_csv,
-                    client_email_csv,
-                    client_organization_csv,
-                    client_phone_csv,
-                    client_notes_csv
-                };
-                const myHeaders = new Headers();
-
-                myHeaders.append("Content-Type", "application/json");
-                myHeaders.append("token", localStorage.token);
-
-                await fetch(`${process.env.REACT_APP_BASEURL}/clients/csv/`, {
-                    method: "POST",
-                    headers: myHeaders,
-                    body: JSON.stringify(body),
-                });
-
-                toast.success("Client was added successfully!");
-                setClientsChange(true);
-
-                setContacts([]);
-                handleToggle();
-            } catch (error) {
-                console.error(error.message);
-                toast.error("Failed to add client!");
-            }
-        }
     };
 
     return (
@@ -296,6 +256,15 @@ const FormDialogAddClient = ({ setClientsChange }) => {
                             value={clientNotes}
                             onChange={(e) => setClientNotes(e.target.value)}
                         />
+                        <TextField
+                            margin="dense"
+                            label="Location"
+                            type="text"
+                            fullWidth
+                            variant="standard"
+                            value={clientLocation}
+                            onChange={(e) => setClientLocation(e.target.value)}
+                        />
                     </DialogContent>
 
                     <DialogActions>
@@ -326,7 +295,7 @@ const FormDialogAddClient = ({ setClientsChange }) => {
                 </Dialog>
                 
             </div>
-           );
+        );
 };
 
 export default FormDialogAddClient;

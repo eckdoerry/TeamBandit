@@ -13,6 +13,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import MenuItem from "@mui/material/MenuItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
 // CSS
 import styles from "../CoursesStudent.module.css";
@@ -22,11 +24,8 @@ import CourseRouter from "../CourseRouterStudent";
 
 // Table of the contents
 const pages = [
-    "Schedule",
-    "Info and Policies",
-    "Projects",
-    "Teams",
-    "Assignments",
+    {key: 1, page: "Projects"},
+    {key: 2, page: "Assignments"},
 ];
 
 const CoursePageStudent = ({ studentInfo, courseInfo, setCoursesChange }) => {
@@ -35,6 +34,12 @@ const CoursePageStudent = ({ studentInfo, courseInfo, setCoursesChange }) => {
     });
 
     const anchor = "right";
+
+    const [value, setValue] = useState(0);
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+        setRoute(pages[newValue].page);
+    };
 
     const toggleDrawer = (anchor, open) => (event) => {
         if (
@@ -57,7 +62,7 @@ const CoursePageStudent = ({ studentInfo, courseInfo, setCoursesChange }) => {
     };
 
     // ENUM string for routes
-    const [route, setRoute] = useState("Schedule");
+    const [route, setRoute] = useState("Projects");
 
     return (
         <div>
@@ -73,115 +78,47 @@ const CoursePageStudent = ({ studentInfo, courseInfo, setCoursesChange }) => {
                     onClose={toggleDrawer(anchor, false)}
                 >
                     <AppBar
-                        style={{ background: "#FAC01A", color: "black" }}
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            background: "#FAC01A",
+                            alignItems: "center",
+                            color: "black",
+                            paddingLeft: "50px",
+                        }}
                         position="static"
                     >
-                        <Container
-                            maxWidth="xl"
-                            sx={{ display: "flex", flexDirection: "row" }}
+                        <Button
+                            sx={{ mt: 2, mb: 2, mr: 5 }}
+                            variant="contained"
+                            onClick={toggleDrawer(anchor, false)}
+                            startIcon={<ArrowBackIcon />}
                         >
-                            <Button
-                                sx={{ mt: 2, mb: 2, mr: 5}}
-                                variant="contained"
-                                onClick={toggleDrawer(anchor, false)}
-                                startIcon={<ArrowBackIcon />}
-                            >
-                                {" "}
-                                Go Back{" "}
-                            </Button>
-                            <Toolbar disableGutters>
-                                <Typography
-                                    variant="h6"
-                                    noWrap
-                                    component="div"
-                                    sx={{
-                                        mr: 2,
-                                        display: { xs: "none", md: "flex" },
-                                    }}
-                                >
-                                    {courseInfo.course_title}
-                                </Typography>
+                            {" "}
+                            Go Back{" "}
+                        </Button>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            sx={{
+                                mr: 2,
+                                display: { xs: "none", md: "flex" },
+                            }}
+                        >
+                            {courseInfo.course_title}
+                        </Typography>
 
-                                <Box
-                                    sx={{
-                                        flexGrow: 1,
-                                        display: { xs: "flex", md: "none" },
-                                    }}
-                                >
-                                    <IconButton
-                                        size="large"
-                                        aria-label="account of current user"
-                                        aria-controls="menu-appbar"
-                                        aria-haspopup="true"
-                                        onClick={handleOpenNavMenu}
-                                        color="inherit"
-                                    >
-                                        <MenuIcon />
-                                    </IconButton>
-                                    <Menu
-                                        id="menu-appbar"
-                                        anchorEl={anchorElNav}
-                                        anchorOrigin={{
-                                            vertical: "bottom",
-                                            horizontal: "left",
-                                        }}
-                                        keepMounted
-                                        transformOrigin={{
-                                            vertical: "top",
-                                            horizontal: "left",
-                                        }}
-                                        open={Boolean(anchorElNav)}
-                                        onClose={handleCloseNavMenu}
-                                        sx={{
-                                            display: {
-                                                xs: "block",
-                                                md: "none",
-                                            },
-                                        }}
-                                    >
-                                        {pages.map((page) => (
-                                            <MenuItem
-                                                key={page}
-                                                onClick={() => {
-                                                    handleCloseNavMenu();
-                                                    setRoute({ page });
-                                                }}
-                                            >
-                                                <Typography textAlign="center">
-                                                    {page}
-                                                </Typography>
-                                            </MenuItem>
-                                        ))}
-                                    </Menu>
-                                    {courseInfo.course_title}
-                                </Box>
-
-                                <Box
-                                    sx={{
-                                        flexGrow: 1,
-                                        display: { xs: "none", md: "flex" },
-                                    }}
-                                >
-                                    {pages.map((page) => (
-                                        <Button
-                                            className={styles.changeFont}
-                                            key={page}
-                                            onClick={() => {
-                                                handleCloseNavMenu();
-                                                setRoute({ page });
-                                            }}
-                                            sx={{
-                                                my: 2,
-                                                color: "white",
-                                                display: "block",
-                                            }}
-                                        >
-                                            {page}
-                                        </Button>
-                                    ))}
-                                </Box>
-                            </Toolbar>
-                        </Container>
+                        <Tabs
+                            onChange={handleChange}
+                            value={value}
+                            aria-label="Tabs where selection follows focus"
+                            selectionFollowsFocus
+                        >
+                            {pages.map((page) => (
+                                <Tab key={page.key} label={page.page} />
+                            ))}
+                        </Tabs>
                     </AppBar>
 
                     {/*This will return whatever page we want displayed :)*/}
