@@ -66,7 +66,7 @@ const ContactList = (props) => {
                         changeInboxViewhandler(false);
                     }}
                 >
-                    <p className={styles.contact_name}>{message.client_name}</p>
+                    <p className={styles.contact_name}>{message.client_fname} {message.client_lname}</p>
                     <p className={styles.contact_email}>
                         {message.client_email}
                     </p>

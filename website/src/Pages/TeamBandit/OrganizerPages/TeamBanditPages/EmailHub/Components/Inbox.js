@@ -31,7 +31,9 @@ const Inbox = () => {
 
     const handleOpen = (emailkey) => {
         setOpen(true);
+
     };
+    
     const handleClose = () => setOpen(false);
 
     // PULL ALL EMAILS WHERE CURRENT ORGANIZER IS THE RECIPIENT
