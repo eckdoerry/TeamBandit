@@ -59,9 +59,11 @@ router.get("/getinbox", authorization, async (req, res) => {
 });
 
 // MARKS EMAIL AS READ
-router.put("/markread", authorization, async(res) => {
+router.put("/markread/:messageid", authorization, async(req, res) => {
     try {
-        const updateClient = await pool.query("UPDATE messages SET read = true");
+        const { messageid } = req.params;
+        
+        const updateClient = await pool.query("UPDATE messages SET read = true WHERE message_id = $1", [messageid]);
 
         res.json("Marked as read");
     } catch (error) {

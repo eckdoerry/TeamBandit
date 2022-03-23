@@ -24,16 +24,34 @@ const Inbox = () => {
 
     // MODAL STATES
     const [open, setOpen] = useState(false);
-    const [modalData, setModalData] = useState({sender: "",
-    subject: "",
-    date: "",
-    message: ""});
+    const [modalData, setModalData] = useState({
+        sender: "",
+        subject: "",
+        date: "",
+        message: "",
+    });
 
-    const handleOpen = (emailkey) => {
+    const handleOpen = async (emailkey, isread) => {
+        // OPEN MODAL
         setOpen(true);
 
+        // SET EMAIL TO READ
+        if (isread === false) {
+            try {
+                const response = await fetch(
+                    `${process.env.REACT_APP_BASEURL}/emailhub/markread/${emailkey}`,
+                    {
+                        method: "PUT",
+                        headers: { token: localStorage.token },
+                    }
+                );
+                const parseData = await response.json();
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
     };
-    
+
     const handleClose = () => setOpen(false);
 
     // PULL ALL EMAILS WHERE CURRENT ORGANIZER IS THE RECIPIENT
@@ -71,7 +89,7 @@ const Inbox = () => {
                     }
                     key={index}
                     onClick={() => {
-                        handleOpen();
+                        handleOpen(message.message_id, message.read);
                         setModalData({
                             sender: message.sender,
                             subject: message.subject,
@@ -97,7 +115,10 @@ const Inbox = () => {
                     <p>Sender: {modalData.sender}</p>
                     <p>Subject: {modalData.subject}</p>
                     <p>Date: {modalData.date}</p>
-                    <p>Message:<br/> {modalData.message}</p>
+                    <p>
+                        Message:
+                        <br /> {modalData.message}
+                    </p>
                 </Box>
             </Modal>
         </div>
