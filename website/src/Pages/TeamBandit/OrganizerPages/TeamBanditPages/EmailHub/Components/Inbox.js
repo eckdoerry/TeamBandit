@@ -31,6 +31,9 @@ const Inbox = () => {
         message: "",
     });
 
+    // LIST OF CHECKBOXES CLICKED TO BE USED LATER
+    let selectedMessages = [];
+
     const handleOpen = async (emailkey, isread) => {
         // OPEN MODAL
         setOpen(true);
@@ -52,7 +55,22 @@ const Inbox = () => {
         }
     };
 
+    // CLOSES MODAL
     const handleClose = () => setOpen(false);
+
+    // HANDLES CLICKING CHECKBOXES
+    const onCheckboxClick = (messageid) => {
+        // IF ITEM IS ON ARRAY, TAKE IT OFF
+        if (selectedMessages.includes(messageid)){
+            const index = selectedMessages.indexOf(messageid)
+            selectedMessages.splice(index, 1)
+        }
+
+        // IF ITEM IS NOT IN ARRAY, ADD IT
+        else {
+            selectedMessages.push(messageid)
+        }
+    };
 
     // PULL ALL EMAILS WHERE CURRENT ORGANIZER IS THE RECIPIENT
     const getEmails = async () => {
@@ -80,6 +98,12 @@ const Inbox = () => {
     // JSX
     return (
         <div className={`${styles.message} ${styles.lineheight}`}>
+            <div className={styles.titles}>
+                <p className={styles.checkboxtitle}>Select</p>
+                <p className={styles.leftpane}>From</p>
+                <p className={styles.middlepane}>Subject</p>
+                <p className={styles.rightpane}>Date</p>
+            </div>
             {messageChain.map((message, index) => (
                 <Item
                     className={
@@ -98,7 +122,12 @@ const Inbox = () => {
                         });
                     }}
                 >
-                    <Checkbox size="small"></Checkbox>
+                    <Checkbox
+                        size="small"
+                        onClick={e => {
+                            e.stopPropagation(); 
+                            onCheckboxClick(message.message_id)}} 
+                    ></Checkbox>
                     <p className={styles.leftpane}>{message.sender}</p>
                     <p className={styles.middlepane}>{message.subject}</p>
                     <p className={styles.rightpane}>{message.datetime}</p>
