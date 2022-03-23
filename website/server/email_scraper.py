@@ -123,8 +123,14 @@ def formatEmail(email_message):
     if "<" in email_message["to"]:
         recipient = regexParser(email_message["to"], "\<(.+?)\>")
 
+    else:
+        recipient = email_message["to"]
+
     if "<" in email_message["from"]:
         sender = regexParser(email_message["from"], "\<(.+?)\>")
+    
+    else:
+        sender = email_message["from"]
 
     # ACCESS MESSSAGE
     for part in email_message.walk():
