@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
 
-const Profile = ({organizerInfo, setOrganizerChange}) => {
+const Profile = ({userInfo, setOrganizerChange}) => {
     return(
         <div style={{ width: "100%", height: "100%"}}>
             <Typography variant="h2" gutterBottom>Profile Settings</Typography>
@@ -15,13 +15,13 @@ const Profile = ({organizerInfo, setOrganizerChange}) => {
 
             <div>
             <Typography style={{borderBottom: '1px solid black', borderBottomWidth: 'thin', width: '15%'}} variant="h4" gutterBottom> Profile Picture </Typography>
-                <EditProfilePicture organizerInfo={organizerInfo} setOrganizerChange={setOrganizerChange}/>
+                <EditProfilePicture userInfo={userInfo} setOrganizerChange={setOrganizerChange}/>
             </div>
 
             <div>
             <Typography style={{borderBottom: '1px solid black', borderBottomWidth: 'thin', width: '15%'}} variant="h4" gutterBottom> Biography </Typography>
-                <p>{organizerInfo.student_bio}</p>
-                <EditBioDialog organizerInfo={organizerInfo} setOrganizerChange={setOrganizerChange}/>
+                <p>{userInfo.student_bio}</p>
+                <EditBioDialog userInfo={userInfo} setOrganizerChange={setOrganizerChange}/>
             </div>
             </Paper>
         </div>

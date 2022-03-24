@@ -13,14 +13,13 @@ import Students from './CoursePages/Students/Students';
 import Mentors from './CoursePages/Mentors/Mentors';
 import TeamsAssignment from './CoursePages/TeamAssignment/TeamAssignment';
 
-const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
+const CourseRouter = ({route, courseInfo, userInfo, userIdentifier, setCoursesChange, setRoute}) => {
 
-    
     if(route === "Projects") 
     {
         return (
             <Fragment>
-                <Projects courseInfo={courseInfo} setRoute={setRoute}/>
+                <Projects courseInfo={courseInfo} userInfo={userInfo} userIdentifier={userIdentifier} setRoute={setRoute}/>
             </Fragment>
         )
     }
@@ -60,7 +59,7 @@ const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
     {
         return (
             <Fragment>
-                <TeamsAssignment courseInfo={courseInfo} setRoute={setRoute} />
+                <TeamsAssignment courseInfo={courseInfo} setRoute={setRoute} userIdentifier={userIdentifier}/>
             </Fragment>
         )
     }
@@ -68,7 +67,7 @@ const CourseRouter = ({route, courseInfo, setCoursesChange, setRoute}) => {
     {
         return (
             <Fragment>
-                <Settings courseInfo={courseInfo} setCoursesChange={setCoursesChange}/>
+                <Settings courseInfo={courseInfo} userInfo={userInfo} userIdentifier={userIdentifier} setCoursesChange={setCoursesChange}/>
             </Fragment>
         )
     }

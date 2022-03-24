@@ -25,7 +25,7 @@ function ScheduleList({courseInfo}) {
             <div>
                 {assignments.map((assignment) => (
                     Math.abs((Date.parse(assignment.assignment_start_date.split('T')[0]) - millisecondsOfWeek)) < 604800000 && (Date.parse(assignment.assignment_start_date.split('T')[0]) - millisecondsOfWeek) >= 0 &&
-                    <Link target="_blank" to={`/assignment/${assignment.assignment_name}-${assignment.assignment_id}`}>
+                    <Link key={assignment} target="_blank" to={`/assignment/${assignment.assignment_name}-${assignment.assignment_id}`}>
                         <p>{assignment.assignment_name}</p>
                     </Link>
                 ))}
@@ -40,7 +40,7 @@ function ScheduleList({courseInfo}) {
             <div>
                 {assignments.map((assignment) => (
                     Math.abs((Date.parse(assignment.assignment_due_date.split('T')[0]) - millisecondsOfWeek)) < 604800000 && (Date.parse(assignment.assignment_due_date.split('T')[0]) - millisecondsOfWeek) >= 0 &&
-                    <Link target="_blank" to={`/assignment/${assignment.assignment_name}-${assignment.assignment_id}`}>
+                    <Link key={assignment} target="_blank" to={`/assignment/${assignment.assignment_name}-${assignment.assignment_id}`}>
                         <p>{assignment.assignment_name}</p>
                     </Link>
                 ))}

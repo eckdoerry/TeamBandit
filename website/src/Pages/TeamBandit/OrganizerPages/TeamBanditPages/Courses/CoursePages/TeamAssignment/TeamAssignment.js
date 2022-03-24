@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import "./TeamAssignment.css";
 
-
 // MUI Imports
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -11,12 +10,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import Button from '@mui/material/Button';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Button from "@mui/material/Button";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 // Stylesheet
 import styles from "./TeamAssignment.module.css";
-
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -48,15 +46,15 @@ function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-export default function TeamAssignment({ courseInfo, setRoute }) {
+export default function TeamAssignment({ courseInfo, setRoute, userIdentifier }) {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
     const [projects, setProjects] = useState([]);
     const [assignedStudents, setAssignedStudents] = useState([]);
     const [teams, setTeams] = useState([]);
 
-    const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('student_gpa');
+    const [order, setOrder] = React.useState("asc");
+    const [orderBy, setOrderBy] = React.useState("student_gpa");
 
     const [gpaActive, setGPAActive] = useState(true);
     const [projectActive, setProjectActive] = useState(false);
@@ -66,51 +64,14 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
     const FAILURE = "#FF8484";
 
     // LOADING VARIABLES
-    // ---------------------------------------------------------------------------
-    // Loading time needs to get predetermined as currently I don't know how to
-    // 'wait' for all of the information to get pulled. Still works and avoids the
-    // awkward data loading period. TODO: Look into adjusting time
-    // ---------------------------------------------------------------------------
     const [loading, setLoading] = useState(true);
-    const loadingTime = 2000;
 
     const setLoadingFalse = () => {
-        setTimeout(() => {
-            setLoading(false);
-        }, loadingTime);
+        setLoading(false);
     };
-
     // END LOADING VARIABLES
 
-    const getStudents = async () => {
-        try {
-            const response = await fetch(
-            
-                `${process.env.REACT_APP_BASEURL}/students/teams-assignment/${courseInfo.course_id}`,
-                { method: "GET", headers: { token: localStorage.token } }
-            );
-            const jsonData = await response.json();
-
-            setRows(jsonData);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
-    const getProjects = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/${courseInfo.course_id}`,
-                { method: "GET", headers: { token: localStorage.token } }
-            );
-            const jsonData = await response.json();
-
-            setProjects(jsonData);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
+    // SUPPORTING FUNCTIONS //
     const getProjectPref = (student_id, project_id) => {
         for (var i = 0; i < rows.length; i++) {
             if (rows[i].student_id === student_id) {
@@ -224,34 +185,6 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
         return total;
     };
 
-    const getAssignedStudents = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/getAssignedStudents/${courseInfo.course_id}`,
-                { method: "GET", headers: { token: localStorage.token } }
-            );
-            const jsonData = await response.json();
-
-            setAssignedStudents(jsonData);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
-    const getTeams = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/teams/${courseInfo.course_id}`,
-                { method: "GET", headers: { token: localStorage.token } }
-            );
-            const jsonData = await response.json();
-
-            setTeams(jsonData);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
 
     const toggleStudent = async (student_id, project_id) => {
         try {
@@ -264,11 +197,14 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("token", localStorage.token);
 
-            await fetch(`${process.env.REACT_APP_BASEURL}/projects/toggleStudent`, {
-                method: "POST",
-                headers: myHeaders,
-                body: JSON.stringify(body),
-            });
+            await fetch(
+                `${process.env.REACT_APP_BASEURL}/projects/toggleStudent`,
+                {
+                    method: "POST",
+                    headers: myHeaders,
+                    body: JSON.stringify(body),
+                }
+            );
 
             setRowChange(true);
         } catch (error) {
@@ -288,70 +224,134 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
         return false;
     };
 
-    const sortByGpa = () => {
+    // END SUPPORTING FUNCTIONS //
 
+    // SORTS //
+
+    const sortByGpa = () => {
         setGPAActive(true);
         setProjectActive(false);
 
-        const isAsc = order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
+        const isAsc = order === "asc";
+        setOrder(isAsc ? "desc" : "asc");
 
-        setOrderBy('student_gpa');
-
+        setOrderBy("student_gpa");
 
         setRows(stableSort(rows, getComparator(order, orderBy)));
     };
 
     const sortByProject = () => {
-
         setGPAActive(false);
         setProjectActive(true);
 
-        const isAsc = order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
-        setOrderBy('project_name');
+        const isAsc = order === "asc";
+        setOrder(isAsc ? "desc" : "asc");
+        setOrderBy("project_name");
 
         setRows(stableSort(rows, getComparator(order, orderBy)));
     };
-    
+
     // @TODO: I think there should be a reset feature for the sort to go back to how it originally was but IDK
     const sortByStudent = () => {
-
         setGPAActive(false);
         setProjectActive(false);
 
-        const isAsc = order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
-        setOrderBy('student_id');
+        const isAsc = order === "asc";
+        setOrder(isAsc ? "desc" : "asc");
+        setOrderBy("student_id");
 
         setRows(orderBy(rows, orderBy, order(order, orderBy)));
     };
 
+    // END SORTS //
+
+    const getInformation = async () => {
+        try{
+            const projectInfo = await fetch(
+                `${process.env.REACT_APP_BASEURL}/projects/${courseInfo.course_id}/${userIdentifier}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+
+            const studentInfo = await fetch(
+                `${process.env.REACT_APP_BASEURL}/students/teams-assignment/${courseInfo.course_id}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+
+            const assignedStudentInfo = await fetch(
+                `${process.env.REACT_APP_BASEURL}/projects/getAssignedStudents/${courseInfo.course_id}/${userIdentifier}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+
+            const teamInfo = await fetch(
+                `${process.env.REACT_APP_BASEURL}/teams/${courseInfo.course_id}/${userIdentifier}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+
+            const projectData = await projectInfo.json();
+            const studentData = await studentInfo.json();
+            const assignedStudentData = await assignedStudentInfo.json();
+            const teamData = await teamInfo.json();
+
+            setProjects(projectData);
+            setRows(studentData);
+            setTeams(teamData);
+            setAssignedStudents(assignedStudentData);
+            setLoadingFalse();
+        }catch( error ){
+            console.error( error.message )
+        }
+    };
+
     useEffect(() => {
-        getStudents();
-        getProjects();
-        getTeams();
-        getAssignedStudents();
+        getInformation();
+    }, []);
+
+    useEffect(() => {
+        getInformation();
         setRowChange(false);
-        setLoadingFalse();
     }, [rowChange]);
 
     if (loading) {
         return (
-            <div style={{display:'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center'}}>
-                <div className={styles.lds}><div></div><div></div><div></div></div>
+            <div
+                style={{
+                    display: "flex",
+                    width: "100%",
+                    height: "100%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <div className={styles.lds}>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
             </div>
         );
     }
 
     return (
-        <div style={{ padding: "25px", overflow:'auto' }}>
-            <Button style={{textAlign: 'center', whiteSpace: 'nowrap'}} sx={{ m: 3 }} variant="contained" color="secondary" startIcon={<ArrowBackIcon />} onClick = {() => setRoute("Projects")}> Back to Projects </Button>
+        <div style={{ padding: "25px", overflow: "auto" }}>
+            <Button
+                style={{ textAlign: "center", whiteSpace: "nowrap" }}
+                sx={{ m: 3 }}
+                variant="contained"
+                color="secondary"
+                startIcon={<ArrowBackIcon />}
+                onClick={() => setRoute("Projects")}
+            >
+                {" "}
+                Back to Projects{" "}
+            </Button>
             <TableContainer style={{ overflowX: "initial" }}>
                 <Table aria-label="spanning table">
                     <TableHead className="sticky">
                         <TableRow
-                            style={{ boxShadow: "0 4px 2px 0px #002454, 0 -6px 1px 0px #002454"}}
+                            style={{
+                                boxShadow:
+                                    "0 4px 2px 0px #002454, 0 -6px 1px 0px #002454",
+                            }}
                         >
                             <TableCell style={{ color: "white" }} colSpan={3}>
                                 Students
@@ -363,10 +363,8 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
                             >
                                 Projects
                             </TableCell>
-                            <TableCell
-                                style={{ color: "white" }}
-                            >
-                            Team Size Goal: {courseInfo.team_size}
+                            <TableCell style={{ color: "white" }}>
+                                Team Size Goal: {courseInfo.team_size}
                             </TableCell>
                         </TableRow>
                         <TableRow
@@ -375,7 +373,11 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
                             <TableCell style={{ color: "white" }}>
                                 Student Information
                             </TableCell>
-                            <TableCell key={'gpa'} style={{ color: "white" }} align="right">
+                            <TableCell
+                                key={"gpa"}
+                                style={{ color: "white" }}
+                                align="right"
+                            >
                                 GPA
                                 <TableSortLabel
                                     sx={{
@@ -397,7 +399,11 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
                                     direction={order}
                                 ></TableSortLabel>
                             </TableCell>
-                            <TableCell key={'project'} style={{ color: "white" }} align="right">
+                            <TableCell
+                                key={"project"}
+                                style={{ color: "white" }}
+                                align="right"
+                            >
                                 Assigned Project{" "}
                                 <TableSortLabel
                                     sx={{
@@ -444,14 +450,15 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
                             </TableCell>
                             {projects.map((project) => (
                                 <TableCell
+                                    key={project.project_id}
                                     style={
                                         teamTotal(project.project_id) === "less"
                                             ? { backgroundColor: FAILURE }
                                             : teamTotal(project.project_id) ===
-                                                "equal"
+                                              "equal"
                                             ? { backgroundColor: SUCCESS }
                                             : teamTotal(project.project_id) ===
-                                                "greater"
+                                              "greater"
                                             ? { backgroundColor: WARNING }
                                             : { backgroundColor: "#FFFF59" }
                                     }
@@ -473,10 +480,10 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
                                     style={
                                         row.assigned
                                             ? {
-                                                    width: 350,
-                                                    backgroundColor: SUCCESS,
-                                            }
-                                            : { backgroundColor: 'white'}
+                                                  width: 350,
+                                                  backgroundColor: SUCCESS,
+                                              }
+                                            : { backgroundColor: "white" }
                                     }
                                 >
                                     {row.student_fname} {row.student_lname},{" "}
@@ -506,13 +513,13 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
                                                 project.project_id
                                             ) === true
                                                 ? {
-                                                        cursor: "pointer",
-                                                        backgroundColor: SUCCESS,
-                                                }
+                                                      cursor: "pointer",
+                                                      backgroundColor: SUCCESS,
+                                                  }
                                                 : {
-                                                        cursor: "pointer",
-                                                        backgroundColor: "white",
-                                                }
+                                                      cursor: "pointer",
+                                                      backgroundColor: "white",
+                                                  }
                                         }
                                         onClick={() =>
                                             toggleStudent(
@@ -570,7 +577,6 @@ export default function TeamAssignment({ courseInfo, setRoute }) {
                             ))}
                         </TableRow>
                         <TableRow>
-                            
                             <TableCell> Fourth Choice: </TableCell>
                             {projects.map((project) => (
                                 <TableCell

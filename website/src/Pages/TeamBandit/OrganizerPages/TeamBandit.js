@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { toast } from "react-toastify";
-import TeamBanditRoutes from "./TeamBanditRoutes";
 import styles from "./TeamBandit.module.css";
+
+// Pages
+import TeamBanditRoutes from "./TeamBanditRoutes";
 
 // MUI imports
 import { styled, useTheme } from "@mui/material/styles";
@@ -103,103 +105,27 @@ const Drawer = styled(MuiDrawer, {
 
 // END DRAWER FUNCTIONS //
 
-const settings = ["Profile", "Logout"];
+export default function MainPage({ userIdentifier, setAuth }) {
 
-export default function MiniDrawer({ setAuth }) {
+    const [settings, setSettings] = useState(["Profile", "Logout"]);
+    const [sideBar, setSideBar] = useState([]);
 
-    const [organizerInfo, setOrganizerInfo] = useState([]);
-    const [organizerChange, setOrganizerChange] = useState(false);
+    // JS
+    const theme = useTheme();
+    const [open, setOpen] = useState(false);
+    const [anchorElUser, setAnchorElUser] = useState(null);
 
+    // ENUM string for routes
+    const [route, setRoute] = useState("Courses");
+
+    const [userInfo, setUserInfo] = useState([]);
+    const [userChange, setUserChange] = useState(false);
+
+    // Organizer Statistics
     const [courses, setCourses] = useState([]);
     const [clients, setClients] = useState([]);
     const [projects, setProjects] = useState([]);
     const [students, setStudents] = useState([]);
-
-    const getOrganizer = async () => {
-        try {
-            const response = await fetch(`${process.env.REACT_APP_BASEURL}/general/`, {method: "GET", headers: {token: localStorage.token}});
-
-            const parseData = await response.json();
-
-            setOrganizerInfo(parseData);
-
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
-
-    const getCourses = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/general/course-total/`,
-                { method: "GET", headers: { token: localStorage.token } }
-            );
-            const jsonData = await response.json();
-
-            setCourses(jsonData);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
-    const getClients = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/general/client-total/`,
-                { method: "GET", headers: { token: localStorage.token } }
-            );
-            const jsonData = await response.json();
-
-            setClients(jsonData);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
-    const getProjects = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/general/project-total/`,
-                { method: "GET", headers: { token: localStorage.token } }
-            );
-            const jsonData = await response.json();
-
-            setProjects(jsonData);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
-    const getStudents = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/general/student-total/`,
-                { method: "GET", headers: { token: localStorage.token } }
-            );
-            const jsonData = await response.json();
-
-            setStudents(jsonData);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
-    useEffect(() => {
-        
-        getOrganizer();
-        getCourses();
-        getClients();
-        getProjects();
-        getStudents();
-        setOrganizerChange(false);
-    }, [organizerChange]);
-
-    // JS
-    const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
-
-    // ENUM string for routes
-    const [route, setRoute] = useState("Courses");
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -207,6 +133,80 @@ export default function MiniDrawer({ setAuth }) {
 
     const handleDrawerClose = () => {
         setOpen(false);
+    };
+
+    const handleOpenUserMenu = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
+
+    const getUser = async () => {
+        
+        try {
+            
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/general/${userIdentifier}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+            const parseData = await response.json();
+            setUserInfo(parseData);
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
+
+    const getStatistics = async () => {
+        if (userIdentifier != "organizer") {
+            return;
+        }
+        try {
+            const courseTotal = await fetch(
+                `${process.env.REACT_APP_BASEURL}/general/course-total/${userIdentifier}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+            
+            const clientTotal = await fetch(
+                `${process.env.REACT_APP_BASEURL}/general/client-total/${userIdentifier}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+
+            const projectTotal = await fetch(
+                `${process.env.REACT_APP_BASEURL}/general/project-total/${userIdentifier}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+
+            const studentTotal = await fetch(
+                `${process.env.REACT_APP_BASEURL}/general/student-total/${userIdentifier}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+
+            const courseData = await courseTotal.json();
+            const clientData = await clientTotal.json();
+            const projectData = await projectTotal.json();
+            const studentData = await studentTotal.json();
+            
+            setCourses(courseData);
+            setClients(clientData);
+            setProjects(projectData);
+            setStudents(studentData); 
+        } catch (error) {
+            toast.error("Unable to load statistic information.");
+            console.error(error.message);
+        }
+    };
+
+    const determineSideBar = () => {
+        if (userIdentifier == "organizer") {
+            setSideBar(["Courses", "Clients", "Email Hub"]);
+        } else if (userIdentifier == "student") {
+            setSideBar(["Courses"]);
+        } else if (userIdentifier == "mentor") {
+            //TODO: Add mentor sidebar
+        }
     };
 
     const logout = (event) => {
@@ -217,25 +217,18 @@ export default function MiniDrawer({ setAuth }) {
         toast.success("Logged out successfully!");
     };
 
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-    const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
-    };
-
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
+    useEffect(() => {
+        getStatistics();
+        getUser();
+        determineSideBar();
+        setUserChange(false);
+    }, [userChange]);
 
     // JSX
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
-            <AppBar
-                sx={{ background: "#002454" }}
-                position="fixed"
-                open={open}
-            >
+            <AppBar sx={{ background: "#002454" }} position="fixed" open={open}>
                 <Toolbar className={styles.toolbar}>
                     <IconButton
                         color="inherit"
@@ -252,43 +245,74 @@ export default function MiniDrawer({ setAuth }) {
                     <Typography variant="h6" noWrap component="div">
                         TeamBandit
                     </Typography>
-                    <div style={{display:'flex', alignItems:'center', paddingLeft:'25px', opacity:'0.35'}}>
-                    <SchoolIcon />
-                    <Typography variant="h8" noWrap >
-                        Total Courses:
-                    </Typography>
-                    <Typography variant="h8" noWrap >
-                        {courses.length}
-                    </Typography>
-                    </div>
-                    <div style={{display:'flex', alignItems:'center', paddingLeft:'25px', opacity:'0.35'}}>
-                    <AccountBoxIcon />
-                    <Typography variant="h8" noWrap >
-                        Total Clients:
-                    </Typography>
-                    <Typography variant="h8" noWrap >
-                        {clients.length}
-                    </Typography>
-                    </div>
-                    <div style={{display:'flex', alignItems:'center', paddingLeft:'25px', opacity:'0.35'}}>
-                    <ContentPasteIcon />
-                    <Typography variant="h8" noWrap >
-                        Total Projects:
-                    </Typography>
-                    <Typography variant="h8" noWrap >
-                        {projects.length}
-                    </Typography>
-                    </div>
-                    <div style={{display:'flex', alignItems:'center', paddingLeft:'25px', opacity:'0.35'}}>
-                    <PeopleIcon />
-                    <Typography variant="h8" noWrap >
-                        Total Students:
-                    </Typography>
-                    <Typography variant="h8" noWrap >
-                        {students.length}
-                    </Typography>
-                    </div>
-
+                    {userIdentifier == "organizer" && (
+                        <Fragment>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    paddingLeft: "25px",
+                                    opacity: "0.35",
+                                }}
+                            >
+                                <SchoolIcon />
+                                <Typography variant="h8" noWrap>
+                                    Total Courses:
+                                </Typography>
+                                <Typography variant="h8" noWrap>
+                                    {courses.length}
+                                </Typography>
+                            </div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    paddingLeft: "25px",
+                                    opacity: "0.35",
+                                }}
+                            >
+                                <AccountBoxIcon />
+                                <Typography variant="h8" noWrap>
+                                    Total Clients:
+                                </Typography>
+                                <Typography variant="h8" noWrap>
+                                    {clients.length}
+                                </Typography>
+                            </div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    paddingLeft: "25px",
+                                    opacity: "0.35",
+                                }}
+                            >
+                                <ContentPasteIcon />
+                                <Typography variant="h8" noWrap>
+                                    Total Projects:
+                                </Typography>
+                                <Typography variant="h8" noWrap>
+                                    {projects.length}
+                                </Typography>
+                            </div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    paddingLeft: "25px",
+                                    opacity: "0.35",
+                                }}
+                            >
+                                <PeopleIcon />
+                                <Typography variant="h8" noWrap>
+                                    Total Students:
+                                </Typography>
+                                <Typography variant="h8" noWrap>
+                                    {students.length}
+                                </Typography>
+                            </div>
+                        </Fragment>
+                    )}
                     <Box sx={{ flexGrow: 1 }}>
                         <Tooltip title="Open settings">
                             <IconButton
@@ -297,8 +321,17 @@ export default function MiniDrawer({ setAuth }) {
                                 sx={{ p: 0 }}
                             >
                                 <Avatar
-                                    alt={organizerInfo.student_fname}
-                                    src={"/uploads/images/profilePictures/" + organizerInfo.profilepic_filepath}
+                                    alt={
+                                        userIdentifier == "organizer"
+                                            ? userInfo.organizer_fname
+                                            : userIdentifier == "student"
+                                            ? userInfo.student_fname
+                                            : userInfo.mentor_fname
+                                    }
+                                    src={
+                                        "/uploads/images/profilePictures/" +
+                                        userInfo.profilepic_filepath
+                                    }
                                 />
                             </IconButton>
                         </Tooltip>
@@ -346,7 +379,7 @@ export default function MiniDrawer({ setAuth }) {
                     </Box>
                 </Toolbar>
             </AppBar>
-            <Drawer variant="permanent" open={open} sx={{zIndex: 0}}>
+            <Drawer variant="permanent" open={open} sx={{ zIndex: 0 }}>
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === "rtl" ? (
@@ -358,56 +391,53 @@ export default function MiniDrawer({ setAuth }) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {["Courses", "Clients", "Email Hub"].map(
-                        (text, index) => (
-                            <ListItem
-                                button
-                                key={text}
-                                onClick={() => {
-                                    setRoute({ text });
-                                    handleDrawerClose();
-                                }}
-                            >
-                                <ListItemIcon>
-                                    {index === 4 ? (
-                                        <Tooltip
-                                            title="Home"
-                                            placement="right"
-                                            arrow
-                                        >
-                                            <HomeIcon />
-                                        </Tooltip>
-                                    ) : index === 0 ? (
-                                        <Tooltip
-                                            title="Courses"
-                                            placement="right"
-                                            arrow
-                                        >
-                                            <SchoolIcon />
-                                        </Tooltip>
-                                        
-                                    ) : index === 1 ? (
-                                        <Tooltip
-                                            title="Clients"
-                                            placement="right"
-                                            arrow
-                                        >
-                                            <PeopleIcon />
-                                        </Tooltip>
-                                    ) : (
-                                        <Tooltip
-                                            title="Emails"
-                                            placement="right"
-                                            arrow
-                                        >
-                                            <InboxIcon />
-                                        </Tooltip>
-                                    )}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        )
-                    )}
+                    {sideBar.map((text, index) => (
+                        <ListItem
+                            button
+                            key={text}
+                            onClick={() => {
+                                setRoute({ text });
+                                handleDrawerClose();
+                            }}
+                        >
+                            <ListItemIcon>
+                                {index === 4 ? (
+                                    <Tooltip
+                                        title="Home"
+                                        placement="right"
+                                        arrow
+                                    >
+                                        <HomeIcon />
+                                    </Tooltip>
+                                ) : index === 0 ? (
+                                    <Tooltip
+                                        title="Courses"
+                                        placement="right"
+                                        arrow
+                                    >
+                                        <SchoolIcon />
+                                    </Tooltip>
+                                ) : index === 1 ? (
+                                    <Tooltip
+                                        title="Clients"
+                                        placement="right"
+                                        arrow
+                                    >
+                                        <PeopleIcon />
+                                    </Tooltip>
+                                ) : (
+                                    <Tooltip
+                                        title="Emails"
+                                        placement="right"
+                                        arrow
+                                    >
+                                        <InboxIcon />
+                                    </Tooltip>
+                                )}
+                            </ListItemIcon>
+                            <ListItemText primary={text} />
+                        </ListItem>
+                    ))}
                 </List>
                 <Divider />
                 <List>
@@ -427,8 +457,12 @@ export default function MiniDrawer({ setAuth }) {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-                <TeamBanditRoutes route={route} organizerInfo={organizerInfo} setOrganizerChange={setOrganizerChange}/>
-
+                <TeamBanditRoutes
+                    route={route}
+                    userInfo={userInfo}
+                    userIdentifier={userIdentifier}
+                    setUserChange={setUserChange}
+                />
                 <footer className={styles.footer}>
                     {" "}
                     Copyright @ 2022 All Rights Reserved{" "}

@@ -5,52 +5,99 @@ const authorization = require('../../middleware/authorization');
 // PROJECT ROUTES //
 
 //Get all projects associated with current course id
-router.get("/:course_id", authorization, async(req, res) => {
+router.get("/:course_id/:userIdentifier", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
+        if( req.params.userIdentifier == "organizer" )
+        {
+            const students = await pool.query("SELECT projects.project_id, projects.project_name, projects.mentor_id, projects.client_id, projects.projectoverview_filename, teams.team_name, teams.team_logo, teams.team_lead FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.organizer_id = $1 AND projects.course_id = $2 ORDER BY projects.project_id ASC ", [req.user, course_id]);
+            res.json(students.rows);
+        }
+        else if( req.params.userIdentifier == "student" )
+        {
+            const organizer = await pool.query("SELECT organizer_id FROM courses WHERE course_id = $1", [course_id]);
         
-        const students = await pool.query("SELECT projects.project_id, projects.project_name, projects.mentor_id, projects.client_id, projects.projectoverview_filename, teams.team_name, teams.team_logo, teams.team_lead FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.organizer_id = $1 AND projects.course_id = $2 ORDER BY projects.project_id ASC ", [req.user, course_id]);
+            const students = await pool.query("SELECT projects.project_id, projects.project_name, projects.mentor_id, projects.client_id, projects.projectoverview_filename, teams.team_name, teams.team_logo FROM projects LEFT JOIN teams ON projects.project_id = teams.project_id WHERE projects.organizer_id = $1 AND projects.course_id = $2 ORDER BY projects.project_id ASC ", [organizer.rows[0].organizer_id, course_id]);
+            
+            res.json(students.rows);
+        }
+        else if( req.params.userIdentifier == "mentor" )
+        {
+            // TODO: Set up how mentor will get the project information
+        }
         
-        res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+//Get all mentors associated with current course id
+router.get("/mentors/:course_id/:userIdentifier", authorization, async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        if( req.params.userIdentifier == "organizer" )
+        {
+            const students = await pool.query("SELECT mentor_id, mentor_name, mentor_email FROM mentors WHERE organizer_id = $1", [req.user]);
+            res.json(students.rows);
+        }
+        else if( req.params.userIdentifier == "student" )
+        {
+            const organizer = await pool.query("SELECT organizer_id FROM courses WHERE course_id = $1", [course_id]);
+            const students = await pool.query("SELECT mentor_id, mentor_name, mentor_email FROM mentors WHERE organizer_id = $1", [organizer.rows[0].organizer_id]);
+            res.json(students.rows);
+        }
+        else if( req.params.userIdentifier == "mentor" )
+        {
+            // TODO: Set up how mentor will get the project information
+        }
     } catch (error) {
         console.error(error.message);
     }
 });
 
 //Get all projects associated with current course id
-router.get("/mentors/:course_id", authorization, async(req, res) => {
+router.get("/getTeams/:course_id/:userIdentifier", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
-        
-        const students = await pool.query("SELECT mentor_id, mentor_name, mentor_email FROM mentors WHERE organizer_id = $1", [req.user]);
-
-        res.json(students.rows);
+        if( req.params.userIdentifier == "organizer" )
+        {
+            const teams = await pool.query("SELECT team_lead, team_id FROM teams WHERE organizer_id = $1 AND course_id = $2", [req.user, course_id]);
+            res.json(teams.rows);
+        }
+        else if( req.params.userIdentifier == "student" )
+        {
+            const organizer = await pool.query("SELECT organizer_id FROM courses WHERE course_id = $1", [course_id]);
+            const teams = await pool.query("SELECT team_lead, team_id FROM teams WHERE organizer_id = $1 AND course_id = $2", [organizer.rows[0].organizer_id, course_id]);
+            res.json(teams.rows);
+        }
+        else if( req.params.userIdentifier == "mentor" )
+        {
+            // TODO: Set up how will get the project information
+        }
     } catch (error) {
         console.error(error.message);
     }
 });
 
-//Get all projects associated with current course id
-router.get("/getTeams/:course_id", authorization, async(req, res) => {
+//Get all sponsors associated with current course id
+router.get("/sponsors/:course_id/:userIdentifier", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
-        
-        const teams = await pool.query("SELECT team_lead, team_id FROM teams WHERE organizer_id = $1 AND course_id = $2", [req.user, course_id]);
-
-        res.json(teams.rows);
-    } catch (error) {
-        console.error(error.message);
-    }
-});
-
-//Get all projects associated with current course id
-router.get("/sponsors/:course_id", authorization, async(req, res) => {
-    try {
-        const {course_id} = req.params;
-        
-        const students = await pool.query("SELECT client_id, client_fname, client_lname, client_organization, client_notes, client_location, client_logo FROM clients WHERE organizer_id = $1", [req.user]);
-
-        res.json(students.rows);
+        if( req.params.userIdentifier == "organizer" )
+        {
+            const students = await pool.query("SELECT client_id, client_fname, client_lname, client_organization, client_notes, client_location, client_logo FROM clients WHERE organizer_id = $1", [req.user]);
+            res.json(students.rows);
+        }
+        else if( req.params.userIdentifier == "student" )
+        {
+            const organizer = await pool.query("SELECT organizer_id FROM courses WHERE course_id = $1", [course_id]);
+            const students = await pool.query("SELECT client_id, client_fname, client_lname, client_organization, client_notes, client_location, client_logo FROM clients WHERE organizer_id = $1", [organizer.rows[0].organizer_id]);
+            res.json(students.rows);
+        }
+        else if ( req.params.userIdentifier == "mentor" )
+        {
+            // TODO: Figure out mentors
+        }
     } catch (error) {
         console.error(error.message);
     }
@@ -211,12 +258,24 @@ router.post("/toggleStudent", authorization, async(req,res) =>{
     }
 });
 
-router.get("/getAssignedStudents/:course_id", authorization, async(req, res) => {
+router.get("/getAssignedStudents/:course_id/:userIdentifier", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
-        const student = await pool.query("SELECT studentteambridgetable.project_id, studentteambridgetable.team_id, studentteambridgetable.student_id, students.student_fname, students.student_lname, students.student_email FROM studentteambridgetable LEFT JOIN students ON studentteambridgetable.student_id = students.student_id");
-
-        res.json(student.rows);
+        if( req.params.userIdentifier == "organizer" )
+        {
+            const student = await pool.query("SELECT studentteambridgetable.project_id, studentteambridgetable.team_id, studentteambridgetable.student_id, students.student_fname, students.student_lname, students.student_email FROM studentteambridgetable LEFT JOIN students ON studentteambridgetable.student_id = students.student_id");
+            res.json(student.rows);
+        }
+        else if( req.params.userIdentifier == "student" )
+        {
+            const organizer = await pool.query("SELECT organizer_id FROM courses WHERE course_id = $1", [course_id]);
+            const student = await pool.query("SELECT studentteambridgetable.project_id, studentteambridgetable.team_id, studentteambridgetable.student_id, students.student_fname, students.student_lname FROM studentteambridgetable LEFT JOIN students ON studentteambridgetable.student_id = students.student_id");
+            res.json(student.rows);
+        }
+        else if( req.params.userIdentifier == "mentor" )
+        {
+            // TODO: Add mentors
+        }
     } catch (error) {
         console.error(error.message);
     }

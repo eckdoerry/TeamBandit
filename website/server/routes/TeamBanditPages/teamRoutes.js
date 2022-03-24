@@ -10,7 +10,7 @@ const authorization = require('../../middleware/authorization');
 
 
 // Gets all teams based off of course_id and project id 
-router.get("/:course_id", authorization, async(req, res) => {
+router.get("/:course_id/:userIdentifier", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
         

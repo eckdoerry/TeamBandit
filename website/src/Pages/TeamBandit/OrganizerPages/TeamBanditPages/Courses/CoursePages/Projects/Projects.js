@@ -1,14 +1,11 @@
-import {Fragment, React} from "react";
-
-// Stylesheet
-import styles from "./Projects.module.css";
+import { React } from "react";
 
 // Project Pages
 import ProjectList from "./Components/ProjectList";
 
-const Projects = ({courseInfo, setRoute}) => {
+const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
     return(
-        <ProjectList courseInfo={courseInfo} setRoute={setRoute}/>
+        <ProjectList courseInfo={courseInfo} userInfo={userInfo} userIdentifier={userIdentifier} setRoute={setRoute}/>
     );
 }
 

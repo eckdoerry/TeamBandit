@@ -1,4 +1,4 @@
-import { Fragment, useState, React } from "react";
+import { Fragment, useState, useEffect, React } from "react";
 
 // MUI Functions
 import Drawer from "@mui/material/Drawer";
@@ -15,21 +15,14 @@ import styles from "../Courses.module.css";
 // Routes
 import CourseRouter from "../CourseRouter";
 
-// Table of the contents
-const pages = [
-    {key: 1, page: "Projects"},
-    {key: 2, page: "Schedule"},
-    {key: 3, page: "Students"},
-    {key: 4, page: "Assignments"},
-    {key: 5, page: "Mentors"},
-    {key: 6, page: "Settings"}
-];
+const CoursePage = ({ courseInfo, userInfo, userIdentifier, setCoursesChange }) => {
 
-const CoursePage = ({ courseInfo, setCoursesChange }) => {
     // ENUM string for routes
     const [route, setRoute] = useState("Projects");
 
     const [value, setValue] = useState(0);
+    const [pages, setPages] = useState([]);
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
         setRoute(pages[newValue].page);
@@ -51,6 +44,34 @@ const CoursePage = ({ courseInfo, setCoursesChange }) => {
 
         setState({ ...state, [anchor]: open });
     };
+
+    const setPageValues = () => {
+        
+        if( userIdentifier == "organizer" )
+        {
+            setPages([
+                {key: 1, page: "Projects"},
+                {key: 2, page: "Schedule"},
+                {key: 3, page: "Students"},
+                {key: 4, page: "Assignments"},
+                {key: 5, page: "Mentors"},
+                {key: 6, page: "Settings"}]);
+        }
+        else if( userIdentifier == "student" )
+        {
+            setPages([
+                {key: 1, page: "Projects"},
+                {key: 2, page: "Assignments"}]);
+        }
+        else if ( userIdentifier == "mentor" )
+        {
+            // TODO: Set up what pages the mentor should see :)
+        }
+    };
+
+    useEffect(() => {
+        setPageValues();
+    }, []);
 
     return (
         <div>
@@ -112,6 +133,8 @@ const CoursePage = ({ courseInfo, setCoursesChange }) => {
                     {/*This will return whatever page we want displayed :)*/}
                     <CourseRouter
                         route={route}
+                        userInfo={userInfo}
+                        userIdentifier={userIdentifier}
                         courseInfo={courseInfo}
                         setRoute={setRoute}
                         setCoursesChange={setCoursesChange}

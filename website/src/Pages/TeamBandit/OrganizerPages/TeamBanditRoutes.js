@@ -8,7 +8,6 @@ import AlertTitle from '@mui/material/AlertTitle';
 import Courses from "./TeamBanditPages/Courses/Courses";
 import Clients from "./TeamBanditPages/Clients/Clients";
 import EmailHub from "./TeamBanditPages/EmailHub/EmailHub";
-import LandingPage from "./TeamBanditPages/LandingPage/LandingPage";
 import Profile from "./TeamBanditPages/Profile/Profile";
 import Settings from "./TeamBanditPages/Settings/Settings";
 
@@ -16,13 +15,13 @@ import Settings from "./TeamBanditPages/Settings/Settings";
  * Utilizes an enum string system to display the correct information inside
  * the TeamBandit application.
  */
-const TeamBanditRouter = ({route, organizerInfo, setOrganizerChange}) => {
+const TeamBanditRouter = ({route, userInfo, userIdentifier, setUserChange}) => {
     
-    if(route.text === 'Home' || route === 'Home') 
+    if(route.text === "Courses" || route === "Courses") 
     {
         return (
             <Fragment>
-                <LandingPage organizerInfo={organizerInfo}/>
+                <Courses userInfo={userInfo} userIdentifier={userIdentifier}/>
             </Fragment>
         )
     }
@@ -31,14 +30,6 @@ const TeamBanditRouter = ({route, organizerInfo, setOrganizerChange}) => {
         return (
             <Fragment>
                 <EmailHub/>
-            </Fragment>
-        )
-    }
-    else if(route.text === "Courses" || route === "Courses") 
-    {
-        return (
-            <Fragment>
-                <Courses/>
             </Fragment>
         )
     }
@@ -54,7 +45,7 @@ const TeamBanditRouter = ({route, organizerInfo, setOrganizerChange}) => {
     {
         return (
             <Fragment>
-                <Profile organizerInfo={organizerInfo} setOrganizerChange={setOrganizerChange}/>
+                <Profile userInfo={userInfo} setUserChange={setUserChange}/>
             </Fragment>
         )
     }
@@ -62,7 +53,7 @@ const TeamBanditRouter = ({route, organizerInfo, setOrganizerChange}) => {
     {
         return (
             <Fragment>
-                <Settings organizerInfo={organizerInfo} setOrganizerChange={setOrganizerChange}/>
+                <Settings userInfo={userInfo} setUserChange={setUserChange}/>
             </Fragment>
         )
     }

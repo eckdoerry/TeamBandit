@@ -464,7 +464,7 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
                         startIcon={<EditIcon />}
                     >
                         {" "}
-                        Edit{" "}
+                        Save{" "}
                     </Button>
                     <Button
                         sx={{ m: 2 }}

@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import styles from "../Projects.module.css";
 
 // MUI Imports
 import Typography from "@mui/material/Typography";
-import Switch from "@mui/material/Switch";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-
-// Stylesheet
-import styles from "../Projects.module.css";
 
 // Datagrid
 import {
@@ -20,41 +14,34 @@ import {
     GridToolbarColumnsButton,
     GridToolbarFilterButton,
     GridToolbarExport,
-    gridColumnsSelector,
 } from "@mui/x-data-grid";
 
 // Page Components
 import AddProject from "./AddProject";
 import TeamsAssignment from "./TeamAssignmentButton";
 import EditProject from "./EditProject";
+import ProjectPreferences from "./ProjectPreferences";
 
-const Projects = ({ courseInfo, setRoute }) => {
-    const [rows, setRows] = useState([]);
+const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
+
+    const [projects, setProjects] = useState([]);
     const [rowChange, setRowChange] = useState(false);
 
     const [sponsors, setSponsors] = useState([]);
     const [mentors, setMentors] = useState([]);
     const [teams, setTeams] = useState([]);
+    const [allAssignedStudents, setAllAssignedStudents] = useState([]);
 
-    // Loading variables
-    // ---------------------------------------------------------------------------
-    // Loading time needs to get predetermined as currently I don't know how to
-    // 'wait' for all of the information to get pulled. Still works and avoids the
-    // awkward data loading period. TODO: Look into adjusting time
-    // ---------------------------------------------------------------------------
+    // LOADING VARIABLES //
     const [loading, setLoading] = useState(true);
-    const loadingTime = 750;
 
     const setLoadingFalse = () => {
-        setTimeout(() => {
-            setLoading(false);
-        }, loadingTime);
+        setLoading(false);
     };
 
     // END LOADING VARIABLES //
 
-    const [allAssignedStudents, setAllAssignedStudents] = useState([]);
-
+    // INDIVIDUAL CELL COMPONENTS //
     const editButton = (params) => {
         return (
             <EditProject
@@ -109,6 +96,7 @@ const Projects = ({ courseInfo, setRoute }) => {
                     <div>
                         <ul>
                             {studentsOnTeam.map((student) =>
+                                
                                 displayStudent(student)
                             )}
                         </ul>
@@ -122,7 +110,7 @@ const Projects = ({ courseInfo, setRoute }) => {
         const string = `mailto:` + student.student_email;
         if (isTeamLead(student.student_id) === true) {
             return (
-                <li>
+                <li key = {student.student_id}>
                     <a href={string}>
                         <Typography variant="string">
                             {student.student_fname} {student.student_lname}{" "}
@@ -133,7 +121,7 @@ const Projects = ({ courseInfo, setRoute }) => {
             );
         } else {
             return (
-                <li>
+                <li key = {student.student_id}>
                     <Typography variant="string">
                         {" "}
                         {student.student_fname} {student.student_lname}{" "}
@@ -254,33 +242,35 @@ const Projects = ({ courseInfo, setRoute }) => {
         );
     };
 
+    // END INDIVIDUAL CELL COMPONENTS //
+
     const columns = [
         {
             field: "project_name",
             headerName: "Project Title",
             renderCell: projectPage,
-            cellClassName: "death",
+            cellClassName: "border",
             flex: 2,
         },
         {
             field: "client_name",
             headerName: "Project Sponsor",
             renderCell: displaySponsor,
-            cellClassName: "death",
+            cellClassName: "border",
             flex: 2,
         },
         {
             field: "team_name",
             headerName: "Student Team",
             renderCell: teamPage,
-            cellClassName: "death",
+            cellClassName: "border",
             flex: 3,
         },
         {
             field: "mentor_name",
             headerName: "Team Mentor",
             renderCell: displayMentor,
-            cellClassName: "death",
+            cellClassName: "border",
             flex: 1,
         },
         {
@@ -295,122 +285,118 @@ const Projects = ({ courseInfo, setRoute }) => {
     ];
 
     const CustomToolbar = () => {
-        return (
-            <GridToolbarContainer style={{ backgroundColor: "#FAC01A" }}>
-                <Typography sx={{ m: 1 }} variant="h4">
-                    Projects
-                </Typography>
-                <GridToolbarColumnsButton sx={{ m: 1 }} />
-                <GridToolbarFilterButton sx={{ m: 1 }} />
-                <GridToolbarExport sx={{ m: 1 }} />
-                <AddProject
-                    courseInfo={courseInfo}
-                    rows={rows}
-                    setRowChange={setRowChange}
-                />
-                <TeamsAssignment setRoute={setRoute} />
-                {courseInfo.course_public ? (
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                    >
-                        <Typography sx={{ m: 1 }} variant="h6">
-                            Public Address:
-                        </Typography>
-                        <Link
-                            target="_blank"
-                            to={`/team-page/${courseInfo.course_id}`}
+        if( userIdentifier == "organizer" )
+        {
+            return (
+                <GridToolbarContainer style={{ backgroundColor: "#FAC01A" }}>
+                    <Typography sx={{ m: 1 }} variant="h4">
+                        Projects
+                    </Typography>
+                    <GridToolbarColumnsButton sx={{ m: 1 }} />
+                    <GridToolbarFilterButton sx={{ m: 1 }} />
+                    <GridToolbarExport sx={{ m: 1 }} />
+                    <AddProject
+                        courseInfo={courseInfo}
+                        projects={projects}
+                        setRowChange={setRowChange}
+                    />
+                    <TeamsAssignment setRoute={setRoute} />
+                    {courseInfo.course_public ? (
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
                         >
-                            {" "}
-                            {`http://34.216.91.228/team-page/${courseInfo.course_id}/`}{" "}
-                        </Link>
-                    </div>
-                ) : null}
-            </GridToolbarContainer>
-        );
-    };
-
-    const getProjects = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/${courseInfo.course_id}`,
-                { method: "GET", headers: { token: localStorage.token } }
+                            <Typography sx={{ m: 1 }} variant="h6">
+                                Public Address:
+                            </Typography>
+                            <Link
+                                target="_blank"
+                                to={`/team-page/${courseInfo.course_id}`}
+                            >
+                                {" "}
+                                {`http://34.216.91.228/team-page/${courseInfo.course_id}/`}{" "}
+                            </Link>
+                        </div>
+                    ) : null}
+                </GridToolbarContainer>
             );
-            const jsonData = await response.json();
-
-            setRows(jsonData);
-        } catch (err) {
-            console.error(err.message);
+        }
+        else if( userIdentifier == "student" )
+        {
+            return (
+                <GridToolbarContainer style={{ backgroundColor: "#FAC01A" }} >
+                    <Typography sx={{ m: 1 }} variant="h4">
+                        Projects
+                    </Typography>
+                    <GridToolbarColumnsButton sx={{ m: 1 }} />
+                    <GridToolbarFilterButton sx={{ m: 1 }} />
+                    <GridToolbarExport sx={{ m: 1 }} />
+                    <ProjectPreferences userInfo={userInfo} projects={projects} setRowChange={setRowChange}/>
+                </GridToolbarContainer>
+            );
+        }
+        else if( userIdentifier == "mentor" )
+        {
+            //TODO: Add mentor GridToolbarContainer
         }
     };
 
-    const getSponsors = async () => {
+    const getInformation = async () => {
         try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/sponsors/${courseInfo.course_id}`,
+            const projectInfo = await fetch(
+                `${process.env.REACT_APP_BASEURL}/projects/${courseInfo.course_id}/${userIdentifier}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
-            const jsonData = await response.json();
-
-            setSponsors(jsonData);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
-    const getMentors = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/mentors/${courseInfo.course_id}`,
+            
+            const sponsorInfo = await fetch(
+                `${process.env.REACT_APP_BASEURL}/projects/sponsors/${courseInfo.course_id}/${userIdentifier}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
-            const jsonData = await response.json();
-
-            setMentors(jsonData);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
-    const getAssignedStudents = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/getAssignedStudents/${courseInfo.course_id}`,
+            
+            const mentorInfo = await fetch(
+                `${process.env.REACT_APP_BASEURL}/projects/mentors/${courseInfo.course_id}/${userIdentifier}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
-            const jsonData = await response.json();
-
-            setAllAssignedStudents(jsonData);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
-    const getTeams = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/getTeams/${courseInfo.course_id}`,
+            
+            const assignedStudentInfo = await fetch(
+                `${process.env.REACT_APP_BASEURL}/projects/getAssignedStudents/${courseInfo.course_id}/${userIdentifier}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
-            const jsonData = await response.json();
+            
+            const teamInfo = await fetch(
+                `${process.env.REACT_APP_BASEURL}/projects/getTeams/${courseInfo.course_id}/${userIdentifier}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
 
-            setTeams(jsonData);
-        } catch (err) {
-            console.error(err.message);
+            const projectData = await projectInfo.json();
+            const sponsorData = await sponsorInfo.json();
+            const mentorData = await mentorInfo.json();
+            const assignedStudentData = await assignedStudentInfo.json();
+            const teamData = await teamInfo.json();
+
+            setTeams(teamData);
+            setAllAssignedStudents(assignedStudentData);
+            setMentors(mentorData);
+            setSponsors(sponsorData);
+            setProjects(projectData);
+
+            setLoadingFalse();
+        } catch ( error )
+        {
+            console.error( error.message );
         }
     };
 
     useEffect(() => {
-        getProjects();
-        getAssignedStudents();
-        getSponsors();
-        getMentors();
-        getTeams();
+        getInformation();
+    }, [])
+
+    useEffect(() => {
+        getInformation();
         setRowChange(false);
-        setLoadingFalse();
     }, [rowChange]);
 
     if (loading) {
@@ -432,6 +418,7 @@ const Projects = ({ courseInfo, setRoute }) => {
             </div>
         );
     }
+    
     return (
         <div
             style={{
@@ -445,17 +432,17 @@ const Projects = ({ courseInfo, setRoute }) => {
                 sx={{
                     height: "100%",
                     width: "100%",
-                    "& .death": {
+                    "& .border": {
                         borderRight: 1,
                         borderColor: "#d3d3d3",
                     },
                 }}
             >
                 <DataGrid
-                    rows={rows}
+                    rows={projects}
                     columns={columns}
                     rowHeight={150}
-                    getRowId={(rows) => rows.project_id}
+                    getRowId={(projects) => projects.project_id}
                     components={{ Toolbar: CustomToolbar }}
                     disableSelectionOnClick
                 />

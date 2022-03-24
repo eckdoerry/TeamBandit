@@ -10,9 +10,17 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import Switch from '@mui/material/Switch';
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
+import Switch from "@mui/material/Switch";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CheckIcon from "@mui/icons-material/Check";
+import ToggleButton from "@mui/material/ToggleButton";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
+import Grid from "@mui/material/Grid";
 
 import { toast } from "react-toastify";
 
@@ -21,6 +29,11 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
     const [semester, setSemester] = useState(courseInfo.course_semester);
     const [isPublic, setIsPublic] = useState(courseInfo.course_public);
     const [teamSize, setTeamSize] = useState(courseInfo.team_size);
+
+    // Team Page
+    const [selected1, setSelected1] = useState(false);
+    const [selected2, setSelected2] = useState(false);
+    const [selected3, setSelected3] = useState(false);
 
     const [open, setOpen] = useState(false);
 
@@ -95,17 +108,37 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
 
     return (
         <div style={{ width: "100%", height: "100%", padding: "25px" }}>
-            <Paper style={{padding: '25px'}} elevation={3}>
-                <Typography style={{borderBottom: '1px solid black', borderBottomWidth: 'thin', width: '15%'}} variant="h4" gutterBottom> Course Settings </Typography>
+            <Paper style={{ padding: "25px" }} elevation={3}>
+                <Typography
+                    style={{
+                        borderBottom: "1px solid black",
+                        borderBottomWidth: "thin",
+                        width: "15%",
+                    }}
+                    variant="h4"
+                    gutterBottom
+                >
+                    {" "}
+                    Course Settings{" "}
+                </Typography>
                 <Typography variant="h5">Title</Typography>
                 <Typography>{courseInfo.course_title}</Typography>
                 <Typography variant="h5">Semester</Typography>
                 <Typography>{courseInfo.course_semester}</Typography>
                 <Typography variant="h5">Team Size</Typography>
                 <Typography>{courseInfo.team_size}</Typography>
-                <Typography variant="h5">{courseInfo.course_public ? "Course is set to PUBLIC" : "Course is set to PRIVATE"}</Typography>
+                <Typography variant="h5">
+                    {courseInfo.course_public
+                        ? "Course is set to PUBLIC"
+                        : "Course is set to PRIVATE"}
+                </Typography>
                 <Button onClick={handleClickOpen}>Edit This Course</Button>
-                <Dialog open={open} onClose={handleClose}>
+                <Dialog
+                    fullWidth
+                    maxWidth="lg"
+                    open={open}
+                    onClose={handleClose}
+                >
                     <DialogTitle>Edit this course</DialogTitle>
 
                     <DialogContent>
@@ -138,17 +171,186 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                             value={semester}
                             onChange={(e) => setSemester(e.target.value)}
                         />
-                        <Typography >Adjust Team Size</Typography>
-                        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                            <Button  variant="contained" startIcon={<AddIcon/>} onClick={() => setTeamSize(teamSize + 1)}></Button>
-                            <Typography style={{padding: '10px', margin: '10px'}}>{teamSize}</Typography>
-                            <Button variant="contained" startIcon={<RemoveIcon/>} onClick={() => teamSize > 0 ? setTeamSize(teamSize - 1) : null}></Button>
+                        <Typography>Adjust Team Size</Typography>
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <Button
+                                variant="contained"
+                                startIcon={<AddIcon />}
+                                onClick={() => setTeamSize(teamSize + 1)}
+                            ></Button>
+                            <Typography
+                                style={{ padding: "10px", margin: "10px" }}
+                            >
+                                {teamSize}
+                            </Typography>
+                            <Button
+                                variant="contained"
+                                startIcon={<RemoveIcon />}
+                                onClick={() =>
+                                    teamSize > 0
+                                        ? setTeamSize(teamSize - 1)
+                                        : null
+                                }
+                            ></Button>
                         </div>
-                        <div style={{display: 'flex', alignItems: 'center'}}>
-                        <Typography style={{paddingRight: '6px'}}>{isPublic ? "Public" : "Private"} </Typography>
-                        <Switch checked={isPublic} onChange={updateIsPublic}/>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            <Typography style={{ paddingRight: "6px" }}>
+                                {isPublic ? "Public" : "Private"}{" "}
+                            </Typography>
+                            <Switch
+                                checked={isPublic}
+                                onChange={updateIsPublic}
+                            />
                         </div>
                     </DialogContent>
+                    <Typography style={{ paddingLeft: "25px" }}>
+                        Change Team Website Layout
+                    </Typography>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <div>
+                            <Card
+                                style={{ margin: "5px" }}
+                                sx={{ minWidth: 275 }}
+                            >
+                                <CardContent>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={3}>
+                                            <Skeleton
+                                                variant="rectangular"
+                                                height={195}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={9}>
+                                            <Stack spacing={1}>
+                                                <Skeleton
+                                                    variant="rectangular"
+                                                    height={110}
+                                                />
+                                                <Grid container spacing={1}>
+                                                    <Grid item xs={4}>
+                                                        <Skeleton
+                                                            variant="rectangular"
+                                                            height={75}
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={4}>
+                                                        <Skeleton
+                                                            variant="rectangular"
+                                                            height={75}
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={4}>
+                                                        <Skeleton
+                                                            variant="rectangular"
+                                                            height={75}
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+                                            </Stack>
+                                        </Grid>
+                                    </Grid>
+                                </CardContent>
+                                <CardActions>
+                                    <ToggleButton
+                                        value="check"
+                                        style={
+                                            selected1
+                                                ? { backgroundColor: "#90caf9" }
+                                                : { backgroundColor: "white" }
+                                        }
+                                        selected={selected1}
+                                        onChange={() => {
+                                            setSelected2(false);
+                                            setSelected3(false);
+                                            setSelected1(!selected1);
+                                        }}
+                                    >
+                                        <CheckIcon />
+                                    </ToggleButton>
+                                </CardActions>
+                            </Card>
+                        </div>
+                        <div>
+                            <Card
+                                style={{ margin: "5px" }}
+                                sx={{ minWidth: 275 }}
+                            >
+                                <CardContent>
+                                    <Stack spacing={1}>
+                                        <Skeleton variant="text" />
+
+                                        <Skeleton
+                                            variant="rectangular"
+                                            height={165}
+                                        />
+                                    </Stack>
+                                </CardContent>
+                                <CardActions>
+                                    <ToggleButton
+                                        value="check"
+                                        style={
+                                            selected2
+                                                ? { backgroundColor: "#90caf9" }
+                                                : { backgroundColor: "white" }
+                                        }
+                                        selected={selected2}
+                                        onChange={() => {
+                                            setSelected1(false);
+                                            setSelected3(false);
+                                            setSelected2(!selected2);
+                                        }}
+                                    >
+                                        <CheckIcon />
+                                    </ToggleButton>
+                                </CardActions>
+                            </Card>
+                        </div>
+                        <div>
+                            <Card
+                                style={{ margin: "5px" }}
+                                sx={{ minWidth: 275 }}
+                            >
+                                <CardContent>
+                                    <Stack spacing={1}>
+                                        <Skeleton variant="text" />
+                                        <Skeleton
+                                            variant="circular"
+                                            width={40}
+                                            height={40}
+                                        />
+                                        <Skeleton
+                                            variant="rectangular"
+                                            height={118}
+                                        />
+                                    </Stack>
+                                </CardContent>
+                                <CardActions>
+                                    <ToggleButton
+                                        value="check"
+                                        style={
+                                            selected3
+                                                ? { backgroundColor: "#90caf9" }
+                                                : { backgroundColor: "white" }
+                                        }
+                                        selected={selected3}
+                                        onChange={() => {
+                                            setSelected1(false);
+                                            setSelected2(false);
+                                            setSelected3(!selected3);
+                                        }}
+                                    >
+                                        <CheckIcon />
+                                    </ToggleButton>
+                                </CardActions>
+                            </Card>
+                        </div>
+                    </div>
                     <DialogActions>
                         <Button onClick={updateCourse}>Update Course</Button>
                         <Button onClick={handleClose}>Cancel</Button>
