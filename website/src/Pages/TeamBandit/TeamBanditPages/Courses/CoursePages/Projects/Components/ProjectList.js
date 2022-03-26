@@ -478,6 +478,7 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
                 setLoadingFalse();
             } catch ( error )
             {
+                toast.error("Failed to load information");
                 console.error( error.message );
             }
         }
@@ -524,6 +525,7 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
                 setLoadingFalse();
             } catch ( error )
             {
+                toast.error("Failed to load information");
                 console.error( error.message );
             }
 

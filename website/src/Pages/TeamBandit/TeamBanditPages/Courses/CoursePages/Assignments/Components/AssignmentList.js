@@ -144,6 +144,7 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
             setRows(jsonData);
             setLoadingFalse();
         } catch (err) {
+            toast.error("Failed to load Assignments");
             console.error(err.message);
         }
     };

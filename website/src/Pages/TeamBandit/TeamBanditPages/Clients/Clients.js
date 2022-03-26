@@ -55,6 +55,7 @@ const Clients = () => {
             setClients(parseData);
             setLoadingFalse();
         } catch (error) {
+            toast.error("Failed to load clients");
             console.error(error.message);
         }
     };

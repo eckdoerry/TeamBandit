@@ -116,6 +116,7 @@ const Students = ({ courseInfo }) => {
             setRows(jsonData);
             setLoadingFalse();
         } catch (err) {
+            toast.error("Failed to load students");
             console.error(err.message);
         }
     };

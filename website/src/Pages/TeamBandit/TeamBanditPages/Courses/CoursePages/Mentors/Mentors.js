@@ -99,6 +99,7 @@ const Projects = ({ courseInfo }) => {
             setRows(jsonData);
             setLoadingFalse();
         } catch (err) {
+            toast.error("Failed to load mentors");
             console.error(err.message);
         }
     };
