@@ -5,18 +5,18 @@ const authorization = require('../../middleware/authorization');
 // COURSE ROUTES //
 
 // Gets all courses associated with current user
-router.get("/:userIdentifier", authorization, async(req, res) => {
+router.get("/", authorization, async(req, res) => {
     try {
-
-        if( req.params.userIdentifier == "organizer" )
+        if( req.headers.type == "organizer" )
         {
             const user = await pool.query(
                 "SELECT organizers.organizer_fname, organizers.organizer_lname, courses.course_id, courses.course_description, courses.course_title, courses.course_semester, courses.creation_date, courses.course_public, courses.team_size FROM organizers LEFT JOIN courses ON organizers.organizer_id = courses.organizer_id WHERE organizers.organizer_id = $1 ORDER BY course_id ASC ",
                 [req.user]
             );
+
             res.json(user.rows);
         }
-        else if ( req.params.userIdentifier == "student")
+        else if ( req.headers.type == "student")
         {
             const user = await pool.query(
                 "SELECT courses.course_id, courses.course_description, courses.course_title, courses.course_semester FROM courses LEFT JOIN studentCourses ON studentCourses.course_id = courses.course_id WHERE studentCourses.student_id = $1 ORDER BY course_id ASC ",

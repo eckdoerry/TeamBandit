@@ -6,7 +6,7 @@ import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom
 import Landing from "./Pages/LandingPage/LandingPage";
 import Info from "./Pages/InfoPage/Info";
 import PrivacyPolicy from "./Pages/PrivacyPolicyPage/PrivacyPolicy";
-import TeamBandit from "./Pages/TeamBandit/OrganizerPages/TeamBandit";
+import TeamBandit from "./Pages/TeamBandit/TeamBandit";
 import TeamWebsite from "./Pages/TeamWebsite/TeamWebsite";
 import TeamPage from "./Pages/TeamPage/TeamPage";
 import ProjectPages from "./Pages/ProjectPages/ProjectPages";
@@ -40,7 +40,7 @@ function App() {
         try {
         const response = await fetch(`${process.env.REACT_APP_BASEURL}/auth/verify`, {
             method: "GET",
-            headers: { token: localStorage.token}
+            headers: { token: localStorage.token }
         });
         
         const parseRes = await response.json();
