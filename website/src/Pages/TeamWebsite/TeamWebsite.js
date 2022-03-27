@@ -77,40 +77,25 @@ const TeamPage = () => {
     const drawerWidth = 300;
 
     // LOADING VARIABLES
-    // ---------------------------------------------------------------------------
-    // Loading time needs to get predetermined as currently I don't know how to
-    // 'wait' for all of the information to get pulled. Still works and avoids the
-    // awkward data loading period. TODO: Look into adjusting time
-    // ---------------------------------------------------------------------------
     const [loading, setLoading] = useState(true);
-    const loadingTime = 2500;
 
     const setLoadingFalse = () => {
-        setTimeout(() => {
-            setLoading(false);
-        }, loadingTime);
+        setLoading(false);
     };
 
     // END LOADING VARIABLES
 
-    const getTeam = async () => {
+    const getInformation = async () => {
         try {
-            const response = await fetch(
+            const teamInfo = await fetch(
                 `${process.env.REACT_APP_BASEURL}/teams/team-name/${team}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
-            const jsonData = await response.json();
+            const teamData = await teamInfo.json();
 
-            setTeamInfo(jsonData);
-            setColorValue(jsonData[0].page_color);
-            setFontColor(jsonData[0].font_color);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
-    const getTeamMembers = async () => {
-        try {
+            setTeamInfo(teamData);
+            setColorValue(teamData[0].page_color);
+            setFontColor(teamData[0].font_color);
             const teamId = await fetch(
                 `${process.env.REACT_APP_BASEURL}/teams/team-name/${team}`,
                 { method: "GET", headers: { token: localStorage.token } }
@@ -118,44 +103,29 @@ const TeamPage = () => {
 
             const teamIddata = await teamId.json();
 
-            const response = await fetch(
+            const teamMemberInfo = await fetch(
                 `${process.env.REACT_APP_BASEURL}/teams/team-members/${teamIddata[0].team_id}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
-            const jsonData = await response.json();
+            const teamMemberData = await teamMemberInfo.json();
 
-            setTeamMembers(jsonData);
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
+            setTeamMembers(teamMemberData);
 
-    const getProjectInfo = async () => {
-        try {
-            const teamId = await fetch(
-                `${process.env.REACT_APP_BASEURL}/teams/team-name/${team}`,
-                { method: "GET", headers: { token: localStorage.token } }
-            );
-
-            const teamIddata = await teamId.json();
-
-            const response = await fetch(
+            const projectInfo = await fetch(
                 `${process.env.REACT_APP_BASEURL}/teams/project-info/${teamIddata[0].team_id}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
-            const jsonData = await response.json();
+            const projectData = await projectInfo.json();
 
-            setProjectInfo(jsonData);
+            setProjectInfo(projectData);
+            setLoadingFalse();
         } catch (err) {
             console.error(err.message);
         }
     };
 
     useEffect(() => {
-        getTeam();
-        getTeamMembers();
-        getProjectInfo();
-        setLoadingFalse();
+        getInformation();
     }, []);
 
     if (loading) {
