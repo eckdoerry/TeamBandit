@@ -47,7 +47,7 @@ router.get("/getinbox", authorization, async (req, res) => {
         );
 
         const user = await pool.query(
-            "SELECT message,sender,read,datetime,subject,message_id FROM messages WHERE RECIPIENT = $1",
+            "SELECT message,sender,read,datetime,subject,message_id FROM messages WHERE RECIPIENT = $1 ORDER BY datetime DESC",
             [organizerEmail.rows[0].organizer_email]
         );
 

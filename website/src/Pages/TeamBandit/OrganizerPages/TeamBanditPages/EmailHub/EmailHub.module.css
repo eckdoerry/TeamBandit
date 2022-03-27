@@ -2,6 +2,8 @@
     height: 83vh;
     width: 24%;
     overflow: scroll;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }
 
 .message {
@@ -104,8 +106,18 @@
 }
 
 .titles {
-    text-align: center;
-    font-size: large;
-    font-weight: bold;
-    display: flex;
+    text-align: center !important;
+    font-size: large !important;
+    font-weight: bold !important;
+    display: flex !important;
+    color: black !important; 
 }
+
+.contact_list::-webkit-scrollbar {
+    display: none;
+}
+
+.contact_list::-webkit-scrollbar {
+    display: none;
+}
+

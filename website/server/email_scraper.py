@@ -4,10 +4,12 @@ import imaplib
 import email
 from inspect import Attribute
 from operator import methodcaller
+import uuid
 import psycopg2
 import re
 import time
 import os
+import uuid
 from dotenv import load_dotenv
 from datetime import datetime
 from dateutil import parser
@@ -100,7 +102,7 @@ def executeQuery(values):
 
     print(values)
     # CREATE QUERY STATEMENT
-    query = "INSERT INTO messages (recipient, sender, subject, message, datetime) VALUES (%s, %s, %s, %s, %s)"
+    query = "INSERT INTO messages (recipient, sender, subject, message, datetime, attachment) VALUES (%s, %s, %s, %s, %s, %s)"
 
     # EXECUTE STRING QUERY WITH VALUES PASSED INTO FUNCTION
     cur.execute(query, values)
@@ -132,14 +134,25 @@ def formatEmail(email_message):
     else:
         sender = email_message["from"]
 
+    # SET HTML PREVENTION BOOL TO FALSE
+    alreadyRead = False
+    attachmentpayload = None
+
     # ACCESS MESSSAGE
     for part in email_message.walk():
         if (
-            part.get_content_type() == "text/plain"
-            or part.get_content_type() == "text/html"
+            (part.get_content_type() == "text/plain"
+            or part.get_content_type() == "text/html")
+            and alreadyRead == False
         ):
             message = part.get_payload(decode=True).decode().strip()
+            alreadyRead = True
+            
+        if (part.get_content_type() == 'application/pdf'):
+            # PDF as bytes
+            attachmentpayload = part.get_payload(decode=True)
             break
+
 
     # FORMAT TIME
     time = email_message["date"]
@@ -160,8 +173,20 @@ def formatEmail(email_message):
     # CHECK MESSAGE TO SEE IF ITS A REPLY
     message = EmailReplyParser.parse_reply(message)
 
+    # SET COMPLETE PATH TO NULL
+    complete_path = None
+
+    # IF ATTACHMENTPAYLOAD EXISTS, CREATE UUID AND SAVE FILE
+    if attachmentpayload:
+        # PATH TO FOLDER
+        save_path = 'public/emailAttachments'
+        complete_path = os.path.join(save_path, sender.split('@')[0] + '-' + str(uuid.uuid4())+".pdf")
+
+        with open(complete_path, 'wb+') as f:
+            f.write(attachmentpayload)
+
     # RETURN VALUES FOR QUERY
-    return [recipient, sender, subject, message, time]
+    return [recipient, sender, subject, message, time, complete_path]
 
 
 """ 
@@ -172,19 +197,30 @@ BEING IN MESSAGE BODY AND NOT HEADER.
 
 
 def formatForwardedEmail(email_message):
+    # SET HTML PREVENTION BOOL TO FALSE
+    alreadyRead = False
+    attachmentpayload = None
+
     # ACCESS MESSSAGE
     for part in email_message.walk():
         if (
-            part.get_content_type() == "text/plain"
-            or part.get_content_type() == "text/html"
+            (part.get_content_type() == "text/plain"
+            or part.get_content_type() == "text/html")
+            and alreadyRead == False
         ):
-            message = part.get_payload(decode=True).decode()
+            message = part.get_payload(decode=True).decode().strip()
+            alreadyRead = True
+            
+        if (part.get_content_type() == 'application/pdf'):
+            # PDF as bytes
+            attachmentpayload = part.get_payload(decode=True)
             break
 
+        
     # PARSE MESSAGE BODY FOR EMAIL META INFORMATION
     # SPLIT EMAIL BODY BY LINE
     messageLines = message.split("\n", 5)
-
+    
     # ITERATE THROUGH EACH LINE LOOKING FOR KEYS
     for i in messageLines:
         if "To:" in i:
@@ -200,7 +236,19 @@ def formatForwardedEmail(email_message):
     # MESSAGE ALWAYS LAST ITEM IN LIST
     message = messageLines[5].strip()
 
-    return [recipient, sender, subject, message, time]
+    # SET COMPLETE PATH TO NULL
+    complete_path = None
+
+    # IF ATTACHMENTPAYLOAD EXISTS, CREATE UUID AND SAVE FILE
+    if attachmentpayload:
+        # PATH TO FOLDER
+        save_path = 'public/emailAttachments'
+        complete_path = os.path.join(save_path, sender.split('@')[0] + '-' + str(uuid.uuid4())+".pdf")
+
+        with open(complete_path, 'wb+') as f:
+            f.write(attachmentpayload)
+
+    return [recipient, sender, subject, message, time, complete_path]
 
 
 """ 

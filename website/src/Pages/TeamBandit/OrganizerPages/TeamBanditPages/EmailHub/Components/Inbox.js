@@ -49,6 +49,7 @@ const Inbox = () => {
                     }
                 );
                 const parseData = await response.json();
+                setMessagesChange(parseData);
             } catch (error) {
                 console.error(error.message);
             }
@@ -61,14 +62,14 @@ const Inbox = () => {
     // HANDLES CLICKING CHECKBOXES
     const onCheckboxClick = (messageid) => {
         // IF ITEM IS ON ARRAY, TAKE IT OFF
-        if (selectedMessages.includes(messageid)){
-            const index = selectedMessages.indexOf(messageid)
-            selectedMessages.splice(index, 1)
+        if (selectedMessages.includes(messageid)) {
+            const index = selectedMessages.indexOf(messageid);
+            selectedMessages.splice(index, 1);
         }
 
         // IF ITEM IS NOT IN ARRAY, ADD IT
         else {
-            selectedMessages.push(messageid)
+            selectedMessages.push(messageid);
         }
     };
 
@@ -98,12 +99,12 @@ const Inbox = () => {
     // JSX
     return (
         <div className={`${styles.message} ${styles.lineheight}`}>
-            <div className={styles.titles}>
-                <p className={styles.checkboxtitle}>Select</p>
+            <Item className={styles.titles}>
+                <Checkbox size="small"></Checkbox>
                 <p className={styles.leftpane}>From</p>
                 <p className={styles.middlepane}>Subject</p>
                 <p className={styles.rightpane}>Date</p>
-            </div>
+            </Item>
             {messageChain.map((message, index) => (
                 <Item
                     className={
@@ -124,13 +125,16 @@ const Inbox = () => {
                 >
                     <Checkbox
                         size="small"
-                        onClick={e => {
-                            e.stopPropagation(); 
-                            onCheckboxClick(message.message_id)}} 
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onCheckboxClick(message.message_id);
+                        }}
                     ></Checkbox>
                     <p className={styles.leftpane}>{message.sender}</p>
                     <p className={styles.middlepane}>{message.subject}</p>
-                    <p className={styles.rightpane}>{message.datetime}</p>
+                    <p className={styles.rightpane}>
+                        {message.datetime.slice(11, 16) + ' ' + message.datetime.slice(5, 10)}
+                    </p>
                 </Item>
             ))}
 
