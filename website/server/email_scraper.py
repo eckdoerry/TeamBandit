@@ -130,7 +130,7 @@ def formatEmail(email_message):
 
     if "<" in email_message["from"]:
         sender = regexParser(email_message["from"], "\<(.+?)\>")
-    
+
     else:
         sender = email_message["from"]
 
@@ -141,18 +141,16 @@ def formatEmail(email_message):
     # ACCESS MESSSAGE
     for part in email_message.walk():
         if (
-            (part.get_content_type() == "text/plain"
-            or part.get_content_type() == "text/html")
-            and alreadyRead == False
-        ):
+            part.get_content_type() == "text/plain"
+            or part.get_content_type() == "text/html"
+        ) and alreadyRead == False:
             message = part.get_payload(decode=True).decode().strip()
             alreadyRead = True
-            
-        if (part.get_content_type() == 'application/pdf'):
+
+        if part.get_content_type() == "application/pdf":
             # PDF as bytes
             attachmentpayload = part.get_payload(decode=True)
             break
-
 
     # FORMAT TIME
     time = email_message["date"]
@@ -174,19 +172,22 @@ def formatEmail(email_message):
     message = EmailReplyParser.parse_reply(message)
 
     # SET COMPLETE PATH TO NULL
-    complete_path = None
+    file_name = None
 
     # IF ATTACHMENTPAYLOAD EXISTS, CREATE UUID AND SAVE FILE
     if attachmentpayload:
         # PATH TO FOLDER
-        save_path = 'public/emailAttachments'
-        complete_path = os.path.join(save_path, sender.split('@')[0] + '-' + str(uuid.uuid4())+".pdf")
+        save_path = "public/emailAttachments"
+        file_name = sender.split("@")[0] + "-" + str(uuid.uuid4()) + ".pdf"
 
-        with open(complete_path, 'wb+') as f:
+        complete_path = os.path.join(
+            save_path, file_name
+        )
+
+        with open(complete_path, "wb+") as f:
             f.write(attachmentpayload)
 
-    # RETURN VALUES FOR QUERY
-    return [recipient, sender, subject, message, time, complete_path]
+    return [recipient, sender, subject, message, time, file_name]
 
 
 """ 
@@ -204,23 +205,21 @@ def formatForwardedEmail(email_message):
     # ACCESS MESSSAGE
     for part in email_message.walk():
         if (
-            (part.get_content_type() == "text/plain"
-            or part.get_content_type() == "text/html")
-            and alreadyRead == False
-        ):
+            part.get_content_type() == "text/plain"
+            or part.get_content_type() == "text/html"
+        ) and alreadyRead == False:
             message = part.get_payload(decode=True).decode().strip()
             alreadyRead = True
-            
-        if (part.get_content_type() == 'application/pdf'):
+
+        if part.get_content_type() == "application/pdf":
             # PDF as bytes
             attachmentpayload = part.get_payload(decode=True)
             break
 
-        
     # PARSE MESSAGE BODY FOR EMAIL META INFORMATION
     # SPLIT EMAIL BODY BY LINE
     messageLines = message.split("\n", 5)
-    
+
     # ITERATE THROUGH EACH LINE LOOKING FOR KEYS
     for i in messageLines:
         if "To:" in i:
@@ -237,18 +236,22 @@ def formatForwardedEmail(email_message):
     message = messageLines[5].strip()
 
     # SET COMPLETE PATH TO NULL
-    complete_path = None
+    file_name = None
 
     # IF ATTACHMENTPAYLOAD EXISTS, CREATE UUID AND SAVE FILE
     if attachmentpayload:
         # PATH TO FOLDER
-        save_path = 'public/emailAttachments'
-        complete_path = os.path.join(save_path, sender.split('@')[0] + '-' + str(uuid.uuid4())+".pdf")
+        save_path = "public/emailAttachments"
+        file_name = sender.split("@")[0] + "-" + str(uuid.uuid4()) + ".pdf"
 
-        with open(complete_path, 'wb+') as f:
+        complete_path = os.path.join(
+            save_path, file_name
+        )
+
+        with open(complete_path, "wb+") as f:
             f.write(attachmentpayload)
 
-    return [recipient, sender, subject, message, time, complete_path]
+    return [recipient, sender, subject, message, time, file_name]
 
 
 """ 

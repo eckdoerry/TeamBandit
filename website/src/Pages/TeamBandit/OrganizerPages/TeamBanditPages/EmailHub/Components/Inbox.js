@@ -4,7 +4,8 @@ import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
-
+import AttachEmailIcon from "@mui/icons-material/AttachEmail";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Modal from "@mui/material/Modal";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -29,6 +30,7 @@ const Inbox = () => {
         subject: "",
         date: "",
         message: "",
+        attachment: "",
     });
 
     // LIST OF CHECKBOXES CLICKED TO BE USED LATER
@@ -100,10 +102,13 @@ const Inbox = () => {
     return (
         <div className={`${styles.message} ${styles.lineheight}`}>
             <Item className={styles.titles}>
-                <Checkbox size="small"></Checkbox>
+                <p className={styles.farleftpanetitle}>
+                    <DeleteIcon fontSize="small" />
+                </p>
                 <p className={styles.leftpane}>From</p>
-                <p className={styles.middlepane}>Subject</p>
-                <p className={styles.rightpane}>Date</p>
+                <p className={styles.middleleftpane}>Subject</p>
+                <p className={styles.middlerightpane}>Date</p>
+                <p className={styles.rightpanetitle}>Attachment</p>
             </Item>
             {messageChain.map((message, index) => (
                 <Item
@@ -120,38 +125,70 @@ const Inbox = () => {
                             subject: message.subject,
                             date: message.datetime,
                             message: message.message,
+                            attachment: message.attachment,
                         });
                     }}
                 >
                     <Checkbox
                         size="small"
+                        className={styles.farleftpane}
                         onClick={(e) => {
                             e.stopPropagation();
                             onCheckboxClick(message.message_id);
                         }}
                     ></Checkbox>
                     <p className={styles.leftpane}>{message.sender}</p>
-                    <p className={styles.middlepane}>{message.subject}</p>
-                    <p className={styles.rightpane}>
-                        {message.datetime.slice(11, 16) + ' ' + message.datetime.slice(5, 10)}
+                    <p className={styles.middleleftpane}>{message.subject}</p>
+                    <p className={styles.middlerightpane}>
+                        {message.datetime.slice(11, 16) +
+                            " " +
+                            message.datetime.slice(5, 10)}
+                    </p>
+                    <p className={styles.rightpaneicon}>
+                        {message.attachment != null && (
+                            <AttachEmailIcon fontSize="small" />
+                        )}
                     </p>
                 </Item>
             ))}
 
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
+            <Modal open={open} onClose={handleClose}>
                 <Box className={styles.modal_style}>
-                    <p>Sender: {modalData.sender}</p>
+                    <p className={styles.modal_sender}>
+                        From: {modalData.sender}
+                    </p>
+                    <hr />
                     <p>Subject: {modalData.subject}</p>
-                    <p>Date: {modalData.date}</p>
+                    <hr />
                     <p>
-                        Message:
+                        Date:{" "}
+                        {modalData.date.slice(11, 16) +
+                            " " +
+                            modalData.date.slice(5, 10)}
+                    </p>
+                    <hr />
+                    <p>
+                        Body:
                         <br /> {modalData.message}
                     </p>
+                    {modalData.attachment != null && (
+                        <div>
+                            {" "}
+                            <hr />
+                            <p>
+                                Attachment:{" "}
+                                <a
+                                    target="__blank"
+                                    href={
+                                        "/emailAttachments/" +
+                                        modalData.attachment
+                                    }
+                                >
+                                    {modalData.attachment}
+                                </a>
+                            </p>
+                        </div>
+                    )}
                 </Box>
             </Modal>
         </div>

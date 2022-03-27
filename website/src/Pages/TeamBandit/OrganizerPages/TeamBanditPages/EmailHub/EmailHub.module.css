@@ -73,6 +73,22 @@
     flex-direction: row;
 }
 
+.farleftpanetitle {
+    width: 10%;
+    height: 100%;
+    float: left;
+    border-collapse: collapse;
+    padding-top: -10px;
+    margin-top: 14px;
+}
+
+.farleftpane {
+    width: 10%;
+    height: 100%;
+    float: left;
+    border-collapse: collapse;
+}
+
 .leftpane {
     width: 25%;
     height: 100%;
@@ -80,29 +96,47 @@
     border-collapse: collapse;
 }
 
-.middlepane {
-    width: 50%;
+.middleleftpane {
+    width: 25%;
     height: 100%;
     float: left;
     border-collapse: collapse;
 }
 
-.rightpane {
+.middlerightpane {
     width: 25%;
     height: 100%;
-    position: relative;
+    float: left;
+    border-collapse: collapse;
+}
+
+.rightpaneicon {
+    width: 15%;
+    height: 100%;
+    float: right;
+    border-collapse: collapse;
+    margin-top: 10px !important;
+    margin-bottom: 0px;
+}
+
+.rightpanetitle {
+    width: 15%;
+    height: 100%;
     float: right;
     border-collapse: collapse;
 }
+
 
 .modal_style {
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-    width: 400px !important;
+    width: 80% !important;
     background-color: white !important;
-    border: 2px solid #000 !important;
+    padding-left: 24px;
+    padding-right: 24px;
+    border-radius: 5px;
 }
 
 .titles {
