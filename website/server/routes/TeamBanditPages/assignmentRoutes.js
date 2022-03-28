@@ -5,11 +5,11 @@ const fs = require("fs");
 const uuid = require("uuid").v4;
 
 // get all assignments
-router.get("/", authorization, async(req, res) => {
+router.get("/:course_id", async(req, res) => {
     try {
-
+        const {course_id} = req.params;
         const user = await pool.query(
-            "SELECT organizer_id, assignment_id, assignment_name, assignment_start_date, assignment_due_date, assignment_description, submission_type, assignment_filename, course_id FROM assignments WHERE organizer_id = $1 ORDER BY assignment_id ASC", [req.user]
+            "SELECT organizer_id, assignment_id, assignment_name, assignment_start_date, assignment_due_date, assignment_description, submission_type, assignment_filename, course_id FROM assignments WHERE course_id = $1 ORDER BY assignment_id ASC", [course_id]
         );
 
         res.json(user.rows);
@@ -108,6 +108,49 @@ router.delete("/deleteAssignment/:id", authorization, async(req, res) => {
         res.json("Assignment and all related data were deleted!");
     } catch (error) {
         console.error(error.message);
+    }
+});
+
+router.post("/uploadStudentAssignment", authorization, async(req, res) => {
+    try {
+
+        const {assignment_id} = req.body;
+        var student_assignment_filename = null;
+        if (req.files) 
+        {
+            let student_assignment_upload = req.files.student_assignment_upload;
+
+            student_assignment_filename = "assignmentInstructions_" + req.user.toString() + "_" + uuid().toString() + "." + student_assignment_upload.mimetype.split("/")[1];
+
+            //Use the mv() method to place the file in upload directory
+            student_assignment_upload.mv("../../public/uploads/documents/studentAssignments/" + student_assignment_filename);
+        }
+
+        const assignment = await pool.query(
+            "INSERT INTO assignmentbridgetable (assignment_id, team_id, student_id, submission) VALUES($1, $2, $3, $4) RETURNING *", [assignment_id, null, req.user, student_assignment_filename]
+        );
+
+        res.json(assignment.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+// get all submitted assignments associated with a specific assignment
+router.get("/:assignment_id", async(req, res) => {
+    try {
+        const {assignment_id} = req.params;
+        const user = await pool.query(
+            "SELECT assignment_id, submission FROM assignmentbridgetable WHERE assignment_id = $1 ORDER BY assignment_id ASC", [assignment_id]
+        );
+
+        res.json(user.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
     }
 });
 

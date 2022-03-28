@@ -1,16 +1,11 @@
+import {React, useState, Fragment} from 'react'
 
-////// UNUSED //////
-
-import React, { Fragment, useState } from "react";
-
-// MUI Imports
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
+import Typography from "@mui/material/Typography";
 
 import { toast } from "react-toastify";
 
@@ -25,61 +20,55 @@ const style = {
     p: 4,
 };
 
-const AddScheduleWeek = ({ courseInfo, rows, setRowChange }) => {
-    // Variables
-    const [schedule_week, setScheduleWeek] = useState("");
-    const [schedule_description, setScheduleDescription] = useState("");
-    const [schedule_deliverables, setScheduleDeliverables] = useState("");
+const StudentUploadAssignment = ({setRowChange, assignment}) => {
+    const [student_assignment_upload, setStudentAssignmentUpload] = useState(null);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
-        setScheduleWeek("");
-        setScheduleDescription("");
-        setScheduleDeliverables("");
+        setStudentAssignmentUpload(null);
     };
 
-    const addScheduleWeek = async (event) => {
+    const onFileChange = (e) => {
+        setStudentAssignmentUpload(e.target.files[0]); 
+    }
+
+    const uploadStudentAssignment = async (event, assignment_id) => {
         event.preventDefault();
         try {
             const formData = new FormData();
-            formData.append("schedule_week", schedule_week);
-            formData.append("schedule_description", schedule_description);
-            formData.append("schedule_deliverables", schedule_deliverables);
-            formData.append("course_id", courseInfo.course_id);
+            formData.append("student_assignment_upload", student_assignment_upload);
+            formData.append("assignment_id", assignment_id);
         
             const myHeaders = new Headers();
             myHeaders.append("token", localStorage.token);
 
-            await fetch(`${process.env.REACT_APP_BASEURL}/schedule/addScheduleWeek`, {
+            await fetch(`${process.env.REACT_APP_BASEURL}/assignments/uploadStudentAssignment`, {
                 method: "POST",
                 headers: myHeaders,
                 body: formData,
             });
 
-            toast.success("Week was added successfully!");
-            setScheduleWeek("");
-            setScheduleDescription("");
-            setScheduleDeliverables("");
+            toast.success("Assignment was uploaded successfully!");
+            setStudentAssignmentUpload(null);
             setRowChange(true);
         } catch (error) {
             console.error(error.message);
-            toast.error("Failed to add week!");
+            toast.error("Failed to add assignment!");
         }
     };
 
     return (
         <Fragment>
             <Button
-                sx={{ m: 3 }}
+                sx={{ m: 1 }}
                 variant="outlined"
                 color="success"
                 onClick={handleOpen}
-                startIcon={<AddIcon />}
             >
                 {" "}
-                Add{" "}
+                Upload Assignment{" "}
             </Button>
             <Modal
                 open={open}
@@ -94,28 +83,23 @@ const AddScheduleWeek = ({ courseInfo, rows, setRowChange }) => {
                             variant="h6"
                             component="h2"
                         >
-                            Add Week
+                            Upload Your {assignment.assignment_name}
                         </Typography>
                     </Box>
 
-                    <Typography>Week</Typography>
-                    <TextField
-                        fullWidth
-                        sx={{ m: 2 }}
-                        type="date"
-                        value={schedule_week}
-                        onChange={(e) => setScheduleWeek(e.target.value.toString())}
-                    />
+                    <form encType="multipart/form-data">
+                        <input type="file" accept="application/pdf" name="student_assignment_upload" onChange={onFileChange}/>
+                    </form>
 
                     <Button
                         sx={{ m: 3 }}
                         variant="contained"
                         color="success"
-                        onClick={(e) => (handleClose(), addScheduleWeek(e))}
+                        onClick={(e) => (handleClose(), uploadStudentAssignment(e, assignment.assignment_id))}
                         startIcon={<AddIcon />}
                     >
                         {" "}
-                        Add{" "}
+                        Upload{" "}
                     </Button>
                     <Button
                         sx={{ m: 2 }}
@@ -125,12 +109,12 @@ const AddScheduleWeek = ({ courseInfo, rows, setRowChange }) => {
                         startIcon={<CloseIcon />}
                     >
                         {" "}
-                        Close{" "}
+                        Cancel{" "}
                     </Button>
                 </Box>
             </Modal>
         </Fragment>
-    );
-};
+    )
+}
 
-export default AddScheduleWeek;
+export default StudentUploadAssignment

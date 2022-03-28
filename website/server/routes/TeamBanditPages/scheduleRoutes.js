@@ -10,7 +10,23 @@ router.get("/:course_id", authorization, async(req, res) => {
             "SELECT schedule_week_id, schedule_week, schedule_description, schedule_deliverables, course_id FROM schedule WHERE course_id = $1 AND organizer_id = $2 ORDER BY schedule_week_id ASC", [course_id, req.user]
         );
 
-        res.json(user.rows);
+        res.json(user.rows.sort(function(a, b){return new Date(a.schedule_week) - new Date(b.schedule_week)}));
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+// get all schedule weeks for students
+router.get("/studentSchedule/:course_id", async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        const user = await pool.query(
+            "SELECT schedule_week_id, schedule_week, schedule_description, schedule_deliverables, course_id FROM schedule WHERE course_id = $1 ORDER BY schedule_week_id ASC", [course_id]
+        );
+
+        res.json(user.rows.sort(function(a, b){return new Date(a.schedule_week) - new Date(b.schedule_week)}));
 
     } catch (error) {
         console.error(error.message);
@@ -26,6 +42,21 @@ router.post("/addScheduleWeek", authorization, async(req, res) => {
         );
 
         res.json(scheduleWeek.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+router.delete("/removeScheduleWeeks", authorization, async(req, res) => {
+    try {
+        const {course_id} = req.body;
+        const removeScheduleWeek = await pool.query(
+            "DELETE FROM schedule WHERE course_id = $1 AND organizer_id = $2", [course_id, req.user]
+        );
+
+        res.json("Old Schedule Removed");
 
     } catch (error) {
         console.error(error.message);

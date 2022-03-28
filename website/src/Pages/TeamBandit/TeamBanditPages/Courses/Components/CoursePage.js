@@ -61,7 +61,7 @@ const CoursePage = ({ courseInfo, userInfo, userIdentifier, setCoursesChange }) 
         {
             setPages([
                 {key: 1, page: "Projects"},
-                {key: 2, page: "Assignments"}]);
+                {key: 2, page: "Schedule"}]);
         }
         else if ( userIdentifier == "mentor" )
         {

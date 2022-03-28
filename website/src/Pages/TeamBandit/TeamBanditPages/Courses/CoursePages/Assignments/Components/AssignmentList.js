@@ -137,7 +137,7 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
     const getAssignments = async () => {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/assignments/`,
+                `${process.env.REACT_APP_BASEURL}/assignments/${courseInfo.course_id}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();
