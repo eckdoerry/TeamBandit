@@ -3,9 +3,9 @@ import {React} from "react";
 // Project Pages
 import ScheduleList from "./Components/ScheduleList";
 
-const Schedule = ({courseInfo}) => {
+const Schedule = ({courseInfo, userIdentifier}) => {
     return(
-        <ScheduleList courseInfo={courseInfo}/>
+        <ScheduleList courseInfo={courseInfo} userIdentifier={userIdentifier}/>
     );
 }
 

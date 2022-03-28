@@ -1,6 +1,3 @@
-
-////// UNUSED //////
-
 import React, { Fragment, useState } from "react";
 
 // MUI Imports
@@ -11,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { toast } from "react-toastify";
 
@@ -25,26 +23,49 @@ const style = {
     p: 4,
 };
 
-const AddScheduleWeek = ({ courseInfo, rows, setRowChange }) => {
+const SetScheduleWeeks = ({ courseInfo, rows, setRowChange }) => {
     // Variables
-    const [schedule_week, setScheduleWeek] = useState("");
     const [schedule_description, setScheduleDescription] = useState("");
     const [schedule_deliverables, setScheduleDeliverables] = useState("");
+    const [course_start_week, setCourseStartWeek] = useState("");
+    const [num_weeks, setCourseNumWeeks] = useState(0);
 
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        if (rows.length > 0) {
+            window.alert("Please Remove the Current Schedule before Setting A New One");
+            return; 
+        }
+        setOpen(true);
+    }
     const handleClose = () => {
         setOpen(false);
-        setScheduleWeek("");
         setScheduleDescription("");
         setScheduleDeliverables("");
+        setCourseStartWeek("");
+        setCourseNumWeeks(0);
     };
 
-    const addScheduleWeek = async (event) => {
+    const getCorrectDates = (event) => {
+        //removePreviousWeeks(event);
+        let startWeekMilliseconds = new Date(course_start_week).getTime() + 86400000;
+        var currentWeek = new Date(startWeekMilliseconds);
+        var currentWeekMilliseconds = startWeekMilliseconds;
+
+        for (var i = 0; i <= num_weeks; i++)
+        {
+            addScheduleWeek(event, currentWeek.toLocaleDateString().replaceAll('/', '-'));
+            currentWeekMilliseconds += (7 * 24 * 60 * 60 * 1000);
+            currentWeek = new Date(currentWeekMilliseconds);
+        }
+        toast.success("Weeks added successfully!");
+    };
+
+    const addScheduleWeek = async (event, week) => {
         event.preventDefault();
         try {
             const formData = new FormData();
-            formData.append("schedule_week", schedule_week);
+            formData.append("schedule_week", week);
             formData.append("schedule_description", schedule_description);
             formData.append("schedule_deliverables", schedule_deliverables);
             formData.append("course_id", courseInfo.course_id);
@@ -58,14 +79,37 @@ const AddScheduleWeek = ({ courseInfo, rows, setRowChange }) => {
                 body: formData,
             });
 
-            toast.success("Week was added successfully!");
-            setScheduleWeek("");
             setScheduleDescription("");
             setScheduleDeliverables("");
+            setCourseStartWeek("");
+            setCourseNumWeeks("");
             setRowChange(true);
         } catch (error) {
             console.error(error.message);
             toast.error("Failed to add week!");
+        }
+    };
+
+    const removePreviousWeeks = async () => {
+        try {
+            const formData = new FormData();
+            formData.append("course_id", courseInfo.course_id);
+        
+            const myHeaders = new Headers();
+            myHeaders.append("token", localStorage.token);
+
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/schedule/removeScheduleWeeks`, {
+                method: "DELETE",
+                headers: myHeaders,
+                body: formData,
+            });
+
+            setRowChange(true);
+            toast.success(await response.json());
+
+        } catch (error) {
+            console.error(error.message);
+            toast.error("Failed to remove weeks!");
         }
     };
 
@@ -79,7 +123,17 @@ const AddScheduleWeek = ({ courseInfo, rows, setRowChange }) => {
                 startIcon={<AddIcon />}
             >
                 {" "}
-                Add{" "}
+                Set Weeks{" "}
+            </Button>
+            <Button
+                sx={{ m: 3 }}
+                variant="outlined"
+                color="error"
+                onClick={removePreviousWeeks}
+                startIcon={<DeleteIcon />}
+            >
+                {" "}
+                Remove All Weeks{" "}
             </Button>
             <Modal
                 open={open}
@@ -94,28 +148,40 @@ const AddScheduleWeek = ({ courseInfo, rows, setRowChange }) => {
                             variant="h6"
                             component="h2"
                         >
-                            Add Week
+                            Set Weeks
                         </Typography>
                     </Box>
 
-                    <Typography>Week</Typography>
+                    <Typography>Schedule Start Week</Typography>
                     <TextField
                         fullWidth
                         sx={{ m: 2 }}
                         type="date"
-                        value={schedule_week}
-                        onChange={(e) => setScheduleWeek(e.target.value.toString())}
+                        value={course_start_week}
+                        helperText="Select the first day of the first week of this course"
+                        onChange={(e) => setCourseStartWeek(e.target.value.toString())}
+                    />
+
+                    <Typography>Number of Additional Weeks in Course</Typography>
+                    <TextField
+                        fullWidth
+                        sx={{ m: 2 }}
+                        type="number"
+                        InputProps={{ inputProps: { min: 0, max: 51 } }}
+                        value={num_weeks}
+                        helperText="Select the number of weeks this course will have"
+                        onChange={(e) => setCourseNumWeeks(e.target.value.toString())}
                     />
 
                     <Button
                         sx={{ m: 3 }}
                         variant="contained"
                         color="success"
-                        onClick={(e) => (handleClose(), addScheduleWeek(e))}
+                        onClick={(e) => (handleClose(), getCorrectDates(e))}
                         startIcon={<AddIcon />}
                     >
                         {" "}
-                        Add{" "}
+                        Set Weeks{" "}
                     </Button>
                     <Button
                         sx={{ m: 2 }}
@@ -125,7 +191,7 @@ const AddScheduleWeek = ({ courseInfo, rows, setRowChange }) => {
                         startIcon={<CloseIcon />}
                     >
                         {" "}
-                        Close{" "}
+                        Cancel{" "}
                     </Button>
                 </Box>
             </Modal>
@@ -133,4 +199,4 @@ const AddScheduleWeek = ({ courseInfo, rows, setRowChange }) => {
     );
 };
 
-export default AddScheduleWeek;
+export default SetScheduleWeeks;
