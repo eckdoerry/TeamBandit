@@ -19,7 +19,7 @@ router.get("/", authorization, async(req, res) => {
         else if ( req.headers.type == "student")
         {
             const user = await pool.query(
-                "SELECT courses.course_id, courses.course_description, courses.course_title, courses.course_semester FROM courses LEFT JOIN studentCourses ON studentCourses.course_id = courses.course_id WHERE studentCourses.student_id = $1 ORDER BY course_id ASC ",
+                "SELECT courses.course_id, courses.course_description, courses.course_title, courses.course_semester, courses.course_public FROM courses LEFT JOIN studentCourses ON studentCourses.course_id = courses.course_id WHERE studentCourses.student_id = $1 ORDER BY course_id ASC ",
                 [req.user]
             );
             res.json(user.rows);
@@ -66,7 +66,7 @@ router.get("/student-total/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
         
-        const students = await pool.query("SELECT student_fname FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id  WHERE students.organizer_id = $1 AND studentcourses.course_id = $2", [req.user, course_id]);
+        const students = await pool.query("SELECT student_fname FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id  WHERE  studentcourses.course_id = $1", [course_id]);
         
         res.json(students.rows);
     } catch (error) {

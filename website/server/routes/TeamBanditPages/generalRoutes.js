@@ -68,9 +68,9 @@ router.get("/project-total/:userIdentifier", authorization, async(req, res) => {
 // Grabs Organizer Information from the Organizers table
 router.get("/student-total/:userIdentifier", authorization, async(req, res) => {
     try {
-        const user = await pool.query("SELECT student_id FROM students WHERE organizer_id = $1", [req.user]);
+        const students = await pool.query("SELECT students.student_id, courses.organizer_id FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id LEFT JOIN courses on studentcourses.course_id = courses.course_id WHERE courses.organizer_id = $1", [req.user]);
 
-        res.json(user.rows);
+        res.json(students.rows);
 
     } catch (error) {
         console.error(error.message);

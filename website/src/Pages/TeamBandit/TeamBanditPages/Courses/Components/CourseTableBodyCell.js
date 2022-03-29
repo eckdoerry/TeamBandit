@@ -55,7 +55,7 @@ const CourseTableBodyCell = ({ courseInfo, userInfo, userIdentifier, setCoursesC
                 key={courseInfo.course_id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-                <TableCell component="th" scope="row" className={styles.tableCellBorder}>
+                <TableCell component="th" scope="row" style={{borderRight: '1px solid #d3d3d3'}} className={styles.tableCellBorder}>
                     <CoursePage
                         userInfo={userInfo}
                         userIdentifier={userIdentifier}
@@ -63,12 +63,12 @@ const CourseTableBodyCell = ({ courseInfo, userInfo, userIdentifier, setCoursesC
                         setCoursesChange={setCoursesChange}
                     />
                 </TableCell>
-                <TableCell className={styles.tableCellBorder}>
+                <TableCell style={{borderRight: '1px solid #d3d3d3'}} className={styles.tableCellBorder}>
                     {courseInfo.organizer_fname + " " + courseInfo.organizer_lname}
                 </TableCell>
-                <TableCell className={styles.tableCellBorder}>{courseInfo.course_semester}</TableCell>
-                <TableCell className={styles.tableCellBorder}>{projects.length}</TableCell>
-                <TableCell className={styles.tableCellBorder}>{students.length}</TableCell>
+                <TableCell style={{borderRight: '1px solid #d3d3d3'}} className={styles.tableCellBorder}>{courseInfo.course_semester}</TableCell>
+                <TableCell style={{borderRight: '1px solid #d3d3d3'}} className={styles.tableCellBorder}>{projects.length}</TableCell>
+                <TableCell style={{borderRight: '1px solid #d3d3d3'}} className={styles.tableCellBorder}>{students.length}</TableCell>
                 <TableCell>{adjustedDate}</TableCell>
             </TableRow> 
         );
@@ -80,7 +80,7 @@ const CourseTableBodyCell = ({ courseInfo, userInfo, userIdentifier, setCoursesC
                 key={courseInfo.course_id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-                <TableCell className={styles.tableCellBorder} component="th" scope="row">
+                <TableCell style={{borderRight: '1px solid #d3d3d3'}} className={styles.tableCellBorder} component="th" scope="row">
                     <CoursePage
                         userInfo={userInfo}
                         courseInfo={courseInfo}

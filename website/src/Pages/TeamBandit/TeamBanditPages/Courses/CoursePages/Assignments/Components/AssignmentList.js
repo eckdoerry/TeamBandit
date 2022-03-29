@@ -7,6 +7,7 @@ import EditAssignment from "./EditAssignment"
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import Box from "@mui/material/Box";
 
 // Datagrid
 import {
@@ -80,28 +81,33 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
             field: "assignment_name",
             headerName: "Assignment",
             renderCell: assignmentPage,
+            cellClassName: "border",
             flex: 2,
         },
         {
             field: "assignment_start_date",
             headerName: "Start Date",
             renderCell: getProperStartDateFormat,
+            cellClassName: "border",
             flex: 2,
         },
         {
             field: "assignment_due_date",
             headerName: "Due Date",
             renderCell: getProperDueDateFormat,
+            cellClassName: "border",
             flex: 2,
         },
         {
             field: "assignment_description",
             headerName: "Description",
+            cellClassName: "border",
             flex: 2,
         },
         {
             field: "submission_type",
             headerName: "Type",
+            cellClassName: "border",
             flex: 2,
         },
         {
@@ -173,6 +179,16 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
                     width: "100%",
                 }}
             >
+            <Box
+                sx={{
+                    height: "100%",
+                    width: "100%",
+                    "& .border": {
+                        borderRight: 1,
+                        borderColor: "#d3d3d3",
+                    },
+                }}
+            >
                 <DataGrid
                     rows={rows}
                     columns={columns}
@@ -181,6 +197,7 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
                     components={{ Toolbar: CustomToolbar }}
                     disableSelectionOnClick
                 />
+                </Box>
             </div>
         </>
     );

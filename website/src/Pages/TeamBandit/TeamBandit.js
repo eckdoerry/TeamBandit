@@ -349,6 +349,12 @@ export default function MainPage({ userIdentifier, setAuth }) {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
+                        {userIdentifier == "organizer" ? 
+                        <MenuItem> {userInfo.organizer_fname} {userInfo.organizer_lname} - Organizer</MenuItem> : userIdentifier == "student" ? 
+                        <MenuItem> {userInfo.student_fname} {userInfo.student_lname} - Student</MenuItem> : userIdentifier == "mentor" ?
+                        <MenuItem> {userInfo.mentor_fname} {userInfo.mentor_lname} - Mentor </MenuItem> : null
+                    }
+                        <Divider />
                             {settings.map((setting) => (
                                 <MenuItem
                                     key={setting}

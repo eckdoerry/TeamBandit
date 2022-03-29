@@ -26,7 +26,7 @@ router.post("/students", authorization, async(req,res) =>{
         }
 
         // 3. Student does not already exist so they are added to the students db and the students courses db as well
-        const student = await pool.query("INSERT INTO students(student_fname, student_lname, student_emplid, student_email, student_gpa, organizer_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING *", [req.body['student_fname'], req.body['student_lname'], req.body['student_emplid'], req.body['student_email'], req.body['student_gpa'], req.user]);
+        const student = await pool.query("INSERT INTO students(student_fname, student_lname, student_emplid, student_email, student_gpa) VALUES($1, $2, $3, $4, $5) RETURNING *", [req.body['student_fname'], req.body['student_lname'], req.body['student_emplid'], req.body['student_email'], req.body['student_gpa']]);
         await pool.query("INSERT INTO studentcourses(student_id, course_id) VALUES ($1, $2)", [student.rows[0].student_id, req.body['course_id']]);
 
         res.json(student.rows[0]);
@@ -63,7 +63,7 @@ router.post("/csv", authorization, async(req,res) =>{
         }
         
         // 3. Student does not already exist so they are added to the students db and the students courses db as well
-        const student = await pool.query("INSERT INTO students(student_fname, student_lname, student_emplid, student_email, student_gpa, organizer_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING *", [req.body['student_fname_csv'], req.body['student_lname_csv'], req.body['student_emplid_csv'], req.body['student_email_csv'], req.body['student_gpa_csv'], req.user]);
+        const student = await pool.query("INSERT INTO students(student_fname, student_lname, student_emplid, student_email, student_gpa) VALUES($1, $2, $3, $4, $5) RETURNING *", [req.body['student_fname_csv'], req.body['student_lname_csv'], req.body['student_emplid_csv'], req.body['student_email_csv'], req.body['student_gpa_csv']]);
         await pool.query("INSERT INTO studentcourses(student_id, course_id) VALUES ($1, $2)", [student.rows[0].student_id, req.body['course_id']]);
 
         res.json(student.rows[0]);
@@ -77,7 +77,7 @@ router.get("/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
         
-        const students = await pool.query("SELECT * FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id  WHERE students.organizer_id = $1 AND studentcourses.course_id = $2 ORDER BY students.student_id ASC ", [req.user, course_id]);
+        const students = await pool.query("SELECT * FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id  WHERE studentcourses.course_id = $1 ORDER BY students.student_id ASC ", [course_id]);
 
         res.json(students.rows);
     } catch (error) {
@@ -116,7 +116,7 @@ router.get("/teams-assignment/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
         
-        const students = await pool.query("SELECT students.assigned, students.student_id, students.student_projectpref1, students.student_projectpref2, students.student_projectpref3, students.student_projectpref4, students.student_projectpref5, students.student_fname, students.student_lname, students.student_email, students.student_gpa, projects.project_name FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id LEFT JOIN studentteambridgetable ON studentteambridgetable.student_id = students.student_id LEFT JOIN projects ON studentteambridgetable.project_id = projects.project_id WHERE students.organizer_id = $1 AND studentcourses.course_id = $2 ORDER BY students.student_id ASC ", [req.user, course_id]);
+        const students = await pool.query("SELECT students.assigned, students.student_id, students.student_projectpref1, students.student_projectpref2, students.student_projectpref3, students.student_projectpref4, students.student_projectpref5, students.student_fname, students.student_lname, students.student_email, students.student_gpa, projects.project_name FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id LEFT JOIN studentteambridgetable ON studentteambridgetable.student_id = students.student_id LEFT JOIN projects ON studentteambridgetable.project_id = projects.project_id WHERE studentcourses.course_id = $1 ORDER BY students.student_id ASC ", [course_id]);
 
         res.json(students.rows);
     } catch (error) {
@@ -132,9 +132,26 @@ router.get("/teams-assignment/:course_id", authorization, async(req, res) => {
 router.get("/students/:id", authorization, async(req, res) => {
     try {
         const {id} = req.params;
-        const students = await pool.query("SELECT * FROM students WHERE id = $1 AND organizers.organizer_id = $2", [id, req.user]);
+        const students = await pool.query("SELECT * FROM students WHERE id = $1 ", [id]);
 
         res.json(students.rows[0]);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/students/:id", authorization, async(req, res) => {
+    try {
+
+        const updateStudents = await pool.query("UPDATE students SET student_fname = $1, student_lname = $2, student_emplid = $3, student_email = $4, student_gpa = $5  WHERE student_id = $6 ", [req.body['student_fname'], req.body['student_lname'], req.body['student_emplid'], req.body['student_email'], req.body['student_gpa'],  req.params['id']]);
+
+        if(updateStudents.rows.length === 0)
+        {
+            return res.json("This student is not yours!");
+        }
+
+        res.json("Student list was updated!");
     } catch (error) {
         console.error(error.message);
     }
@@ -174,7 +191,7 @@ router.delete("/students/:id/:course_id", authorization, async(req, res) => {
         else
         {
             await pool.query("DELETE FROM studentcourses WHERE student_id = $1 AND course_id = $2", [req.params.id, req.params.course_id]);
-            const deleteStudent = await pool.query("DELETE FROM students WHERE student_id = $1 AND organizer_id = $2", [req.params.id, req.user]);
+            const deleteStudent = await pool.query("DELETE FROM students WHERE student_id = $1", [req.params.id]);
 
             if( deleteStudent.rows.length === 0 )
             {
