@@ -139,7 +139,7 @@ router.post("/uploadStudentAssignment", authorization, async(req, res) => {
 });
 
 // get all submitted assignments associated with a specific assignment
-router.get("/:assignment_id", async(req, res) => {
+router.get("/submittedAssignments/:assignment_id", authorization, async(req, res) => {
     try {
         const {assignment_id} = req.params;
         const user = await pool.query(

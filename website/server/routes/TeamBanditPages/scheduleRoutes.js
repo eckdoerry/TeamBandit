@@ -2,6 +2,9 @@ const router = require("express").Router();
 const pool = require("../../db");
 const authorization = require('../../middleware/authorization');
 
+const JSZip = require('jszip');
+const fs = require('fs');
+
 // get all schedule weeks
 router.get("/:course_id", authorization, async(req, res) => {
     try {
@@ -57,6 +60,48 @@ router.delete("/removeScheduleWeeks", authorization, async(req, res) => {
         );
 
         res.json("Old Schedule Removed");
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+router.post("/createZip/:assignment_id", authorization, async(req, res) => {
+    try {
+        const {assignment_id} = req.params;
+        const assignments = await pool.query(
+            "SELECT assignment_id, submission, submission_id FROM assignmentbridgetable WHERE assignment_id = $1 ORDER BY assignment_id ASC", [assignment_id]
+        );
+
+        const zip = new JSZip();
+        const pdfs = zip.folder("submissions");
+        for (var i = 0; i < assignments.rows.length; i++)
+        {
+            pdfs.file(assignments.rows[i].submission, fs.readFileSync("../../public/uploads/documents/studentAssignments/" + assignments.rows[i].submission), {base64: true});
+        }
+        
+        const content = await zip.generateAsync({type: "nodebuffer"});
+        fs.writeFileSync(`../../public/downloads/tempZipFiles/assignment_${assignment_id}_submissions.zip`, content);
+
+        res.json(`/downloads/tempZipFiles/assignment_${assignment_id}_submissions.zip`);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+router.delete("/deleteZip/:filename", authorization, async(req, res) => {
+    try {
+        const {filename} = req.params;
+
+        if (fs.existsSync("../../public/downloads/tempZipFiles/" + filename))
+        {
+            fs.unlinkSync("../../public/downloads/tempZipFiles/" + filename);
+        }
+
+        res.json("Complete");
 
     } catch (error) {
         console.error(error.message);

@@ -37,6 +37,7 @@ const StudentUploadAssignment = ({setRowChange, assignment}) => {
     const uploadStudentAssignment = async (event, assignment_id) => {
         event.preventDefault();
         try {
+            console.log(student_assignment_upload);
             const formData = new FormData();
             formData.append("student_assignment_upload", student_assignment_upload);
             formData.append("assignment_id", assignment_id);

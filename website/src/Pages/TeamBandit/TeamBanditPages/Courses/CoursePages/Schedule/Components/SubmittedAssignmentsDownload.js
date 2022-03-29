@@ -1,52 +1,51 @@
-import {React, useState, useEffect} from 'react'
+import {React} from 'react';
 
-import { saveAs } from 'file-saver';
 import Button from "@mui/material/Button";
 
 const SubmittedAssignmentsDownload = ({assignment}) => {
-    const [assignments, setAssignments] = useState([]);
-    
-    const getAssignmentSubmissions = async () => {
+
+    const removeDownloadedZip = async (filename) => {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/assignments/${assignment.assignment_id}`,
-                { method: "GET", headers: { token: localStorage.token } }
+                `${process.env.REACT_APP_BASEURL}/schedule/deleteZip/${filename}`,
+                { method: "DELETE", headers: { token: localStorage.token } }
             );
-            const jsonData = await response.json();
+            return await response.json();
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
 
-            setAssignments(jsonData);
+    const downloadAssignmentSubmissions = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_BASEURL}/schedule/createZip/${assignment.assignment_id}`,
+                { method: "POST", headers: { token: localStorage.token } }
+            );
+            return await response.json();
         } catch (err) {
             console.error(err.message);
         }
     };
 
-    const downloadAssignmentSubmissions = async () => {
-        const zip = require('jszip')();
-        console.log(assignments);
-        for (let file = 0; file < assignments.length; file++) {
-            // Zip file with the file name.
-            var fileReader = new FileReader();
-            fileReader.readAsArrayBuffer("/uploads/documents/studentAssignments/" + assignments[file].assignment_name);
-            zip.file("/uploads/documents/studentAssignments/" + assignments[file].assignment_name, fileReader);
-        } 
-        zip.generateAsync({type: "blob"}).then(content => {
-            saveAs(content, "example.zip");
-        });
-    };
-
-    useEffect(() => {
-        getAssignmentSubmissions();
-    }, []);
+    const main = async () => {
+        const zipPath = await downloadAssignmentSubmissions();
+        const link = document.createElement("a");
+        link.download = `${zipPath.split(/.*[/|\\]/)[1]}`;
+        link.href = zipPath;
+        link.click();
+        setTimeout(() => removeDownloadedZip(zipPath.split(/.*[/|\\]/)[1]), 5000);
+    }
 
     return (
         <Button
             sx={{ m: 1 }}
             variant="contained"
             color="success"
-            onClick={() => (downloadAssignmentSubmissions())}
+            onClick={() => (main())}
         >
             {" "}
-            Download{" "}
+            Download All (zip){" "}
         </Button>
   )
 }
