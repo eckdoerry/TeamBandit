@@ -3,6 +3,7 @@ import React, { useState, useEffect, Fragment } from "react";
 // MUI Imports
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
+import Box from "@mui/material/Box";
 
 // Datagrid
 import {
@@ -118,12 +119,14 @@ function ScheduleList({ courseInfo, userIdentifier }) {
             field: "schedule_week",
             headerName: "Week",
             renderCell: getProperWeekFormat,
+            cellClassName: "border",
             flex: 2,
         },
         {
             field: "schedule_description",
             headerName: "Topics and Assignments",
             renderCell: getProperStartDateFormat,
+            cellClassName: "border",
             sortable: false,
             flex: 2,
         },
@@ -213,6 +216,16 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                         width: "100%",
                     }}
                 >
+                <Box
+                sx={{
+                    height: "100%",
+                    width: "100%",
+                    "& .border": {
+                        borderRight: 1,
+                        borderColor: "#d3d3d3",
+                    },
+                }}
+            >
                     <DataGrid
                         rows={rows}
                         //rows={[{ schedule_week_id: 1, schedule_week: '3/06', schedule_description: 'Description', schedule_deliverables: 'Assignment', assignment_id: 15, assignment_name: "m" }]}
@@ -223,6 +236,7 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                         disableSelectionOnClick
                         disableColumnSelector
                     />
+                    </Box>
                 </div>
             </>
         );
@@ -239,6 +253,16 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                         width: "100%",
                     }}
                 >
+                <Box
+                sx={{
+                    height: "100%",
+                    width: "100%",
+                    "& .border": {
+                        borderRight: 1,
+                        borderColor: "#d3d3d3",
+                    },
+                }}
+            >
                     <DataGrid
                         rows={rows}
                         columns={columns}
@@ -248,6 +272,7 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                         disableSelectionOnClick
                         disableColumnSelector
                     />
+                    </Box>
                 </div>
             </>
         );

@@ -276,7 +276,8 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
         cellClassName: "border",
         flex: 1,
     },
-    {
+    userIdentifier == "organizer" &&
+    { 
         field: "edit",
         headerName: "Edit",
         sortable: false,
@@ -284,7 +285,7 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
         flex: 1,
         renderCell: editButton,
         disableClickEventBubbling: true,
-    }
+    } 
 ];
 
     const determineColumns = () => {
@@ -336,28 +337,28 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
                     field: "project_name",
                     headerName: "Project Title",
                     renderCell: projectPage,
-                    cellClassName: 'death',
+                    cellClassName: "border",
                     flex: 2,
                 },
                 {
                     field: "client_name",
                     headerName: "Project Sponsor",
                     renderCell: displaySponsor,
-                    cellClassName: 'death',
+                    cellClassName: "border",
                     flex: 2,
                 },
                 {
                     field: "team_name",
                     headerName: "Student Team",
                     renderCell: teamPage,
-                    cellClassName: 'death',
+                    cellClassName: "border",
                     flex: 3,
                 },
                 {
                     field: "mentor_name",
                     headerName: "Team Mentor",
                     renderCell: displayMentor,
-                    cellClassName: 'death',
+                    cellClassName: "border",
                     flex: 1,
                 }
             ]);

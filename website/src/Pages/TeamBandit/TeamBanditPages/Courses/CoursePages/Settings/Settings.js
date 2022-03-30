@@ -201,12 +201,18 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                         </div>
                         <div style={{ display: "flex", alignItems: "center" }}>
                             <Typography style={{ paddingRight: "6px" }}>
-                                {isPublic ? "Public" : "Private"}{" "}
+                                Private
                             </Typography>
                             <Switch
                                 checked={isPublic}
                                 onChange={updateIsPublic}
                             />
+                            <Typography style={{ paddingRight: "6px" }}>
+                                Public
+                            </Typography>
+                            <Typography style={{ paddingRight: "6px" }}>
+                                {isPublic ? "| Course is now visible to anyone." : "| Course is now set to private and can only be viewed by the organizer through the application."}{" "}
+                            </Typography>
                         </div>
                     </DialogContent>
                     <Typography style={{ paddingLeft: "25px" }}>
