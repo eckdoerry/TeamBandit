@@ -26,10 +26,9 @@ const style = {
 };
 
 const Settings = ({
-    courseInfo,
     userInfo,
-    userIdentifier,
-    setCoursesChange,
+    setUserChange,
+    userIdentifier
 }) => {
     const [studentTeam, setStudentTeam] = useState([]);
     const [studentTeamChange, setStudentTeamChange] = useState(false);
@@ -300,7 +299,7 @@ const Settings = ({
                         {" "}
                         Password Settings{" "}
                     </Typography>
-                    <EditPassword userInfo={userInfo} />
+                    <EditPassword userInfo={userInfo} setUserChange={setUserChange} userIdentifier={userIdentifier}/>
                 </Paper>
             </div>
         );
@@ -320,6 +319,7 @@ const Settings = ({
                         >
                             Settings
                         </Typography>
+                        <EditPassword userInfo={userInfo} setUserChange={setUserChange} userIdentifier={userIdentifier}/>
                         <Typography style={{ padding: "5px" }} variant="h5">
                             {" "}
                             TEAM LEAD ACTIONS:{" "}

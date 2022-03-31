@@ -28,7 +28,7 @@ const SubmittedAssignmentsDownload = ({assignment}) => {
         }
     };
 
-    const main = async () => {
+    const downloadAndRemoveZip = async () => {
         const zipPath = await downloadAssignmentSubmissions();
         const link = document.createElement("a");
         link.download = `${zipPath.split(/.*[/|\\]/)[1]}`;
@@ -42,7 +42,7 @@ const SubmittedAssignmentsDownload = ({assignment}) => {
             sx={{ m: 1 }}
             variant="contained"
             color="success"
-            onClick={() => (main())}
+            onClick={() => (downloadAndRemoveZip())}
         >
             {" "}
             Download All (zip){" "}
