@@ -30,15 +30,23 @@ const SetScheduleWeeks = ({ courseInfo, rows, setRowChange }) => {
     const [course_start_week, setCourseStartWeek] = useState("");
     const [num_weeks, setCourseNumWeeks] = useState(0);
 
+    // define default course schedule start date
+    const current_date = new Date();
+    const todays_date = current_date.setDate(current_date.getDate());
+    const default_course_start_week = new Date(todays_date);
+
     const [open, setOpen] = useState(false);
-    const handleOpen = () => {
-        if (rows.length > 0) {
+    const handleOpen = () => 
+    {
+        if (rows.length > 0) 
+        {
             window.alert("Please Remove the Current Schedule before Setting A New One");
             return; 
         }
         setOpen(true);
     }
-    const handleClose = () => {
+    const handleClose = () => 
+    {
         setOpen(false);
         setScheduleDescription("");
         setScheduleDeliverables("");
@@ -47,10 +55,27 @@ const SetScheduleWeeks = ({ courseInfo, rows, setRowChange }) => {
     };
 
     const getCorrectDates = (event) => {
-        //removePreviousWeeks(event);
-        let startWeekMilliseconds = new Date(course_start_week).getTime() + 86400000;
-        var currentWeek = new Date(startWeekMilliseconds);
-        var currentWeekMilliseconds = startWeekMilliseconds;
+
+        // check if user did not enter a week
+        if (course_start_week != '')
+            {
+                // use seleceted course start date
+                let startWeekMilliseconds = new Date(course_start_week).getTime() + 86400000;
+                var currentWeek = new Date(startWeekMilliseconds);
+                var currentWeekMilliseconds = startWeekMilliseconds;
+            }
+        // otherwise, a course start date was not selected
+
+        // set start date to tomorrow by default
+        else {
+                // use default course start date
+                let startWeekMilliseconds = new Date(default_course_start_week).getTime() + 86400000;
+                var currentWeek = new Date(startWeekMilliseconds);
+                var currentWeekMilliseconds = startWeekMilliseconds;
+
+                // notify user that schedule was set to tomorrow by default
+                toast.info("Start date not specified. Course start date set to tomorrow. ");
+        }
 
         for (var i = 0; i <= num_weeks; i++)
         {
@@ -158,11 +183,11 @@ const SetScheduleWeeks = ({ courseInfo, rows, setRowChange }) => {
                         sx={{ m: 2 }}
                         type="date"
                         value={course_start_week}
-                        helperText="Select the first day of the first week of this course"
+                        helperText="Select the first day of this course"
                         onChange={(e) => setCourseStartWeek(e.target.value.toString())}
                     />
 
-                    <Typography>Number of Additional Weeks in Course</Typography>
+                    <Typography>Number of Weeks in Course</Typography>
                     <TextField
                         fullWidth
                         sx={{ m: 2 }}

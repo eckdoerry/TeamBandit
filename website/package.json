@@ -22,7 +22,7 @@
         "file-saver": "^2.0.5",
         "install": "^0.13.0",
         "jsonwebtoken": "^8.5.1",
-        "jszip": "^3.7.1",
+        "jszip": "^3.8.0",
         "material-ui-color-picker": "^3.5.1",
         "mnpm": "^0.0.0",
         "mui": "^0.0.1",
