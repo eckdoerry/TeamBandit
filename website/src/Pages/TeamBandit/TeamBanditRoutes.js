@@ -53,7 +53,7 @@ const TeamBanditRouter = ({route, userInfo, userIdentifier, setUserChange}) => {
     {
         return (
             <Fragment>
-                <Settings userInfo={userInfo} setUserChange={setUserChange}/>
+                <Settings userInfo={userInfo} setUserChange={setUserChange} userIdentifier={userIdentifier}/>
             </Fragment>
         )
     }

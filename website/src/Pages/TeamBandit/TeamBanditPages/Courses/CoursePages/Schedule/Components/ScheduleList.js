@@ -14,7 +14,7 @@ import {
 
 import SetScheduleWeeks from "./SetScheduleWeeks";
 import StudentUploadAssignment from "./StudentUploadAssignment";
-import SubmittedAssignmentsDownload from "./SubmittedAssignmentsDownload";
+import SubmittedAssignmentsModal from "./SubmittedAssignmentsModal";
 
 function ScheduleList({ courseInfo, userIdentifier }) {
     const [rows, setRows] = useState([]);
@@ -41,7 +41,7 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                             <div style={{display: "flex", flexDirection: "row"}}>
                                 <p>Prepare for:&nbsp;</p>
                                 <Link
-                                    key={assignment}
+                                    key={assignment.assignment_id}
                                     target="_blank"
                                     to={`/assignment/${assignment.assignment_name}-${assignment.assignment_id}`}
                                 >
@@ -80,7 +80,7 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                                     <p>{assignment.assignment_name}</p>
                                 </Link>
                                 <p>&nbsp;due by:&nbsp;{assignment.assignment_due_date.split("T")[1]}</p>
-                                {userIdentifier == "organizer" && <SubmittedAssignmentsDownload assignment={assignment}/>}
+                                {userIdentifier == "organizer" && <SubmittedAssignmentsModal assignment={assignment}/>}
                                 {userIdentifier == "student" && <StudentUploadAssignment setRowChange={setRowChange} assignment={assignment}/>}
                             </div>
                         )

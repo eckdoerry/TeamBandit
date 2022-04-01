@@ -15,7 +15,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import { toast } from 'react-toastify';
 
-const EditPassword = ({organizerInfo, setOrganizerChange}) => {
+const EditPassword = ({userInfo, setUserChange, userIdentifier}) => {
     const [newPassword, setNewPassword] = useState("");
     const [reEnterNewPassword, setReEnterNewPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -52,16 +52,32 @@ const EditPassword = ({organizerInfo, setOrganizerChange}) => {
 
 
         const body = { newPassword };
-        await fetch(
-            `${process.env.REACT_APP_BASEURL}/auth/changePassword`,
-            {
-                method: "POST",
-                headers: myHeaders,
-                body: JSON.stringify(body)
-            }
-        );
+
+        if (userIdentifier == "organizer")
+        {
+            await fetch(
+                `${process.env.REACT_APP_BASEURL}/auth/changeOrganizerPassword`,
+                {
+                    method: "POST",
+                    headers: myHeaders,
+                    body: JSON.stringify(body)
+                }
+            );
+        }
+
+        else if (userIdentifier == "student")
+        {
+            await fetch(
+                `${process.env.REACT_APP_BASEURL}/auth/changeStudentPassword`,
+                {
+                    method: "POST",
+                    headers: myHeaders,
+                    body: JSON.stringify(body)
+                }
+            );
+        }
         
-        setOrganizerChange(true);
+        setUserChange(true);
         toast.success("Password changed successfully!");
         handleClose();
 
