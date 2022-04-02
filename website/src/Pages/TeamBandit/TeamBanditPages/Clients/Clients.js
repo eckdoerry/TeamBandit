@@ -1,4 +1,4 @@
-import { React, useState, useEffect, Fragment } from "react";
+import { React, useState, useEffect } from "react";
 
 import {
     DataGrid,
@@ -10,8 +10,6 @@ import {
 
 import FormDialogAddClient from "./Components/FormDialogAddClient";
 import FormDialogEditClient from "./Components/FormDialogEditClient";
-
-import Button from "@mui/material/Button";
 
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -186,7 +184,7 @@ const Clients = () => {
     }
 
     return (
-        <Fragment style={{ display: "flex", width: "100%", height: "100%" }}>
+        <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100%" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
                 <Typography variant="h3" gutterBottom>
                     Clients
@@ -194,27 +192,29 @@ const Clients = () => {
 
                 <FormDialogAddClient setClientsChange={setClientsChange} />
             </div>
-            <Box
-                sx={{
-                    height: 750,
-                    width: "100%",
-                    "& .death": {
-                        borderRight: 1,
-                        borderColor: "#d3d3d3",
-                    },
-                }}
-            >
-                <DataGrid
-                    rows={clients}
-                    columns={clientFields}
-                    getRowId={(row) => row.client_id}
-                    pageSize={5}
-                    rowsPerPageOptions={[5]}
-                    components={{ Toolbar: CustomToolbar }}
-                    disableSelectionOnClick
-                />
-            </Box>
-        </Fragment>
+            <div>
+                <Box
+                    sx={{
+                        height: 750,
+                        width: "100%",
+                        "& .death": {
+                            borderRight: 1,
+                            borderColor: "#d3d3d3",
+                        },
+                    }}
+                >
+                    <DataGrid
+                        rows={clients}
+                        columns={clientFields}
+                        getRowId={(row) => row.client_id}
+                        pageSize={5}
+                        rowsPerPageOptions={[5]}
+                        components={{ Toolbar: CustomToolbar }}
+                        disableSelectionOnClick
+                    />
+                </Box>
+            </div>
+        </div>
     );
 };
 
