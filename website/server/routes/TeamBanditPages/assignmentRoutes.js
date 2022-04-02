@@ -88,7 +88,19 @@ router.delete("/deleteAssignment/:id", authorization, async(req, res) => {
         
         const {id} = req.params;
 
+        const deleteAllSubmissions = await pool.query("DELETE FROM assignmentbridgetable WHERE assignment_id = $1 RETURNING *", [id]);
+
         const deleteAssignment = await pool.query("DELETE FROM assignments WHERE assignment_id = $1 RETURNING *", [id]);
+
+        if( deleteAllSubmissions.rows.length === 0 )
+        {
+            return res.json("This assignment is not yours!");
+        }
+
+        if( deleteAssignment.rows.length === 0 )
+        {
+            return res.json("This assignment is not yours!");
+        }
 
         const oldAssignmentFilename = deleteAssignment.rows[0].assignment_filename;
         if (oldAssignmentFilename != null)
@@ -98,11 +110,6 @@ router.delete("/deleteAssignment/:id", authorization, async(req, res) => {
             {
                 fs.unlinkSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentFilename);
             }
-        }
-        
-        if( deleteAssignment.rows.length === 0 )
-        {
-            return res.json("This assignment is not yours!");
         }
 
         res.json("Assignment and all related data were deleted!");

@@ -80,8 +80,8 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                                     <p>{assignment.assignment_name}</p>
                                 </Link>
                                 <p>&nbsp;due by:&nbsp;{assignment.assignment_due_date.split("T")[1]}</p>
-                                {userIdentifier == "organizer" && <SubmittedAssignmentsModal assignment={assignment}/>}
-                                {userIdentifier == "student" && <StudentUploadAssignment setRowChange={setRowChange} assignment={assignment}/>}
+                                {userIdentifier === "organizer" && <SubmittedAssignmentsModal assignment={assignment}/>}
+                                {userIdentifier === "student" && <StudentUploadAssignment setRowChange={setRowChange} assignment={assignment}/>}  
                             </div>
                         )
                 )}
@@ -244,7 +244,7 @@ function ScheduleList({ courseInfo, userIdentifier }) {
     else if (userIdentifier == "student")
     {
         return (
-            <>
+            <Fragment>
                 <div
                     style={{
                         padding: "25px",
@@ -274,7 +274,7 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                     />
                     </Box>
                 </div>
-            </>
+            </Fragment>
         );
     }
 }

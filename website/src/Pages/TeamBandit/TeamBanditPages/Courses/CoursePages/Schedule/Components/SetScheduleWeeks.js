@@ -28,7 +28,7 @@ const SetScheduleWeeks = ({ courseInfo, rows, setRowChange }) => {
     const [schedule_description, setScheduleDescription] = useState("");
     const [schedule_deliverables, setScheduleDeliverables] = useState("");
     const [course_start_week, setCourseStartWeek] = useState("");
-    const [num_weeks, setCourseNumWeeks] = useState(0);
+    const [num_weeks, setCourseNumWeeks] = useState("");
 
     // define default course schedule start date
     const current_date = new Date();
@@ -51,33 +51,39 @@ const SetScheduleWeeks = ({ courseInfo, rows, setRowChange }) => {
         setScheduleDescription("");
         setScheduleDeliverables("");
         setCourseStartWeek("");
-        setCourseNumWeeks(0);
+        setCourseNumWeeks("");
     };
 
     const getCorrectDates = (event) => {
+        if (parseInt(num_weeks) <= 0 || parseInt(num_weeks) >= 53 || num_weeks.includes(".") === true || num_weeks === "")
+        {
+            toast.error("The number of weeks must be an integer between 1 and 52 (inclusive)");
+            return;
+        }
 
-        // check if user did not enter a week
-        if (course_start_week != '')
+        handleClose();
+        var startWeekMilliseconds;
+        var currentWeek = new Date(startWeekMilliseconds);
+        var currentWeekMilliseconds = startWeekMilliseconds;
+
+        // check if user entered a week
+        if (course_start_week !== '')
             {
                 // use seleceted course start date
-                let startWeekMilliseconds = new Date(course_start_week).getTime() + 86400000;
-                var currentWeek = new Date(startWeekMilliseconds);
-                var currentWeekMilliseconds = startWeekMilliseconds;
+                startWeekMilliseconds = new Date(course_start_week).getTime() + 86400000;
             }
-        // otherwise, a course start date was not selected
 
+        // otherwise, a course start date was not selected
         // set start date to tomorrow by default
         else {
                 // use default course start date
-                let startWeekMilliseconds = new Date(default_course_start_week).getTime() + 86400000;
-                var currentWeek = new Date(startWeekMilliseconds);
-                var currentWeekMilliseconds = startWeekMilliseconds;
+                startWeekMilliseconds = new Date(default_course_start_week).getTime() + 86400000;
 
                 // notify user that schedule was set to tomorrow by default
                 toast.info("Start date not specified. Course start date set to tomorrow. ");
         }
 
-        for (var i = 0; i <= num_weeks; i++)
+        for (var i = 0; i < parseInt(num_weeks); i++)
         {
             addScheduleWeek(event, currentWeek.toLocaleDateString().replaceAll('/', '-'));
             currentWeekMilliseconds += (7 * 24 * 60 * 60 * 1000);
@@ -189,12 +195,15 @@ const SetScheduleWeeks = ({ courseInfo, rows, setRowChange }) => {
 
                     <Typography>Number of Weeks in Course</Typography>
                     <TextField
+                        required
                         fullWidth
                         sx={{ m: 2 }}
-                        type="number"
-                        InputProps={{ inputProps: { min: 0, max: 51 } }}
+                        type="text"
                         value={num_weeks}
-                        helperText="Select the number of weeks this course will have"
+                        error={parseInt(num_weeks) <= 0 || parseInt(num_weeks) >= 53 || num_weeks.includes(".") === true || num_weeks === ""}
+                        helperText={
+                            (parseInt(num_weeks) <= 0 || parseInt(num_weeks) >= 53 || num_weeks.includes(".") === true || num_weeks === "") ? "The number of weeks must be an integer between 1 and 52 (inclusive)" : " "
+                        }
                         onChange={(e) => setCourseNumWeeks(e.target.value.toString())}
                     />
 
@@ -202,7 +211,7 @@ const SetScheduleWeeks = ({ courseInfo, rows, setRowChange }) => {
                         sx={{ m: 3 }}
                         variant="contained"
                         color="success"
-                        onClick={(e) => (handleClose(), getCorrectDates(e))}
+                        onClick={(e) => (getCorrectDates(e))}
                         startIcon={<AddIcon />}
                     >
                         {" "}
