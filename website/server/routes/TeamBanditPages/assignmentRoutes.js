@@ -8,11 +8,12 @@ const uuid = require("uuid").v4;
 router.get("/:course_id", async(req, res) => {
     try {
         const {course_id} = req.params;
-        const user = await pool.query(
+
+        const assignments = await pool.query(
             "SELECT organizer_id, assignment_id, assignment_name, assignment_start_date, assignment_due_date, assignment_description, submission_type, assignment_filename, course_id FROM assignments WHERE course_id = $1 ORDER BY assignment_id ASC", [course_id]
         );
 
-        res.json(user.rows);
+        res.json(assignments.rows);
 
     } catch (error) {
         console.error(error.message);
@@ -26,6 +27,22 @@ router.get("/assignment/:assignment_id", authorization, async(req, res) => {
         const {assignment_id} = req.params;
         const user = await pool.query(
             "SELECT assignment_filename FROM assignments WHERE assignment_id = $1", [assignment_id]
+        );
+
+        res.json(user.rows[0]);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+// get a single submission
+router.get("/submission/:submission_id", authorization, async(req, res) => {
+    try {
+        const {submission_id} = req.params;
+        const user = await pool.query(
+            "SELECT submission FROM assignmentbridgetable WHERE submission_id = $1", [submission_id]
         );
 
         res.json(user.rows[0]);
@@ -127,7 +144,7 @@ router.post("/uploadStudentAssignment", authorization, async(req, res) => {
         {
             let student_assignment_upload = req.files.student_assignment_upload;
 
-            student_assignment_filename = "assignmentInstructions_" + req.user.toString() + "_" + uuid().toString() + "." + student_assignment_upload.mimetype.split("/")[1];
+            student_assignment_filename = "studentAssignment_" + req.user.toString() + "_" + uuid().toString() + "." + student_assignment_upload.mimetype.split("/")[1];
 
             //Use the mv() method to place the file in upload directory
             student_assignment_upload.mv("../../public/uploads/documents/studentAssignments/" + student_assignment_filename);
@@ -149,11 +166,17 @@ router.post("/uploadStudentAssignment", authorization, async(req, res) => {
 router.get("/submittedAssignments/:assignment_id", authorization, async(req, res) => {
     try {
         const {assignment_id} = req.params;
-        const user = await pool.query(
+        /*
+        const submittedAssignments = await pool.query(
             "SELECT assignment_id, submission FROM assignmentbridgetable WHERE assignment_id = $1 ORDER BY assignment_id ASC", [assignment_id]
         );
+        */
 
-        res.json(user.rows);
+        const submittedAssignments = await pool.query(
+            "SELECT * FROM assignmentbridgetable NATURAL JOIN students WHERE assignment_id = $1", [assignment_id]
+        );
+
+        res.json(submittedAssignments.rows);
 
     } catch (error) {
         console.error(error.message);

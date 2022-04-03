@@ -30,13 +30,13 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                     (assignment) =>
                         Math.abs(
                             Date.parse(
-                                assignment.assignment_start_date.split("T")[0]
+                                assignment.assignment_start_date.split("T")
                             ) - millisecondsOfWeek
                         ) < 604800000 &&
-                        Date.parse(
-                            assignment.assignment_start_date.split("T")[0]
+                        (Date.parse(
+                            assignment.assignment_start_date.split("T")
                         ) -
-                            millisecondsOfWeek >=
+                            millisecondsOfWeek) >=
                             0 && (
                             <div key={assignment.assignment_id} style={{display: "flex", flexDirection: "row"}}>
                                 <p>Prepare for:&nbsp;</p>
@@ -46,6 +46,7 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                                 >
                                     <p>{assignment.assignment_name}</p>
                                 </Link>
+                                <p>&nbsp;({assignment.submission_type})</p>
                             </div>
                         )
                 )}
@@ -62,11 +63,11 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                     (assignment) =>
                         Math.abs(
                             Date.parse(
-                                assignment.assignment_due_date.split("T")[0]
+                                assignment.assignment_due_date.split("T")
                             ) - millisecondsOfWeek
                         ) < 604800000 &&
                         Date.parse(
-                            assignment.assignment_due_date.split("T")[0]
+                            assignment.assignment_due_date.split("T")
                         ) -
                             millisecondsOfWeek >=
                             0 && (
@@ -77,7 +78,7 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                                 >
                                     <p>{assignment.assignment_name}</p>
                                 </Link>
-                                <p>&nbsp;due by:&nbsp;{assignment.assignment_due_date.split("T")[1]}</p>
+                                <p>&nbsp;due by:&nbsp;{assignment.assignment_due_date.split("T")[1]}&nbsp;MST</p>
                                 {userIdentifier == "organizer" && <SubmittedAssignmentsModal assignment={assignment}/>}
                                 {userIdentifier == "student" && <StudentUploadAssignment setRowChange={setRowChange} assignment={assignment}/>}
                             </div>
@@ -101,7 +102,6 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();
-
             setAssignments(jsonData);
         } catch (err) {
             console.error(err.message);

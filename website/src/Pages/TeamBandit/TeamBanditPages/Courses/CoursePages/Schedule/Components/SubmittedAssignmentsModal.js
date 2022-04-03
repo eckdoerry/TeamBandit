@@ -58,23 +58,28 @@ const SubmittedAssignmentsModal = ({assignment}) => {
             >
                 <Box sx={style}>
                     <Typography variant="p">
-                        All Submissions
+                        All Submissions (Click link to view submission)
                     </Typography>
                     <div style={{height: "80%", width:"100%", border: "1px solid black", overflow: "auto"}}>
-                        {assignments.map((assignment) => 
+                        {((assignments.length > 0) === true) ?
+                        assignments.map((assignment) => 
                             <Link
                                 key={assignment.submission_id}
                                 target="_blank"
-                                to={`/submission/${assignment.submission}-${assignment.submission_id}`}
+                                to={`/submission/studentAssignment-${assignment.submission_id}`}
                                 >
-                                    <p>{assignment.submission}</p>
+                                    <p>{assignment.student_fname + " " + assignment.student_lname}</p>
                             </Link>
-                        )}
+                        ) : <p>No assignments submitted!</p>}
                     </div>
-                    <Typography variant="p">
-                        Download All Above Submissions
-                    </Typography>
-                    <SubmittedAssignmentsDownload assignment={assignment}/>
+                    {((assignments.length > 0) === true) &&
+                        <div>
+                            <p>
+                                Download All Above Submissions
+                            </p>
+                            <SubmittedAssignmentsDownload assignment={assignment}/>
+                        </div>
+                    }
                 </Box>
             </Modal>
         </div>
