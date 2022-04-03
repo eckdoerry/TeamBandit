@@ -43,7 +43,7 @@
     "scripts": {
         "start-client": "(react-scripts start) & (cd server && cd middleware && node authRoutes.js)",
         "start": "npm run build && (cd server && forever start index.js )",
-        "build": "react-scripts build",
+        "build": "GENERATE_SOURCEMAP=false react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
