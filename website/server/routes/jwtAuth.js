@@ -140,7 +140,7 @@ router.post("/login", validInfo, async (req, res)=>{
     }
 });
 
-router.post("/changePassword", validInfo, authorization, async (req, res) =>{
+router.post("/changeOrganizerPassword", validInfo, authorization, async (req, res) =>{
     try {
 
         const { newPassword } = req.body;
@@ -150,6 +150,32 @@ router.post("/changePassword", validInfo, authorization, async (req, res) =>{
         const bcryptPassword = await bcrypt.hash(newPassword, salt);
 
         const newPasswordQuery = await pool.query("UPDATE organizers SET organizer_pass = $1 WHERE organizer_id = $2", [bcryptPassword, req.user]);
+
+        if(newPasswordQuery.rows.length !== 0)
+        {
+            // 401 unauthenticated, 403 unauthorized
+            return res.status(401).json("Error");
+
+        }
+
+        res.json("Password successfully updated!");
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+router.post("/changeStudentPassword", validInfo, authorization, async (req, res) =>{
+    try {
+
+        const { newPassword } = req.body;
+        
+        const saltRounds = 10;
+        const salt = await bcrypt.genSalt(saltRounds);
+        const bcryptPassword = await bcrypt.hash(newPassword, salt);
+
+        const newPasswordQuery = await pool.query("UPDATE students SET student_password = $1 WHERE student_id = $2", [bcryptPassword, req.user]);
 
         if(newPasswordQuery.rows.length !== 0)
         {

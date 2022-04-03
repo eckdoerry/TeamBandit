@@ -4,12 +4,39 @@ const authorization = require('../../middleware/authorization');
 
 // COURSE ROUTES //
 
-// Gets all courses assocaited with current organizer
+// Gets all courses associated with current user
 router.get("/", authorization, async(req, res) => {
+    try {
+        if( req.headers.type == "organizer" )
+        {
+            const user = await pool.query(
+                "SELECT organizers.organizer_fname, organizers.organizer_lname, courses.course_id, courses.course_description, courses.course_title, courses.course_semester, courses.creation_date, courses.course_public, courses.team_size FROM organizers LEFT JOIN courses ON organizers.organizer_id = courses.organizer_id WHERE organizers.organizer_id = $1 ORDER BY course_id ASC ",
+                [req.user]
+            );
+
+            res.json(user.rows);
+        }
+        else if ( req.headers.type == "student")
+        {
+            const user = await pool.query(
+                "SELECT courses.course_id, courses.course_description, courses.course_title, courses.course_semester, courses.course_public FROM courses LEFT JOIN studentCourses ON studentCourses.course_id = courses.course_id WHERE studentCourses.student_id = $1 ORDER BY course_id ASC ",
+                [req.user]
+            );
+            res.json(user.rows);
+        }
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+// Gets all courses associated with current student
+router.get("/student", authorization, async(req, res) => {
     try {
         
         const user = await pool.query(
-            "SELECT organizers.organizer_fname, organizers.organizer_lname, courses.course_id, courses.course_description, courses.course_title, courses.course_semester, courses.creation_date, courses.course_public, courses.team_size FROM organizers LEFT JOIN courses ON organizers.organizer_id = courses.organizer_id WHERE organizers.organizer_id = $1 ORDER BY course_id ASC ",
+            "SELECT courses.course_id, courses.course_description, courses.course_title, courses.course_semester FROM courses LEFT JOIN studentCourses ON studentCourses.course_id = courses.course_id WHERE studentCourses.student_id = $1 ORDER BY course_id ASC ",
             [req.user]
         );
 
@@ -39,7 +66,7 @@ router.get("/student-total/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
         
-        const students = await pool.query("SELECT student_fname FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id  WHERE students.organizer_id = $1 AND studentcourses.course_id = $2", [req.user, course_id]);
+        const students = await pool.query("SELECT student_fname FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id  WHERE  studentcourses.course_id = $1", [course_id]);
         
         res.json(students.rows);
     } catch (error) {
@@ -98,23 +125,6 @@ router.delete("/courses/:id", authorization, async(req, res) => {
         res.json("Course and all related data were deleted!");
     } catch (error) {
         console.error(error.message);
-    }
-});
-
-// Gets all courses associated with current student
-router.get("/student", authorization, async(req, res) => {
-    try {
-        
-        const user = await pool.query(
-            "SELECT courses.course_id, courses.course_description, courses.course_title, courses.course_semester FROM courses LEFT JOIN studentCourses ON studentCourses.course_id = courses.course_id WHERE studentCourses.student_id = $1 ORDER BY course_id ASC ",
-            [req.user]
-        );
-
-        res.json(user.rows);
-
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).send("Server Error");
     }
 });
 

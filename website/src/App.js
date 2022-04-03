@@ -1,13 +1,12 @@
 import React, {Fragment, useState, useEffect} from "react";
-import './App.module.css';
-
+import styles from "./App.module.css";
 import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 
 // Page Components
 import Landing from "./Pages/LandingPage/LandingPage";
 import Info from "./Pages/InfoPage/Info";
 import PrivacyPolicy from "./Pages/PrivacyPolicyPage/PrivacyPolicy";
-import UserRoutes from "./Pages/TeamBandit/UserRoutes";
+import TeamBandit from "./Pages/TeamBandit/TeamBandit";
 import TeamWebsite from "./Pages/TeamWebsite/TeamWebsite";
 import TeamPage from "./Pages/TeamPage/TeamPage";
 import ProjectPages from "./Pages/ProjectPages/ProjectPages";
@@ -33,16 +32,15 @@ function App() {
     };
 
     const setUser = (string) => {
-        
         localStorage.setItem("user", string);
         setUserIdentifier(localStorage.getItem("user"));
-    }
+    };
 
     const checkAuthenticated = async () => {
         try {
         const response = await fetch(`${process.env.REACT_APP_BASEURL}/auth/verify`, {
             method: "GET",
-            headers: { token: localStorage.token}
+            headers: { token: localStorage.token }
         });
         
         const parseRes = await response.json();
@@ -50,7 +48,6 @@ function App() {
         parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false);
         
         } catch (error) {
-            
             // Error 401 when first arriving on the page is good
             console.error(error.message);
         }
@@ -64,18 +61,16 @@ function App() {
     return (
         <Fragment>
             <Router>
-                <div className="container">
-                    <Routes>
-                        <Route exact path = "/" element={!isAuthenticated ? <Landing setAuth={setAuth} setUser={setUser}/> : <Navigate to="/team-bandit"/>}/>
-                        <Route exact path = "/info" element={<Info/>}/>
-                        <Route exact path = "/privacy-policy" element={<PrivacyPolicy/>}/>
-                        <Route exact path = "/team-bandit" element={isAuthenticated ? <UserRoutes userIdentifier={userIdentifier} setAuth={setAuth}/> : <Navigate to="/"/>}/>
-                        <Route exact path = "/team-website/:teamName" element={<TeamWebsite/>}/>
-                        <Route exact path = "/team-page/:courseName" element={<TeamPage/>}/>
-                        <Route exact path = "/project-pages/:projectName" element={<ProjectPages/>}/>
-                        <Route exact path = "/assignment/:assignmentName" element={<AssignmentPage/>}/>
-                    </Routes>
-                </div>
+                <Routes>
+                    <Route exact path = "/" element={!isAuthenticated ? <Landing setAuth={setAuth} setUser={setUser}/> : <Navigate to="/team-bandit"/>}/>
+                    <Route exact path = "/info" element={<Info/>}/>
+                    <Route exact path = "/privacy-policy" element={<PrivacyPolicy/>}/>
+                    <Route exact path = "/team-bandit" element={isAuthenticated ? <TeamBandit userIdentifier={userIdentifier} setAuth={setAuth}/> : <Navigate to="/"/>}/>
+                    <Route exact path = "/team-website/:teamName" element={<TeamWebsite/>}/>
+                    <Route exact path = "/team-page/:courseName" element={<TeamPage/>}/>
+                    <Route exact path = "/project-pages/:projectName" element={<ProjectPages/>}/>
+                    <Route exact path = "/assignment/:assignmentName" element={<AssignmentPage/>}/>
+                </Routes>
             </Router>
         </Fragment>
     );
