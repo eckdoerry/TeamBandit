@@ -21,12 +21,9 @@ httpServer.listen(80, () => {
 
 // handle server side routing
 app.get("/*", function (req, res) {
-    res.sendFile(
-        path.join(__dirname, "../public/index.html"),
-        function (err) {
-            if (err) {
-                res.status(500).send(err);
-            }
+    res.sendFile(path.join(__dirname, "../public/index.html"), function (err) {
+        if (err) {
+            res.status(500).send(err);
         }
-    );
+    });
 });

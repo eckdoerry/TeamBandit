@@ -6,7 +6,7 @@ const authorization = require("../../middleware/authorization");
 router.get("/", authorization, async (req, res) => {
     try {
         const user = await pool.query(
-            "SELECT client_name, client_email FROM clients WHERE clients.organizer_id = $1",
+            "SELECT client_fname, client_lname, client_email FROM clients WHERE clients.organizer_id = $1",
             [req.user]
         );
 
@@ -17,6 +17,7 @@ router.get("/", authorization, async (req, res) => {
     }
 });
 
+// GETS EMAIL CHAIN FOR SPECIFIC CLIENT
 router.get("/getchain/:clientEmail", authorization, async (req, res) => {
     try {
         const { clientEmail } = req.params;
@@ -37,6 +38,7 @@ router.get("/getchain/:clientEmail", authorization, async (req, res) => {
     }
 });
 
+// RETRIEVES ALL INCOMING EMAILS FOR CLIENT LIST
 router.get("/getinbox", authorization, async (req, res) => {
     try {
         const organizerEmail = await pool.query(
@@ -45,7 +47,7 @@ router.get("/getinbox", authorization, async (req, res) => {
         );
 
         const user = await pool.query(
-            "SELECT message,sender,read,datetime,subject FROM messages WHERE RECIPIENT = $1",
+            "SELECT message,sender,read,datetime,subject,message_id,attachment FROM messages WHERE RECIPIENT = $1 ORDER BY datetime DESC",
             [organizerEmail.rows[0].organizer_email]
         );
 
@@ -55,6 +57,22 @@ router.get("/getinbox", authorization, async (req, res) => {
         res.status(500).send("Server Error");
     }
 });
-// END COURSE ROUTES //
+
+// MARKS EMAIL AS READ
+router.put("/markread/:messageid", authorization, async (req, res) => {
+    try {
+        const { messageid } = req.params;
+
+        const updateClient = await pool.query(
+            "UPDATE messages SET read = true WHERE message_id = $1",
+            [messageid]
+        );
+
+        res.json("Marked as read");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+// END EMAIL ROUTES //
 
 module.exports = router;

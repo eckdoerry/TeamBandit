@@ -49,6 +49,7 @@ const ChatLog = (props) => {
                 >
                     <p className={styles.lineheight}>{message.message}</p>
                 </Item>
+                
             ))}
         </div>
     );
