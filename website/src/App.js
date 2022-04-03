@@ -1,6 +1,6 @@
 import React, {Fragment, useState, useEffect} from "react";
 import styles from "./App.module.css";
-import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
+import {HashRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 
 // Page Components
 import Landing from "./Pages/LandingPage/LandingPage";
