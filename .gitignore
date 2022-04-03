@@ -9,6 +9,7 @@
 client/coverage
 public/uploads/documents/*
 */uploads/*
+Public/emailAttachments/*
 
 # production
 */build
@@ -30,3 +31,5 @@ CS476-F21-Teambandit-melssen.pem
 
 .vscode
 .vscode/*
+website/public/emailAttachments/qjmelssen-30a8a942-3c36-4485-8578-d6cbf893f567.pdf
+*.pdf
