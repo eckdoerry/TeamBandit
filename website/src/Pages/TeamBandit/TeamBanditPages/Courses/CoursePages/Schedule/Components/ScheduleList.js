@@ -38,10 +38,9 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                         ) -
                             millisecondsOfWeek >=
                             0 && (
-                            <div style={{display: "flex", flexDirection: "row"}}>
+                            <div key={assignment.assignment_id} style={{display: "flex", flexDirection: "row"}}>
                                 <p>Prepare for:&nbsp;</p>
                                 <Link
-                                    key={assignment.assignment_id}
                                     target="_blank"
                                     to={`/assignment/${assignment.assignment_name}-${assignment.assignment_id}`}
                                 >
@@ -71,17 +70,16 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                         ) -
                             millisecondsOfWeek >=
                             0 && (
-                            <div style={{display: "flex", flexDirection: "row"}}>
+                            <div key={assignment.assignment_id} style={{display: "flex", flexDirection: "row"}}>
                                 <Link
-                                    key={assignment.assignment_id}
                                     target="_blank"
                                     to={`/assignment/${assignment.assignment_name}-${assignment.assignment_id}`}
                                 >
                                     <p>{assignment.assignment_name}</p>
                                 </Link>
                                 <p>&nbsp;due by:&nbsp;{assignment.assignment_due_date.split("T")[1]}</p>
-                                {userIdentifier === "organizer" && <SubmittedAssignmentsModal assignment={assignment}/>}
-                                {userIdentifier === "student" && <StudentUploadAssignment setRowChange={setRowChange} assignment={assignment}/>}  
+                                {userIdentifier == "organizer" && <SubmittedAssignmentsModal assignment={assignment}/>}
+                                {userIdentifier == "student" && <StudentUploadAssignment setRowChange={setRowChange} assignment={assignment}/>}
                             </div>
                         )
                 )}
@@ -207,44 +205,42 @@ function ScheduleList({ courseInfo, userIdentifier }) {
     if (userIdentifier == "organizer")
     {
         return (
-            <>
-                <div
-                    style={{
-                        padding: "25px",
-                        display: "flex",
-                        height: "100%",
-                        width: "100%",
-                    }}
-                >
-                <Box
-                sx={{
+            <div
+                style={{
+                    padding: "25px",
+                    display: "flex",
                     height: "100%",
                     width: "100%",
-                    "& .border": {
-                        borderRight: 1,
-                        borderColor: "#d3d3d3",
-                    },
                 }}
             >
-                    <DataGrid
-                        rows={rows}
-                        //rows={[{ schedule_week_id: 1, schedule_week: '3/06', schedule_description: 'Description', schedule_deliverables: 'Assignment', assignment_id: 15, assignment_name: "m" }]}
-                        columns={columns}
-                        rowHeight={150}
-                        getRowId={(rows) => rows.schedule_week_id}
-                        components={{ Toolbar: CustomToolbar }}
-                        disableSelectionOnClick
-                        disableColumnSelector
-                    />
-                    </Box>
-                </div>
-            </>
+            <Box
+            sx={{
+                height: "100%",
+                width: "100%",
+                "& .border": {
+                    borderRight: 1,
+                    borderColor: "#d3d3d3",
+                },
+            }}
+        >
+                <DataGrid
+                    rows={rows}
+                    //rows={[{ schedule_week_id: 1, schedule_week: '3/06', schedule_description: 'Description', schedule_deliverables: 'Assignment', assignment_id: 15, assignment_name: "m" }]}
+                    columns={columns}
+                    rowHeight={150}
+                    getRowId={(rows) => rows.schedule_week_id}
+                    components={{ Toolbar: CustomToolbar }}
+                    disableSelectionOnClick
+                    disableColumnSelector
+                />
+                </Box>
+            </div>
         );
     }
     else if (userIdentifier == "student")
     {
         return (
-            <Fragment>
+            <>
                 <div
                     style={{
                         padding: "25px",
@@ -274,7 +270,7 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                     />
                     </Box>
                 </div>
-            </Fragment>
+            </>
         );
     }
 }
