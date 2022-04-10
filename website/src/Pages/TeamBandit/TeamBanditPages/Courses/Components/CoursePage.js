@@ -77,7 +77,7 @@ const CoursePage = ({ courseInfo, userInfo, userIdentifier, setCoursesChange }) 
         <div>
             <Fragment key={anchor}>
                 <Button onClick={toggleDrawer(anchor, true)}>
-                    {courseInfo.course_title}
+                    {courseInfo.course_title.toUpperCase()}
                 </Button>
                 <Drawer
                     sx={{ zIndex: "modal" }}
@@ -115,7 +115,7 @@ const CoursePage = ({ courseInfo, userInfo, userIdentifier, setCoursesChange }) 
                                 display: { xs: "none", md: "flex" },
                             }}
                         >
-                            {courseInfo.course_title}
+                            {courseInfo.course_title.toUpperCase()}
                         </Typography>
 
                         <Tabs

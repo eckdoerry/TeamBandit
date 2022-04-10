@@ -21,8 +21,11 @@ import ToggleButton from "@mui/material/ToggleButton";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
+import {Edit} from "@mui/icons-material";
+import {Delete} from "@mui/icons-material";
 
 import { toast } from "react-toastify";
+import { borderColor } from "@mui/system";
 
 const Settings = ({ courseInfo, setCoursesChange }) => {
     const [title, setTitle] = useState(courseInfo.course_title);
@@ -121,18 +124,51 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                     {" "}
                     Course Settings{" "}
                 </Typography>
+                
+                <br>
+                </br>
+
                 <Typography variant="h5">Title</Typography>
                 <Typography>{courseInfo.course_title}</Typography>
+
+                <br>
+                </br>
+
                 <Typography variant="h5">Semester</Typography>
                 <Typography>{courseInfo.course_semester}</Typography>
+
+                <br>
+                </br>
+
                 <Typography variant="h5">Team Size</Typography>
                 <Typography>{courseInfo.team_size}</Typography>
+                <br>
+                </br>
                 <Typography variant="h5">
                     {courseInfo.course_public
-                        ? "Course is set to PUBLIC"
-                        : "Course is set to PRIVATE"}
+                        ? "Course Privacy is set to PUBLIC"
+                        : "Course Privacy is set to PRIVATE"}
                 </Typography>
-                <Button onClick={handleClickOpen}>Edit This Course</Button>
+                <br>
+                </br>
+                <Button 
+                sx={{ m: 3, pl: 5, pr: 5 }}
+                style={
+                    { 
+                        textAlign: "center", 
+                        whiteSpace: "nowrap", 
+                        color:"warning", 
+                        borderColor:"warning"}
+                    }
+                size="large"
+                variant="outlined"
+                color="warning"
+                startIcon={<Edit />}
+                onClick={handleClickOpen}
+                >
+                Edit This Course
+                
+                </Button>
                 <Dialog
                     fullWidth
                     maxWidth="lg"
@@ -362,7 +398,23 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                         <Button onClick={handleClose}>Cancel</Button>
                     </DialogActions>
                 </Dialog>
-                <Button onClick={() => deleteCourse(courseInfo.course_id)}>
+                <Button 
+                 sx={{ m: 3, pl: 5, pr: 5 }
+                    }
+                    style=
+                    {
+                        { 
+                        textAlign: "center", 
+                        whiteSpace: "nowrap", 
+                        color:"red", 
+                        borderColor:"red" ,
+                        float:"right"
+                        }
+                    }
+                    size="large"
+                    variant="outlined"
+                    startIcon={<Delete />}
+                    onClick={() => deleteCourse(courseInfo.course_id)}>
                     Delete Course
                 </Button>
             </Paper>
