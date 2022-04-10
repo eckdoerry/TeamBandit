@@ -57,10 +57,10 @@ function Copyright() {
 }
 
 const TeamPage = () => {
-    const windowValue = window.location.pathname.replace("/team-website/", "");
+    const windowValue = window.location.hash.replace("#/team-website/", "");
     const regExp = /%20/g;
     const team = windowValue.replace(regExp, " ");
-
+    
     const [teamInfo, setTeamInfo] = useState([]);
     const [projectInfo, setProjectInfo] = useState([]);
     const [teamMembers, setTeamMembers] = useState([]);
