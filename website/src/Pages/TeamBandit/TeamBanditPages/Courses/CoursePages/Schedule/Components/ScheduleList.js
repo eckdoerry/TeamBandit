@@ -30,23 +30,23 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                     (assignment) =>
                         Math.abs(
                             Date.parse(
-                                assignment.assignment_start_date.split("T")[0]
+                                assignment.assignment_start_date.split("T")
                             ) - millisecondsOfWeek
                         ) < 604800000 &&
-                        Date.parse(
-                            assignment.assignment_start_date.split("T")[0]
+                        (Date.parse(
+                            assignment.assignment_start_date.split("T")
                         ) -
-                            millisecondsOfWeek >=
+                            millisecondsOfWeek) >=
                             0 && (
-                            <div style={{display: "flex", flexDirection: "row"}}>
+                            <div key={assignment.assignment_id} style={{display: "flex", flexDirection: "row"}}>
                                 <p>Prepare for:&nbsp;</p>
                                 <Link
-                                    key={assignment.assignment_id}
                                     target="_blank"
                                     to={`/assignment/${assignment.assignment_name}-${assignment.assignment_id}`}
                                 >
                                     <p>{assignment.assignment_name}</p>
                                 </Link>
+                                <p>&nbsp;({assignment.submission_type})</p>
                             </div>
                         )
                 )}
@@ -63,23 +63,22 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                     (assignment) =>
                         Math.abs(
                             Date.parse(
-                                assignment.assignment_due_date.split("T")[0]
+                                assignment.assignment_due_date.split("T")
                             ) - millisecondsOfWeek
                         ) < 604800000 &&
                         Date.parse(
-                            assignment.assignment_due_date.split("T")[0]
+                            assignment.assignment_due_date.split("T")
                         ) -
                             millisecondsOfWeek >=
                             0 && (
-                            <div style={{display: "flex", flexDirection: "row"}}>
+                            <div key={assignment.assignment_id} style={{display: "flex", flexDirection: "row"}}>
                                 <Link
-                                    key={assignment.assignment_id}
                                     target="_blank"
                                     to={`/assignment/${assignment.assignment_name}-${assignment.assignment_id}`}
                                 >
                                     <p>{assignment.assignment_name}</p>
                                 </Link>
-                                <p>&nbsp;due by:&nbsp;{assignment.assignment_due_date.split("T")[1]}</p>
+                                <p>&nbsp;due by:&nbsp;{assignment.assignment_due_date.split("T")[1]}&nbsp;MST</p>
                                 {userIdentifier == "organizer" && <SubmittedAssignmentsModal assignment={assignment}/>}
                                 {userIdentifier == "student" && <StudentUploadAssignment setRowChange={setRowChange} assignment={assignment}/>}
                             </div>
@@ -103,7 +102,6 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();
-
             setAssignments(jsonData);
         } catch (err) {
             console.error(err.message);
@@ -207,38 +205,36 @@ function ScheduleList({ courseInfo, userIdentifier }) {
     if (userIdentifier == "organizer")
     {
         return (
-            <>
-                <div
-                    style={{
-                        padding: "25px",
-                        display: "flex",
-                        height: "100%",
-                        width: "100%",
-                    }}
-                >
-                <Box
-                sx={{
+            <div
+                style={{
+                    padding: "25px",
+                    display: "flex",
                     height: "100%",
                     width: "100%",
-                    "& .border": {
-                        borderRight: 1,
-                        borderColor: "#d3d3d3",
-                    },
                 }}
             >
-                    <DataGrid
-                        rows={rows}
-                        //rows={[{ schedule_week_id: 1, schedule_week: '3/06', schedule_description: 'Description', schedule_deliverables: 'Assignment', assignment_id: 15, assignment_name: "m" }]}
-                        columns={columns}
-                        rowHeight={150}
-                        getRowId={(rows) => rows.schedule_week_id}
-                        components={{ Toolbar: CustomToolbar }}
-                        disableSelectionOnClick
-                        disableColumnSelector
-                    />
-                    </Box>
-                </div>
-            </>
+            <Box
+            sx={{
+                height: "100%",
+                width: "100%",
+                "& .border": {
+                    borderRight: 1,
+                    borderColor: "#d3d3d3",
+                },
+            }}
+        >
+                <DataGrid
+                    rows={rows}
+                    //rows={[{ schedule_week_id: 1, schedule_week: '3/06', schedule_description: 'Description', schedule_deliverables: 'Assignment', assignment_id: 15, assignment_name: "m" }]}
+                    columns={columns}
+                    rowHeight={150}
+                    getRowId={(rows) => rows.schedule_week_id}
+                    components={{ Toolbar: CustomToolbar }}
+                    disableSelectionOnClick
+                    disableColumnSelector
+                />
+                </Box>
+            </div>
         );
     }
     else if (userIdentifier == "student")

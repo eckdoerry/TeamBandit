@@ -11,6 +11,7 @@ import TeamWebsite from "./Pages/TeamWebsite/TeamWebsite";
 import TeamPage from "./Pages/TeamPage/TeamPage";
 import ProjectPages from "./Pages/ProjectPages/ProjectPages";
 import AssignmentPage from "./Pages/AssignmentPage/AssignmentPage";
+import SubmissionPage from "./Pages/SubmissionPage/SubmissionPage";
 
 // Toastify gets configured on the first page, this is the notification thing
 import { toast } from 'react-toastify';
@@ -70,6 +71,7 @@ function App() {
                     <Route exact path = "/team-page/:courseName" element={<TeamPage/>}/>
                     <Route exact path = "/project-pages/:projectName" element={<ProjectPages/>}/>
                     <Route exact path = "/assignment/:assignmentName" element={<AssignmentPage/>}/>
+                    <Route exact path = "/submission/:submissionName" element={<SubmissionPage/>}/>
                 </Routes>
             </Router>
         </Fragment>
