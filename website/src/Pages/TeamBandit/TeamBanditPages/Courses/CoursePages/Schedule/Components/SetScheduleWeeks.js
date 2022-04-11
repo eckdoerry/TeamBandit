@@ -63,8 +63,6 @@ const SetScheduleWeeks = ({ courseInfo, rows, setRowChange }) => {
 
         handleClose();
         var startWeekMilliseconds;
-        var currentWeek = new Date(startWeekMilliseconds);
-        var currentWeekMilliseconds = startWeekMilliseconds;
 
         // check if user entered a week
         if (course_start_week !== '')
@@ -82,6 +80,9 @@ const SetScheduleWeeks = ({ courseInfo, rows, setRowChange }) => {
                 // notify user that schedule was set to tomorrow by default
                 toast.info("Start date not specified. Course start date set to tomorrow. ");
         }
+
+        var currentWeek = new Date(startWeekMilliseconds);
+        var currentWeekMilliseconds = startWeekMilliseconds;
 
         for (var i = 0; i < parseInt(num_weeks); i++)
         {
