@@ -9,22 +9,21 @@ import Overview from "./Components/Overview";
 import Solution from "./Components/Solution";
 import Deliverables from "./Components/Deliverables";
 import Schedule from "./Components/Schedule";
+import Team from "./Components/Team";
 
 /**
  * Utilizes an enum string system to display the correct information inside
  * the TeamBandit application.
  */
-const TeamWebsiteRouter = ({route, userInfo, userIdentifier, setUserChange}) => {
+const TeamWebsiteRouter = ({route, colorValue, teamInfo, fontColor, teamMembers, projectInfo}) => {
     
-    if(route.text === "Overview" || route === "Overview") 
+    if(route === "Overview") 
     {
         return (
-            <Fragment>
-                <Overview/>
-            </Fragment>
-        )
+            <Overview colorValue={colorValue} teamInfo={teamInfo} fontColor={fontColor}/>
+        );
     }
-    else if(route.text === "Solution") 
+    else if(route === "Solution") 
     {
         return (
             <Fragment>
@@ -32,7 +31,7 @@ const TeamWebsiteRouter = ({route, userInfo, userIdentifier, setUserChange}) => 
             </Fragment>
         )
     }
-    else if(route.text === "Deliverables") 
+    else if(route === "Deliverables") 
     {
         return (
             <Fragment>
@@ -40,7 +39,15 @@ const TeamWebsiteRouter = ({route, userInfo, userIdentifier, setUserChange}) => 
             </Fragment>
         )
     }
-    else if(route.setting === "Schedule")
+    else if(route === "The Team") 
+    {
+        return (
+            <Fragment>
+                <Team teamMembers={teamMembers} projectInfo={projectInfo}/>
+            </Fragment>
+        )
+    }
+    else if(route === "Schedule")
     {
         return (
             <Fragment>

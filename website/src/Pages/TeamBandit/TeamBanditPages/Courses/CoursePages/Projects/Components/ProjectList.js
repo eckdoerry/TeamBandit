@@ -68,7 +68,7 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
             <div style={{ height: "100%" }}>
                 <Link
                     target="_blank"
-                    to={`/team-website/${params.row.team_name}`}
+                    to={`/team-website/${params.row.team_id}`}
                 >
                     {" "}
                     <Typography variant="h5">{params.row.team_name}</Typography>
@@ -156,7 +156,7 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
                     <Link
                         style={{ paddingLeft: "7px" }}
                         target="_blank"
-                        to={`/team-website/${params.row.team_name}`}
+                        to={`/team-website/${params.row.team_id}`}
                     >
                         Student Team Page
                     </Link>
@@ -225,7 +225,7 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
                         <Typography>{sponsorLocation}</Typography>
                     </div>
                     <div style={{ alignItems: "right" }}>
-                        {sponsorLogo != "null" ? (
+                        {sponsorLogo != "" && sponsorLogo != "null" ? (
                             <img
                                 src={
                                     sponsorLogo
