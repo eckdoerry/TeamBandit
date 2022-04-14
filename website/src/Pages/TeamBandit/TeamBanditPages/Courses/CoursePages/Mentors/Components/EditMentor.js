@@ -8,6 +8,12 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import {Delete} from "@mui/icons-material";
 
 import { toast } from 'react-toastify';
 
@@ -35,6 +41,21 @@ const EditMentor = ({courseInfo, mentor, setRowChange}) => {
         setOpen(false);
         setMentorName(mentor.mentor_name);
         setMentorEmail(mentor.mentor_email);
+    };
+
+    const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+
+    const handleConfirmDelete = () => {
+        handleDeleteConfirmClose();
+        deleteMentor(mentor.mentor_id);
+    };
+
+    const handleDeleteConfirmOpen = () => {
+        setDeleteConfirmOpen(true);
+    };
+
+    const handleDeleteConfirmClose = () => {
+        setDeleteConfirmOpen(false);
     };
 
     // Delete function
@@ -102,7 +123,94 @@ const EditMentor = ({courseInfo, mentor, setRowChange}) => {
                 <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="Mentor Email" type = "text" value = {mentor_email} onChange = {e => setMentorEmail(e.target.value)}/>
                 <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {(e) => (handleClose(), updateMentor(e))}> Edit </Button>
                 <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Close </Button>
-                <Button variant="outlined" color="error" onClick = {() => deleteMentor(mentor.mentor_id)} startIcon={<DeleteIcon />}> PERMANENTLY DELETE </Button>
+                <Button variant="outlined" color="error" onClick = {handleDeleteConfirmOpen} startIcon={<DeleteIcon />}> Delete Mentor </Button>
+
+
+                <Dialog 
+                    open={deleteConfirmOpen}
+                    onClose={handleClose}
+                    fullWidth
+                >
+
+                    <DialogTitle>
+                        Delete Mentor
+                    </DialogTitle>
+
+                    <DialogContent>
+                        <DialogContentText>
+                        <div
+                            style= {
+                                {
+                                    display: "float",
+                                    float: "left"
+                                }
+                            }
+                        >
+                        Are you sure you want to delete this mentor?
+                        </div>
+
+                        </DialogContentText>
+                        
+                    </DialogContent>
+
+                    <div
+                        style={{display: "float"}}
+                    >
+
+                    <Button
+                        sx={
+                            { m: 3, pl: 1, pr: 1 }
+                        }
+
+                        style={
+                            { 
+                                textAlign: "center", 
+                                whiteSpace: "nowrap", 
+                                color:"red",
+                                borderColor:"red",
+                                float:"left"
+                            }
+                        }
+
+                        size="medium"
+                        variant="outlined"
+                        startIcon={<Delete />}
+                        onClick={handleConfirmDelete}
+                    >
+                        Delete Mentor
+                    </Button>
+
+                    </div>
+                        
+                    <div
+                        style={{ display: "float" }}
+                    >
+
+                    <Button 
+                        sx={
+                            { m: 3, pt: 2, pb:2 , pl: 10, pr: 10 }
+                        }
+
+                    style={
+                        { 
+                            textAlign: "center", 
+                            whiteSpace: "nowrap", 
+                            color:"blue", 
+                            borderColor:"blue",
+                            float:"right"
+                        }
+                    }
+
+                    size="large"
+                    variant="outlined"
+                    onClick={handleDeleteConfirmClose}
+                    >
+                        Cancel
+                    </Button>
+
+                    </div>
+                </Dialog>
+
                 </Box>
             </Modal>
         </div>
