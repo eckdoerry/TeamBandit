@@ -7,6 +7,13 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from "@mui/icons-material/Delete";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import {Delete} from "@mui/icons-material";
+
 
 import { toast } from 'react-toastify';
 
@@ -34,10 +41,24 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
     const [clientLogo, setClientLogo] = useState(null);
     const [clientLogoFilename, setClientLogoFilename] = useState(null);
 
+    const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+
+    const handleConfirmDelete = () => {
+        handleDeleteConfirmClose();
+        deleteClient(client.client_id);
+    };
+
+    const handleDeleteConfirmOpen = () => {
+        setDeleteConfirmOpen(true);
+    };
 
     const onClientLogoChange = (e) => {
         setClientLogo(e.target.files[0]); 
     }
+
+    const handleDeleteConfirmClose = () => {
+        setDeleteConfirmOpen(false);
+    };
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
@@ -278,15 +299,103 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
                 </Typography>
                 <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {onSubmitForm}> Update </Button>
                 <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Cancel </Button>
+                
                 <Button
                     variant="outlined"
                     color="error"
-                    onClick={() => deleteClient(client.client_id)}
+                    onClick={handleDeleteConfirmOpen}
                     startIcon={<DeleteIcon />}
                 >
                     {" "}
-                    PERMANENTLY DELETE{" "}
+                    Delete Client
+                    {" "}
                 </Button>
+
+                <Dialog 
+                    open={deleteConfirmOpen}
+                    onClose={handleClose}
+                    fullWidth
+                >
+
+                    <DialogTitle>
+                        PERMANENTLY DELETE CLIENT
+                    </DialogTitle>
+
+                    <DialogContent>
+                        <DialogContentText>
+                        <div
+                            style= {
+                                {
+                                    display: "float",
+                                    float: "left"
+                                }
+                            }
+                        >
+                        Are you sure you want to delete this client forever?
+                        </div>
+
+                        </DialogContentText>
+                        
+                    </DialogContent>
+
+                    <div
+                        style={{display: "float"}}
+                    >
+
+                    <Button
+                        sx={
+                            { m: 3, pl: 1, pr: 1 }
+                        }
+
+                        style={
+                            { 
+                                textAlign: "center", 
+                                whiteSpace: "nowrap", 
+                                color:"red",
+                                borderColor:"red",
+                                float:"left"
+                            }
+                        }
+
+                        size="medium"
+                        variant="outlined"
+                        startIcon={<Delete />}
+                        onClick={handleConfirmDelete}
+                    >
+                        Delete Client Forever
+                    </Button>
+
+                    </div>
+                        
+                    <div
+                        style={{ display: "float" }}
+                    >
+
+                    <Button 
+                        sx={
+                            { m: 3, pt: 2, pb:2 , pl: 10, pr: 10 }
+                        }
+
+                    style={
+                        { 
+                            textAlign: "center", 
+                            whiteSpace: "nowrap", 
+                            color:"blue", 
+                            borderColor:"blue",
+                            float:"right"
+                        }
+                    }
+
+                    size="large"
+                    variant="outlined"
+                    onClick={handleDeleteConfirmClose}
+                    >
+                        Cancel
+                    </Button>
+
+                    </div>
+                </Dialog>
+
                 </Box>
             </Modal>
         </div>

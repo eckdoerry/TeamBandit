@@ -25,7 +25,7 @@ import {Edit} from "@mui/icons-material";
 import {Delete} from "@mui/icons-material";
 
 import { toast } from "react-toastify";
-import { borderColor } from "@mui/system";
+import { borderColor, color } from "@mui/system";
 
 const Settings = ({ courseInfo, setCoursesChange }) => {
     const [title, setTitle] = useState(courseInfo.course_title);
@@ -39,6 +39,20 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
     const [selected3, setSelected3] = useState(false);
 
     const [open, setOpen] = useState(false);
+    const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+
+    const handleConfirmDelete = () => {
+        handleDeleteConfirmClose();
+        deleteCourse(courseInfo.course_id);
+    };
+
+    const handleDeleteConfirmOpen = () => {
+        setDeleteConfirmOpen(true);
+    };
+
+    const handleDeleteConfirmClose = () => {
+        setDeleteConfirmOpen(false);
+    };
 
     const updateIsPublic = (event) => {
         setIsPublic(event.target.checked);
@@ -401,8 +415,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                 <Button 
                  sx={{ m: 3, pl: 5, pr: 5 }
                     }
-                    style=
-                    {
+                    style={
                         { 
                         textAlign: "center", 
                         whiteSpace: "nowrap", 
@@ -414,9 +427,96 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                     size="large"
                     variant="outlined"
                     startIcon={<Delete />}
-                    onClick={() => deleteCourse(courseInfo.course_id)}>
+                    onClick={handleDeleteConfirmOpen}>
+
                     Delete Course
                 </Button>
+
+                <Dialog 
+                    open={deleteConfirmOpen}
+                    onClose={handleClose}
+                    fullWidth
+                >
+
+                    <DialogTitle>
+                        Permanently Delete Course
+                    </DialogTitle>
+
+                    <DialogContent>
+                        <DialogContentText>
+                        <div
+                            style= {
+                                {
+                                    display: "float",
+                                    float: "left"
+                                }
+                            }
+                        >
+                        Are you sure you want to delete this course forever?
+                        </div>
+
+                        </DialogContentText>
+                        
+                    </DialogContent>
+
+                    <div
+                        style={{display: "float"}}
+                    >
+
+                    <Button
+                        sx={
+                            { m: 3, pl: 1, pr: 1 }
+                        }
+
+                        style={
+                            { 
+                                textAlign: "center", 
+                                whiteSpace: "nowrap", 
+                                color:"red",
+                                borderColor:"red",
+                                float:"left"
+                            }
+                        }
+
+                        size="medium"
+                        variant="outlined"
+                        startIcon={<Delete />}
+                        onClick={handleConfirmDelete}
+                    >
+                        Delete Course Forever
+                    </Button>
+
+                    </div>
+                        
+                    <div
+                        style={{ display: "float" }}
+                    >
+
+                    <Button 
+                        sx={
+                            { m: 3, pt: 2, pb:2 , pl: 10, pr: 10 }
+                        }
+
+                    style={
+                        { 
+                            textAlign: "center", 
+                            whiteSpace: "nowrap", 
+                            color:"blue", 
+                            borderColor:"blue",
+                            float:"right"
+                        }
+                    }
+
+                    size="large"
+                    variant="outlined"
+                    onClick={handleDeleteConfirmClose}
+                    >
+                        Cancel
+                    </Button>
+
+                    </div>
+                </Dialog>
+                
             </Paper>
         </div>
     );
