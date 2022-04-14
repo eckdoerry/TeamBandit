@@ -93,6 +93,7 @@ const LandingPage = ({ setAuth, setUser }) => {
                         location={location}
                         setAuth={setAuth}
                         setUser={setUser}
+                        changeLocation={changeLocation}
                     />
                 </div>
             </div>
@@ -109,11 +110,11 @@ const LandingPage = ({ setAuth, setUser }) => {
  * @param setUser Passed along to determine which type of user
  * is signed in
  */
-function DisplayCorrectForm({ location, setAuth, setUser }) {
+function DisplayCorrectForm({ location, setAuth, setUser, changeLocation }) {
     if (location === "sign-in") {
-        return <SignInForm setAuth={setAuth} setUser={setUser} />;
+        return <SignInForm setAuth={setAuth} setUser={setUser} changeLocation={changeLocation}/>;
     } else if (location === "sign-up") {
-        return <SignUpForm setAuth={setAuth} setUser={setUser} />;
+        return <SignUpForm setAuth={setAuth} setUser={setUser} changeLocation={changeLocation}/>;
     } else {
         return (
             <div>
