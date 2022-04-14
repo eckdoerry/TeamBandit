@@ -164,7 +164,8 @@ const SetScheduleWeeks = ({ courseInfo, rows, setRowChange }) => {
                 startIcon={<DeleteIcon />}
             >
                 {" "}
-                Remove All Weeks{" "}
+                Remove All Weeks
+                {" "}
             </Button>
             <Modal
                 open={open}

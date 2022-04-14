@@ -52,13 +52,13 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
         setDeleteConfirmOpen(true);
     };
 
-    const onClientLogoChange = (e) => {
-        setClientLogo(e.target.files[0]); 
-    }
-
     const handleDeleteConfirmClose = () => {
         setDeleteConfirmOpen(false);
     };
+
+    const onClientLogoChange = (e) => {
+        setClientLogo(e.target.files[0]); 
+    }
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
