@@ -10,7 +10,7 @@ import styles from "./SignUpForm.module.css"
  * @param setAuth Authorizes the user once they register
  * @TODO: Implement the checkbox doing something or we should take it out 
  */
-const SignUpForm = ({setAuth, setUser, changeLocation}) => {
+const SignUpForm = ({setAuth, setUser}) => {
     
     const [inputs, setInputs] = useState({
         email: "",
@@ -118,11 +118,26 @@ const SignUpForm = ({setAuth, setUser, changeLocation}) => {
                         onChange={event => onChange(event)}
                     />
                 </div>
+                <div className={styles.formField}>
+                    <label className={styles.formFieldCheckboxLabel}>
+                        <input
+                            className={styles.formFieldCheckbox}
+                            type="checkbox"
+                            name="hasAgreed"
+                            value={hasAgreed}
+                            onChange={event => onChange(event)}
+                        />{" "}
+                        I agree to all statements in the
+                        <a href="/privacy-policy" target="_blank" className={styles.formFieldTermsLink}>
+                            Privacy Policy
+                        </a>
+                    </label>
+                </div>
                 <div className="formField">
                     <button className={styles.formFieldButton}>Sign Up</button>{" "}
-                    <p onClick={()=> changeLocation("sign-in")} className={styles.formFieldLink}>
+                    <Link to="/sign-in" className={styles.formFieldLink}>
                         I'm already a member
-                    </p>
+                    </Link>
                 </div>
             </form>
         </div>

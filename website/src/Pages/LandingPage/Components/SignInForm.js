@@ -1,5 +1,5 @@
 import React, { Fragment, useState} from "react";
-
+import { Link } from "react-router-dom";
 import styles from "./SignInForm.module.css";
 import { toast } from 'react-toastify';
 
@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
  * @param setUser Passed along to determine which type of user
  * is signed in
  */
-const SignInForm = ({setAuth, setUser, changeLocation}) => {
+const SignInForm = ({setAuth, setUser}) => {
 
     const [inputs, setInputs] = useState({
         email: "",
@@ -85,9 +85,9 @@ const SignInForm = ({setAuth, setUser, changeLocation}) => {
                     </div>
                     <div className={styles.formField}>
                         <button className={styles.formFieldButton}>Sign In</button>{" "}
-                        <p onClick={() => changeLocation("sign-up")} className={styles.formFieldLink}>
+                        <Link to="/" className={styles.formFieldLink}>
                             Create an account
-                        </p>
+                        </Link>
                     </div>
                 </form>
             </div>

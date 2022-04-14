@@ -29,28 +29,46 @@ import TeamBanditLogo from "../../Images/logo.png";
 // Stylesheet
 import styles from "./TeamWebsite.module.css";
 
-import TeamWebsiteRouter from "./TeamWebsiteRouter";
-
 const theme = createTheme();
 
-
+function Copyright() {
+    return (
+        <Typography
+            style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+            variant="body2"
+            color="text.secondary"
+            align="center"
+        >
+            {"Copyright © "}
+            <p
+                style={{ paddingLeft: "5px", paddingRight: "5px" }}
+                color="inherit"
+            >
+                TeamBandit
+            </p>{" "}
+            {new Date().getFullYear()}
+            {"."}
+        </Typography>
+    );
+}
 
 const TeamPage = () => {
-    const windowValue = window.location.hash.replace("#/team-website/", "");
+    const windowValue = window.location.pathname.replace("/team-website/", "");
     const regExp = /%20/g;
     const team = windowValue.replace(regExp, " ");
-    
+
     const [teamInfo, setTeamInfo] = useState([]);
     const [projectInfo, setProjectInfo] = useState([]);
     const [teamMembers, setTeamMembers] = useState([]);
 
-    const [route, setRoute] = useState("Overview");
-
-    const [value, setValue] = useState("Overview");
+    const [value, setValue] = useState("one");
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
-        setRoute(newValue);
     };
 
     const [colorValue, setColorValue] = useState("#00000");
@@ -176,8 +194,11 @@ const TeamPage = () => {
     }
     if (teamInfo[0] != null && projectInfo[0] != null) {
         return (
-            <div style={{height: '100vh',  backgroundColor: 'yellow', width: '100%'}}>
-                
+            <div>
+                <Box
+                    style={{ backgroundColor: "pink" }}
+                    sx={{ display: "flex" }}
+                >
                     <Drawer
                         PaperProps={{
                             sx: {
@@ -237,14 +258,259 @@ const TeamPage = () => {
                             aria-label="Vertical tabs example"
                             sx={{ borderRight: 1, borderColor: "divider" }}
                         >
-                            <Tab value="Overview" label="Overview" />
-                            <Tab value="Solution" label="Solution" />
-                            <Tab value="The Team" label="The Team" />
-                            <Tab value="Deliverables" label="Deliverables" />
-                            <Tab value="Schedule" label="Schedule" />
+                            <Tab value="one" label="Overview" />
+                            <Tab value="two" label="Solution" />
+                            <Tab value="three" label="Deliverables" />
+                            <Tab value="four" label="Schedule" />
                         </Tabs>
                     </Drawer>
-                    <TeamWebsiteRouter route={route} colorValue={colorValue} teamInfo={teamInfo} fontColor={fontColor} teamMembers={teamMembers} projectInfo={projectInfo}/>
+                    <Box
+                        component="main"
+                        sx={{
+                            flexGrow: 1,
+                        }}
+                    >
+                        <div
+                            style={{
+                                backgroundColor: `${colorValue}`,
+                                backgroundImage: `url(/uploads/images/teamBackdrop/${teamInfo[0].team_backdrop})`,
+                                backgroundRepeat: "no-repeat",
+                                backgroundSize: "100% 100%",
+                                height: "auto",
+                                paddingTop: "200px",
+                                paddingBottom: "200px",
+                                boxShadow: "5px 10px #888888",
+                            }}
+                        >
+                            <Container
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    width: "100%",
+                                    padding: "20px",
+                                }}
+                            >
+                                <img
+                                    style={{ border: "2px solid white" }}
+                                    src={
+                                        teamInfo[0].team_logo
+                                            ? "/uploads/images/teamLogos/" +
+                                              teamInfo[0].team_logo
+                                            : null
+                                    }
+                                    alt="Logo"
+                                    width="500px"
+                                    height="500px"
+                                />
+                                <div style={{ paddingLeft: "20px" }}>
+                                    <Typography
+                                        style={{
+                                            borderBottom: `2px solid ${fontColor}`,
+                                            color: `${fontColor}`,
+                                        }}
+                                        variant="h2"
+                                        color="white"
+                                        gutterBottom
+                                    >
+                                        {teamInfo[0].team_name}
+                                    </Typography>
+                                    <Typography
+                                        variant="h6"
+                                        color="#ffffff"
+                                        paragraph
+                                        style={{
+                                            padding: "20px",
+                                            backgroundColor: "rgba(0,0,0,0.5)",
+                                            color: `${fontColor}`,
+                                        }}
+                                    >
+                                        {teamInfo[0].team_description}
+                                    </Typography>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                        }}
+                                    >
+                                        <Button
+                                            style={{
+                                                margin: "5px",
+                                                backgroundColor: `${colorValue}`,
+                                            }}
+                                            variant="contained"
+                                        >
+                                            {" "}
+                                            SOLUTION{" "}
+                                        </Button>
+                                        <Button
+                                            style={{
+                                                margin: "5px",
+                                                backgroundColor: `${colorValue}`,
+                                            }}
+                                            variant="contained"
+                                        >
+                                            {" "}
+                                            WATCH VIDEO{" "}
+                                        </Button>
+                                    </div>
+                                </div>
+                            </Container>
+                        </div>
+                        <div style={{ backgroundColor: "white" }}>
+                            <div style={{ padding: "50px" }}>
+                                <Typography
+                                    component="h1"
+                                    variant="h2"
+                                    align="center"
+                                    color="text.primary"
+                                    gutterBottom
+                                >
+                                    Meet the Team
+                                </Typography>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    {teamMembers.map((teamMember) => (
+                                        <Card
+                                            key={teamMember.student_id}
+                                            style={{ margin: "15px" }}
+                                        >
+                                            <img
+                                                src={
+                                                    teamMember.profilepic_filepath !=
+                                                    null
+                                                        ? "/uploads/images/profilePictures/" +
+                                                          teamMember.profilepic_filepath
+                                                        : null
+                                                }
+                                                alt=""
+                                                width="250px"
+                                                height="250px"
+                                            />
+                                            <CardContent>
+                                                <Typography
+                                                    variant="h5"
+                                                    align="center"
+                                                    color="text.secondary"
+                                                >
+                                                    {teamMember.student_fname}{" "}
+                                                    {teamMember.student_lname}
+                                                </Typography>
+                                                <Typography
+                                                    color="text.secondary"
+                                                    align="center"
+                                                    gutterBottom
+                                                >
+                                                    {teamMember.student_bio}
+                                                </Typography>
+                                            </CardContent>
+                                            <CardActions
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                <Button size="small">
+                                                    Learn More
+                                                </Button>
+                                            </CardActions>
+                                        </Card>
+                                    ))}
+                                </div>
+                            </div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    paddingBottom: "100px",
+                                }}
+                            >
+                                <div style={{padding: "50px" }}>
+                                
+                                    <Typography
+                                        component="h1"
+                                        variant="h2"
+                                        align="center"
+                                        color="text.primary"
+                                        gutterBottom
+                                    >
+                                        Project Sponsor
+                                    </Typography>
+                                    <div style={{display: 'flex'}}>
+                                    <div>
+                                    <Typography
+                                        variant="h3"
+                                        align="center"
+                                        color="text.secondary"
+                                    >
+                                        {projectInfo[0].client_fname}{" "}
+                                        {projectInfo[0].client_lname}
+                                    </Typography>
+                                    <Typography
+                                        variant="h5"
+                                        align="center"
+                                        color="text.secondary"
+                                    >
+                                        {projectInfo[0].client_organization}
+                                    </Typography>
+                                    <Typography
+                                        variant="h5"
+                                        align="center"
+                                        color="text.secondary"
+                                    >
+                                        {projectInfo[0].client_location}
+                                    </Typography>
+                                    </div>
+                                    <div style={{paddingLeft: '20px'}}>
+                                    {projectInfo[0].client_logo != null ? (
+                                        <img
+                                            src={
+                                                projectInfo[0].client_logo
+                                                    ? "/uploads/images/clientLogos/" +
+                                                    projectInfo[0].client_logo
+                                                    : null
+                                            }
+                                            alt=""
+                                            width="150px"
+                                            height="150px"
+                                        />
+                                    ) : null}
+                                    </div>
+                                    </div>
+                                </div>
+                                <div style={{ padding: "50px" }}>
+                                    <Typography
+                                        component="h1"
+                                        variant="h2"
+                                        align="center"
+                                        color="text.primary"
+                                        gutterBottom
+                                    >
+                                        Team Mentor
+                                    </Typography>
+                                    <Typography
+                                        variant="h5"
+                                        align="center"
+                                        color="text.secondary"
+                                    >
+                                        {projectInfo[0].mentor_name}
+                                    </Typography>
+                                </div>
+                            </div>
+                            {/* Footer */}
+                            <Box
+                                sx={{ bgcolor: "background.paper", p: 6 }}
+                                component="footer"
+                            >
+                                <Copyright />
+                            </Box>
+                            {/* End footer */}
+                        </div>
+                    </Box>
+                </Box>
             </div>
         );
     } else {
