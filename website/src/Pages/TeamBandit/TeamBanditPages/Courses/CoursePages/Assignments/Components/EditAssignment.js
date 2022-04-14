@@ -8,6 +8,12 @@ import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import {Delete} from "@mui/icons-material";
 
 import { toast } from "react-toastify";
 
@@ -38,6 +44,21 @@ const EditAssignment = ({ assignment, setRowChange }) => {
         setOpen(false);
         setAssignmentName(assignment.assignment_name);
         setAssignmentDescription(assignment.assignment_description);
+    };
+
+    const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+
+    const handleConfirmDelete = () => {
+        handleDeleteConfirmClose();
+        deleteAssignment(assignment.assignment_id);
+    };
+
+    const handleDeleteConfirmOpen = () => {
+        setDeleteConfirmOpen(true);
+    };
+
+    const handleDeleteConfirmClose = () => {
+        setDeleteConfirmOpen(false);
     };
 
     const updateAssignment = async (e) => {
@@ -162,12 +183,99 @@ const EditAssignment = ({ assignment, setRowChange }) => {
                     <Button
                     variant="outlined"
                     color="error"
-                    onClick={() => deleteAssignment(assignment.assignment_id)}
+                    onClick={handleDeleteConfirmOpen}
                     startIcon={<DeleteIcon />}
                 >
                     {" "}
-                    PERMANENTLY DELETE{" "}
+                    Delete Assignment
+                    {" "}
                 </Button>
+
+                <Dialog 
+                    open={deleteConfirmOpen}
+                    onClose={handleClose}
+                    fullWidth
+                >
+
+                    <DialogTitle>
+                        Delete Assignment
+                    </DialogTitle>
+
+                    <DialogContent>
+                        <DialogContentText>
+                        <div
+                            style= {
+                                {
+                                    display: "float",
+                                    float: "left"
+                                }
+                            }
+                        >
+                        Are you sure you want to delete this assignment?
+                        </div>
+
+                        </DialogContentText>
+                        
+                    </DialogContent>
+
+                    <div
+                        style={{display: "float"}}
+                    >
+
+                    <Button
+                        sx={
+                            { m: 3, pl: 1, pr: 1 }
+                        }
+
+                        style={
+                            { 
+                                textAlign: "center", 
+                                whiteSpace: "nowrap", 
+                                color:"red",
+                                borderColor:"red",
+                                float:"left"
+                            }
+                        }
+
+                        size="medium"
+                        variant="outlined"
+                        startIcon={<Delete />}
+                        onClick={handleConfirmDelete}
+                    >
+                        Delete Assignment
+                    </Button>
+
+                    </div>
+                        
+                    <div
+                        style={{ display: "float" }}
+                    >
+
+                    <Button 
+                        sx={
+                            { m: 3, pt: 2, pb:2 , pl: 10, pr: 10 }
+                        }
+
+                    style={
+                        { 
+                            textAlign: "center", 
+                            whiteSpace: "nowrap", 
+                            color:"blue", 
+                            borderColor:"blue",
+                            float:"right"
+                        }
+                    }
+
+                    size="large"
+                    variant="outlined"
+                    onClick={handleDeleteConfirmClose}
+                    >
+                        Cancel
+                    </Button>
+
+                    </div>
+                </Dialog>
+
                 </Box>
             </Modal>
         </Fragment>
