@@ -8,6 +8,12 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import {Delete} from "@mui/icons-material";
 
 import { toast } from 'react-toastify';
 
@@ -41,6 +47,21 @@ const EditStudent = ({courseInfo, student, setRowChange}) => {
         setStudentID(student.student_emplid);
         setEmailAddress(student.student_email);
         setGPA(student.student_gpa);
+    };
+
+    const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+
+    const handleConfirmDelete = () => {
+        handleDeleteConfirmClose();
+        deleteStudent(student.student_id);
+    };
+
+    const handleDeleteConfirmOpen = () => {
+        setDeleteConfirmOpen(true);
+    };
+
+    const handleDeleteConfirmClose = () => {
+        setDeleteConfirmOpen(false);
     };
 
     //edit description function
@@ -116,7 +137,98 @@ const EditStudent = ({courseInfo, student, setRowChange}) => {
                 <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="GPA" type = "text" value = {student_gpa} onChange = {e => setGPA(e.target.value)}/>        
                 <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {(e) => (handleClose(), updateStudent(e))}> Update </Button>
                 <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Cancel </Button>
-                <Button variant="outlined" color="error" onClick = {() => deleteStudent(student.student_id)} startIcon={<DeleteIcon />}> PERMANENTLY DELETE </Button>
+                <Button variant="outlined" color="error" onClick = {handleDeleteConfirmOpen} startIcon={<DeleteIcon />}> Delete Student </Button>
+
+                <Dialog 
+                    open={deleteConfirmOpen}
+                    onClose={handleClose}
+                    fullWidth
+                >
+
+                    <DialogTitle>
+                        Delete Student
+                    </DialogTitle>
+
+                    <DialogContent>
+                        <DialogContentText>
+                        <div
+                            style= {
+                                {
+                                    display: "float",
+                                    float: "left"
+                                }
+                            }
+                        >
+                        Are you sure you want to delete this student forever?
+                        <p style= {
+                                {
+                                    color:"red"
+                                }
+                            }>WARNING: Deleting a student will also delete their account for this course!</p>
+                        </div>
+
+                        </DialogContentText>
+                        
+                    </DialogContent>
+
+                    <div
+                        style={{display: "float"}}
+                    >
+
+                    <Button
+                        sx={
+                            { m: 3, pl: 1, pr: 1 }
+                        }
+
+                        style={
+                            { 
+                                textAlign: "center", 
+                                whiteSpace: "nowrap", 
+                                color:"red",
+                                borderColor:"red",
+                                float:"left"
+                            }
+                        }
+
+                        size="medium"
+                        variant="outlined"
+                        startIcon={<Delete />}
+                        onClick={handleConfirmDelete}
+                    >
+                        Delete Student Forever
+                    </Button>
+
+                    </div>
+                        
+                    <div
+                        style={{ display: "float" }}
+                    >
+
+                    <Button 
+                        sx={
+                            { m: 3, pt: 2, pb:2 , pl: 10, pr: 10 }
+                        }
+
+                    style={
+                        { 
+                            textAlign: "center", 
+                            whiteSpace: "nowrap", 
+                            color:"blue", 
+                            borderColor:"blue",
+                            float:"right"
+                        }
+                    }
+
+                    size="large"
+                    variant="outlined"
+                    onClick={handleDeleteConfirmClose}
+                    >
+                        Cancel
+                    </Button>
+
+                    </div>
+                </Dialog>
+
                 </Box>
             </Modal>
         </div>
