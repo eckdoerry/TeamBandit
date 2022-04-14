@@ -35,7 +35,7 @@ const CourseRouter = ({route, courseInfo, userInfo, userIdentifier, setCoursesCh
     {
         return (
             <Fragment>
-                <Schedule courseInfo={courseInfo} userIdentifier={userIdentifier}/>
+                <Schedule courseInfo={courseInfo} userInfo={userInfo} userIdentifier={userIdentifier}/>
             </Fragment>
         )
     }

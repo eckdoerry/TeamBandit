@@ -28,9 +28,12 @@ const SubmittedAssignmentsModal = ({assignment}) => {
 
     const getAssignments = async () => {
         try {
+            const myHeaders = new Headers();
+            myHeaders.append("token", localStorage.token);
+
             const response = await fetch(
                 `${process.env.REACT_APP_BASEURL}/assignments/submittedAssignments/${assignment.assignment_id}`,
-                { method: "GET", headers: { token: localStorage.token } }
+                { method: "GET", headers: myHeaders }
             );
             const jsonData = await response.json();
             setAssignments(jsonData);
@@ -68,7 +71,10 @@ const SubmittedAssignmentsModal = ({assignment}) => {
                                 target="_blank"
                                 to={`/submission/studentAssignment-${assignment.submission_id}`}
                                 >
-                                    <p>{assignment.student_fname + " " + assignment.student_lname}</p>
+                                    {assignment.team_id == null ?
+                                        <p>{assignment.student_fname + " " + assignment.student_lname}</p>
+                                        : <p>{assignment.team_name}</p>
+                                    }
                             </Link>
                         ) : <p>No assignments submitted!</p>}
                     </div>

@@ -135,6 +135,7 @@ router.delete("/deleteAssignment/:id", authorization, async(req, res) => {
     }
 });
 
+// Upload route for individual student assignment upload
 router.post("/uploadStudentAssignment", authorization, async(req, res) => {
     try {
 
@@ -162,6 +163,34 @@ router.post("/uploadStudentAssignment", authorization, async(req, res) => {
     }
 });
 
+// Upload route for team assignment upload
+router.post("/uploadTeamAssignment", authorization, async(req, res) => {
+    try {
+
+        const {assignment_id, team_id} = req.body;
+        var student_assignment_filename = null;
+        if (req.files) 
+        {
+            let student_assignment_upload = req.files.student_assignment_upload;
+
+            student_assignment_filename = "studentTeamAssignment_" + req.user.toString() + "_" + uuid().toString() + "." + student_assignment_upload.mimetype.split("/")[1];
+
+            //Use the mv() method to place the file in upload directory
+            student_assignment_upload.mv("../../public/uploads/documents/studentAssignments/" + student_assignment_filename);
+        }
+
+        const assignment = await pool.query(
+            "INSERT INTO assignmentbridgetable (assignment_id, team_id, student_id, submission) VALUES($1, $2, $3, $4) RETURNING *", [assignment_id, team_id, req.user, student_assignment_filename]
+        );
+
+        res.json(assignment.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
 // get all submitted assignments associated with a specific assignment
 router.get("/submittedAssignments/:assignment_id", authorization, async(req, res) => {
     try {
@@ -173,9 +202,15 @@ router.get("/submittedAssignments/:assignment_id", authorization, async(req, res
         */
 
         const submittedAssignments = await pool.query(
-            "SELECT * FROM assignmentbridgetable NATURAL JOIN students WHERE assignment_id = $1", [assignment_id]
+            `SELECT * FROM assignmentbridgetable 
+             FULL JOIN students 
+             ON assignmentbridgetable.student_id=students.student_id
+             FULL JOIN teams
+             ON assignmentbridgetable.team_id=teams.team_id
+             WHERE assignment_id = $1`, 
+             [assignment_id]
         );
-
+        
         res.json(submittedAssignments.rows);
 
     } catch (error) {

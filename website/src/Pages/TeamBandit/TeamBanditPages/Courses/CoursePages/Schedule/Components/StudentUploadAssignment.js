@@ -1,4 +1,4 @@
-import {React, useState, Fragment} from 'react'
+import {React, useState, Fragment, useEffect} from 'react'
 
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -20,8 +20,9 @@ const style = {
     p: 4,
 };
 
-const StudentUploadAssignment = ({setRowChange, assignment}) => {
+const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
     const [student_assignment_upload, setStudentAssignmentUpload] = useState(null);
+    const [team_id, setTeamId] = useState(null);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -33,6 +34,23 @@ const StudentUploadAssignment = ({setRowChange, assignment}) => {
     const onFileChange = (e) => {
         setStudentAssignmentUpload(e.target.files[0]); 
     }
+
+    const getTeamId = async () => {
+        try {
+            const myHeaders = new Headers();
+            myHeaders.append("token", localStorage.token);
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/teams/getTeamId/${userInfo.student_id}`, {
+                method: "GET",
+                headers: {myHeaders},
+            });
+
+            const jsonData = await response.json()
+            setTeamId(jsonData.team_id);
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
 
     const uploadStudentAssignment = async (event, assignment_id) => {
         event.preventDefault();
@@ -58,6 +76,36 @@ const StudentUploadAssignment = ({setRowChange, assignment}) => {
             toast.error("Failed to add assignment!");
         }
     };
+
+    const uploadTeamAssignment = async (event, assignment_id) => {
+        event.preventDefault();
+        try {
+            const formData = new FormData();
+            formData.append("student_assignment_upload", student_assignment_upload);
+            formData.append("assignment_id", assignment_id);
+            formData.append("team_id", team_id);
+        
+            const myHeaders = new Headers();
+            myHeaders.append("token", localStorage.token);
+
+            await fetch(`${process.env.REACT_APP_BASEURL}/assignments/uploadTeamAssignment`, {
+                method: "POST",
+                headers: myHeaders,
+                body: formData,
+            });
+
+            toast.success("Assignment was uploaded successfully!");
+            setStudentAssignmentUpload(null);
+            setRowChange(true);
+        } catch (error) {
+            console.error(error.message);
+            toast.error("Failed to add assignment!");
+        }
+    };
+
+    useEffect(() => {
+        getTeamId();
+    }, []);
 
     return (
         <Fragment>
@@ -91,16 +139,31 @@ const StudentUploadAssignment = ({setRowChange, assignment}) => {
                         <input type="file" accept="application/pdf" name="student_assignment_upload" onChange={onFileChange}/>
                     </form>
 
-                    <Button
-                        sx={{ m: 3 }}
-                        variant="contained"
-                        color="success"
-                        onClick={(e) => (handleClose(), uploadStudentAssignment(e, assignment.assignment_id))}
-                        startIcon={<AddIcon />}
-                    >
-                        {" "}
-                        Upload{" "}
-                    </Button>
+                    {assignment.submission_type === "Individual" &&
+                        <Button
+                            sx={{ m: 3 }}
+                            variant="contained"
+                            color="success"
+                            onClick={(e) => (handleClose(), uploadStudentAssignment(e, assignment.assignment_id))}
+                            startIcon={<AddIcon />}
+                        >
+                            {" "}
+                            Upload{" "}
+                        </Button>
+                    }
+                    {assignment.submission_type === "Team" &&
+                        <Button
+                            sx={{ m: 3 }}
+                            variant="contained"
+                            color="success"
+                            onClick={(e) => (handleClose(), uploadTeamAssignment(e, assignment.assignment_id))}
+                            startIcon={<AddIcon />}
+                        >
+                            {" "}
+                            Upload Team Assignment{" "}
+                        </Button>
+                    }
+
                     <Button
                         sx={{ m: 2 }}
                         variant="contained"
