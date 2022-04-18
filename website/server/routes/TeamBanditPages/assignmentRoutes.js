@@ -84,9 +84,9 @@ router.post("/addAssignment", authorization, async(req, res) => {
 router.put("/editAssignment/:id", authorization, async(req, res) => {
     try {
         const {id} = req.params;
-        const {assignment_name, assignment_description} = req.body;
+        const {assignment_name, assignment_description, assignment_start_date, assignment_due_date} = req.body;
 
-        const updateAssignment = await pool.query("UPDATE assignments SET assignment_name = $1, assignment_description = $2 WHERE assignment_id = $3 AND organizer_id = $4 RETURNING *", [assignment_name, assignment_description, id, req.user]);
+        const updateAssignment = await pool.query("UPDATE assignments SET assignment_name = $1, assignment_description = $2, assignment_start_date = $3, assignment_due_date = $4 WHERE assignment_id = $5 AND organizer_id = $6 RETURNING *", [assignment_name, assignment_description, assignment_start_date, assignment_due_date, id, req.user]);
 
         if(updateAssignment.rows.length === 0)
         {

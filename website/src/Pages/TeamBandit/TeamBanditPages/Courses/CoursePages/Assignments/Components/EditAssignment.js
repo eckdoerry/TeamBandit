@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState } from "react";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -27,26 +27,55 @@ const EditAssignment = ({ assignment, setRowChange }) => {
     // Variables
     const [assignment_name, setAssignmentName] = useState("");
     const [assignment_description, setAssignmentDescription] = useState("");
+    const [assignment_start_date, setAssignmentStartDate] = useState("");
+    const [assignment_due_date, setAssignmentDueDate] = useState("");
+    const [assignment_instructions, setAssignmentInstructions] = useState(null);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
         setAssignmentName(assignment.assignment_name);
         setAssignmentDescription(assignment.assignment_description);
+        setAssignmentStartDate(assignment.assignment_start_date);
+        setAssignmentDueDate(assignment.assignment_due_date);
+        setAssignmentInstructions(null);
     };
     const handleClose = () => {
         setOpen(false);
-        setAssignmentName(assignment.assignment_name);
-        setAssignmentDescription(assignment.assignment_description);
     };
+
+    const onFileChange = (e) => {
+        setAssignmentInstructions(e.target.files[0]); 
+    }
+
+    const updateAssignmentInstructions = async (e) => {
+        e.preventDefault();
+        try {
+
+            const formData = new FormData();
+            formData.append("assignmentInstructions", assignment_instructions);
+
+            const myHeaders = new Headers();
+            myHeaders.append("token", localStorage.token);
+
+            await fetch(`${process.env.REACT_APP_BASEURL}/fileuploads/assignmentInstructions/${assignment.assignment_id}`, {method: "PUT", body: formData, headers: myHeaders});
+  
+            setRowChange(true);
+
+        } catch (error) {
+            console.error(error.message);
+            toast.error("Failed to update assignment!");
+        }
+    }
 
     const updateAssignment = async (e) => {
         e.preventDefault();
         try {
-            
             const body = {
                 assignment_name,
-                assignment_description
+                assignment_description,
+                assignment_start_date,
+                assignment_due_date
             };
             const myHeaders = new Headers();
 
@@ -62,7 +91,8 @@ const EditAssignment = ({ assignment, setRowChange }) => {
                 }
             );
 
-            toast.success("Assignment was successfully updated!");
+            toast.success("Assignment information was successfully updated!");
+            
             setRowChange(true);
         } catch (error) {
             console.error(error.message);
@@ -119,6 +149,24 @@ const EditAssignment = ({ assignment, setRowChange }) => {
                         <Typography variant="overline" display="block" gutterBottom >* You can leave Mentor, Sponsor, PDF, and Team Lead fields blank if you don't want them changed.</Typography>
                     </Box>
 
+                    <Typography>Assignment Start Date</Typography>
+                    <TextField
+                        fullWidth
+                        sx={{ m: 2 }}
+                        type="datetime-local"
+                        value={assignment_start_date}
+                        onChange={(e) => setAssignmentStartDate(e.target.value)}
+                    />
+
+                    <Typography>Assignment Due Date</Typography>
+                    <TextField
+                        fullWidth
+                        sx={{ m: 2 }}
+                        type="datetime-local"
+                        value={assignment_due_date}
+                        onChange={(e) => setAssignmentDueDate(e.target.value)}
+                    />
+
                     <Typography>Assignment Name</Typography>
                     <TextField
                         fullWidth
@@ -139,11 +187,16 @@ const EditAssignment = ({ assignment, setRowChange }) => {
                         onChange={(e) => setAssignmentDescription(e.target.value)}
                     />
 
+                    <Typography>Upload Assignment PDF Instructions</Typography>
+                    <form encType="multipart/form-data">
+                        <input type="file" accept="application/pdf" name="assignmentInstructions" onChange={onFileChange}/>
+                    </form>
+
                     <Button
                         sx={{ m: 3 }}
                         variant="contained"
                         color="warning"
-                        onClick={(e) => (handleClose(), updateAssignment(e))}
+                        onClick={(e) => (handleClose(), updateAssignment(e), updateAssignmentInstructions(e))}
                         startIcon={<EditIcon />}
                     >
                         {" "}

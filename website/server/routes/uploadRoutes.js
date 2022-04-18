@@ -132,16 +132,16 @@ router.put("/assignmentInstructions/:assignment_id", authorization, async(req, r
         const {assignment_id} = req.params;
         if(!req.files) 
         {
-            res.json("No files selected!");
+            return;
         } 
         else 
         {
-            const oldAssignmentInstructionsPath = await pool.query("SELECT organizer_id, assignment_instructions FROM assignments WHERE organizer_id = $1", [req.user]);
+            const oldAssignmentInstructionsPath = await pool.query("SELECT organizer_id, assignment_filename FROM assignments WHERE organizer_id = $1", [req.user]);
 
             // Removes old profile pic
-            if (fs.existsSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentInstructionsPath.rows[0].projectoverview_filename))
+            if (fs.existsSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentInstructionsPath.rows[0].assignment_filename))
             {
-                fs.unlinkSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentInstructionsPath.rows[0].projectoverview_filename);
+                fs.unlinkSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentInstructionsPath.rows[0].assignment_filename);
             }
 
             let assignmentInstructions = req.files.assignmentInstructions;
@@ -151,7 +151,7 @@ router.put("/assignmentInstructions/:assignment_id", authorization, async(req, r
             //Use the mv() method to place the file in upload directory
             assignmentInstructions.mv("../../public/uploads/documents/assignmentInstructions/" + new_filename);
 
-            const updateProjectOverview = await pool.query("UPDATE assignments SET assignment_instructions = $1 WHERE assignment_id = $2 AND organizer_id = $3 RETURNING *", [new_filename, assignment_id, req.user]);
+            const updateProjectOverview = await pool.query("UPDATE assignments SET assignment_filename = $1 WHERE assignment_id = $2 AND organizer_id = $3 RETURNING *", [new_filename, assignment_id, req.user]);
           
             if(updateProjectOverview.rows.length === 0)
             {
@@ -159,10 +159,10 @@ router.put("/assignmentInstructions/:assignment_id", authorization, async(req, r
             }
 
             //send response
-            res.json("Your project overview was successfully updated!");
+            res.json("Your assignment instructions was successfully updated!");
         }
-    } 
-    catch (error) 
+    }
+    catch (error)
     {
         console.error(error.message);
     }

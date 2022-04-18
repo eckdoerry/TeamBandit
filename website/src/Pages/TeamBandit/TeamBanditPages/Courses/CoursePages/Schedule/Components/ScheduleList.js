@@ -4,6 +4,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
+import styles from "../Schedule.module.css";
 
 // Datagrid
 import {
@@ -20,6 +21,14 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
     const [assignments, setAssignments] = useState([]);
+
+    // LOADING VARIABLES //
+    const [loading, setLoading] = useState(true);
+
+    const setLoadingFalse = () => {
+        setLoading(false);
+    };
+    // END LOADING VARIABLES //
 
     const getProperStartDateFormat = (params) => {
         // 1 week = 604800000 milliseconds
@@ -173,6 +182,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
             const jsonData = await response.json();
 
             setRows(jsonData);
+            setLoadingFalse();
         } catch (err) {
             console.error(err.message);
         }
@@ -201,6 +211,26 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
         }
         setRowChange(false);
     }, [rowChange]);
+
+    if (loading) {
+        return (
+            <div
+                style={{
+                    display: "flex",
+                    width: "100%",
+                    height: "100%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <div className={styles.lds}>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        );
+    }
 
     if (userIdentifier == "organizer")
     {

@@ -52,8 +52,8 @@ const CoursePage = ({ courseInfo, userInfo, userIdentifier, setCoursesChange }) 
             setPages([
                 {key: 1, page: "Projects"},
                 {key: 2, page: "Schedule"},
-                {key: 3, page: "Students"},
-                {key: 4, page: "Assignments"},
+                {key: 3, page: "Assignments"},
+                {key: 4, page: "Students"},
                 {key: 5, page: "Mentors"},
                 {key: 6, page: "Settings"}]);
         }
