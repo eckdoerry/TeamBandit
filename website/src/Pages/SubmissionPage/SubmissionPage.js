@@ -13,7 +13,7 @@ import TeamBanditLogo from "../../Images/logo.png";
 const theme = createTheme();
 
 const SubmissionPage = () => {
-    const windowValue = window.location.pathname.replace("/submission/", "");
+    const windowValue = window.location.hash.replace("#/submission/", "");
     const regExp = /%20/g;
     const windowString = windowValue.replace(regExp, " ");
     const submissionCourse = windowString.split("-");

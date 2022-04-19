@@ -51,7 +51,7 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
         var newDate = dateArray[1] + '/' + dateArray[2].split('T')[0] + " at " + dateArray[2].split('T')[1];
         return (
             <div>
-                {newDate}
+                {newDate}&nbsp;MST
             </div>
         );
     };
@@ -62,7 +62,7 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
         var newDate = dateArray[1] + '/' + dateArray[2].split('T')[0] + " at " + dateArray[2].split('T')[1];
         return (
             <div>
-                {newDate}
+                {newDate}&nbsp;MST
             </div>
         );
     };

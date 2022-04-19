@@ -16,7 +16,7 @@ import SetScheduleWeeks from "./SetScheduleWeeks";
 import StudentUploadAssignment from "./StudentUploadAssignment";
 import SubmittedAssignmentsModal from "./SubmittedAssignmentsModal";
 
-function ScheduleList({ courseInfo, userIdentifier }) {
+function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
     const [assignments, setAssignments] = useState([]);
@@ -80,7 +80,7 @@ function ScheduleList({ courseInfo, userIdentifier }) {
                                 </Link>
                                 <p>&nbsp;due by:&nbsp;{assignment.assignment_due_date.split("T")[1]}&nbsp;MST</p>
                                 {userIdentifier == "organizer" && <SubmittedAssignmentsModal assignment={assignment}/>}
-                                {userIdentifier == "student" && <StudentUploadAssignment setRowChange={setRowChange} assignment={assignment}/>}
+                                {userIdentifier == "student" && <StudentUploadAssignment setRowChange={setRowChange} assignment={assignment} userInfo={userInfo}/>}
                             </div>
                         )
                 )}
@@ -118,7 +118,7 @@ function ScheduleList({ courseInfo, userIdentifier }) {
             headerName: "Week",
             renderCell: getProperWeekFormat,
             cellClassName: "border",
-            flex: 2,
+            flex: 1,
         },
         {
             field: "schedule_description",

@@ -20,7 +20,7 @@ router.get("/:course_id", authorization, async(req, res) => {
     } catch (error) {
         console.error(error.message);
     }
-})
+});
 
 router.get("/isTeamLead/:fname/:lname", async(req, res) => {
     try {
@@ -35,7 +35,7 @@ router.get("/isTeamLead/:fname/:lname", async(req, res) => {
     } catch (error) {
         console.error(error.message);
     }
-})
+});
 
 // Updates a student based on student id
 router.put("/updateColor/:id", async(req, res) => {
@@ -129,7 +129,7 @@ router.get("/students/:course_id", authorization, async(req, res) => {
     } catch (error) {
         console.error(error.message);
     }
-})
+});
 
 
 // Gets all teams based off of course_id and project id 
@@ -143,7 +143,7 @@ router.get("/team-name/:team_name", async(req, res) => {
     } catch (error) {
         console.error(error.message);
     }
-})
+});
 
 // Gets all teams based off of course_id and project id 
 router.get("/team-members/:team_id", async(req, res) => {
@@ -156,7 +156,7 @@ router.get("/team-members/:team_id", async(req, res) => {
     } catch (error) {
         console.error(error.message);
     }
-})
+});
 
 // Gets all teams based off of course_id and project id 
 router.get("/project-info/:team_id", async(req, res) => {
@@ -168,8 +168,7 @@ router.get("/project-info/:team_id", async(req, res) => {
     } catch (error) {
         console.error(error.message);
     }
-})
-
+});
 
 // Updates a team based on team id
 router.put("/teams/:id", authorization, async(req, res) => {
@@ -218,7 +217,20 @@ router.delete("/students/:id/:course_id", authorization, async(req, res) => {
     } catch (error) {
         console.error(error.message);
     }
-})
+});
+
+// Gets a single student's team id from that student's id 
+router.get("/getTeamId/:student_id", async(req, res) => {
+    try {
+        const {student_id} = req.params;
+        const team_id = await pool.query("SELECT student_id, team_id FROM studentteambridgetable WHERE student_id = $1", [student_id]);
+
+        res.json(team_id.rows[0]);
+
+    } catch (error) {
+        console.error(error.message);
+    }
+});
 
 // END TEAM ROUTES //
 

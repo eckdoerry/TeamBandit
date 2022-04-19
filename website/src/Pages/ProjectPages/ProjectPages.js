@@ -35,7 +35,7 @@ const theme = createTheme();
  * may or not be used
  */
 const ProjectPage = () => {
-    const windowValue = window.location.pathname.replace("/project-pages/", "");
+    const windowValue = window.location.hash.replace("#/project-pages/", "");
     const regExp = /%20/g;
     const projectname = windowValue.replace(regExp, " ");
 
