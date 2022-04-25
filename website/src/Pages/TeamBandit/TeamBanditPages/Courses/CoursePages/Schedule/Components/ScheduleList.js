@@ -212,6 +212,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
         setRowChange(false);
     }, [rowChange]);
 
+    /*
     if (loading) {
         return (
             <div
@@ -231,6 +232,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
             </div>
         );
     }
+    */
 
     if (userIdentifier == "organizer")
     {
@@ -267,7 +269,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
             </div>
         );
     }
-    else if (userIdentifier == "student")
+    if (userIdentifier == "student")
     {
         return (
             <>

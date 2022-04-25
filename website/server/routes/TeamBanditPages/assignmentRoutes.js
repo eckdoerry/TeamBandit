@@ -10,7 +10,7 @@ router.get("/:course_id", async(req, res) => {
         const {course_id} = req.params;
 
         const assignments = await pool.query(
-            "SELECT organizer_id, assignment_id, assignment_name, assignment_start_date, assignment_due_date, assignment_description, submission_type, assignment_filename, course_id FROM assignments WHERE course_id = $1 ORDER BY assignment_id ASC", [course_id]
+            "SELECT organizer_id, assignment_id, assignment_name, assignment_start_date, assignment_due_date, submission_type, num_submissions_allowed, assignment_filename, course_id FROM assignments WHERE course_id = $1 ORDER BY assignment_id ASC", [course_id]
         );
 
         res.json(assignments.rows);
@@ -56,7 +56,7 @@ router.get("/submission/:submission_id", authorization, async(req, res) => {
 router.post("/addAssignment", authorization, async(req, res) => {
     try {
 
-        const {assignment_name, assignment_start_date, assignment_due_date, assignment_description, submission_type, course_id} = req.body;
+        const {assignment_name, assignment_start_date, assignment_due_date, submission_type, num_submissions_allowed, display_on_team_website, course_id} = req.body;
         var assignment_filename = null;
         if (req.files) 
         {
@@ -69,7 +69,7 @@ router.post("/addAssignment", authorization, async(req, res) => {
         }
 
         const assignment = await pool.query(
-            "INSERT INTO assignments (assignment_name, assignment_start_date, assignment_due_date, assignment_description, submission_type, assignment_filename, course_id, organizer_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *", [assignment_name, assignment_start_date, assignment_due_date, assignment_description, submission_type, assignment_filename, course_id, req.user]
+            "INSERT INTO assignments (assignment_name, assignment_start_date, assignment_due_date, submission_type, num_submissions_allowed, display_on_team_website, assignment_filename, course_id, organizer_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *", [assignment_name, assignment_start_date, assignment_due_date, submission_type, num_submissions_allowed, display_on_team_website, assignment_filename, course_id, req.user]
         );
 
         res.json(assignment.rows);
@@ -84,9 +84,9 @@ router.post("/addAssignment", authorization, async(req, res) => {
 router.put("/editAssignment/:id", authorization, async(req, res) => {
     try {
         const {id} = req.params;
-        const {assignment_name, assignment_description, assignment_start_date, assignment_due_date} = req.body;
+        const {assignment_name, assignment_start_date, assignment_due_date} = req.body;
 
-        const updateAssignment = await pool.query("UPDATE assignments SET assignment_name = $1, assignment_description = $2, assignment_start_date = $3, assignment_due_date = $4 WHERE assignment_id = $5 AND organizer_id = $6 RETURNING *", [assignment_name, assignment_description, assignment_start_date, assignment_due_date, id, req.user]);
+        const updateAssignment = await pool.query("UPDATE assignments SET assignment_name = $1, assignment_start_date = $2, assignment_due_date = $3 WHERE assignment_id = $4 AND organizer_id = $5 RETURNING *", [assignment_name, assignment_start_date, assignment_due_date, id, req.user]);
 
         if(updateAssignment.rows.length === 0)
         {
@@ -139,7 +139,17 @@ router.delete("/deleteAssignment/:id", authorization, async(req, res) => {
 router.post("/uploadStudentAssignment", authorization, async(req, res) => {
     try {
 
-        const {assignment_id} = req.body;
+        const {assignment_id, num_submissions_allowed} = req.body;
+        const alreadySubmitted = await pool.query(
+            "SELECT assignment_id, student_id, submission_num FROM assignmentbridgetable WHERE assignment_id = $1 AND student_id = $2", [assignment_id, req.user]
+        );
+        
+        if (alreadySubmitted.rows[0].submission_num == num_submissions_allowed)
+        {
+            res.json("Maximum submissions have been reached! Your new submission was not uploaded.");
+            return;
+        }
+
         var student_assignment_filename = null;
         if (req.files) 
         {
@@ -151,11 +161,20 @@ router.post("/uploadStudentAssignment", authorization, async(req, res) => {
             student_assignment_upload.mv("../../public/uploads/documents/studentAssignments/" + student_assignment_filename);
         }
 
-        const assignment = await pool.query(
-            "INSERT INTO assignmentbridgetable (assignment_id, team_id, student_id, submission) VALUES($1, $2, $3, $4) RETURNING *", [assignment_id, null, req.user, student_assignment_filename]
-        );
+        if (alreadySubmitted.rows.length === 0)
+        {
+            await pool.query(
+                "INSERT INTO assignmentbridgetable (assignment_id, student_id, submission) VALUES($1, $2, $3) RETURNING *", [assignment_id, req.user, student_assignment_filename]
+            );
+        }
+        else 
+        {
+            await pool.query(
+                "UPDATE assignmentbridgetable SET submission_num = submission_num + 1 WHERE assignment_id = $1 AND student_id = $2", [assignment_id, req.user]
+            );
+        }
 
-        res.json(assignment.rows);
+        res.json("Assignment was uploaded successfully!");
 
     } catch (error) {
         console.error(error.message);
@@ -195,11 +214,6 @@ router.post("/uploadTeamAssignment", authorization, async(req, res) => {
 router.get("/submittedAssignments/:assignment_id", authorization, async(req, res) => {
     try {
         const {assignment_id} = req.params;
-        /*
-        const submittedAssignments = await pool.query(
-            "SELECT assignment_id, submission FROM assignmentbridgetable WHERE assignment_id = $1 ORDER BY assignment_id ASC", [assignment_id]
-        );
-        */
 
         const submittedAssignments = await pool.query(
             `SELECT * FROM assignmentbridgetable 

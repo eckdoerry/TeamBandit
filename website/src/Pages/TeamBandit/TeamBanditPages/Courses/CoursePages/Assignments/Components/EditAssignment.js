@@ -26,7 +26,6 @@ const EditAssignment = ({ assignment, setRowChange }) => {
 
     // Variables
     const [assignment_name, setAssignmentName] = useState("");
-    const [assignment_description, setAssignmentDescription] = useState("");
     const [assignment_start_date, setAssignmentStartDate] = useState("");
     const [assignment_due_date, setAssignmentDueDate] = useState("");
     const [assignment_instructions, setAssignmentInstructions] = useState(null);
@@ -35,7 +34,6 @@ const EditAssignment = ({ assignment, setRowChange }) => {
     const handleOpen = () => {
         setOpen(true);
         setAssignmentName(assignment.assignment_name);
-        setAssignmentDescription(assignment.assignment_description);
         setAssignmentStartDate(assignment.assignment_start_date);
         setAssignmentDueDate(assignment.assignment_due_date);
         setAssignmentInstructions(null);
@@ -73,7 +71,6 @@ const EditAssignment = ({ assignment, setRowChange }) => {
         try {
             const body = {
                 assignment_name,
-                assignment_description,
                 assignment_start_date,
                 assignment_due_date
             };
@@ -146,7 +143,6 @@ const EditAssignment = ({ assignment, setRowChange }) => {
                         >
                             Edit Assignment
                         </Typography>
-                        <Typography variant="overline" display="block" gutterBottom >* You can leave Mentor, Sponsor, PDF, and Team Lead fields blank if you don't want them changed.</Typography>
                     </Box>
 
                     <Typography>Assignment Start Date</Typography>
@@ -177,16 +173,6 @@ const EditAssignment = ({ assignment, setRowChange }) => {
                         onChange={(e) => setAssignmentName(e.target.value)}
                     />
 
-                    <Typography>Assignment Description</Typography>
-                    <TextField
-                        fullWidth
-                        sx={{ m: 2 }}
-                        label="Assignment Description"
-                        type="text"
-                        value={assignment_description}
-                        onChange={(e) => setAssignmentDescription(e.target.value)}
-                    />
-
                     <Typography>Upload Assignment PDF Instructions</Typography>
                     <form encType="multipart/form-data">
                         <input type="file" accept="application/pdf" name="assignmentInstructions" onChange={onFileChange}/>
@@ -200,7 +186,7 @@ const EditAssignment = ({ assignment, setRowChange }) => {
                         startIcon={<EditIcon />}
                     >
                         {" "}
-                        Edit{" "}
+                        Save{" "}
                     </Button>
                     <Button
                         sx={{ m: 2 }}
@@ -210,7 +196,7 @@ const EditAssignment = ({ assignment, setRowChange }) => {
                         startIcon={<CloseIcon />}
                     >
                         {" "}
-                        Close{" "}
+                        Cancel{" "}
                     </Button>
                     <Button
                     variant="outlined"

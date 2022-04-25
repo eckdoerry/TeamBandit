@@ -32,31 +32,50 @@ const submissionTypes = [
       value: 'Individual',
       label: 'Individual',
     },
-  ];
+];
+
+const displayAssignmentOnTeamWebsiteTypes = [
+    {
+        value: "Yes",
+        label: "Yes",
+    },
+    {
+        value: "No",
+        label: "No",
+    },
+]
 
 const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
     // Variables
     const [assignment_name, setAssignmentName] = useState("");
     const [assignment_start_date, setAssignmentStartDate] = useState("");
     const [assignment_due_date, setAssignmentDueDate] = useState("");
-    const [assignment_description, setAssignmentDescription] = useState("");
     const [submission_type, setSubmissionType] = useState("");
+    const [num_submissions_allowed, setNumSubmissionsAllowed] = useState(null);
+    const [display_on_team_website, setDisplayOnTeamWebsite] = useState("");
     const [assignment_instructions, setAssignmentInstructions] = useState(null);
 
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        setOpen(true);
+        setNumSubmissionsAllowed(1);
+    }
     const handleClose = () => {
         setOpen(false);
         setAssignmentName("");
         setAssignmentStartDate("");
         setAssignmentDueDate("");
-        setAssignmentDescription("");
         setSubmissionType("");
+        setDisplayOnTeamWebsite("No");
         setAssignmentInstructions(null);
     };
 
     const handleSubmissionTypeChange = (e) => {
         setSubmissionType(e.target.value);
+    }
+
+    const handleDisplayAssignmentOnTeamWebsiteChange = (e) => {
+        setDisplayOnTeamWebsite(e.target.value);
     }
 
     const onFileChange = (e) => {
@@ -65,14 +84,20 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
 
     const addAssignment = async (event) => {
         event.preventDefault();
+        if (assignment_name === "" || assignment_name === "" || assignment_start_date === "" || assignment_due_date === "" || submission_type === null || num_submissions_allowed === null)
+        {
+            alert("Invalid values entered!");
+            return;
+        }
         try {
             const formData = new FormData();
             formData.append("assignmentInstructions", assignment_instructions);
             formData.append("assignment_name", assignment_name);
             formData.append("assignment_start_date", assignment_start_date);
             formData.append("assignment_due_date", assignment_due_date);
-            formData.append("assignment_description", assignment_description);
             formData.append("submission_type", submission_type);
+            formData.append("num_submissions_allowed", num_submissions_allowed);
+            formData.append("display_on_team_website", display_on_team_website);
             formData.append("course_id", courseInfo.course_id);
         
             const myHeaders = new Headers();
@@ -88,7 +113,6 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
             setAssignmentName("");
             setAssignmentStartDate("");
             setAssignmentDueDate("");
-            setAssignmentDescription("");
             setSubmissionType("");
             setAssignmentInstructions(null);
             setRowChange(true);
@@ -155,15 +179,14 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
                         onChange={(e) => setAssignmentDueDate(e.target.value)}
                     />
 
-                    <Typography>Assignment Description</Typography>
+                    <Typography>Number of Submissions Allowed</Typography>
                     <TextField
                         fullWidth
                         sx={{ m: 2 }}
-                        label="Assignment Description"
-                        type="text"
-                        value={assignment_description}
-                        onChange={(e) => setAssignmentDescription(e.target.value)}
-                    />
+                        type="number"
+                        onChange={(e) => setNumSubmissionsAllowed(e.target.value)}
+                        >
+                    </TextField>
 
                     <Typography>Submission Type</Typography>
                     <TextField
@@ -180,6 +203,26 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
                             </MenuItem>
                         ))}
                     </TextField>
+                    
+                    {submission_type === "Team" &&
+                        <div>
+                            <Typography>Display Assignment on Team Website?</Typography>
+                            <TextField
+                                fullWidth
+                                sx={{ m: 2 }}
+                                select
+                                label="Display Assignment on Team Website?"
+                                value={display_on_team_website}
+                                onChange={handleDisplayAssignmentOnTeamWebsiteChange}
+                                >
+                                {displayAssignmentOnTeamWebsiteTypes.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </div>
+                    }
 
                     <Typography>Upload Assignment PDF Instructions</Typography>
                     <form encType="multipart/form-data">

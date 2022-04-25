@@ -99,12 +99,6 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
             flex: 2,
         },
         {
-            field: "assignment_description",
-            headerName: "Description",
-            cellClassName: "border",
-            flex: 2,
-        },
-        {
             field: "submission_type",
             headerName: "Type",
             cellClassName: "border",
