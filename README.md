@@ -1,6 +1,6 @@
 ![TeamBandit Logo](/website/src/Images/teamBanditLogo.png)
 
-![](https://img.shields.io/github/contributors/QJMTech/TeamBandit?style=for-the-badge) ![](https://img.shields.io/github/stars/QJMTech/TeamBandit?style=for-the-badge) ![](https://img.shields.io/github/forks/QJMTech/TeamBandit?color=orange&style=for-the-badge) ![](https://img.shields.io/badge/Stage-Alpha%20Development-red?style=for-the-badge) ![](https://img.shields.io/github/issues/QJMTech/TeamBandit?style=for-the-badge)
+![](https://img.shields.io/github/contributors/QJMTech/TeamBandit?style=for-the-badge) ![](https://img.shields.io/github/stars/QJMTech/TeamBandit?style=for-the-badge) ![](https://img.shields.io/github/forks/QJMTech/TeamBandit?color=orange&style=for-the-badge) ![](https://img.shields.io/badge/Stage-Beta%20Development-red?style=for-the-badge) ![](https://img.shields.io/github/issues/QJMTech/TeamBandit?style=for-the-badge)
 
 A revolutionary course management portal which combines every element of communication, administration, delegation, and organization to provide a seamless platform for teaching professional skills in the environment most practical to the modern workforce— in a team.
 

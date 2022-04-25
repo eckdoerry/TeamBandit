@@ -38,6 +38,7 @@
     display: inline-block;
     border-bottom: 1.5px solid #FAC01A;
     padding-bottom: 5px;
+    cursor: pointer;
 }
 
 .formFieldInput {
