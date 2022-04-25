@@ -112,7 +112,10 @@ export default function MainPage({ userIdentifier, setAuth }) {
 
     // JS
     const theme = useTheme();
-    const [open, setOpen] = useState(false);
+
+    // start with drawer open by default, closes upon first use
+    const [open, setOpen] = useState(true);
+
     const [anchorElUser, setAnchorElUser] = useState(null);
 
     // ENUM string for routes
@@ -126,6 +129,9 @@ export default function MainPage({ userIdentifier, setAuth }) {
     const [clients, setClients] = useState([]);
     const [projects, setProjects] = useState([]);
     const [students, setStudents] = useState([]);
+    
+    // Flag to keep track of drawer initial open state upon login
+    const [drawerInitialized, setDrawerInitialized] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -133,6 +139,7 @@ export default function MainPage({ userIdentifier, setAuth }) {
 
     const handleDrawerClose = () => {
         setOpen(false);
+        setDrawerInitialized(true);
     };
 
     const handleOpenUserMenu = (event) => {

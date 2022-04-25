@@ -13,11 +13,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-<<<<<<< HEAD
 import Select from "@mui/material/Select";
 import CloseIcon from "@mui/icons-material/Close";
-=======
->>>>>>> bacd36bf5754d053517f30566e247009a64a8b4a
 import {Delete} from "@mui/icons-material";
 
 import { toast } from 'react-toastify';
@@ -128,12 +125,7 @@ const EditMentor = ({courseInfo, mentor, setRowChange}) => {
                 <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="Mentor Email" type = "text" value = {mentor_email} onChange = {e => setMentorEmail(e.target.value)}/>
                 <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {(e) => (handleClose(), updateMentor(e))}> Edit </Button>
                 <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Close </Button>
-<<<<<<< HEAD
                 <Button variant="outlined" color="error" onClick={handleDeleteConfirmOpen} startIcon={<DeleteIcon />}> PERMANENTLY DELETE </Button>
-=======
-                <Button variant="outlined" color="error" onClick = {handleDeleteConfirmOpen} startIcon={<DeleteIcon />}> Delete Mentor </Button>
-
->>>>>>> bacd36bf5754d053517f30566e247009a64a8b4a
 
                 <Dialog 
                     open={deleteConfirmOpen}
