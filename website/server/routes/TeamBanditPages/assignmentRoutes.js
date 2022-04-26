@@ -10,7 +10,7 @@ router.get("/:course_id", async(req, res) => {
         const {course_id} = req.params;
 
         const assignments = await pool.query(
-            "SELECT organizer_id, assignment_id, assignment_name, assignment_start_date, assignment_due_date, submission_type, num_submissions_allowed, assignment_filename, course_id FROM assignments WHERE course_id = $1 ORDER BY assignment_id ASC", [course_id]
+            "SELECT organizer_id, assignment_id, assignment_name, assignment_start_date, assignment_due_date, submission_type, assignment_filename, course_id FROM assignments WHERE course_id = $1 ORDER BY assignment_id ASC", [course_id]
         );
 
         res.json(assignments.rows);
@@ -56,7 +56,7 @@ router.get("/submission/:submission_id", authorization, async(req, res) => {
 router.post("/addAssignment", authorization, async(req, res) => {
     try {
 
-        const {assignment_name, assignment_start_date, assignment_due_date, submission_type, num_submissions_allowed, display_on_team_website, course_id} = req.body;
+        const {assignment_name, assignment_start_date, assignment_due_date, submission_type, allow_submissions_after_due, display_on_team_website, course_id} = req.body;
         var assignment_filename = null;
         if (req.files) 
         {
@@ -69,7 +69,7 @@ router.post("/addAssignment", authorization, async(req, res) => {
         }
 
         const assignment = await pool.query(
-            "INSERT INTO assignments (assignment_name, assignment_start_date, assignment_due_date, submission_type, num_submissions_allowed, display_on_team_website, assignment_filename, course_id, organizer_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *", [assignment_name, assignment_start_date, assignment_due_date, submission_type, num_submissions_allowed, display_on_team_website, assignment_filename, course_id, req.user]
+            "INSERT INTO assignments (assignment_name, assignment_start_date, assignment_due_date, submission_type, allow_submissions_after_due, display_on_team_website, assignment_filename, course_id, organizer_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *", [assignment_name, assignment_start_date, assignment_due_date, submission_type, allow_submissions_after_due, display_on_team_website, assignment_filename, course_id, req.user]
         );
 
         res.json(assignment.rows);
@@ -139,42 +139,40 @@ router.delete("/deleteAssignment/:id", authorization, async(req, res) => {
 router.post("/uploadStudentAssignment", authorization, async(req, res) => {
     try {
 
-        const {assignment_id, num_submissions_allowed} = req.body;
-        const alreadySubmitted = await pool.query(
-            "SELECT assignment_id, student_id, submission_num FROM assignmentbridgetable WHERE assignment_id = $1 AND student_id = $2", [assignment_id, req.user]
-        );
-        
-        if (alreadySubmitted.rows[0].submission_num == num_submissions_allowed)
-        {
-            res.json("Maximum submissions have been reached! Your new submission was not uploaded.");
-            return;
-        }
+        const {assignment_id} = req.body;
 
         var student_assignment_filename = null;
         if (req.files) 
         {
+            const oldStudentSubmissionPath = await pool.query("SELECT student_id, assignment_id, submission FROM assignments WHERE student_id = $1 AND assignment_id = $2", [req.user, assignment_id]);
+
+            // Removes old submission
+            if (fs.existsSync("../../public/uploads/documents/studentAssignments/" + oldStudentSubmissionPath.rows[0].submission))
+            {
+                fs.unlinkSync("../../public/uploads/documents/studentAssignments/" + oldStudentSubmissionPath.rows[0].submission);
+            }
+
             let student_assignment_upload = req.files.student_assignment_upload;
 
             student_assignment_filename = "studentAssignment_" + req.user.toString() + "_" + uuid().toString() + "." + student_assignment_upload.mimetype.split("/")[1];
 
             //Use the mv() method to place the file in upload directory
             student_assignment_upload.mv("../../public/uploads/documents/studentAssignments/" + student_assignment_filename);
-        }
 
-        if (alreadySubmitted.rows.length === 0)
-        {
-            await pool.query(
-                "INSERT INTO assignmentbridgetable (assignment_id, student_id, submission) VALUES($1, $2, $3) RETURNING *", [assignment_id, req.user, student_assignment_filename]
-            );
+            if (oldStudentSubmissionPath.rows.length === 0)
+            {
+                await pool.query(
+                    "INSERT INTO assignmentbridgetable (assignment_id, student_id, submission) VALUES($1, $2, $3) RETURNING *", [assignment_id, req.user, student_assignment_filename]
+                );
+            }
+            else 
+            {
+                await pool.query(
+                    "UPDATE assignmentbridgetable SET submission = student_assignment_filename WHERE assignment_id = $1 AND student_id = $2", [assignment_id, req.user]
+                );
+            }
+            res.json("Assignment was uploaded successfully!");
         }
-        else 
-        {
-            await pool.query(
-                "UPDATE assignmentbridgetable SET submission_num = submission_num + 1 WHERE assignment_id = $1 AND student_id = $2", [assignment_id, req.user]
-            );
-        }
-
-        res.json("Assignment was uploaded successfully!");
 
     } catch (error) {
         console.error(error.message);
@@ -190,19 +188,36 @@ router.post("/uploadTeamAssignment", authorization, async(req, res) => {
         var student_assignment_filename = null;
         if (req.files) 
         {
+            const oldTeamSubmissionPath = await pool.query("SELECT team_id, assignment_id, submission FROM assignments WHERE team_id = $1 AND assignment_id = $2", [team_id, assignment_id]);
+
+            // Removes old submission
+            if (fs.existsSync("../../public/uploads/documents/studentAssignments/" + oldTeamSubmissionPath.rows[0].submission))
+            {
+                fs.unlinkSync("../../public/uploads/documents/studentAssignments/" + oldTeamSubmissionPath.rows[0].submission);
+            }
+
             let student_assignment_upload = req.files.student_assignment_upload;
 
             student_assignment_filename = "studentTeamAssignment_" + req.user.toString() + "_" + uuid().toString() + "." + student_assignment_upload.mimetype.split("/")[1];
 
             //Use the mv() method to place the file in upload directory
             student_assignment_upload.mv("../../public/uploads/documents/studentAssignments/" + student_assignment_filename);
+
+            if (oldTeamSubmissionPath.rows.length === 0)
+            {
+                await pool.query(
+                    "INSERT INTO assignmentbridgetable (assignment_id, team_id, student_id, submission) VALUES($1, $2, $3, $4) RETURNING *", [assignment_id, team_id, req.user, student_assignment_filename]
+                );
+            }
+            else 
+            {
+                await pool.query(
+                    "UPDATE assignmentbridgetable SET submission = student_assignment_filename WHERE assignment_id = $1 AND team_id = $2", [assignment_id, team_id]
+                );
+            }
         }
 
-        const assignment = await pool.query(
-            "INSERT INTO assignmentbridgetable (assignment_id, team_id, student_id, submission) VALUES($1, $2, $3, $4) RETURNING *", [assignment_id, team_id, req.user, student_assignment_filename]
-        );
-
-        res.json(assignment.rows);
+        res.json("Assignment was uploaded successfully!");
 
     } catch (error) {
         console.error(error.message);

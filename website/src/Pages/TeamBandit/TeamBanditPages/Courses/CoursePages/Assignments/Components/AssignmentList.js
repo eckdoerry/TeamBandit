@@ -82,6 +82,7 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
             headerName: "Assignment",
             renderCell: assignmentPage,
             cellClassName: "border",
+            sortable: false,
             flex: 2,
         },
         {
@@ -89,6 +90,7 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
             headerName: "Start Date",
             renderCell: getProperStartDateFormat,
             cellClassName: "border",
+            sortable: false,
             flex: 2,
         },
         {
@@ -96,12 +98,14 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
             headerName: "Due Date",
             renderCell: getProperDueDateFormat,
             cellClassName: "border",
+            sortable: false,
             flex: 2,
         },
         {
             field: "submission_type",
             headerName: "Type",
             cellClassName: "border",
+            sortable: false,
             flex: 2,
         },
         {
@@ -122,8 +126,6 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
                     <Typography sx={{ m: 1 }} variant="h4">
                         Assignments
                     </Typography>
-                    <GridToolbarColumnsButton sx={{ m: 1 }} />
-                    <GridToolbarFilterButton sx={{ m: 1 }} />
                     <GridToolbarExport sx={{ m: 1 }} />
                     <AddAssignment
                         courseInfo={courseInfo}
@@ -186,7 +188,7 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
                 <DataGrid
                     rows={rows}
                     columns={columns}
-                    rowHeight={150}
+                    rowHeight={100}
                     getRowId={(rows) => rows.assignment_id}
                     components={{ Toolbar: CustomToolbar }}
                     disableSelectionOnClick

@@ -48,14 +48,13 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
                             millisecondsOfWeek) >=
                             0 && (
                             <div key={assignment.assignment_id} style={{display: "flex", flexDirection: "row"}}>
-                                <p>Prepare for:&nbsp;</p>
                                 <Link
                                     target="_blank"
                                     to={`/assignment/${assignment.assignment_name}-${assignment.assignment_id}`}
                                 >
                                     <p>{assignment.assignment_name}</p>
                                 </Link>
-                                <p>&nbsp;({assignment.submission_type})</p>
+                                <p>&nbsp;({assignment.submission_type + " Assignment"})</p>
                             </div>
                         )
                 )}
@@ -127,6 +126,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
             headerName: "Week",
             renderCell: getProperWeekFormat,
             cellClassName: "border",
+            sortable: false,
             flex: 1,
         },
         {
@@ -135,7 +135,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
             renderCell: getProperStartDateFormat,
             cellClassName: "border",
             sortable: false,
-            flex: 2,
+            flex: 3,
         },
         {
             field: "schedule_deliverables",
@@ -257,9 +257,8 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
         >
                 <DataGrid
                     rows={rows}
-                    //rows={[{ schedule_week_id: 1, schedule_week: '3/06', schedule_description: 'Description', schedule_deliverables: 'Assignment', assignment_id: 15, assignment_name: "m" }]}
                     columns={columns}
-                    rowHeight={150}
+                    rowHeight={100}
                     getRowId={(rows) => rows.schedule_week_id}
                     components={{ Toolbar: CustomToolbar }}
                     disableSelectionOnClick
@@ -294,7 +293,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
                     <DataGrid
                         rows={rows}
                         columns={columns}
-                        rowHeight={150}
+                        rowHeight={100}
                         getRowId={(rows) => rows.schedule_week_id}
                         components={{ Toolbar: CustomToolbarStudents }}
                         disableSelectionOnClick

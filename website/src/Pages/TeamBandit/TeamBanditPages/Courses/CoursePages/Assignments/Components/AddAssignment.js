@@ -9,6 +9,7 @@ import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import MenuItem from "@mui/material/MenuItem";
+import Checkbox from '@mui/material/Checkbox';
 
 import { toast } from "react-toastify";
 
@@ -34,31 +35,29 @@ const submissionTypes = [
     },
 ];
 
-const displayAssignmentOnTeamWebsiteTypes = [
-    {
-        value: "Yes",
-        label: "Yes",
-    },
-    {
-        value: "No",
-        label: "No",
-    },
-]
-
 const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
     // Variables
     const [assignment_name, setAssignmentName] = useState("");
     const [assignment_start_date, setAssignmentStartDate] = useState("");
     const [assignment_due_date, setAssignmentDueDate] = useState("");
     const [submission_type, setSubmissionType] = useState("");
-    const [num_submissions_allowed, setNumSubmissionsAllowed] = useState(null);
-    const [display_on_team_website, setDisplayOnTeamWebsite] = useState("");
+    const [allow_submissions_after_due, setAllowSubmissionsAfterDue] = useState(false);
+    const [display_on_team_website, setDisplayOnTeamWebsite] = useState(true);
     const [assignment_instructions, setAssignmentInstructions] = useState(null);
+
+    const handleDisplayOnTeamWebsiteCheckChange = (event) => {
+        setDisplayOnTeamWebsite(event.target.checked);
+    };
+
+    const handleAllowSubmissionsAfterDueCheckChange = (event) => {
+        setAllowSubmissionsAfterDue(event.target.checked);
+    };
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
-        setNumSubmissionsAllowed(1);
+        setAllowSubmissionsAfterDue(false);
+        setDisplayOnTeamWebsite(true);
     }
     const handleClose = () => {
         setOpen(false);
@@ -66,16 +65,12 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
         setAssignmentStartDate("");
         setAssignmentDueDate("");
         setSubmissionType("");
-        setDisplayOnTeamWebsite("No");
+        setDisplayOnTeamWebsite(true);
         setAssignmentInstructions(null);
     };
 
     const handleSubmissionTypeChange = (e) => {
         setSubmissionType(e.target.value);
-    }
-
-    const handleDisplayAssignmentOnTeamWebsiteChange = (e) => {
-        setDisplayOnTeamWebsite(e.target.value);
     }
 
     const onFileChange = (e) => {
@@ -84,7 +79,7 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
 
     const addAssignment = async (event) => {
         event.preventDefault();
-        if (assignment_name === "" || assignment_name === "" || assignment_start_date === "" || assignment_due_date === "" || submission_type === null || num_submissions_allowed === null)
+        if (assignment_name === "" || assignment_name === "" || assignment_start_date === "" || assignment_due_date === "" || submission_type === null)
         {
             alert("Invalid values entered!");
             return;
@@ -96,7 +91,7 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
             formData.append("assignment_start_date", assignment_start_date);
             formData.append("assignment_due_date", assignment_due_date);
             formData.append("submission_type", submission_type);
-            formData.append("num_submissions_allowed", num_submissions_allowed);
+            formData.append("allow_submissions_after_due", allow_submissions_after_due);
             formData.append("display_on_team_website", display_on_team_website);
             formData.append("course_id", courseInfo.course_id);
         
@@ -179,14 +174,14 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
                         onChange={(e) => setAssignmentDueDate(e.target.value)}
                     />
 
-                    <Typography>Number of Submissions Allowed</Typography>
-                    <TextField
-                        fullWidth
-                        sx={{ m: 2 }}
-                        type="number"
-                        onChange={(e) => setNumSubmissionsAllowed(e.target.value)}
-                        >
-                    </TextField>
+                    <div>
+                        <Typography>Allow Submissions After Due Date?</Typography>
+                        <Checkbox
+                            checked={allow_submissions_after_due}
+                            onChange={handleAllowSubmissionsAfterDueCheckChange}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                        />
+                    </div>
 
                     <Typography>Submission Type</Typography>
                     <TextField
@@ -207,20 +202,11 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
                     {submission_type === "Team" &&
                         <div>
                             <Typography>Display Assignment on Team Website?</Typography>
-                            <TextField
-                                fullWidth
-                                sx={{ m: 2 }}
-                                select
-                                label="Display Assignment on Team Website?"
-                                value={display_on_team_website}
-                                onChange={handleDisplayAssignmentOnTeamWebsiteChange}
-                                >
-                                {displayAssignmentOnTeamWebsiteTypes.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                            <Checkbox
+                                checked={display_on_team_website}
+                                onChange={handleDisplayOnTeamWebsiteCheckChange}
+                                inputProps={{ 'aria-label': 'controlled' }}
+                            />
                         </div>
                     }
 

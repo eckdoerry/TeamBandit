@@ -76,7 +76,7 @@ const SubmittedAssignmentsModal = ({assignment}) => {
                                         : <p>{assignment.team_name}</p>
                                     }
                             </Link>
-                        ) : <p>No assignments submitted!</p>}
+                        ) : <p>&nbsp;No submissions yet!</p>}
                     </div>
                     {((assignments.length > 0) === true) &&
                         <div>
