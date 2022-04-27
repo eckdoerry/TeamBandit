@@ -139,13 +139,43 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
     }
 
     return (
-        <div style={{ width: "100%", height: "100%", padding: "25px" }}>
-            <Paper style={{ padding: "25px" }} elevation={3}>
+        <div style={
+            {
+                width: "100%", 
+                height: "100%", 
+                padding: "25px",
+            }
+            }
+        >
+            <Paper 
+            style = {
+                { 
+                    padding: "0px", 
+                    border: "1px double",
+                    borderColor: "#d3d3d3",
+                    boxShadow: "0px 0px 0px 0px",
+                }
+                    } 
+            elevation={3}
+            >
+
+            <div
+            style = {
+                {
+                width: "100%",
+                height: "100%",
+                backgroundColor: courseInfo.course_color,
+                }
+                    }
+            >
+
+
                 <Typography
                     style={{
-                        borderBottom: "1px solid black",
                         borderBottomWidth: "thin",
-                        width: "20%",
+                        width: "100%",
+                        height: "100%",
+                        padding: "25px 25px 25px 10px",
                     }}
                     variant="h4"
                     gutterBottom
@@ -155,13 +185,19 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                     {" "}
                 </Typography>
                 
-                <br>
-                </br>
-                <br>
-                </br>
+            </div>
+
+            <br>
+            </br>
+                
 
                 <div
-                display="inline-block"
+                    display="inline-block"
+                    style = {
+                        {
+                        paddingLeft: "1%",
+                        }
+                            }
                 >
                     <Typography
                     variant="h5"
@@ -184,7 +220,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 display: "inline",
                                 marginRight: ".5%",
                                 marginBottom: "1%",
-                                padding: "1% 2% 1%",
+                                padding: "2% 1% 2%",
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
@@ -205,7 +241,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 display: "inline",
                                 marginRight: ".5%",
                                 marginBottom: "1%",
-                                padding: "1% 2% 1%",
+                                padding: "2% 1% 2%",
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
@@ -226,7 +262,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 display: "inline",
                                 marginRight: ".5%",
                                 marginBottom: "1%",
-                                padding: "1% 2% 1%",
+                                padding: "2% 1% 2%",
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
@@ -247,7 +283,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 display: "inline",
                                 marginRight: ".5%",
                                 marginBottom: "1%",
-                                padding: "1% 2% 1%",
+                                padding: "2% 1% 2%",
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
@@ -268,7 +304,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 display: "inline",
                                 marginRight: ".5%",
                                 marginBottom: "1%",
-                                padding: "1% 2% 1%",
+                                padding: "2% 1% 2%",
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
@@ -289,7 +325,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 display: "inline",
                                 marginRight: ".5%",
                                 marginBottom: "1%",
-                                padding: "1% 2% 1%",
+                                padding: "2% 1% 2%",
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
@@ -310,7 +346,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 display: "inline",
                                 marginRight: ".5%",
                                 marginBottom: "1%",
-                                padding: "1% 2% 1%",
+                                padding: "2% 1% 2%",
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
@@ -331,7 +367,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 display: "inline",
                                 marginRight: ".5%",
                                 marginBottom: "1%",
-                                padding: "1% 2% 1%",
+                                padding: "2% 1% 2%",
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
@@ -352,7 +388,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 display: "inline",
                                 marginRight: ".5%",
                                 marginBottom: "1%",
-                                padding: "1% 2% 1%",
+                                padding: "2% 1% 2%",
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
@@ -373,7 +409,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 display: "inline",
                                 marginRight: ".5%",
                                 marginBottom: "1%",
-                                padding: "1% 2% 1%",
+                                padding: "2% 1% 2%",
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
@@ -383,7 +419,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                             Harbor
                         </button>
 
-                </div>
+                
 
                 <button
                 type="button"
@@ -397,7 +433,6 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                     display: "inline-block",
                     marginLeft: "15%",
                     marginRight: "1%",
-                    marginBottom: "1%",
                     padding: "1% 20% 1%",
                     fontSize: "100%",
                     alignItems: "center",
@@ -412,38 +447,59 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                 
                 <br>
                 </br>
-                <br>
-                </br>
+
                 <br>
                 </br>
 
-                <Typography
-                    variant="h5"
-                    display="inline"
-                    marginRight="1%"
-                >
-                    Title
-                </Typography>
-                
-                <Typography
-                    display="inline"
-                    style={
-                        {
-                        marginInlineStart: "205px",
-                        fontSize: "125%",
-                        }
+                <br>
+                </br>
+
+                <div
+                style={
+                    {
+                        backgroundColor: "#EDEDED",
+                        marginLeft: "-1.01%",
+                        marginBottom: "-25px",
+                        padding: "10px 10px 10px 10px",
                     }
+                }
                 >
-                    {courseInfo.course_title}
-                </Typography>
+
+                    <Typography
+                        variant="h5"
+                        display="inline"
+                        marginRight="1%"
+                    >
+                        Title
+                    </Typography>
+                    
+                    <Typography
+                        display="inline"
+                        style={
+                            {
+                            marginInlineStart: "205px",
+                            fontSize: "150%",
+                            }
+                        }
+                    >
+                        {courseInfo.course_title}
+                    </Typography>
+                
+                </div>
 
                 <br>
                 </br>
-
-
-
-                <br>
-                </br>
+                
+                <div
+                style={
+                    {
+                        backgroundColor: "#F2F2F2",
+                        marginLeft: "-1.01%",
+                        marginBottom: "-50px",
+                        padding: "1% 1% 1% 1%",
+                    }
+                }
+                >
 
                 <Typography
                 variant="h5"
@@ -457,18 +513,30 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                 style={
                     {
                     marginInlineStart: "150px",
-                    fontSize: "125%",
+                    fontSize: "150%",
                     }
                 }
                 >
                     {courseInfo.course_semester}
                 </Typography>
 
+                </div>
+
                 <br>
                 </br>
                 <br>
                 </br>
                 
+                <div
+                style={
+                    {
+                        backgroundColor: "#F5F5F5",
+                        marginLeft: "-1.01%",
+                        marginBottom: "-50px",
+                        padding: "10px 10px 10px 10px",
+                    }
+                }
+                >
 
                 <Typography 
                 variant="h5"
@@ -483,19 +551,32 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                 marginRight="1%"
                 style={
                     {
-                    marginInlineStart: "140px",
-                    fontSize: "125%",
+                    marginInlineStart: "141px",
+                    fontSize: "150%",
                     }
                 }
                 >
                     {courseInfo.team_size}
                 </Typography>
 
+                </div>
+
                 <br>
                 </br>
                 <br>
                 </br>
                 
+                <div
+                style={
+                    {
+                        backgroundColor: "#FAFAFA",
+                        marginLeft: "-1.01%",
+                        
+                        padding: "10px 10px 10px 10px",
+                    }
+                }
+                >
+
                 <Typography
                 variant="h5"
                 display="inline"
@@ -503,13 +584,13 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                 >
                     Course Privacy
                 </Typography>
-
+                
                 <Typography
                 display="inline"
                 style={
                     {
                     marginInlineStart: "90px",
-                    fontSize: "125%",
+                    fontSize: "150%",
                     }
                 }
                 >
@@ -517,9 +598,16 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                         ? "Public"
                         : "Private"}
                 </Typography>
+                
+                </div>
+
                 <br>
                 </br>
+
+
                 
+                </div>
+
                 <Button 
                 sx={{ m: 3, pl: 5, pr: 5 }}
                 style={
