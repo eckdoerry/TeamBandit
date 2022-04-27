@@ -139,7 +139,11 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
 
     const CustomToolbar = () => {
         return (
-            <GridToolbarContainer style={{ backgroundColor: "#FAC01A" }}>
+            <GridToolbarContainer style={
+                { 
+                    backgroundColor: courseInfo.course_color 
+                    }
+            }>
                 <Typography sx={{ m: 1 }} variant="h4">
                     Schedule
                 </Typography>
@@ -155,7 +159,11 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
 
     const CustomToolbarStudents = () => {
         return (
-            <GridToolbarContainer style={{ backgroundColor: "#FAC01A" }}>
+            <GridToolbarContainer style={
+                { 
+                    backgroundColor: courseInfo.course_color 
+                    }
+            }>
                 <Typography sx={{ m: 1 }} variant="h4">
                     Schedule
                 </Typography>

@@ -10,6 +10,13 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import {Delete} from "@mui/icons-material";
+
 import { toast } from "react-toastify";
 
 const style = {
@@ -34,6 +41,21 @@ const SetScheduleWeeks = ({ courseInfo, rows, setRowChange }) => {
     const current_date = new Date();
     const todays_date = current_date.setDate(current_date.getDate());
     const default_course_start_week = new Date(todays_date);
+
+    const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+
+    const handleConfirmDelete = () => {
+        handleDeleteConfirmClose();
+        removePreviousWeeks();
+    };
+
+    const handleDeleteConfirmOpen = () => {
+        setDeleteConfirmOpen(true);
+    };
+
+    const handleDeleteConfirmClose = () => {
+        setDeleteConfirmOpen(false);
+    };
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => 
@@ -161,13 +183,101 @@ const SetScheduleWeeks = ({ courseInfo, rows, setRowChange }) => {
                 sx={{ m: 3 }}
                 variant="outlined"
                 color="error"
-                onClick={removePreviousWeeks}
+                onClick={handleDeleteConfirmOpen}
                 startIcon={<DeleteIcon />}
             >
                 {" "}
                 Remove All Weeks
                 {" "}
             </Button>
+
+
+            <Dialog 
+                    open={deleteConfirmOpen}
+                    onClose={handleClose}
+                    fullWidth
+                >
+
+                    <DialogTitle>
+                        Delete Schedule
+                    </DialogTitle>
+
+                    <DialogContent>
+                        <DialogContentText>
+                        <div
+                            style= {
+                                {
+                                    display: "float",
+                                    float: "left"
+                                }
+                            }
+                        >
+                        Are you sure you want to delete the entire schedule?
+                        </div>
+
+                        </DialogContentText>
+                        
+                    </DialogContent>
+
+                    <div
+                        style={{display: "float"}}
+                    >
+
+                    <Button
+                        sx={
+                            { m: 3, pl: 1, pr: 1 }
+                        }
+
+                        style={
+                            { 
+                                textAlign: "center", 
+                                whiteSpace: "nowrap", 
+                                color:"red",
+                                borderColor:"red",
+                                float:"left"
+                            }
+                        }
+
+                        size="medium"
+                        variant="outlined"
+                        startIcon={<Delete />}
+                        onClick={handleConfirmDelete}
+                    >
+                        Delete Schedule
+                    </Button>
+
+                    </div>
+                        
+                    <div
+                        style={{ display: "float" }}
+                    >
+
+                    <Button 
+                        sx={
+                            { m: 3, pt: 2, pb:2 , pl: 10, pr: 10 }
+                        }
+
+                    style={
+                        { 
+                            textAlign: "center", 
+                            whiteSpace: "nowrap", 
+                            color:"blue", 
+                            borderColor:"blue",
+                            float:"right"
+                        }
+                    }
+
+                    size="large"
+                    variant="outlined"
+                    onClick={handleDeleteConfirmClose}
+                    >
+                        Cancel
+                    </Button>
+
+                    </div>
+                </Dialog>
+
+
             <Modal
                 open={open}
                 onClose={handleClose}

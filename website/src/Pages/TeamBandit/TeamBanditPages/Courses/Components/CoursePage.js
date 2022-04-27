@@ -90,7 +90,7 @@ const CoursePage = ({ courseInfo, userInfo, userIdentifier, setCoursesChange }) 
                         style={{
                             display: "flex",
                             flexDirection: "row",
-                            background: "#FAC01A",
+                            background: courseInfo.course_color,
                             alignItems: "center",
                             color: "black",
                             paddingLeft: "50px",
@@ -104,7 +104,8 @@ const CoursePage = ({ courseInfo, userInfo, userIdentifier, setCoursesChange }) 
                             startIcon={<ArrowBackIcon />}
                         >
                             {" "}
-                            Go Back{" "}
+                            Go Back
+                            {" "}
                         </Button>
                         <Typography
                             variant="h6"
