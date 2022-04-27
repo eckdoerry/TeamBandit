@@ -83,7 +83,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
             alert("Please add a Course Name");
             return;
         }
-        else if (courseColor != "#EBEBEB") {
+        else if (courseColor != "#EBEBEB" && courseColor != null) {
         try {
             const myHeaders = new Headers();
 
