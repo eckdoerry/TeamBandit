@@ -376,7 +376,11 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
         if( userIdentifier == "organizer" )
         {
             return (
-                <GridToolbarContainer style={{ backgroundColor: "#FAC01A" }}>
+                <GridToolbarContainer style={
+                    { 
+                        backgroundColor: courseInfo.course_color 
+                        }
+                }>
                     <Typography sx={{ m: 1 }} variant="h4">
                         Projects
                     </Typography>
@@ -415,7 +419,11 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
         else if( userIdentifier == "student" )
         {
             return (
-                <GridToolbarContainer style={{ backgroundColor: "#FAC01A" }} >
+                <GridToolbarContainer style={
+                    {
+                        backgroundColor: courseInfo.course_color 
+                    }
+                }>
                     <Typography sx={{ m: 1 }} variant="h4">
                         Projects
                     </Typography>

@@ -25,13 +25,14 @@ import {Edit} from "@mui/icons-material";
 import {Delete} from "@mui/icons-material";
 
 import { toast } from "react-toastify";
-import { borderColor, color } from "@mui/system";
+import { borderColor, color, fontWeight } from "@mui/system";
 
 const Settings = ({ courseInfo, setCoursesChange }) => {
     const [title, setTitle] = useState(courseInfo.course_title);
     const [semester, setSemester] = useState(courseInfo.course_semester);
     const [isPublic, setIsPublic] = useState(courseInfo.course_public);
     const [teamSize, setTeamSize] = useState(courseInfo.team_size);
+    const [courseColor, setCourseColor] = useState();
 
     // Team Page
     const [selected1, setSelected1] = useState(false);
@@ -64,6 +65,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
         setSemester(courseInfo.course_semester);
         setIsPublic(courseInfo.course_public);
         setTeamSize(courseInfo.team_size);
+        setCourseColor(courseInfo.course_color);
     };
 
     const handleClose = () => {
@@ -72,6 +74,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
         setSemester(courseInfo.course_semester);
         setIsPublic(courseInfo.course_public);
         setTeamSize(courseInfo.team_size);
+        setCourseColor(courseInfo.course_color);
     };
 
     const updateCourse = async (e) => {
@@ -80,13 +83,14 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
             alert("Please add a Course Name");
             return;
         }
+        else if (courseColor != "#EBEBEB") {
         try {
             const myHeaders = new Headers();
 
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("token", localStorage.token);
 
-            const body = { title, semester, isPublic, teamSize };
+            const body = { title, semester, isPublic, teamSize, courseColor };
             await fetch(
                 `${process.env.REACT_APP_BASEURL}/courses/courses/${courseInfo.course_id}`,
                 {
@@ -95,14 +99,25 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                     body: JSON.stringify(body),
                 }
             );
+            
+            
+                
 
             setCoursesChange(true);
+
             toast.success("Course edited successfully!");
             handleClose();
-        } catch (err) {
+
+            if (courseColor != "#EBEBEB" && courseInfo.course_color != "EBEBEB")
+                {
+                    setCourseColor("#EBEBEB");
+                }
+            
+        } catch (err) { 
             console.error(err.message);
             toast.error("Failed to update course!");
         }
+    }
     };
 
     async function deleteCourse(id) {
@@ -130,41 +145,381 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                     style={{
                         borderBottom: "1px solid black",
                         borderBottomWidth: "thin",
-                        width: "15%",
+                        width: "20%",
                     }}
                     variant="h4"
                     gutterBottom
                 >
                     {" "}
-                    Course Settings{" "}
+                    Course Settings
+                    {" "}
                 </Typography>
                 
                 <br>
                 </br>
+                <br>
+                </br>
 
-                <Typography variant="h5">Title</Typography>
-                <Typography>{courseInfo.course_title}</Typography>
+                <div
+                display="inline-block"
+                >
+                    <Typography
+                    variant="h5"
+                    display="inline-block"
+                    marginRight="1%"
+                    marginBottom="1%"
+                >
+                    Course Theme
+                </Typography>
+
+
+                        <button
+                            type="button"
+                            onClick={(e) => setCourseColor("#FAC01A")}
+                            style={
+                                {
+                                backgroundColor: "#FAC01A",
+                                border: "solid",
+                                borderRadius: "24px",
+                                display: "inline",
+                                marginRight: ".5%",
+                                marginBottom: "1%",
+                                padding: "1% 2% 1%",
+                                fontSize: "100%",
+                                alignItems: "center",
+                                justifyContent: "left",
+                                }
+                            }
+                        >
+                            Gold
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={(e) => setCourseColor("#FFFFFF")}
+                            style={
+                                {
+                                backgroundColor: "#FFFFFF",
+                                border: "solid",
+                                borderRadius: "24px",
+                                display: "inline",
+                                marginRight: ".5%",
+                                marginBottom: "1%",
+                                padding: "1% 2% 1%",
+                                fontSize: "100%",
+                                alignItems: "center",
+                                justifyContent: "left",
+                                }
+                            }
+                        >
+                            Snow
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={(e) => setCourseColor("#FFD7D4")}
+                            style={
+                                {
+                                backgroundColor: "#FFD7D4",
+                                border: "solid",
+                                borderRadius: "24px",
+                                display: "inline",
+                                marginRight: ".5%",
+                                marginBottom: "1%",
+                                padding: "1% 2% 1%",
+                                fontSize: "100%",
+                                alignItems: "center",
+                                justifyContent: "left",
+                                }
+                            }
+                        >
+                            Lotus
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={(e) => setCourseColor("#FFC67A")}
+                            style={
+                                {
+                                backgroundColor: "#FFC67A",
+                                border: "solid",
+                                borderRadius: "24px",
+                                display: "inline",
+                                marginRight: ".5%",
+                                marginBottom: "1%",
+                                padding: "1% 2% 1%",
+                                fontSize: "100%",
+                                alignItems: "center",
+                                justifyContent: "left",
+                                }
+                            }
+                        >
+                            Sunset
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={(e) => setCourseColor("#FFF9B8")}
+                            style={
+                                {
+                                backgroundColor: "#FFF9B8",
+                                border: "solid",
+                                borderRadius: "24px",
+                                display: "inline",
+                                marginRight: ".5%",
+                                marginBottom: "1%",
+                                padding: "1% 2% 1%",
+                                fontSize: "100%",
+                                alignItems: "center",
+                                justifyContent: "left",
+                                }
+                            }
+                        >
+                            Daffodil
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={(e) => setCourseColor("#D1FFA8")}
+                            style={
+                                {
+                                backgroundColor: "#D1FFA8",
+                                border: "solid",
+                                borderRadius: "24px",
+                                display: "inline",
+                                marginRight: ".5%",
+                                marginBottom: "1%",
+                                padding: "1% 2% 1%",
+                                fontSize: "100%",
+                                alignItems: "center",
+                                justifyContent: "left",
+                                }
+                            }
+                        >
+                            Spearmint
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={(e) => setCourseColor("#C7F7FF")}
+                            style={
+                                {
+                                backgroundColor: "#C7F7FF",
+                                border: "solid",
+                                borderRadius: "24px",
+                                display: "inline",
+                                marginRight: ".5%",
+                                marginBottom: "1%",
+                                padding: "1% 2% 1%",
+                                fontSize: "100%",
+                                alignItems: "center",
+                                justifyContent: "left",
+                                }
+                            }
+                        >
+                            Icicle
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={(e) => setCourseColor("#C39CFF")}
+                            style={
+                                {
+                                backgroundColor: "#C39CFF",
+                                border: "solid",
+                                borderRadius: "24px",
+                                display: "inline",
+                                marginRight: ".5%",
+                                marginBottom: "1%",
+                                padding: "1% 2% 1%",
+                                fontSize: "100%",
+                                alignItems: "center",
+                                justifyContent: "left",
+                                }
+                            }
+                        >
+                            Grape
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={(e) => setCourseColor("#FF91B0")}
+                            style={
+                                {
+                                backgroundColor: "#FF91B0",
+                                border: "solid",
+                                borderRadius: "24px",
+                                display: "inline",
+                                marginRight: ".5%",
+                                marginBottom: "1%",
+                                padding: "1% 2% 1%",
+                                fontSize: "100%",
+                                alignItems: "center",
+                                justifyContent: "left",
+                                }
+                            }
+                        >
+                            Bubblegum
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={(e) => setCourseColor("#ABF5D0")}
+                            style={
+                                {
+                                backgroundColor: "#ABF5D0",
+                                border: "solid",
+                                borderRadius: "24px",
+                                display: "inline",
+                                marginRight: ".5%",
+                                marginBottom: "1%",
+                                padding: "1% 2% 1%",
+                                fontSize: "100%",
+                                alignItems: "center",
+                                justifyContent: "left",
+                                }
+                            }
+                        >
+                            Harbor
+                        </button>
+
+                </div>
+
+                <button
+                type="button"
+                onClick={updateCourse}
+                
+                style={
+                    {
+                    backgroundColor: courseColor,
+                    border: "solid",
+                    borderRadius: "16px",
+                    display: "inline-block",
+                    marginLeft: "15%",
+                    marginRight: "1%",
+                    marginBottom: "1%",
+                    padding: "1% 20% 1%",
+                    fontSize: "100%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    alignSelf: "right",
+                    fontWeight: "bold",
+                    }
+                }
+                >
+                    Apply Theme
+                </button>
+                
+                <br>
+                </br>
+                <br>
+                </br>
+                <br>
+                </br>
+
+                <Typography
+                    variant="h5"
+                    display="inline"
+                    marginRight="1%"
+                >
+                    Title
+                </Typography>
+                
+                <Typography
+                    display="inline"
+                    style={
+                        {
+                        marginInlineStart: "205px",
+                        fontSize: "125%",
+                        }
+                    }
+                >
+                    {courseInfo.course_title}
+                </Typography>
 
                 <br>
                 </br>
 
-                <Typography variant="h5">Semester</Typography>
-                <Typography>{courseInfo.course_semester}</Typography>
+
 
                 <br>
                 </br>
 
-                <Typography variant="h5">Team Size</Typography>
-                <Typography>{courseInfo.team_size}</Typography>
+                <Typography
+                variant="h5"
+                display="inline"
+                marginRight="1%"
+                >Semester
+                </Typography>
+
+                <Typography
+                display="inline"
+                style={
+                    {
+                    marginInlineStart: "150px",
+                    fontSize: "125%",
+                    }
+                }
+                >
+                    {courseInfo.course_semester}
+                </Typography>
+
                 <br>
                 </br>
-                <Typography variant="h5">
+                <br>
+                </br>
+                
+
+                <Typography 
+                variant="h5"
+                display="inline"
+                marginRight="1%"
+                >
+                    Team Size
+                </Typography>
+
+                <Typography
+                display="inline"
+                marginRight="1%"
+                style={
+                    {
+                    marginInlineStart: "140px",
+                    fontSize: "125%",
+                    }
+                }
+                >
+                    {courseInfo.team_size}
+                </Typography>
+
+                <br>
+                </br>
+                <br>
+                </br>
+                
+                <Typography
+                variant="h5"
+                display="inline"
+                marginRight="1%"
+                >
+                    Course Privacy
+                </Typography>
+
+                <Typography
+                display="inline"
+                style={
+                    {
+                    marginInlineStart: "90px",
+                    fontSize: "125%",
+                    }
+                }
+                >
                     {courseInfo.course_public
-                        ? "Course Privacy is set to PUBLIC"
-                        : "Course Privacy is set to PRIVATE"}
+                        ? "Public"
+                        : "Private"}
                 </Typography>
                 <br>
                 </br>
+                
                 <Button 
                 sx={{ m: 3, pl: 5, pr: 5 }}
                 style={
@@ -183,6 +538,9 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                 Edit This Course
                 
                 </Button>
+                
+                
+
                 <Dialog
                     fullWidth
                     maxWidth="lg"
@@ -221,12 +579,14 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                             value={semester}
                             onChange={(e) => setSemester(e.target.value)}
                         />
-                        <Typography>Adjust Team Size</Typography>
+
+
+                        <Typography>Standard Team Size</Typography>
                         <div
                             style={{
                                 display: "flex",
                                 alignItems: "center",
-                                justifyContent: "center",
+                                justifyContent: "left",
                             }}
                         >
                             <Button
@@ -249,6 +609,8 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 }
                             ></Button>
                         </div>
+
+                        
                         <div style={{ display: "flex", alignItems: "center" }}>
                             <Typography style={{ paddingRight: "6px" }}>
                                 Private

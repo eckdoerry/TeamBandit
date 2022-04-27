@@ -124,7 +124,11 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
     const CustomToolbar = () => {
         return (
             
-                <GridToolbarContainer style={{ backgroundColor: "#FAC01A" }} >
+                <GridToolbarContainer style={
+                    {
+                         backgroundColor: courseInfo.course_color 
+                    }
+                }>
                     <Typography sx={{ m: 1 }} variant="h4">
                         Assignments
                     </Typography>
