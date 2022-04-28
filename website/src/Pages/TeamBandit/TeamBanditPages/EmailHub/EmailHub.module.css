@@ -10,7 +10,9 @@
     height: 83vh;
     width: 76%;
     overflow: scroll;
-    border: solid #000;
+    margin: 10px;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-width: 5px;
 }
 
@@ -142,9 +144,10 @@
 .titles {
     text-align: center !important;
     font-size: large !important;
-    font-weight: bold !important;
+    font-weight: 500 !important;
     display: flex !important;
-    color: black !important; 
+    color: white !important; 
+    background-color: #003466 !important;
 }
 
 .contact_list::-webkit-scrollbar {

@@ -124,7 +124,7 @@ const EditMentor = ({courseInfo, mentor, setRowChange}) => {
                 <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="Mentor Name" type = "text" value = {mentor_name} onChange = {e => setMentorName(e.target.value)}/>
                 <TextField sx={{ m: 2 }} variant="filled" id ="filled-password-input" label="Mentor Email" type = "text" value = {mentor_email} onChange = {e => setMentorEmail(e.target.value)}/>
                 <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {(e) => (handleClose(), updateMentor(e))}> Edit </Button>
-                <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Close </Button>
+                <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Cancel </Button>
                 <Button variant="outlined" color="error" onClick={handleDeleteConfirmOpen} startIcon={<DeleteIcon />}> PERMANENTLY DELETE </Button>
 
                 <Dialog 

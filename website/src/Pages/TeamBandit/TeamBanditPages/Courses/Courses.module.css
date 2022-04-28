@@ -41,8 +41,7 @@
 }
 
 .uploader {
-    width: fill;
-    padding: 45px;
+
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -50,12 +49,11 @@
 
 .table-pad {
     padding: 1.5rem;
-    width: fill;
+    
 }
 
 .appHeader {
     background-color: white;
-    min-height: 100vh;
     font-size: calc(10px + 2vmin);
     color: white;
     width: 100%;
@@ -70,11 +68,12 @@
     font-size: calc(10px + 2vmin);
     color: white;
     justify-content: center;
+    
 }
 
 .appLink {
     box-shadow: 2px 2px 4px #000000;
-    color: #003466;
+    color: hsl(209, 100%, 20%);
     border-style: solid;
     border-width: 2px;
 

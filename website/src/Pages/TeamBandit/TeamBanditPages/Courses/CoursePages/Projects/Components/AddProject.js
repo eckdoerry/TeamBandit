@@ -272,7 +272,7 @@ const AddProject = ({ courseInfo, setRowChange }) => {
                         startIcon={<CloseIcon />}
                     >
                         {" "}
-                        Close{" "}
+                        Cancel{" "}
                     </Button>
                 </Box>
             </Modal>
