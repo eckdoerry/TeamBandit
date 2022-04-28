@@ -207,8 +207,6 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                 >
                     Course Theme
                 </Typography>
-
-
                         <button
                             type="button"
                             onClick={(e) => setCourseColor("#FAC01A")}
@@ -216,6 +214,8 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 {
                                 backgroundColor: "#FAC01A",
                                 border: "solid",
+                                borderColor: '#FAC01A',
+                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
                                 borderRadius: "24px",
                                 display: "inline",
                                 marginRight: ".5%",
@@ -224,6 +224,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
+                                cursor: "pointer",
                                 }
                             }
                         >
@@ -237,6 +238,8 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 {
                                 backgroundColor: "#FFFFFF",
                                 border: "solid",
+                                borderColor: '#FFFFFF',
+                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
                                 borderRadius: "24px",
                                 display: "inline",
                                 marginRight: ".5%",
@@ -245,6 +248,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
+                                cursor: "pointer",
                                 }
                             }
                         >
@@ -258,6 +262,8 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 {
                                 backgroundColor: "#FFD7D4",
                                 border: "solid",
+                                borderColor: '#FFD7D4',
+                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
                                 borderRadius: "24px",
                                 display: "inline",
                                 marginRight: ".5%",
@@ -266,6 +272,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
+                                cursor: "pointer",
                                 }
                             }
                         >
@@ -279,6 +286,8 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 {
                                 backgroundColor: "#FFC67A",
                                 border: "solid",
+                                borderColor: '#FFC67A',
+                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
                                 borderRadius: "24px",
                                 display: "inline",
                                 marginRight: ".5%",
@@ -287,6 +296,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
+                                cursor: "pointer",
                                 }
                             }
                         >
@@ -300,6 +310,8 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 {
                                 backgroundColor: "#FFF9B8",
                                 border: "solid",
+                                borderColor: '#FFF9B8',
+                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
                                 borderRadius: "24px",
                                 display: "inline",
                                 marginRight: ".5%",
@@ -308,6 +320,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
+                                cursor: "pointer",
                                 }
                             }
                         >
@@ -321,6 +334,8 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 {
                                 backgroundColor: "#D1FFA8",
                                 border: "solid",
+                                borderColor: '#D1FFA8',
+                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
                                 borderRadius: "24px",
                                 display: "inline",
                                 marginRight: ".5%",
@@ -329,6 +344,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
+                                cursor: "pointer",
                                 }
                             }
                         >
@@ -342,6 +358,8 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 {
                                 backgroundColor: "#C7F7FF",
                                 border: "solid",
+                                borderColor: '#C7F7FF',
+                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
                                 borderRadius: "24px",
                                 display: "inline",
                                 marginRight: ".5%",
@@ -350,6 +368,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
+                                cursor: "pointer",
                                 }
                             }
                         >
@@ -364,6 +383,8 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 backgroundColor: "#C39CFF",
                                 border: "solid",
                                 borderRadius: "24px",
+                                borderColor: '#C39CFF',
+                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
                                 display: "inline",
                                 marginRight: ".5%",
                                 marginBottom: "1%",
@@ -371,6 +392,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
+                                cursor: "pointer",
                                 }
                             }
                         >
@@ -385,6 +407,8 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 backgroundColor: "#FF91B0",
                                 border: "solid",
                                 borderRadius: "24px",
+                                borderColor: '#FF91B0',
+                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
                                 display: "inline",
                                 marginRight: ".5%",
                                 marginBottom: "1%",
@@ -392,6 +416,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
+                                cursor: "pointer",
                                 }
                             }
                         >
@@ -405,6 +430,8 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 {
                                 backgroundColor: "#ABF5D0",
                                 border: "solid",
+                                borderColor: '#ABF5D0',
+                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
                                 borderRadius: "24px",
                                 display: "inline",
                                 marginRight: ".5%",
@@ -413,6 +440,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 fontSize: "100%",
                                 alignItems: "center",
                                 justifyContent: "left",
+                                cursor: "pointer",
                                 }
                             }
                         >
@@ -430,6 +458,8 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                     backgroundColor: courseColor,
                     border: "solid",
                     borderRadius: "16px",
+                    borderColor: courseColor,
+                    boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
                     display: "inline-block",
                     marginLeft: "15%",
                     marginRight: "1%",
@@ -438,6 +468,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     alignSelf: "right",
+                    cursor: "pointer",
                     fontWeight: "bold",
                     }
                 }
@@ -715,148 +746,6 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                             </Typography>
                         </div>
                     </DialogContent>
-                    <Typography style={{ paddingLeft: "25px" }}>
-                        Change Team Website Layout
-                    </Typography>
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                        <div>
-                            <Card
-                                style={{ margin: "5px" }}
-                                sx={{ minWidth: 275 }}
-                            >
-                                <CardContent>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={3}>
-                                            <Skeleton
-                                                variant="rectangular"
-                                                height={195}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={9}>
-                                            <Stack spacing={1}>
-                                                <Skeleton
-                                                    variant="rectangular"
-                                                    height={110}
-                                                />
-                                                <Grid container spacing={1}>
-                                                    <Grid item xs={4}>
-                                                        <Skeleton
-                                                            variant="rectangular"
-                                                            height={75}
-                                                        />
-                                                    </Grid>
-                                                    <Grid item xs={4}>
-                                                        <Skeleton
-                                                            variant="rectangular"
-                                                            height={75}
-                                                        />
-                                                    </Grid>
-                                                    <Grid item xs={4}>
-                                                        <Skeleton
-                                                            variant="rectangular"
-                                                            height={75}
-                                                        />
-                                                    </Grid>
-                                                </Grid>
-                                            </Stack>
-                                        </Grid>
-                                    </Grid>
-                                </CardContent>
-                                <CardActions>
-                                    <ToggleButton
-                                        value="check"
-                                        style={
-                                            selected1
-                                                ? { backgroundColor: "#90caf9" }
-                                                : { backgroundColor: "white" }
-                                        }
-                                        selected={selected1}
-                                        onChange={() => {
-                                            setSelected2(false);
-                                            setSelected3(false);
-                                            setSelected1(!selected1);
-                                        }}
-                                    >
-                                        <CheckIcon />
-                                    </ToggleButton>
-                                </CardActions>
-                            </Card>
-                        </div>
-                        <div>
-                            <Card
-                                style={{ margin: "5px" }}
-                                sx={{ minWidth: 275 }}
-                            >
-                                <CardContent>
-                                    <Stack spacing={1}>
-                                        <Skeleton variant="text" />
-
-                                        <Skeleton
-                                            variant="rectangular"
-                                            height={165}
-                                        />
-                                    </Stack>
-                                </CardContent>
-                                <CardActions>
-                                    <ToggleButton
-                                        value="check"
-                                        style={
-                                            selected2
-                                                ? { backgroundColor: "#90caf9" }
-                                                : { backgroundColor: "white" }
-                                        }
-                                        selected={selected2}
-                                        onChange={() => {
-                                            setSelected1(false);
-                                            setSelected3(false);
-                                            setSelected2(!selected2);
-                                        }}
-                                    >
-                                        <CheckIcon />
-                                    </ToggleButton>
-                                </CardActions>
-                            </Card>
-                        </div>
-                        <div>
-                            <Card
-                                style={{ margin: "5px" }}
-                                sx={{ minWidth: 275 }}
-                            >
-                                <CardContent>
-                                    <Stack spacing={1}>
-                                        <Skeleton variant="text" />
-                                        <Skeleton
-                                            variant="circular"
-                                            width={40}
-                                            height={40}
-                                        />
-                                        <Skeleton
-                                            variant="rectangular"
-                                            height={118}
-                                        />
-                                    </Stack>
-                                </CardContent>
-                                <CardActions>
-                                    <ToggleButton
-                                        value="check"
-                                        style={
-                                            selected3
-                                                ? { backgroundColor: "#90caf9" }
-                                                : { backgroundColor: "white" }
-                                        }
-                                        selected={selected3}
-                                        onChange={() => {
-                                            setSelected1(false);
-                                            setSelected2(false);
-                                            setSelected3(!selected3);
-                                        }}
-                                    >
-                                        <CheckIcon />
-                                    </ToggleButton>
-                                </CardActions>
-                            </Card>
-                        </div>
-                    </div>
                     <DialogActions>
                         <Button onClick={updateCourse}>Update Course</Button>
                         <Button onClick={handleClose}>Cancel</Button>

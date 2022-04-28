@@ -12,6 +12,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import HelpIcon from '@mui/icons-material/Help';
+import CloseIcon from '@mui/icons-material/Close';
 
 // CSV Uploader stuff
 import TableContainer from '@mui/material/TableContainer';
@@ -22,8 +24,9 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import AddIcon from '@mui/icons-material/Add';
-
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+
+import csvExample from '../../../../../../../Images/exampleStudentCsv.PNG'
 
 // Need this to change color schemes
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -32,6 +35,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 
 import styles from '../../../Courses.module.css';
+import { Typography } from "@mui/material";
 
 // need to make a theme so I can use custom colors for Material UI
 const theme = createTheme({
@@ -60,6 +64,7 @@ const InputTodo = ({courseInfo, setRowChange}) => {
     const [contacts, setContacts] = React.useState([]);
 
     const [open, setOpen] = React.useState(false);
+    const [infoOpen, setInfoOpen] = React.useState(false);
     const [individualAddOpen, setIndividualAddOpen] = React.useState(false);
 
     const handleClose = () => {
@@ -68,13 +73,21 @@ const InputTodo = ({courseInfo, setRowChange}) => {
     const handleToggle = () => {
         setOpen(!open);
     };
+    
+    const handleInfoClose = () => {
+        setInfoOpen(false);
+    };
+
+    const handleInfoToggle = () => {
+        setInfoOpen(!infoOpen);
+    };
 
     const handleIndividualClickOpen = () => {
         setIndividualAddOpen(true);
     };
 
     const handleIndividualClose = () => {
-    setIndividualAddOpen(false);
+        setIndividualAddOpen(false);
     };
 
     const addList = async e => {
@@ -198,8 +211,20 @@ const InputTodo = ({courseInfo, setRowChange}) => {
             </Dialog>
 
             <Button  sx={{ m: 3, pl: 5, pr: 5}} style={{textAlign: 'center', whiteSpace: 'nowrap'}} size="large" variant="outlined" color="secondary" onClick={handleToggle} startIcon={<FileUploadIcon/>}> Upload Student List </Button>
-            <Dialog maxHeight={'lg'} maxWidth={'lg'} open={open} onClose={handleClose}>
+            <Dialog  fullWidth={true} maxWidth={'xl'} open={open} onClose={handleClose}>
             <div className = {styles.csv}>
+                <HelpIcon sx={{fontSize: '40px'}} style={{position: 'absolute', top: '10', right: '10', color: '#003466', cursor: 'pointer'}} onClick={handleInfoToggle}/>
+                <Dialog fullWidth={true} maxWidth={'md'} open={infoOpen} onClose={handleInfoClose}>
+                <div style={{padding: '10px'}}>
+                    <CloseIcon sx={{fontSize: '30px'}} style={{position: 'absolute', top: '10', right: '10', color: '#003466', cursor: 'pointer'}} onClick={handleInfoToggle}/>
+                    <Typography variant="h4">Upload Instructions</Typography>
+                    <Typography variant="body2">Currently only the file type of .csv is supported. You will also need to include header rows to properly identify the data. These headers include: firstName, lastName, studentID, email, and gpa. An example of what your file should look like is below.</Typography>
+                    <br></br>
+                    <Typography variant="body2">If you want to include a 'comment line', you can add # or % at the start of your line. This will not include that line for upload. This would be in the 'firstName' column.</Typography>
+                    <Typography variant="subtitle1">Example:</Typography>
+                    <img src={csvExample} alt="StudentCSVExample"/>
+                </div>
+                </Dialog>
                 <div className = {styles.appHeader}>
                         <div className = {styles.uploader}>
                             <div
@@ -222,12 +247,19 @@ const InputTodo = ({courseInfo, setRowChange}) => {
                                     setHighlighted(false);
 
                                     Array.from(e.dataTransfer.files)
-                                    .filter((file) => file.type === "application/vnd.ms-excel")
                                     .forEach(async (file) => {
-                                    const text = await file.text();
-                                    const result = parse(text, {header: true});
-                                    setContacts(existing => [...existing, ...result.data]);
-                                    
+                                        const text = await file.text();
+                                        const result = parse(text, {header: true});
+                                        
+                                        for( const val in result.data )
+                                        {
+                                            if(result.data[val].firstName.startsWith('%') || result.data[val].firstName.startsWith('#'))
+                                            {
+                                                result.data.splice(val, 1);
+                                            }
+                                        }
+                                        
+                                        setContacts(existing => [...existing, ...result.data]);
                                     });
 
                             }}>
@@ -250,6 +282,13 @@ const InputTodo = ({courseInfo, setRowChange}) => {
 
                                 loadCSV.then(function(resultOfPromise){
                                     const parsedResult = parse(resultOfPromise, {header: true});
+                                    for( const val in parsedResult.data )
+                                        {
+                                            if(parsedResult.data[val].firstName.startsWith('%') || parsedResult.data[val].firstName.startsWith('#'))
+                                            {
+                                                parsedResult.data.splice(val, 1);
+                                            }
+                                        }
                                     setContacts(existing => [...existing, ...parsedResult.data]);
                                 });
                                 }}
@@ -295,7 +334,8 @@ const InputTodo = ({courseInfo, setRowChange}) => {
                     </TableBody>
                 </Table>
                 </TableContainer>
-                <Button variant="contained" color="secondary" onClick={addList}> Commit Changes </Button>
+                {contacts.length > 0 ? <Button variant="contained" color="secondary" onClick={addList}> Import </Button> : <Button variant="contained" color="secondary" onClick={addList} disabled> Import </Button>}
+                <Button variant="contained" color="warning" style={{position: 'absolute', right: '40px', marginTop: '5px'}} onClick={handleToggle}> Cancel </Button>
                 </div>
             </div>
             </div>

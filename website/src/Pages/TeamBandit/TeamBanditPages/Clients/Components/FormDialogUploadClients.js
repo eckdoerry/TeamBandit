@@ -10,6 +10,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import HelpIcon from '@mui/icons-material/Help';
+import CloseIcon from '@mui/icons-material/Close';
+import { Typography } from "@mui/material";
 
 // CSV Uploader stuff
 import TableContainer from "@mui/material/TableContainer";
@@ -22,6 +25,8 @@ import TableRow from "@mui/material/TableRow";
 import AddIcon from "@mui/icons-material/Add";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 
+import csvExample from '../../../../../Images/exampleClientCsv.PNG'
+
 // Need this to change color schemes
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -32,14 +37,25 @@ import styles from "../Clients.module.css";
 
 import { toast } from "react-toastify";
 
+
 const FormDialogUploadClients = ({setClientsChange, setOpen, open}) => {
 
     // CSV STUFF
     const [highlighted, setHighlighted] = useState(false);
     const [contacts, setContacts] = useState([]);
 
+    const [infoOpen, setInfoOpen] = useState(false);
+
     const handleToggle = () => {
         setOpen(!open);
+    };
+
+    const handleInfoClose = () => {
+        setInfoOpen(false);
+    };
+
+    const handleInfoToggle = () => {
+        setInfoOpen(!infoOpen);
     };
 
     const theme = createTheme({
@@ -103,6 +119,18 @@ const FormDialogUploadClients = ({setClientsChange, setOpen, open}) => {
     return (
         <div>
                 <div className={styles.csv}>
+                <HelpIcon sx={{fontSize: '40px'}} style={{position: 'absolute', top: '10', right: '10', color: '#003466', cursor: 'pointer'}} onClick={handleInfoToggle}/>
+                <Dialog fullWidth={true} maxWidth={'md'} open={infoOpen} onClose={handleInfoClose}>
+                <div style={{padding: '10px'}}>
+                    <CloseIcon sx={{fontSize: '30px'}} style={{position: 'absolute', top: '10', right: '10', color: '#003466', cursor: 'pointer'}} onClick={handleInfoToggle}/>
+                    <Typography variant="h4">Upload Instructions</Typography>
+                    <Typography variant="body2">Currently only the file type of .csv is supported. You will also need to include header rows to properly identify the data. These headers include: firstName, lastName, email, organization, phone, notes, and location. An example of what your file should look like is below.</Typography>
+                    <br></br>
+                    <Typography variant="body2">If you want to include a 'comment line', you can add # or % at the start of your line. This will not include that line for upload. This would be in the 'firstName' column.</Typography>
+                    <Typography variant="subtitle1">Example:</Typography>
+                    <img src={csvExample} alt="StudentCSVExample"/>
+                </div>
+                </Dialog>
                     <div className={styles.appHeader}>
                         <div className={styles.uploader}>
                             <div
@@ -125,16 +153,20 @@ const FormDialogUploadClients = ({setClientsChange, setOpen, open}) => {
                                     setHighlighted(false);
 
                                     Array.from(e.dataTransfer.files)
-                                        .filter(
-                                            (file) =>
-                                                file.type ===
-                                                "application/vnd.ms-excel"
-                                        )
+                                        
                                         .forEach(async (file) => {
                                             const text = await file.text();
                                             const result = parse(text, {
                                                 header: true,
                                             });
+
+                                            for( const val in result.data )
+                                        {
+                                            if(result.data[val].firstName.startsWith('%') || result.data[val].firstName.startsWith('#'))
+                                            {
+                                                result.data.splice(val, 1);
+                                            }
+                                        }
                                             setContacts((existing) => [
                                                 ...existing,
                                                 ...result.data,
@@ -167,6 +199,13 @@ const FormDialogUploadClients = ({setClientsChange, setOpen, open}) => {
                                                     resultOfPromise,
                                                     { header: true }
                                                 );
+                                                for( const val in parsedResult.data )
+                                        {
+                                            if(parsedResult.data[val].firstName.startsWith('%') || parsedResult.data[val].firstName.startsWith('#'))
+                                            {
+                                                parsedResult.data.splice(val, 1);
+                                            }
+                                        }
                                                 setContacts((existing) => [
                                                     ...existing,
                                                     ...parsedResult.data,
@@ -176,11 +215,11 @@ const FormDialogUploadClients = ({setClientsChange, setOpen, open}) => {
                                     />
 
                                     <Button
-                                        color="secondary"
+                                        color="sameBlue"
                                         variant="contained"
                                         component="span"
                                     >
-                                        Upload .CSV File
+                                        Upload File
                                     </Button>
                                 </ThemeProvider>
                             </label>
@@ -325,6 +364,16 @@ const FormDialogUploadClients = ({setClientsChange, setOpen, open}) => {
                                                     }}
                                                     align="right"
                                                 >
+                                                    {contact.location}
+                                                </TableCell>
+                                                <TableCell
+                                                    style={{
+                                                        backgroundColor:
+                                                            "#003466",
+                                                        color: "white",
+                                                    }}
+                                                    align="right"
+                                                >
                                                     {contact.notes}
                                                 </TableCell>
                                             </TableRow>
@@ -334,30 +383,28 @@ const FormDialogUploadClients = ({setClientsChange, setOpen, open}) => {
 
                             </TableContainer>
                             
-                            <Button
-                                variant="outlined"
-                                
+                            <Button variant="contained" color="warning" style={{position: 'absolute', right: '40px', marginTop: '5px'}} onClick={handleToggle}> Cancel </Button>
 
-                                onClick={handleToggle}
-                            >
-                            {" "}
-                            Cancel
-                            {" "}
-                            </Button>
 
-                            {" "}
-                            
-                            <Button
+                            {contacts.length > 0 ? <Button
                                 variant="contained"
                                 color="secondary"
                                 onClick={addList}
                             >
                                 {" "}
-                                Commit Changes
+                                IMPORT
                                 {" "}
-                            </Button>
+                            </Button> : <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={addList}
+                                disabled
+                            >
+                                {" "}
+                                IMPORT
+                                {" "}
+                            </Button> }
                             
-                            {" "}
                             
 
                         </div>

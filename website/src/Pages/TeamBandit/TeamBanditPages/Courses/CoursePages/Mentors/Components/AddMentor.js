@@ -91,7 +91,7 @@ const AddMentor = ({courseInfo, setRowChange}) => {
                     </Typography>
                     <TextField fullWidth sx={{ m: 2 }} label="Mentor Email" type = "text" value = {mentor_email} onChange = {e => setMentorEmail(e.target.value)}/>        
                 <Button sx={{ m: 3 }} variant="contained" color="success"  onClick={(e) => (handleClose(), addMentor(e))} startIcon={<AddIcon/>} > Add </Button>        
-                <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose} startIcon={<CloseIcon/>}> Close </Button>
+                <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose} startIcon={<CloseIcon/>}> Cancel </Button>
                 </Box>
             </Modal>
         </Fragment>

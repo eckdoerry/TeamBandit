@@ -72,6 +72,7 @@ const FormDialogAddClient = ({ setClientsChange }) => {
         setClientEmail("");
         setClientPhoneNumber("");
         setClientNotes("");
+        setClientLocation("");
         setFailedSubmit(false);
     }
 
@@ -286,8 +287,8 @@ const FormDialogAddClient = ({ setClientsChange }) => {
                 </Button>
                 
                 <Dialog
-                maxHeight={"lg"}
-                maxWidth={"lg"}
+                fullWidth={true}
+                maxWidth={"xl"}
                 open={open}
                 onClose={handleToggle}
                 >
