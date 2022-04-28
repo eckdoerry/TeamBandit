@@ -1,4 +1,4 @@
-import {React, useState, Fragment, useEffect} from 'react'
+import {React, useState, useEffect} from 'react'
 
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -52,23 +52,25 @@ const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
         }
     };
 
-    const uploadStudentAssignment = async (event, assignment_id) => {
+    const uploadStudentAssignment = async (event, assignment_id, num_submissions_allowed) => {
         event.preventDefault();
         try {
             const formData = new FormData();
             formData.append("student_assignment_upload", student_assignment_upload);
             formData.append("assignment_id", assignment_id);
+            formData.append("num_submissions_allowed", num_submissions_allowed);
         
             const myHeaders = new Headers();
             myHeaders.append("token", localStorage.token);
 
-            await fetch(`${process.env.REACT_APP_BASEURL}/assignments/uploadStudentAssignment`, {
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/assignments/uploadStudentAssignment`, {
                 method: "POST",
                 headers: myHeaders,
                 body: formData,
             });
 
-            toast.success("Assignment was uploaded successfully!");
+            toast.info(await response.json());
+
             setStudentAssignmentUpload(null);
             setRowChange(true);
         } catch (error) {
@@ -108,7 +110,7 @@ const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
     }, []);
 
     return (
-        <Fragment>
+        <div>
             <Button
                 sx={{ m: 1 }}
                 variant="outlined"
@@ -125,6 +127,25 @@ const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
+                    <Typography 
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2">
+                        Your previous submission:
+                    </Typography>
+                    <p>To be implemented</p>
+                    {/*((assignmentExists(assignment)) === true) ?
+                        <Link
+                            key={assignment.submission_id}
+                            target="_blank"
+                            to={`/submission/studentAssignment-${assignment.submission_id}`}
+                            >
+                                {assignment.team_id == null ?
+                                    <p>{assignment.student_fname + " " + assignment.student_lname}</p>
+                                    : <p>{assignment.team_name}</p>
+                                }
+                        </Link>
+                        ) : <p>No submission submitted yet!</p>*/}
                     <Box>
                         <Typography
                             id="modal-modal-title"
@@ -144,7 +165,7 @@ const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
                             sx={{ m: 3 }}
                             variant="contained"
                             color="success"
-                            onClick={(e) => (handleClose(), uploadStudentAssignment(e, assignment.assignment_id))}
+                            onClick={(e) => (handleClose(), uploadStudentAssignment(e, assignment.assignment_id, assignment.num_submissions_allowed))}
                             startIcon={<AddIcon />}
                         >
                             {" "}
@@ -176,7 +197,7 @@ const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
                     </Button>
                 </Box>
             </Modal>
-        </Fragment>
+        </div>
     )
 }
 

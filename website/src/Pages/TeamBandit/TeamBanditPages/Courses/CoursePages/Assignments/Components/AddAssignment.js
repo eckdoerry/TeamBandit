@@ -9,6 +9,7 @@ import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import MenuItem from "@mui/material/MenuItem";
+import Checkbox from '@mui/material/Checkbox';
 
 import { toast } from "react-toastify";
 
@@ -32,26 +33,39 @@ const submissionTypes = [
       value: 'Individual',
       label: 'Individual',
     },
-  ];
+];
 
 const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
     // Variables
     const [assignment_name, setAssignmentName] = useState("");
     const [assignment_start_date, setAssignmentStartDate] = useState("");
     const [assignment_due_date, setAssignmentDueDate] = useState("");
-    const [assignment_description, setAssignmentDescription] = useState("");
     const [submission_type, setSubmissionType] = useState("");
+    const [allow_submissions_after_due, setAllowSubmissionsAfterDue] = useState(false);
+    const [display_on_team_website, setDisplayOnTeamWebsite] = useState(true);
     const [assignment_instructions, setAssignmentInstructions] = useState(null);
 
+    const handleDisplayOnTeamWebsiteCheckChange = (event) => {
+        setDisplayOnTeamWebsite(event.target.checked);
+    };
+
+    const handleAllowSubmissionsAfterDueCheckChange = (event) => {
+        setAllowSubmissionsAfterDue(event.target.checked);
+    };
+
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        setOpen(true);
+        setAllowSubmissionsAfterDue(false);
+        setDisplayOnTeamWebsite(true);
+    }
     const handleClose = () => {
         setOpen(false);
         setAssignmentName("");
         setAssignmentStartDate("");
         setAssignmentDueDate("");
-        setAssignmentDescription("");
         setSubmissionType("");
+        setDisplayOnTeamWebsite(true);
         setAssignmentInstructions(null);
     };
 
@@ -65,14 +79,20 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
 
     const addAssignment = async (event) => {
         event.preventDefault();
+        if (assignment_name === "" || assignment_name === "" || assignment_start_date === "" || assignment_due_date === "" || submission_type === null)
+        {
+            alert("Invalid values entered!");
+            return;
+        }
         try {
             const formData = new FormData();
             formData.append("assignmentInstructions", assignment_instructions);
             formData.append("assignment_name", assignment_name);
             formData.append("assignment_start_date", assignment_start_date);
             formData.append("assignment_due_date", assignment_due_date);
-            formData.append("assignment_description", assignment_description);
             formData.append("submission_type", submission_type);
+            formData.append("allow_submissions_after_due", allow_submissions_after_due);
+            formData.append("display_on_team_website", display_on_team_website);
             formData.append("course_id", courseInfo.course_id);
         
             const myHeaders = new Headers();
@@ -88,7 +108,6 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
             setAssignmentName("");
             setAssignmentStartDate("");
             setAssignmentDueDate("");
-            setAssignmentDescription("");
             setSubmissionType("");
             setAssignmentInstructions(null);
             setRowChange(true);
@@ -155,15 +174,14 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
                         onChange={(e) => setAssignmentDueDate(e.target.value)}
                     />
 
-                    <Typography>Assignment Description</Typography>
-                    <TextField
-                        fullWidth
-                        sx={{ m: 2 }}
-                        label="Assignment Description"
-                        type="text"
-                        value={assignment_description}
-                        onChange={(e) => setAssignmentDescription(e.target.value)}
-                    />
+                    <div>
+                        <Typography>Allow Submissions After Due Date?</Typography>
+                        <Checkbox
+                            checked={allow_submissions_after_due}
+                            onChange={handleAllowSubmissionsAfterDueCheckChange}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                        />
+                    </div>
 
                     <Typography>Submission Type</Typography>
                     <TextField
@@ -180,6 +198,17 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
                             </MenuItem>
                         ))}
                     </TextField>
+                    
+                    {submission_type === "Team" &&
+                        <div>
+                            <Typography>Display Assignment on Team Website?</Typography>
+                            <Checkbox
+                                checked={display_on_team_website}
+                                onChange={handleDisplayOnTeamWebsiteCheckChange}
+                                inputProps={{ 'aria-label': 'controlled' }}
+                            />
+                        </div>
+                    }
 
                     <Typography>Upload Assignment PDF Instructions</Typography>
                     <form encType="multipart/form-data">
