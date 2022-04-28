@@ -217,7 +217,16 @@ const InputTodo = ({courseInfo, setRowChange}) => {
                 <Dialog fullWidth={true} maxWidth={'md'} open={infoOpen} onClose={handleInfoClose}>
                 <div style={{padding: '10px'}}>
                     <CloseIcon sx={{fontSize: '30px'}} style={{position: 'absolute', top: '10', right: '10', color: '#003466', cursor: 'pointer'}} onClick={handleInfoToggle}/>
-                    <Typography variant="h4">Upload Instructions</Typography>
+                    <Typography 
+                    variant="h4" 
+                    backgroundColor={courseInfo.course_color}
+                    margin="-1.1% -1.1% 2% -1.1%"
+                    paddingTop="2%"
+                    paddingBottom="2%"
+                    padding="1% 1% 1% 2%"
+                    >
+                        Upload Instructions
+                    </Typography>
                     <Typography variant="body2">Currently only the file type of .csv is supported. You will also need to include header rows to properly identify the data. These headers include: firstName, lastName, studentID, email, and gpa. An example of what your file should look like is below.</Typography>
                     <br></br>
                     <Typography variant="body2">If you want to include a 'comment line', you can add # or % at the start of your line. This will not include that line for upload. This would be in the 'firstName' column.</Typography>
@@ -299,7 +308,11 @@ const InputTodo = ({courseInfo, setRowChange}) => {
                                 </Button>
                             </ThemeProvider>
                             </label>
-
+                
+                <br>
+                </br>
+                <br>
+                </br>
                     
                 </div>
                 <div className = {styles.tablepad}>
@@ -307,11 +320,11 @@ const InputTodo = ({courseInfo, setRowChange}) => {
                     <Table sx={{ minWidth: 1000 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                        <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}}>First Name</TableCell>
-                        <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}}>Last Name</TableCell>
-                        <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}} align="right">Student ID</TableCell>
-                        <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}}align="right">Email</TableCell>
-                        <TableCell style={{backgroundColor:'#F2C12E', color: 'black',}}align="right">GPA</TableCell>
+                        <TableCell style={{backgroundColor:courseInfo.course_color, color: 'black',}}>First Name</TableCell>
+                        <TableCell style={{backgroundColor:courseInfo.course_color, color: 'black',}}>Last Name</TableCell>
+                        <TableCell style={{backgroundColor:courseInfo.course_color, color: 'black',}} align="right">Student ID</TableCell>
+                        <TableCell style={{backgroundColor:courseInfo.course_color, color: 'black',}}align="right">Email</TableCell>
+                        <TableCell style={{backgroundColor:courseInfo.course_color, color: 'black',}}align="right">GPA</TableCell>
                         </TableRow>
                     </TableHead>
                 <TableBody>
