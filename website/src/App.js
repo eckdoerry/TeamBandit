@@ -26,7 +26,7 @@ toast.configure();
  */
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState( false );
-    const [ userIdentifier, setUserIdentifier] = useState("NULL");
+    const [userIdentifier, setUserIdentifier] = useState("NULL");
 
     const setAuth = (boolean) => {
         setIsAuthenticated(boolean);

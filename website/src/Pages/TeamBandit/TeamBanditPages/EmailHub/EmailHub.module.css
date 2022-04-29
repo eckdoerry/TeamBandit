@@ -10,8 +10,8 @@
     height: 83vh;
     width: 76%;
     overflow: scroll;
-    margin: 10px;
-    padding: 10px;
+    padding-left: 5px;
+    margin-left: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-width: 5px;
 }
@@ -27,10 +27,11 @@
 }
 
 .inboxEmail {
-    background-color: #ededed !important;
+    background-color: white !important;
     margin: 0.25rem !important;
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
 }
 
 .inboxEmailUnread {
@@ -40,14 +41,17 @@
     display: flex;
     justify-content: space-between;
     color: black !important;
+    cursor: pointer;
 }
 
 .contact_card {
     background-color: #f7f7f7;
+    cursor: pointer;
 }
 
 .contact_card:nth-child(odd) {
     background-color: #ededed;
+    cursor: pointer;
 }
 
 .lineheight {
@@ -62,6 +66,7 @@
 .inbox_name {
     font-size: 1rem;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .contact_email {

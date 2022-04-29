@@ -100,9 +100,7 @@ const EditMentor = ({courseInfo, mentor, setRowChange}) => {
 
     return (
         <div>
-            <Button variant="outlined" color="warning" onClick={handleOpen} startIcon={<EditIcon />}>
-                Edit
-            </Button>
+            <EditIcon style={{cursor: 'pointer', color: '#f57c00', alignItems:'center', justifyContent: 'center'}} onClick={handleOpen}/>
             <Modal
                 open={open}
                 onClose={handleClose}

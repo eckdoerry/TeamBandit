@@ -40,7 +40,6 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
     const setLoadingFalse = () => {
         setLoading(false);
     };
-
     // END LOADING VARIABLES //
 
     // INDIVIDUAL CELL COMPONENTS //
@@ -253,21 +252,21 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
         headerName: "Project Title",
         renderCell: projectPage,
         cellClassName: "border",
-        flex: 2,
+        flex: 3,
     },
     {
         field: "client_name",
         headerName: "Project Sponsor",
         renderCell: displaySponsor,
         cellClassName: "border",
-        flex: 2,
+        flex: 3,
     },
     {
         field: "team_name",
         headerName: "Student Team",
         renderCell: teamPage,
         cellClassName: "border",
-        flex: 3,
+        flex: 2,
     },
     {
         field: "mentor_name",
@@ -282,7 +281,6 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
         headerName: "Edit",
         sortable: false,
         filterable: false,
-        flex: 1,
         renderCell: editButton,
         disableClickEventBubbling: true,
     } 

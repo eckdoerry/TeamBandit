@@ -238,10 +238,10 @@ const TeamPage = () => {
                             sx={{ borderRight: 1, borderColor: "divider" }}
                         >
                             <Tab value="Overview" label="Overview" />
-                            <Tab value="Solution" label="Solution" />
-                            <Tab value="The Team" label="The Team" />
-                            <Tab value="Deliverables" label="Deliverables" />
+                            <Tab value="Project Summary" label="Project Summary" />
+                            <Tab value="Documentation" label="Documentation" />
                             <Tab value="Schedule" label="Schedule" />
+                            <Tab value="The Team" label="The Team" />
                         </Tabs>
                     </Drawer>
                     <TeamWebsiteRouter route={route} colorValue={colorValue} teamInfo={teamInfo} fontColor={fontColor} teamMembers={teamMembers} projectInfo={projectInfo}/>

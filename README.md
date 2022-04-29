@@ -72,6 +72,82 @@ Every tool is neatly combined into a single application, providing the ultimate 
 
 <br />
 
+# Installation
+
+Hello! You've started upon a journey of getting this app to work, this is here to help you out! Firstly, you want to get this repository on your local machine.
+This can be through forking it and cloning your forked repository or through cloning this repo directly. There are tutorials and guides on how to do so :-).
+
+<br/>
+
+Once the application is downloaded you want to make sure you have Node installed on your machine. This is what we use to run React and Express. This can be done here:
+
+<br/>
+https://nodejs.org/en/
+<br/>
+ 
+ You may need to restart once its done. Navigate to a command line and make sure its installed by typing:
+
+```bash
+node -v
+```
+
+With that installed you want to navigate to the cloned repository. Specifically you want to be in the /website directory. Once inside you want to run: 
+
+```bash
+npm i
+```
+
+This should go through and install all of our node dependencies! Congrats, you're progressing along!
+<br/>
+Next you want to make sure your database is up to date. Inside /website/server we have included a nifty sqlCode.txt for your use! We use PostgreSQL for our
+database management system. There are tutorials on how to install this on YouTube. Once installed you should be able to copy the contents of the sqlCode.txt
+into a query and run them. This will set up your database to work with our application!
+<br/>
+Finally, the last thing you need to set up is the .env files. For security reasons we do not include our actual .env files. Instead we have included two .env.examples
+located in /website/server and in /website. Each one has some comments and examples of what needs to go there. These basically help set up the connections to the database.
+<br/>
+Once those are set up you should be good to run the application!
+
+## Windows Run Guide
+To run on windows you need to open two terminals, either through VSCodes terminal, powershell, or normal CMD terminal.
+
+<br/>
+
+### First Terminal
+Navigate to /website, then run:
+
+```bash
+npm run start-client
+```
+
+This runs our the React application on localhost.
+
+### Second Terminal
+Windows does not execute commands simultaneously. So you need to navigate to, /website/server/middleware and run:
+
+```bash
+node authRoutes
+```
+
+This sets up the connection to the database.
+
+## Mac Run Guide
+For MAC its easy! Navigate to /website and run:
+
+```bash
+npm run start-client
+```
+
+You should be good to go as MAC will execute both processes!
+
+## Linux Run Guide
+*Should be similar to the Mac run process*
+
+<br/>
+
+Hopefully at this point the application is running and you can start working on it! Good luck and have fun!
+
+<br/>
 # The Developers
 
 <br />

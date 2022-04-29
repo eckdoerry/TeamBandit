@@ -1,0 +1,265 @@
+-- Copy and Paste this into PostgreSQL, should give you all variables you need
+
+-- Database Creation/Organizer Table Creation Script
+CREATE DATABASE teamBandit;
+
+CREATE TABLE organizers(
+    organizer_fname VARCHAR(255) NOT NULL,
+    organizer_lname VARCHAR(255) NOT NULL,
+    organizer_email VARCHAR(255) NOT NULL,
+    organizer_pass VARCHAR(255) NOT NULL,
+    organizer_bio VARCHAR(255),
+    organizer_id SERIAL CONSTRAINT organizers_pk PRIMARY KEY
+);
+
+comment on TABLE organizers is 'Teachers/Staff';
+
+comment on column organizers.organizer_fname is 'First Name';
+
+comment on column organizers.organizer_lname is 'Last Name';
+
+comment on column organizers.organizer_pass is 'Password';
+
+CREATE unique index organizers_organizer_id_uindex on organizers (organizer_id);
+
+-- Temporary Course Creation Script
+CREATE TABLE courses(
+    course_id SERIAL,
+    organizer_id SERIAL,
+    course_title VARCHAR(255),
+    course_semester VARCHAR(255),
+    course_description VARCHAR(255),
+    course_archived BOOLEAN,
+    course_public BOOLEAN,
+    PRIMARY KEY ( course_id ),
+    FOREIGN KEY ( organizer_id ) REFERENCES organizers( organizer_id )
+);
+
+-- Adding Archived Boolean to Existing Courses Table
+alter table courses
+    add course_archived bool default False;
+
+ALTER TABLE courses add course_public BOOLEAN default True;
+
+comment on column courses.course_archived is 'Is the course archived (i.e. changes where it will be shown)';
+
+-- Temporary Projects Creation Script
+CREATE TABLE projects(
+    project_id SERIAL PRIMARY KEY,
+    course_id SERIAL,
+    organizer_id SERIAL,
+    project_name VARCHAR(255),
+    project_description VARCHAR(255),
+    project_mentor VARCHAR(255),
+    project_sponsor VARCHAR(255),
+    FOREIGN KEY ( course_id ) REFERENCES courses( course_id ),
+    FOREIGN KEY ( organizer_id ) REFERENCES organizers( organizer_id )
+);
+
+-- Create extension for UUID for student passwords
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Temporary Student Creation Script
+CREATE TABLE students(
+    student_id SERIAL PRIMARY KEY,
+	organizer_id SERIAL,
+    student_fname VARCHAR(255),
+    student_lname VARCHAR(255),
+    student_emplid int,
+    student_email VARCHAR(255),
+    student_gpa float,
+    student_password VARCHAR(255) DEFAULT uuid_generate_v4(),
+    student_projectpref1 VARCHAR(255),
+    student_projectpref2 VARCHAR(255),
+    student_projectpref3 VARCHAR(255),
+    assigned BOOLEAN DEFAULT false,
+    FOREIGN KEY ( organizer_id ) REFERENCES organizers( organizer_id )
+);
+
+-- Temporary Student Course Bridge
+CREATE TABLE studentcourses(
+    student_id SERIAL,
+	course_id SERIAL,
+    FOREIGN KEY ( student_id ) REFERENCES students( student_id ),
+    FOREIGN KEY ( course_id ) REFERENCES courses( course_id )
+);
+
+-- Temp clients table
+CREATE TABLE clients(
+    client_id SERIAL PRIMARY KEY,
+    client_lname VARCHAR(255),
+    client_fname VARCHAR(255),
+    client_email VARCHAR(255),
+    client_organization VARCHAR(255),
+    client_phonenumber VARCHAR(255),
+    client_notes VARCHAR(255),
+    organizer_id SERIAL,
+    FOREIGN KEY ( organizer_id ) REFERENCES organizers( organizer_id )
+);
+
+-- Temporary Mentors Table
+CREATE TABLE mentors(
+    mentor_id SERIAL PRIMARY KEY,
+    organizer_id SERIAL,
+	mentor_name VARCHAR(255),
+    mentor_email VARCHAR(255),
+    mentor_password VARCHAR(255) DEFAULT uuid_generate_v4(),
+    FOREIGN KEY ( organizer_id ) REFERENCES organizers( organizer_id )
+);
+
+-- Temporary Mentor Course Bridge
+CREATE TABLE mentorCourses(
+    mentor_id SERIAL,
+	course_id SERIAL,
+    FOREIGN KEY ( mentor_id ) REFERENCES mentors( mentor_id ),
+    FOREIGN KEY ( course_id ) REFERENCES courses( course_id )
+);
+
+-- Temporary Mentor Project Bridge
+CREATE TABLE mentorProjects(
+    mentor_id SERIAL,
+	project_id SERIAL,
+    FOREIGN KEY ( mentor_id ) REFERENCES mentors( mentor_id ),
+    FOREIGN KEY ( project_id ) REFERENCES projects( project_id )
+);
+
+-- Teams Table
+CREATE TABLE teams(
+    team_id SERIAL PRIMARY KEY,
+    page_layout VARCHAR(255),
+    team_name VARCHAR(255),
+    team_lead VARCHAR(255),
+    team_logo VARCHAR(255),
+    team_size int DEFAULT 4,
+    organizer_id SERIAL,
+    course_id SERIAL,
+    project_id SERIAL, 
+    FOREIGN KEY ( organizer_id ) REFERENCES organizers( organizer_id ),
+    FOREIGN KEY ( course_id ) REFERENCES courses( course_id ),
+    FOREIGN KEY ( project_id ) REFERENCES projects( project_id )
+);
+
+-- Assignments Table
+CREATE TABLE assignments(
+    assignment_id SERIAL PRIMARY KEY,
+    assignment_name VARCHAR(255),
+    assignment_due_date VARCHAR(255),
+    assignment_description VARCHAR(255),
+    submission_type VARCHAR(255),
+    submitter_type VARCHAR(255),
+    organizer_id SERIAL,
+    FOREIGN KEY ( organizer_id ) REFERENCES organizers( organizer_id )
+);
+
+-- Stupid assignment bridge table
+CREATE TABLE assignmentBridgeTable(
+    assignment_id SERIAL,
+	team_id INT NULL,
+    student_id INT NULL,
+    submission VARCHAR(255),
+    FOREIGN KEY ( assignment_id ) REFERENCES assignments ( assignment_id ),
+    FOREIGN KEY ( team_id ) REFERENCES teams( team_id ),
+    FOREIGN KEY ( student_id ) REFERENCES students( student_id )
+);
+
+-- Stupid bridge table for teams, projects, and students
+CREATE TABLE studentTeamBridgeTable(
+    student_id SERIAL,
+    project_id SERIAL,
+    team_id SERIAL,
+    FOREIGN KEY ( student_id) REFERENCES students( student_id),
+    FOREIGN KEY ( project_id ) REFERENCES projects( project_id ),
+    FOREIGN KEY ( team_id ) REFERENCES teams( team_id )
+);
+
+-- 2/17/2022 Changes
+ALTER TABLE projects ADD COLUMN project_short_name VARCHAR(255);
+ALTER TABLE students ADD COLUMN student_uid VARCHAR(255);
+
+-- Additions for teams 2/19/2022
+ALTER TABLE teams ADD COLUMN page_color VARCHAR(255) DEFAULT '#002454';
+ALTER TABLE teams ADD COLUMN team_description VARCHAR(255) DEFAULT 'Default Team Description';
+
+-- Addition for projects 2/20/2022
+ALTER TABLE projects ADD COLUMN projectoverview_filename VARCHAR(255);
+
+-- 2/23/2022 Additions, Includes Adding Date of creation to courses, update team_lead
+ALTER TABLE courses ADD COLUMN creation_date DATE DEFAULT CURRENT_DATE;
+ALTER TABLE teams DROP COULMN team_lead;
+ALTER TABLE teams ADD COLUMN team_lead int NULL;
+ALTER TABLE teams ADD CONSTRAINT team_lead FOREIGN KEY ( team_lead ) REFERENCES students( student_id );
+
+-- 2/24/2022 Additions/Deletions
+ALTER TABLE projects DROP COLUMN project_short_name;
+ALTER TABLE projects DROP COLUMN status_tracker;
+
+-- 3/5/2022 Add two more project preferences
+ALTER TABLE students ADD COLUMN student_projectpref4 VARCHAR(255);
+ALTER TABLE students ADD COLUMN student_projectpref5 VARCHAR(255);
+
+-- 3/5/2022 Messages table
+create table messages
+(
+    recipient  varchar(255)   not null,
+    sender     varchar(255)   not null,
+    subject    varchar(255)   not null,
+    message    varchar(50000) not null,
+    datetime   timestamp      not null,
+    attachment varchar(255),
+    read       boolean default false
+);
+
+-- For assignments and schedule
+create table schedule (
+    schedule_week_id SERIAL PRIMARY KEY,
+    schedule_week varchar(255),
+    schedule_description varchar(255),
+    schedule_deliverables varchar(255)
+);
+
+alter table schedule add column course_id INTEGER REFERENCES courses (course_id);
+alter table schedule add column organizer_id INTEGER REFERENCES organizers (organizer_id);
+alter table assignments add column assignment_filename varchar(255);
+alter table assignments add column course_id INTEGER REFERENCES courses (course_id);
+
+-- 3/8/2022 Changes for Teams Page
+ALTER TABLE teams DROP COLUMN team_description;
+ALTER TABLE teams ADD COLUMN team_description VARCHAR(2500);
+ALTER TABLE teams ADD COLUMN team_backdrop VARCHAR(255);
+ALTER TABLE teams ADD COLUMN font_color VARCHAR(255) DEFAULT('#FFFFFF');
+ALTER TABLE teams ADD COLUMN information_link VARCHAR(255);
+
+-- 3/8/2022 Small database addition to support start dates for assignments
+ALTER TABLE assignments ADD COLUMN assignment_start_date VARCHAR(255);
+
+-- 3/19/2022 Spring Break Changes, Add Client Logo/Location, Remove unused columns, Team Size
+ALTER TABLE clients ADD COLUMN client_logo VARCHAR(255);
+ALTER TABLE clients ADD COLUMN client_location VARCHAR(255);
+ALTER TABLE clients DROP COLUMN client_name;
+ALTER TABLE clients DROP COLUMN client_company;
+ALTER TABLE courses ADD COLUMN team_size INTEGER DEFAULT 4;
+
+-- 3/22/2022 Small change to add primary key to messages to allow for easier SQL queries when changing info
+alter table messages
+    add message_id serial;
+
+create unique index messages_message_id_uindex
+    on messages (message_id);
+
+alter table messages
+    add constraint messages_pk
+        primary key (message_id);
+
+-- 3/28/2022 Remove Organizer Dependancy for Students
+ALTER TABLE students DROP COLUMN organizer_id
+
+-- 3/30/2022 Adds a primary key for student submissions 
+ALTER TABLE assignmentbridgetable ADD COLUMN submission_id SERIAL PRIMARY KEY;
+
+-- For PR #201: Adds a course color so the theme of a course can be changed
+ALTER TABLE IF EXISTS public.courses
+ADD COLUMN course_color character varying(255) COLLATE pg_catalog."default" DEFAULT '#FAC01A'::character varying;
+
+-- For PR #202: Adds some assignment fields for allowing submissions after the due date as well as a boolean to be used to display the assignment on team website
+ALTER TABLE assignments ADD COLUMN allow_submissions_after_due BOOLEAN;
+ALTER TABLE assignments ADD COLUMN display_on_team_website BOOLEAN;

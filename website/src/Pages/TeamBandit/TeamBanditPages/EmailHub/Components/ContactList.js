@@ -3,6 +3,7 @@ import styles from "../EmailHub.module.css";
 import Paper from "@mui/material/Paper";
 import Stack from '@mui/material/Stack';
 import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -51,13 +52,15 @@ const ContactList = (props) => {
         <Stack spacing = {1} className={styles.contact_list}>
             <Item
                     className={styles.contact_card}
+                    style={{height: '68px', backgroundColor: '#003466', color: 'white', textAlign: 'center', fontSize: 'large', fontWeight: '500', alignItems: 'center', justifyContent: 'center'}}
                     onClick={() => {
                         changeInboxViewhandler(true);
                     }}
                 >
-                    <p className={styles.inbox_name}> Inbox </p>
+                    <Typography variant="h5" style={{justifyContent: 'center', alignItems: 'center'}}> Inbox </Typography>
                 </Item>
             {contactList.map((message, index) => (
+                
                 <Item
                     className={styles.contact_card}
                     key={index}

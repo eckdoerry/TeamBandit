@@ -144,7 +144,7 @@ router.post("/uploadStudentAssignment", authorization, async(req, res) => {
         var student_assignment_filename = null;
         if (req.files) 
         {
-            const oldStudentSubmissionPath = await pool.query("SELECT student_id, assignment_id, submission FROM assignments WHERE student_id = $1 AND assignment_id = $2", [req.user, assignment_id]);
+            const oldStudentSubmissionPath = await pool.query("SELECT student_id, assignment_id, submission FROM assignmentbridgetable WHERE student_id = $1 AND assignment_id = $2", [req.user, assignment_id]);
 
             // Removes old submission
             if (fs.existsSync("../../public/uploads/documents/studentAssignments/" + oldStudentSubmissionPath.rows[0].submission))
@@ -188,7 +188,7 @@ router.post("/uploadTeamAssignment", authorization, async(req, res) => {
         var student_assignment_filename = null;
         if (req.files) 
         {
-            const oldTeamSubmissionPath = await pool.query("SELECT team_id, assignment_id, submission FROM assignments WHERE team_id = $1 AND assignment_id = $2", [team_id, assignment_id]);
+            const oldTeamSubmissionPath = await pool.query("SELECT team_id, assignment_id, submission FROM assignmentbridgetable WHERE team_id = $1 AND assignment_id = $2", [team_id, assignment_id]);
 
             // Removes old submission
             if (fs.existsSync("../../public/uploads/documents/studentAssignments/" + oldTeamSubmissionPath.rows[0].submission))

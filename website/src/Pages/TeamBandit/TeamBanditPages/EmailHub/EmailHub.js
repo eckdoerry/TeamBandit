@@ -1,4 +1,4 @@
-import { React, useState} from "react";
+import { React, useState, useEffect} from "react";
 import styles from "./EmailHub.module.css";
 
 // COMPONENTS
@@ -16,6 +16,7 @@ const EmailHub = () => {
     };
 
     const setInboxViewHandler = (inboxBool) => {
+        console.log(inboxBool)
         setInboxView(inboxBool);
     };
 
@@ -37,7 +38,7 @@ const EmailHub = () => {
                     onChangeChain={setSelectedChainHandler}
                     onChangeInboxView={setInboxViewHandler}
                 />
-                <ChatLog clientEmail={selectedChain} />
+                <ChatLog selectedChain={selectedChain} setInboxViewHandler={setInboxViewHandler}/>
             </div>
         );
     }

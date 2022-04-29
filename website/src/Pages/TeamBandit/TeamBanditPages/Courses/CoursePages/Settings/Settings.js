@@ -21,8 +21,8 @@ import ToggleButton from "@mui/material/ToggleButton";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
-import {Edit} from "@mui/icons-material";
-import {Delete} from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 
 import { toast } from "react-toastify";
 import { borderColor, color, fontWeight } from "@mui/system";
@@ -82,42 +82,46 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
         if (!title) {
             alert("Please add a Course Name");
             return;
-        }
-        else if (courseColor != "#EBEBEB" && courseColor != null) {
-        try {
-            const myHeaders = new Headers();
+        } else if (courseColor != "#EBEBEB" && courseColor != null) {
+            try {
+                const myHeaders = new Headers();
 
-            myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("token", localStorage.token);
+                myHeaders.append("Content-Type", "application/json");
+                myHeaders.append("token", localStorage.token);
 
-            const body = { title, semester, isPublic, teamSize, courseColor };
-            await fetch(
-                `${process.env.REACT_APP_BASEURL}/courses/courses/${courseInfo.course_id}`,
-                {
-                    method: "PUT",
-                    headers: myHeaders,
-                    body: JSON.stringify(body),
-                }
-            );
-            
-            
+                const body = {
+                    title,
+                    semester,
+                    isPublic,
+                    teamSize,
+                    courseColor,
+                };
+                await fetch(
+                    `${process.env.REACT_APP_BASEURL}/courses/courses/${courseInfo.course_id}`,
+                    {
+                        method: "PUT",
+                        headers: myHeaders,
+                        body: JSON.stringify(body),
+                    }
+                );
+
+                setCoursesChange(true);
+
+                toast.success("Course edited successfully!");
+                handleClose();
+
                 
-
-            setCoursesChange(true);
-
-            toast.success("Course edited successfully!");
-            handleClose();
-
-            if (courseColor != "#EBEBEB" && courseInfo.course_color != "EBEBEB")
-                {
+                if (
+                    courseColor != "#EBEBEB" &&
+                    courseInfo.course_color != "EBEBEB"
+                ) {
                     setCourseColor("#EBEBEB");
                 }
-            
-        } catch (err) { 
-            console.error(err.message);
-            toast.error("Failed to update course!");
+            } catch (err) {
+                console.error(err.message);
+                toast.error("Failed to update course!");
+            }
         }
-    }
     };
 
     async function deleteCourse(id) {
@@ -139,526 +143,482 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
     }
 
     return (
-        <div style={
-            {
-                width: "100%", 
-                height: "100%", 
+        <div
+            style={{
+                width: "100%",
+                height: "100%",
                 padding: "25px",
-            }
-            }
+            }}
         >
-            <Paper 
-            style = {
-                { 
-                    padding: "0px", 
+            <Paper
+                style={{
+                    padding: "0px",
                     border: "1px double",
                     borderColor: "#d3d3d3",
                     boxShadow: "0px 0px 0px 0px",
-                }
-                    } 
-            elevation={3}
+                }}
+                elevation={3}
             >
-
-            <div
-            style = {
-                {
-                width: "100%",
-                height: "100%",
-                backgroundColor: courseInfo.course_color,
-                }
-                    }
-            >
-
-
-                <Typography
+                <div
                     style={{
-                        borderBottomWidth: "thin",
                         width: "100%",
                         height: "100%",
-                        padding: "25px 25px 25px 10px",
+                        backgroundColor: courseInfo.course_color,
                     }}
-                    variant="h4"
-                    gutterBottom
-                >
-                    {" "}
-                    Course Settings
-                    {" "}
-                </Typography>
-                
-            </div>
-
-            <br>
-            </br>
-                
-
-                <div
-                    display="inline-block"
-                    style = {
-                        {
-                        paddingLeft: "1%",
-                        }
-                            }
                 >
                     <Typography
-                    variant="h5"
-                    display="inline-block"
-                    marginRight="1%"
-                    marginBottom="1%"
-                >
-                    Course Theme
-                </Typography>
-                        <button
-                            type="button"
-                            onClick={(e) => setCourseColor("#FAC01A")}
-                            style={
-                                {
-                                backgroundColor: "#FAC01A",
-                                border: "solid",
-                                borderColor: '#FAC01A',
-                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                                borderRadius: "24px",
-                                display: "inline",
-                                marginRight: ".5%",
-                                marginBottom: "1%",
-                                padding: "2% 1% 2%",
-                                fontSize: "100%",
-                                alignItems: "center",
-                                justifyContent: "left",
-                                cursor: "pointer",
-                                }
-                            }
-                        >
-                            Gold
-                        </button>
+                        style={{
+                            borderBottomWidth: "thin",
+                            width: "100%",
+                            height: "100%",
+                            padding: "25px 25px 25px 10px",
+                        }}
+                        variant="h4"
+                        gutterBottom
+                    >
+                        {" "}
+                        Course Settings{" "}
+                    </Typography>
+                </div>
 
-                        <button
-                            type="button"
-                            onClick={(e) => setCourseColor("#FFFFFF")}
-                            style={
-                                {
-                                backgroundColor: "#FFFFFF",
-                                border: "solid",
-                                borderColor: '#FFFFFF',
-                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                                borderRadius: "24px",
-                                display: "inline",
-                                marginRight: ".5%",
-                                marginBottom: "1%",
-                                padding: "2% 1% 2%",
-                                fontSize: "100%",
-                                alignItems: "center",
-                                justifyContent: "left",
-                                cursor: "pointer",
-                                }
-                            }
-                        >
-                            Snow
-                        </button>
-
-                        <button
-                            type="button"
-                            onClick={(e) => setCourseColor("#FFD7D4")}
-                            style={
-                                {
-                                backgroundColor: "#FFD7D4",
-                                border: "solid",
-                                borderColor: '#FFD7D4',
-                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                                borderRadius: "24px",
-                                display: "inline",
-                                marginRight: ".5%",
-                                marginBottom: "1%",
-                                padding: "2% 1% 2%",
-                                fontSize: "100%",
-                                alignItems: "center",
-                                justifyContent: "left",
-                                cursor: "pointer",
-                                }
-                            }
-                        >
-                            Lotus
-                        </button>
-
-                        <button
-                            type="button"
-                            onClick={(e) => setCourseColor("#FFC67A")}
-                            style={
-                                {
-                                backgroundColor: "#FFC67A",
-                                border: "solid",
-                                borderColor: '#FFC67A',
-                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                                borderRadius: "24px",
-                                display: "inline",
-                                marginRight: ".5%",
-                                marginBottom: "1%",
-                                padding: "2% 1% 2%",
-                                fontSize: "100%",
-                                alignItems: "center",
-                                justifyContent: "left",
-                                cursor: "pointer",
-                                }
-                            }
-                        >
-                            Sunset
-                        </button>
-
-                        <button
-                            type="button"
-                            onClick={(e) => setCourseColor("#FFF9B8")}
-                            style={
-                                {
-                                backgroundColor: "#FFF9B8",
-                                border: "solid",
-                                borderColor: '#FFF9B8',
-                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                                borderRadius: "24px",
-                                display: "inline",
-                                marginRight: ".5%",
-                                marginBottom: "1%",
-                                padding: "2% 1% 2%",
-                                fontSize: "100%",
-                                alignItems: "center",
-                                justifyContent: "left",
-                                cursor: "pointer",
-                                }
-                            }
-                        >
-                            Daffodil
-                        </button>
-
-                        <button
-                            type="button"
-                            onClick={(e) => setCourseColor("#D1FFA8")}
-                            style={
-                                {
-                                backgroundColor: "#D1FFA8",
-                                border: "solid",
-                                borderColor: '#D1FFA8',
-                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                                borderRadius: "24px",
-                                display: "inline",
-                                marginRight: ".5%",
-                                marginBottom: "1%",
-                                padding: "2% 1% 2%",
-                                fontSize: "100%",
-                                alignItems: "center",
-                                justifyContent: "left",
-                                cursor: "pointer",
-                                }
-                            }
-                        >
-                            Spearmint
-                        </button>
-
-                        <button
-                            type="button"
-                            onClick={(e) => setCourseColor("#C7F7FF")}
-                            style={
-                                {
-                                backgroundColor: "#C7F7FF",
-                                border: "solid",
-                                borderColor: '#C7F7FF',
-                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                                borderRadius: "24px",
-                                display: "inline",
-                                marginRight: ".5%",
-                                marginBottom: "1%",
-                                padding: "2% 1% 2%",
-                                fontSize: "100%",
-                                alignItems: "center",
-                                justifyContent: "left",
-                                cursor: "pointer",
-                                }
-                            }
-                        >
-                            Icicle
-                        </button>
-
-                        <button
-                            type="button"
-                            onClick={(e) => setCourseColor("#C39CFF")}
-                            style={
-                                {
-                                backgroundColor: "#C39CFF",
-                                border: "solid",
-                                borderRadius: "24px",
-                                borderColor: '#C39CFF',
-                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                                display: "inline",
-                                marginRight: ".5%",
-                                marginBottom: "1%",
-                                padding: "2% 1% 2%",
-                                fontSize: "100%",
-                                alignItems: "center",
-                                justifyContent: "left",
-                                cursor: "pointer",
-                                }
-                            }
-                        >
-                            Grape
-                        </button>
-
-                        <button
-                            type="button"
-                            onClick={(e) => setCourseColor("#FF91B0")}
-                            style={
-                                {
-                                backgroundColor: "#FF91B0",
-                                border: "solid",
-                                borderRadius: "24px",
-                                borderColor: '#FF91B0',
-                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                                display: "inline",
-                                marginRight: ".5%",
-                                marginBottom: "1%",
-                                padding: "2% 1% 2%",
-                                fontSize: "100%",
-                                alignItems: "center",
-                                justifyContent: "left",
-                                cursor: "pointer",
-                                }
-                            }
-                        >
-                            Bubblegum
-                        </button>
-
-                        <button
-                            type="button"
-                            onClick={(e) => setCourseColor("#ABF5D0")}
-                            style={
-                                {
-                                backgroundColor: "#ABF5D0",
-                                border: "solid",
-                                borderColor: '#ABF5D0',
-                                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                                borderRadius: "24px",
-                                display: "inline",
-                                marginRight: ".5%",
-                                marginBottom: "1%",
-                                padding: "2% 1% 2%",
-                                fontSize: "100%",
-                                alignItems: "center",
-                                justifyContent: "left",
-                                cursor: "pointer",
-                                }
-                            }
-                        >
-                            Harbor
-                        </button>
-
-                
-
-                <button
-                type="button"
-                onClick={updateCourse}
-                
-                style={
-                    {
-                    backgroundColor: courseColor,
-                    border: "solid",
-                    borderRadius: "16px",
-                    borderColor: courseColor,
-                    boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                    display: "inline-block",
-                    marginLeft: "15%",
-                    marginRight: "1%",
-                    padding: "1% 20% 1%",
-                    fontSize: "100%",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    alignSelf: "right",
-                    cursor: "pointer",
-                    fontWeight: "bold",
-                    }
-                }
-                >
-                    Apply Theme
-                </button>
-                
-                <br>
-                </br>
-
-                <br>
-                </br>
-
-                <br>
-                </br>
+                <br></br>
 
                 <div
-                style={
-                    {
-                        backgroundColor: "#EDEDED",
-                        marginLeft: "-1.01%",
-                        marginBottom: "-25px",
-                        padding: "10px 10px 10px 10px",
-                    }
-                }
+                    display="inline-block"
+                    style={{
+                        paddingLeft: "1%",
+                    }}
                 >
-
                     <Typography
                         variant="h5"
-                        display="inline"
+                        display="inline-block"
                         marginRight="1%"
+                        marginBottom="1%"
                     >
-                        Title
+                        Course Theme
                     </Typography>
+                    <div style ={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <button
+                        type="button"
+                        onClick={(e) => setCourseColor("#FAC01A")}
+                        style={{
+                            backgroundColor: "#FAC01A",
+                            width: '10%',
+                            border: "solid",
+                            borderColor: "#FAC01A",
+                            boxShadow:
+                                "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                            borderRadius: "24px",
+                            display: "inline",
+                            marginRight: ".5%",
+                            marginBottom: "1%",
+                            padding: "2% 1% 2%",
+                            fontSize: "large",
+                            fontWeight: '500',
+                            alignItems: "center",
+                            justifyContent: "left",
+                            cursor: "pointer",
+                        }}
+                    >
+                        Gold
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={(e) => setCourseColor("#FFFFFF")}
+                        style={{
+                            backgroundColor: "#FFFFFF",
+                            border: "solid",
+                            width: '10%',
+                            borderColor: "#FFFFFF",
+                            boxShadow:
+                                "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                            borderRadius: "24px",
+                            display: "inline",
+                            marginRight: ".5%",
+                            marginBottom: "1%",
+                            padding: "2% 1% 2%",
+                            fontSize: "large",
+                            fontWeight: '500',
+                            alignItems: "center",
+                            justifyContent: "left",
+                            cursor: "pointer",
+                        }}
+                    >
+                        Snow
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={(e) => setCourseColor("#FFD7D4")}
+                        style={{
+                            backgroundColor: "#FFD7D4",
+                            border: "solid",
+                            width: '10%',
+                            borderColor: "#FFD7D4",
+                            boxShadow:
+                                "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                            borderRadius: "24px",
+                            display: "inline",
+                            marginRight: ".5%",
+                            marginBottom: "1%",
+                            padding: "2% 1% 2%",
+                            fontSize: "large",
+                            fontWeight: '500',
+                            alignItems: "center",
+                            justifyContent: "left",
+                            cursor: "pointer",
+                        }}
+                    >
+                        Lotus
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={(e) => setCourseColor("#FFC67A")}
+                        style={{
+                            backgroundColor: "#FFC67A",
+                            border: "solid",
+                            width: '10%',
+                            borderColor: "#FFC67A",
+                            boxShadow:
+                                "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                            borderRadius: "24px",
+                            display: "inline",
+                            marginRight: ".5%",
+                            marginBottom: "1%",
+                            padding: "2% 1% 2%",
+                            fontSize: "large",
+                            fontWeight: '500',
+                            alignItems: "center",
+                            justifyContent: "left",
+                            cursor: "pointer",
+                        }}
+                    >
+                        Sunset
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={(e) => setCourseColor("#FFF9B8")}
+                        style={{
+                            backgroundColor: "#FFF9B8",
+                            border: "solid",
+                            width: '10%',
+                            borderColor: "#FFF9B8",
+                            boxShadow:
+                                "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                            borderRadius: "24px",
+                            display: "inline",
+                            marginRight: ".5%",
+                            marginBottom: "1%",
+                            padding: "2% 1% 2%",
+                            fontSize: "large",
+                            fontWeight: '500',
+                            alignItems: "center",
+                            justifyContent: "left",
+                            cursor: "pointer",
+                        }}
+                    >
+                        Daffodil
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={(e) => setCourseColor("#D1FFA8")}
+                        style={{
+                            backgroundColor: "#D1FFA8",
+                            border: "solid",
+                            width: '10%',
+                            borderColor: "#D1FFA8",
+                            boxShadow:
+                                "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                            borderRadius: "24px",
+                            display: "inline",
+                            marginRight: ".5%",
+                            marginBottom: "1%",
+                            padding: "2% 1% 2%",
+                            fontSize: "large",
+                            fontWeight: '500',
+                            alignItems: "center",
+                            justifyContent: "left",
+                            cursor: "pointer",
+                        }}
+                    >
+                        Spearmint
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={(e) => setCourseColor("#C7F7FF")}
+                        style={{
+                            backgroundColor: "#C7F7FF",
+                            border: "solid",
+                            width: '10%',
+                            borderColor: "#C7F7FF",
+                            boxShadow:
+                                "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                            borderRadius: "24px",
+                            display: "inline",
+                            marginRight: ".5%",
+                            marginBottom: "1%",
+                            padding: "2% 1% 2%",
+                            fontSize: "large",
+                            fontWeight: '500',
+                            alignItems: "center",
+                            justifyContent: "left",
+                            cursor: "pointer",
+                        }}
+                    >
+                        Icicle
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={(e) => setCourseColor("#C39CFF")}
+                        style={{
+                            backgroundColor: "#C39CFF",
+                            border: "solid",
+                            width: '10%',
+                            borderRadius: "24px",
+                            borderColor: "#C39CFF",
+                            boxShadow:
+                                "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                            display: "inline",
+                            marginRight: ".5%",
+                            marginBottom: "1%",
+                            padding: "2% 1% 2%",
+                            fontSize: "large",
+                            fontWeight: '500',
+                            alignItems: "center",
+                            justifyContent: "left",
+                            cursor: "pointer",
+                        }}
+                    >
+                        Grape
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={(e) => setCourseColor("#FF91B0")}
+                        style={{
+                            backgroundColor: "#FF91B0",
+                            border: "solid",
+                            width: '10%',
+                            borderRadius: "24px",
+                            borderColor: "#FF91B0",
+                            boxShadow:
+                                "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                            display: "inline",
+                            marginRight: ".5%",
+                            marginBottom: "1%",
+                            padding: "2% 1% 2%",
+                            fontSize: "large",
+                            fontWeight: '500',
+                            alignItems: "center",
+                            justifyContent: "left",
+                            cursor: "pointer",
+                        }}
+                    >
+                        Bubblegum
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={(e) => setCourseColor("#ABF5D0")}
+                        style={{
+                            backgroundColor: "#ABF5D0",
+                            border: "solid",
+                            width: '10%',
+                            borderColor: "#ABF5D0",
+                            boxShadow:
+                                "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                            borderRadius: "24px",
+                            display: "inline",
+                            marginRight: ".5%",
+                            marginBottom: "1%",
+                            padding: "2% 1% 2%",
+                            fontSize: "large",
+                            fontWeight: '500',
+                            alignItems: "center",
+                            justifyContent: "left",
+                            cursor: "pointer",
+                        }}
+                    >
+                        Harbor
+                    </button>
+</div>
+                    <button
+                        type="button"
+                        onClick={updateCourse}
+                        style={{
+                            backgroundColor: courseColor,
+                            border: "solid",
+                            borderRadius: "16px",
+                            
+                            borderColor: courseColor,
+                            boxShadow:
+                                "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                            
+                            width: '50%',
+                            
+                            marginLeft: '25%',
+                            
+                            padding: "1% 20% 1%",
+                            fontSize: "large",
+                            fontWeight: '500',
+                            alignItems: "center",
+                            justifyContent: "center",
+                            
+                            cursor: "pointer",
+                        }}
+                    >
+                        Apply Theme
+                    </button>
                     
-                    <Typography
-                        display="inline"
-                        style={
-                            {
-                            marginInlineStart: "205px",
-                            fontSize: "150%",
-                            }
-                        }
+
+                    <br></br>
+
+                    <br></br>
+
+                    <br></br>
+
+                    <div
+                        style={{
+                            backgroundColor: "#EDEDED",
+                            marginLeft: "-1.01%",
+                            marginBottom: "-25px",
+                            padding: "10px 10px 10px 10px",
+                        }}
                     >
-                        {courseInfo.course_title}
-                    </Typography>
-                
+                        <Typography
+                            variant="h5"
+                            display="inline"
+                            marginRight="1%"
+                        >
+                            Title
+                        </Typography>
+
+                        <Typography
+                            display="inline"
+                            style={{
+                                marginInlineStart: "205px",
+                                fontSize: "150%",
+                            }}
+                        >
+                            {courseInfo.course_title}
+                        </Typography>
+                    </div>
+
+                    <br></br>
+
+                    <div
+                        style={{
+                            backgroundColor: "#F2F2F2",
+                            marginLeft: "-1.01%",
+                            marginBottom: "-50px",
+                            padding: "1% 1% 1% 1%",
+                        }}
+                    >
+                        <Typography
+                            variant="h5"
+                            display="inline"
+                            marginRight="1%"
+                        >
+                            Semester
+                        </Typography>
+
+                        <Typography
+                            display="inline"
+                            style={{
+                                marginInlineStart: "150px",
+                                fontSize: "150%",
+                            }}
+                        >
+                            {courseInfo.course_semester}
+                        </Typography>
+                    </div>
+
+                    <br></br>
+                    <br></br>
+
+                    <div
+                        style={{
+                            backgroundColor: "#F5F5F5",
+                            marginLeft: "-1.01%",
+                            marginBottom: "-50px",
+                            padding: "10px 10px 10px 10px",
+                        }}
+                    >
+                        <Typography
+                            variant="h5"
+                            display="inline"
+                            marginRight="1%"
+                        >
+                            Team Size
+                        </Typography>
+
+                        <Typography
+                            display="inline"
+                            marginRight="1%"
+                            style={{
+                                marginInlineStart: "141px",
+                                fontSize: "150%",
+                            }}
+                        >
+                            {courseInfo.team_size}
+                        </Typography>
+                    </div>
+
+                    <br></br>
+                    <br></br>
+
+                    <div
+                        style={{
+                            backgroundColor: "#FAFAFA",
+                            marginLeft: "-1.01%",
+
+                            padding: "10px 10px 10px 10px",
+                        }}
+                    >
+                        <Typography
+                            variant="h5"
+                            display="inline"
+                            marginRight="1%"
+                        >
+                            Course Privacy
+                        </Typography>
+
+                        <Typography
+                            display="inline"
+                            style={{
+                                marginInlineStart: "90px",
+                                fontSize: "150%",
+                            }}
+                        >
+                            {courseInfo.course_public ? "Public" : "Private"}
+                        </Typography>
+                    </div>
+
+                    <br></br>
                 </div>
 
-                <br>
-                </br>
-                
-                <div
-                style={
-                    {
-                        backgroundColor: "#F2F2F2",
-                        marginLeft: "-1.01%",
-                        marginBottom: "-50px",
-                        padding: "1% 1% 1% 1%",
-                    }
-                }
+                <Button
+                    sx={{ m: 3, pl: 5, pr: 5 }}
+                    style={{
+                        textAlign: "center",
+                        whiteSpace: "nowrap",
+                        color: "warning",
+                        borderColor: "warning",
+                    }}
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    startIcon={<Edit />}
+                    onClick={handleClickOpen}
                 >
-
-                <Typography
-                variant="h5"
-                display="inline"
-                marginRight="1%"
-                >Semester
-                </Typography>
-
-                <Typography
-                display="inline"
-                style={
-                    {
-                    marginInlineStart: "150px",
-                    fontSize: "150%",
-                    }
-                }
-                >
-                    {courseInfo.course_semester}
-                </Typography>
-
-                </div>
-
-                <br>
-                </br>
-                <br>
-                </br>
-                
-                <div
-                style={
-                    {
-                        backgroundColor: "#F5F5F5",
-                        marginLeft: "-1.01%",
-                        marginBottom: "-50px",
-                        padding: "10px 10px 10px 10px",
-                    }
-                }
-                >
-
-                <Typography 
-                variant="h5"
-                display="inline"
-                marginRight="1%"
-                >
-                    Team Size
-                </Typography>
-
-                <Typography
-                display="inline"
-                marginRight="1%"
-                style={
-                    {
-                    marginInlineStart: "141px",
-                    fontSize: "150%",
-                    }
-                }
-                >
-                    {courseInfo.team_size}
-                </Typography>
-
-                </div>
-
-                <br>
-                </br>
-                <br>
-                </br>
-                
-                <div
-                style={
-                    {
-                        backgroundColor: "#FAFAFA",
-                        marginLeft: "-1.01%",
-                        
-                        padding: "10px 10px 10px 10px",
-                    }
-                }
-                >
-
-                <Typography
-                variant="h5"
-                display="inline"
-                marginRight="1%"
-                >
-                    Course Privacy
-                </Typography>
-                
-                <Typography
-                display="inline"
-                style={
-                    {
-                    marginInlineStart: "90px",
-                    fontSize: "150%",
-                    }
-                }
-                >
-                    {courseInfo.course_public
-                        ? "Public"
-                        : "Private"}
-                </Typography>
-                
-                </div>
-
-                <br>
-                </br>
-
-
-                
-                </div>
-
-                <Button 
-                sx={{ m: 3, pl: 5, pr: 5 }}
-                style={
-                    { 
-                        textAlign: "center", 
-                        whiteSpace: "nowrap", 
-                        color:"warning", 
-                        borderColor:"warning"}
-                    }
-                size="large"
-                variant="outlined"
-                color="warning"
-                startIcon={<Edit />}
-                onClick={handleClickOpen}
-                >
-                Edit This Course
-                
+                    Edit This Course
                 </Button>
-                
-                
 
                 <Dialog
                     fullWidth
@@ -699,7 +659,6 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                             onChange={(e) => setSemester(e.target.value)}
                         />
 
-
                         <Typography>Standard Team Size</Typography>
                         <div
                             style={{
@@ -729,7 +688,6 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                             ></Button>
                         </div>
 
-                        
                         <div style={{ display: "flex", alignItems: "center" }}>
                             <Typography style={{ paddingRight: "6px" }}>
                                 Private
@@ -742,7 +700,9 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 Public
                             </Typography>
                             <Typography style={{ paddingRight: "6px" }}>
-                                {isPublic ? "| Course is now visible to anyone." : "| Course is now set to private and can only be viewed by the organizer through the application."}{" "}
+                                {isPublic
+                                    ? "| Course is now visible to anyone."
+                                    : "| Course is now set to private and can only be viewed by the organizer through the application."}{" "}
                             </Typography>
                         </div>
                     </DialogContent>
@@ -751,111 +711,80 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                         <Button onClick={handleClose}>Cancel</Button>
                     </DialogActions>
                 </Dialog>
-                <Button 
-                 sx={{ m: 3, pl: 5, pr: 5 }
-                    }
-                    style={
-                        { 
-                        textAlign: "center", 
-                        whiteSpace: "nowrap", 
-                        color:"red", 
-                        borderColor:"red" ,
-                        float:"right"
-                        }
-                    }
+                <Button
+                    sx={{ m: 3, pl: 5, pr: 5 }}
+                    style={{
+                        textAlign: "center",
+                        whiteSpace: "nowrap",
+                        float: "right",
+                    }}
                     size="large"
-                    variant="outlined"
+                    variant="contained"
+                    color="error"
                     startIcon={<Delete />}
-                    onClick={handleDeleteConfirmOpen}>
-
+                    onClick={handleDeleteConfirmOpen}
+                >
                     Delete Course
                 </Button>
 
-                <Dialog 
+                <Dialog
                     open={deleteConfirmOpen}
                     onClose={handleClose}
                     fullWidth
                 >
-
-                    <DialogTitle>
-                        Permanently Delete Course
-                    </DialogTitle>
+                    <DialogTitle>Permanently Delete Course</DialogTitle>
 
                     <DialogContent>
                         <DialogContentText>
-                        <div
-                            style= {
-                                {
+                            <div
+                                style={{
                                     display: "float",
-                                    float: "left"
-                                }
-                            }
-                        >
-                        Are you sure you want to delete this course forever?
-                        </div>
-
+                                    float: "left",
+                                }}
+                            >
+                                Are you sure you want to delete this course
+                                forever?
+                            </div>
                         </DialogContentText>
-                        
                     </DialogContent>
 
-                    <div
-                        style={{display: "float"}}
-                    >
-
-                    <Button
-                        sx={
-                            { m: 3, pl: 1, pr: 1 }
-                        }
-
-                        style={
-                            { 
-                                textAlign: "center", 
-                                whiteSpace: "nowrap", 
-                                color:"red",
-                                borderColor:"red",
-                                float:"left"
-                            }
-                        }
-
-                        size="medium"
-                        variant="outlined"
-                        startIcon={<Delete />}
-                        onClick={handleConfirmDelete}
-                    >
-                        Delete Course Forever
-                    </Button>
-
+                    <div style={{ display: "float" }}>
+                        <Button
+                            sx={{ m: 3, pl: 1, pr: 1 }}
+                            style={{
+                                textAlign: "center",
+                                whiteSpace: "nowrap",
+                                color: "red",
+                                borderColor: "red",
+                                float: "left",
+                            }}
+                            size="medium"
+                            variant="outlined"
+                            startIcon={<Delete />}
+                            onClick={handleConfirmDelete}
+                        >
+                            Delete Course Forever
+                        </Button>
                     </div>
-                        
-                    <div
-                        style={{ display: "float" }}
-                    >
 
-                    <Button 
-                        sx={
-                            { m: 3, pt: 2, pb:2 , pl: 10, pr: 10 }
-                        }
-
-                    style={
-                        { 
-                            textAlign: "center", 
-                            whiteSpace: "nowrap", 
-                            color:"blue", 
-                            borderColor:"blue",
-                            float:"right"
-                        }
-                    }
-
-                    size="large"
-                    variant="outlined"
-                    onClick={handleDeleteConfirmClose}
-                    >
-                        Cancel
-                    </Button>
-
+                    <div style={{ display: "float" }}>
+                        <Button
+                            sx={{ m: 3, pt: 2, pb: 2, pl: 10, pr: 10 }}
+                            style={{
+                                textAlign: "center",
+                                whiteSpace: "nowrap",
+                                color: "blue",
+                                borderColor: "blue",
+                                float: "right",
+                            }}
+                            size="large"
+                            variant="outlined"
+                            onClick={handleDeleteConfirmClose}
+                        >
+                            Cancel
+                        </Button>
                     </div>
                 </Dialog>
-                
             </Paper>
         </div>
     );

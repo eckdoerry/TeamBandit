@@ -6,7 +6,7 @@ import AlertTitle from '@mui/material/AlertTitle';
 import ProjectList from "./Components/ProjectList";
 
 const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
-    console.log(courseInfo.course_public)
+    
     if (userIdentifier == "student" && !courseInfo.course_public) {
         return (
             <Fragment>

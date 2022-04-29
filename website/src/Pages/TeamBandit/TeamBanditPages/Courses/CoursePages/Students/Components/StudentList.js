@@ -81,7 +81,6 @@ const Students = ({ courseInfo }) => {
             headerName: "Edit",
             sortable: false,
             filterable: false,
-            flex: 1,
             renderCell: editButton,
             disableClickEventBubbling: true,
         },
