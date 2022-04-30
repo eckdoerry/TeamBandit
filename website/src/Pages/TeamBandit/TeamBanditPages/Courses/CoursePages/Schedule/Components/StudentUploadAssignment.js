@@ -52,13 +52,12 @@ const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
         }
     };
 
-    const uploadStudentAssignment = async (event, assignment_id, num_submissions_allowed) => {
+    const uploadStudentAssignment = async (event, assignment_id) => {
         event.preventDefault();
         try {
             const formData = new FormData();
             formData.append("student_assignment_upload", student_assignment_upload);
             formData.append("assignment_id", assignment_id);
-            formData.append("num_submissions_allowed", num_submissions_allowed);
         
             const myHeaders = new Headers();
             myHeaders.append("token", localStorage.token);
@@ -69,7 +68,7 @@ const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
                 body: formData,
             });
 
-            toast.info(await response.json());
+            toast.success(await response.json());
 
             setStudentAssignmentUpload(null);
             setRowChange(true);
@@ -90,20 +89,25 @@ const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
             const myHeaders = new Headers();
             myHeaders.append("token", localStorage.token);
 
-            await fetch(`${process.env.REACT_APP_BASEURL}/assignments/uploadTeamAssignment`, {
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/assignments/uploadTeamAssignment`, {
                 method: "POST",
                 headers: myHeaders,
                 body: formData,
             });
 
-            toast.success("Assignment was uploaded successfully!");
-            setStudentAssignmentUpload(null);
+            toast.success(await response.json());
             setRowChange(true);
         } catch (error) {
             console.error(error.message);
             toast.error("Failed to add assignment!");
         }
     };
+
+    const isBeforeDueDate = () => {
+        var dateNow = Date.now();
+        var dueDate = Date.parse(assignment.assignment_due_date.split("T"));
+        return ((dueDate - dateNow) > 0) ? true : false;
+    }
 
     useEffect(() => {
         getTeamId();
@@ -120,6 +124,7 @@ const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
                 {" "}
                 Upload Assignment{" "}
             </Button>
+            {(isBeforeDueDate() === true && assignment.allow_submissions_after_due === true) ?
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -127,26 +132,7 @@ const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography 
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h2">
-                        Your previous submission:
-                    </Typography>
-                    <p>To be implemented</p>
-                    {/*((assignmentExists(assignment)) === true) ?
-                        <Link
-                            key={assignment.submission_id}
-                            target="_blank"
-                            to={`/submission/studentAssignment-${assignment.submission_id}`}
-                            >
-                                {assignment.team_id == null ?
-                                    <p>{assignment.student_fname + " " + assignment.student_lname}</p>
-                                    : <p>{assignment.team_name}</p>
-                                }
-                        </Link>
-                        ) : <p>No submission submitted yet!</p>*/}
-                    <Box>
+                    <Box sx={{display: "flex", flexDirection: "column"}}>
                         <Typography
                             id="modal-modal-title"
                             variant="h6"
@@ -154,6 +140,15 @@ const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
                         >
                             Upload Your {assignment.assignment_name}
                         </Typography>
+                        {assignment.allow_submissions_after_due ?
+                            <Typography variant="p">
+                                *This assignment allows late submissions
+                            </Typography>
+                            :
+                            <Typography variant="p">
+                                *This assignment does not allow late submissions
+                            </Typography>
+                        }
                     </Box>
 
                     <form encType="multipart/form-data">
@@ -165,7 +160,7 @@ const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
                             sx={{ m: 3 }}
                             variant="contained"
                             color="success"
-                            onClick={(e) => (handleClose(), uploadStudentAssignment(e, assignment.assignment_id, assignment.num_submissions_allowed))}
+                            onClick={(e) => (handleClose(), uploadStudentAssignment(e, assignment.assignment_id))}
                             startIcon={<AddIcon />}
                         >
                             {" "}
@@ -197,6 +192,36 @@ const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
                     </Button>
                 </Box>
             </Modal>
+            : 
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Box>
+                        <Typography
+                            id="modal-modal-title"
+                            variant="h6"
+                            component="h2"
+                        >
+                            This assignment is no longer accepting submissions
+                        </Typography>
+                    </Box>
+                    <Button
+                        sx={{ m: 2 }}
+                        variant="contained"
+                        color="error"
+                        onClick={handleClose}
+                        startIcon={<CloseIcon />}
+                    >
+                        {" "}
+                        Cancel{" "}
+                    </Button>
+                </Box>
+            </Modal>
+            }
         </div>
     )
 }

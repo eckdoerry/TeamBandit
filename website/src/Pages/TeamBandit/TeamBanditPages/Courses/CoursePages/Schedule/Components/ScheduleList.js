@@ -87,7 +87,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
                                     <p>{assignment.assignment_name}</p>
                                 </Link>
                                 <p>&nbsp;due by:&nbsp;{assignment.assignment_due_date.split("T")[1]}&nbsp;MST</p>
-                                {userIdentifier == "organizer" && <SubmittedAssignmentsModal assignment={assignment}/>}
+                                {userIdentifier == "organizer" && <SubmittedAssignmentsModal assignment={assignment} courseInfo={courseInfo}/>}
                                 {userIdentifier == "student" && <StudentUploadAssignment setRowChange={setRowChange} assignment={assignment} userInfo={userInfo}/>}
                             </div>
                         )
@@ -135,7 +135,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
             renderCell: getProperStartDateFormat,
             cellClassName: "border",
             sortable: false,
-            flex: 3,
+            flex: 2,
         },
         {
             field: "schedule_deliverables",
