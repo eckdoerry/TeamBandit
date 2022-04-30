@@ -6,8 +6,10 @@ import Container from "@mui/material/Container";
 import CardContent from "@mui/material/CardContent";
 import Paper from '@mui/material/Paper';
 import Card from "@mui/material/Card";
+import { TabPanelUnstyled } from "@mui/material";
 
 const Overview = ({ colorValue, teamInfo, fontColor }) => {
+    console.log(teamInfo)
     return (
         <div
             style={{
@@ -53,11 +55,21 @@ const Overview = ({ colorValue, teamInfo, fontColor }) => {
                         height="250px"
                     />
                     <div style={{ paddingLeft: "20px" }}>
+                    <Typography
+                            style={{
+                                color: `${fontColor}`,
+                            }}
+                            variant="h2"
+                            color="white"
+                            gutterBottom
+                        >
+                            {teamInfo[0].project_name}
+                        </Typography>
                         <Typography
                             style={{
                                 color: `${fontColor}`,
                             }}
-                            variant="h1"
+                            variant="h2"
                             color="white"
                             gutterBottom
                         >
@@ -68,7 +80,7 @@ const Overview = ({ colorValue, teamInfo, fontColor }) => {
             </div>
             <div style={{ height: "100%", width: "100%" }}>
                 <Typography
-                    variant="h6"
+                    variant="body1"
                     paragraph
                     style={{
                         padding: "30px",
@@ -102,16 +114,32 @@ const Overview = ({ colorValue, teamInfo, fontColor }) => {
                 }}
             >
                 <Paper elevation={4} style={{ margin: "10px", width: '50%', height: '75%' }}>
-                    
-                    </Paper>
-                <Paper elevation={4} style={{ margin: "10px", width: '50%', height: '75%' }}>
-                    
+                    <div style={{ height: '100%', width: '100%', margin: '5px'}}>
+                        <Typography variant="h6">Deliverable 1</Typography>
+                        <img src="https://source.unsplash.com/random/301x150" alt="Example1" style={{height:'67%', width:'97.5%', objectFit: 'cover'}}/>
+                        <Button>Learn More</Button>
+                    </div>
                 </Paper>
                 <Paper elevation={4} style={{ margin: "10px", width: '50%', height: '75%' }}>
-                    
+                <div style={{ height: '100%', width: '100%', margin: '5px'}}>
+                        <Typography variant="h6">Deliverable 2</Typography>
+                        <img src="https://source.unsplash.com/random/302x150" alt="Example2" style={{height:'67%', width:'97.5%', objectFit: 'cover'}}/>
+                        <Button>Learn More</Button>
+                    </div>
                 </Paper>
                 <Paper elevation={4} style={{ margin: "10px", width: '50%', height: '75%' }}>
-                    
+                <div style={{ height: '100%', width: '100%', margin: '5px'}}>
+                        <Typography variant="h6">Deliverable 3</Typography>
+                        <img src="https://source.unsplash.com/random/303x150" alt="Example3" style={{height:'67%', width:'97.5%', objectFit: 'cover'}}/>
+                        <Button>Learn More</Button>
+                    </div>
+                </Paper>
+                <Paper elevation={4} style={{ margin: "10px", width: '50%', height: '75%' }}>
+                <div style={{ height: '100%', width: '100%', margin: '5px'}}>
+                        <Typography variant="h6">Deliverable 4</Typography>
+                        <img src="https://source.unsplash.com/random/304x150" alt="Example4" style={{height:'67%', width:'97.5%', objectFit: 'cover'}}/>
+                        <Button>Learn More</Button>
+                    </div>
                 </Paper>
             </div>
         </div>

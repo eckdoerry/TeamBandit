@@ -44,7 +44,7 @@ const Team = ({ teamMembers, projectInfo }) => {
             <div style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center', paddingLeft: '300px' }}>
                 <Typography
                     component="h1"
-                    variant="h2"
+                    variant="h1"
                     align="center"
                     color="text.primary"
                     gutterBottom
@@ -70,12 +70,12 @@ const Team = ({ teamMembers, projectInfo }) => {
                                         : null
                                 }
                                 alt=""
-                                width="250px"
-                                height="250px"
+                                width="350px"
+                                height="350px"
                             />
                             <CardContent>
                                 <Typography
-                                    variant="h5"
+                                    variant="h4"
                                     align="center"
                                     color="text.secondary"
                                 >
@@ -125,7 +125,7 @@ const Team = ({ teamMembers, projectInfo }) => {
                     <div style={{ display: "flex" }}>
                         <div>
                             <Typography
-                                variant="h3"
+                                variant="h4"
                                 align="center"
                                 color="text.secondary"
                             >

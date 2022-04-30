@@ -348,10 +348,7 @@ export default function TeamAssignment({ courseInfo, setRoute, userIdentifier })
                 <Table aria-label="spanning table">
                     <TableHead className="sticky">
                         <TableRow
-                            style={{
-                                boxShadow:
-                                    "0 4px 2px 0px #002454, 0 -6px 1px 0px #002454",
-                            }}
+                            
                         >
                             <TableCell style={{ color: "white" }} colSpan={3}>
                                 Students
@@ -368,7 +365,10 @@ export default function TeamAssignment({ courseInfo, setRoute, userIdentifier })
                             </TableCell>
                         </TableRow>
                         <TableRow
-                            style={{ boxShadow: "0 4px 2px 0px #002454" }}
+                           style={{
+                                boxShadow:
+                                    "0 4px 2px 0px #002454, 0 -6px 1px 0px #002454",
+                            }}
                         >
                             <TableCell style={{ color: "white" }}>
                                 Student Information
@@ -401,7 +401,8 @@ export default function TeamAssignment({ courseInfo, setRoute, userIdentifier })
                             </TableCell>
                             <TableCell
                                 key={"project"}
-                                style={{ color: "white" }}
+                                style={{ color: "white", borderRight: 1,
+                        borderColor: "#d3d3d3",}}
                                 align="right"
                             >
                                 Assigned Project{" "}
@@ -490,7 +491,7 @@ export default function TeamAssignment({ courseInfo, setRoute, userIdentifier })
                                     {row.student_email}, {row.student_emplid}
                                 </TableCell>
                                 <TableCell
-                                    style={{ backgroundColor: "#ededed" }}
+                                    style={{ backgroundColor: "#ededed",borderRight: "1px solid #ededed",}}
                                     align="right"
                                 >
                                     {row.student_gpa}
@@ -515,10 +516,12 @@ export default function TeamAssignment({ courseInfo, setRoute, userIdentifier })
                                                 ? {
                                                       cursor: "pointer",
                                                       backgroundColor: SUCCESS,
+                                                      borderRight: "1px solid #ededed",
                                                   }
                                                 : {
                                                       cursor: "pointer",
                                                       backgroundColor: "white",
+                                                      borderRight: "1px solid #ededed",
                                                   }
                                         }
                                         onClick={() =>

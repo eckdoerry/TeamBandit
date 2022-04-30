@@ -1,10 +1,11 @@
-import { React, useState} from "react";
+import { React, useState, useEffect} from "react";
 import styles from "./EmailHub.module.css";
 
 // COMPONENTS
 import ContactList from "./Components/ContactList";
 import ChatLog from "./Components/ChatLog";
 import Inbox from "./Components/Inbox";
+import EmailHubRouter from "./EmailHubRouter";
 
 const EmailHub = () => {
     // JS
@@ -19,28 +20,13 @@ const EmailHub = () => {
         setInboxView(inboxBool);
     };
 
-    // JSX
-    if (inboxView === true) {
-        return (
-            <div className={styles.page}>
-                <ContactList
-                    onChangeChain={setSelectedChainHandler}
-                    onChangeInboxView={setInboxViewHandler}
-                />
-                <Inbox />
-            </div>
-        );
-    } else {
-        return (
-            <div className={styles.page}>
-                <ContactList
-                    onChangeChain={setSelectedChainHandler}
-                    onChangeInboxView={setInboxViewHandler}
-                />
-                <ChatLog clientEmail={selectedChain} />
-            </div>
-        );
-    }
+    const changeInboxView = () => {
+        setInboxView(!inboxView);
+    };
+
+    return (
+        <EmailHubRouter changeInboxView={changeInboxView} selectedChain={selectedChain} inboxView={inboxView} setSelectedChainHandler={setSelectedChainHandler} setInboxViewHandler={setInboxViewHandler}/>
+    );
 };
 
 export default EmailHub;

@@ -121,7 +121,7 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
         <Fragment>
             <Button
                 sx={{ m: 3 }}
-                variant="outlined"
+                variant="contained"
                 color="success"
                 onClick={handleOpen}
                 startIcon={<AddIcon />}
@@ -233,7 +233,7 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
                         startIcon={<CloseIcon />}
                     >
                         {" "}
-                        Close{" "}
+                        Cancel{" "}
                     </Button>
                 </Box>
             </Modal>
