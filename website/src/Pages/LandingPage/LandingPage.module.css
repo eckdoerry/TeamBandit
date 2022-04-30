@@ -7,6 +7,8 @@
 .appAside {
     width: 50%;
     background-color: #fac01a;
+    display: flex;
+    flex-direction: column;
 }
 
 @media (max-width: 600px) {
@@ -114,6 +116,13 @@
 .image{
     width: 50%;
     position: absolute;
-    top: 50%;
+    top: 25%;
     transform: translateY(-50%);
+}
+
+.searchBar{
+    width: 50%;
+    position: absolute;
+    top: 50%;
+    left: 15%;
 }

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 
 // Material UI Imports
 import Alert from "@mui/material/Alert";
@@ -11,6 +11,7 @@ import styles from "./LandingPage.module.css";
 // Page Components
 import SignUpForm from "./Components/SignUpForm";
 import SignInForm from "./Components/SignInForm";
+import SearchBar from "./Components/SearchBar";
 
 /**
  * Displays the current landing page and the sign in or
@@ -28,76 +29,75 @@ const LandingPage = ({ setAuth, setUser }) => {
     };
 
     return (
-        <Fragment>
-            <div className={styles.App}>
-                <div className={styles.appAside}>
-                    <div>
-                        <img className={styles.image} src={Logo} alt="Logo" />
-                    </div>
-                </div>
-                <div className={styles.appForm}>
-                    <div className={styles.pageSwitcher}>
-                        <button
-                            onClick={() => {
-                                changeLocation("sign-in");
-                            }}
-                            className={`${
-                                location === "sign-in"
-                                    ? styles.pageSwitcherItem_active
-                                    : styles.pageSwitcherItem
-                            }`}
-                        >
-                            Sign In
-                        </button>
-                        <button
-                            onClick={() => {
-                                changeLocation("sign-up");
-                            }}
-                            className={`${
-                                location !== "sign-in"
-                                    ? styles.pageSwitcherItem_active
-                                    : styles.pageSwitcherItem
-                            }`}
-                        >
-                            Sign Up
-                        </button>
-                    </div>
-                    <div className={styles.formTitle}>
-                        <a
-                            onClick={() => {
-                                changeLocation("sign-in");
-                            }}
-                            className={`${
-                                location === "sign-in"
-                                    ? styles.formTitleLink_active
-                                    : styles.formTitleLink
-                            }`}
-                        >
-                            Sign In{" "}
-                        </a>
-                        or{" "}
-                        <a
-                            onClick={() => {
-                                changeLocation("sign-up");
-                            }}
-                            className={`${
-                                location !== "sign-in"
-                                    ? styles.formTitleLink_active
-                                    : styles.formTitleLink
-                            }`}
-                        >
-                            Sign Up
-                        </a>
-                    </div>
-                    <DisplayCorrectForm
-                        location={location}
-                        setAuth={setAuth}
-                        setUser={setUser}
-                        changeLocation={changeLocation}
-                    />
+        <div className={styles.App}>
+            <div className={styles.appAside}>
+                <div>
+                    <img className={styles.image} src={Logo} alt="Logo" />
+                    <SearchBar />
                 </div>
             </div>
-        </Fragment>
+            <div className={styles.appForm}>
+                <div className={styles.pageSwitcher}>
+                    <button
+                        onClick={() => {
+                            changeLocation("sign-in");
+                        }}
+                        className={`${
+                            location === "sign-in"
+                                ? styles.pageSwitcherItem_active
+                                : styles.pageSwitcherItem
+                        }`}
+                    >
+                        Sign In
+                    </button>
+                    <button
+                        onClick={() => {
+                            changeLocation("sign-up");
+                        }}
+                        className={`${
+                            location !== "sign-in"
+                                ? styles.pageSwitcherItem_active
+                                : styles.pageSwitcherItem
+                        }`}
+                    >
+                        Sign Up
+                    </button>
+                </div>
+                <div className={styles.formTitle}>
+                    <div
+                        onClick={() => {
+                            changeLocation("sign-in");
+                        }}
+                        className={`${
+                            location === "sign-in"
+                                ? styles.formTitleLink_active
+                                : styles.formTitleLink
+                        }`}
+                    >
+                        Sign In{" "}
+                    </div>
+                    or{" "}
+                    <div
+                        onClick={() => {
+                            changeLocation("sign-up");
+                        }}
+                        className={`${
+                            location !== "sign-in"
+                                ? styles.formTitleLink_active
+                                : styles.formTitleLink
+                        }`}
+                    >
+                        Sign Up
+                    </div>
+                </div>
+                <DisplayCorrectForm
+                    location={location}
+                    setAuth={setAuth}
+                    setUser={setUser}
+                    changeLocation={changeLocation}
+                />
+            </div>
+        </div>
     );
 };
 

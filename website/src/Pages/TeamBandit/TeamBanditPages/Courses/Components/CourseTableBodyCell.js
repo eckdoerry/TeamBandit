@@ -7,6 +7,7 @@ import CoursePage from "./CoursePage";
 // MUI Imports
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
 
 const CourseTableBodyCell = ({ courseInfo, userInfo, userIdentifier, setCoursesChange }) => {
 
@@ -67,6 +68,12 @@ const CourseTableBodyCell = ({ courseInfo, userInfo, userIdentifier, setCoursesC
                     {courseInfo.organizer_fname + " " + courseInfo.organizer_lname}
                 </TableCell>
                 <TableCell style={{borderRight: '1px solid #d3d3d3'}} className={styles.tableCellBorder}>{courseInfo.course_semester}</TableCell>
+                <TableCell 
+                    style={{borderRight: '1px solid #d3d3d3'}} 
+                    className={styles.tableCellBorder}
+                >
+                    {courseInfo.course_year}
+                </TableCell>
                 <TableCell style={{borderRight: '1px solid #d3d3d3'}} className={styles.tableCellBorder}>{students.length}</TableCell>
                 <TableCell style={{borderRight: '1px solid #d3d3d3'}} className={styles.tableCellBorder}>{projects.length}</TableCell>
                 <TableCell>{adjustedDate}</TableCell>

@@ -14,12 +14,17 @@ const FormDialogAddCourse = ({ setCoursesChange }) => {
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState("");
     const [semester, setSemester] = useState("");
+    const [year, setYear] = useState("");
     const [description, setDescription] = useState("");
     const [failedSubmit, setFailedSubmit] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
         setFailedSubmit(false);
+        setTitle("");
+        setSemester("");
+        setYear("");
+        setDescription("");
     };
 
     const handleClose = (event) => {
@@ -29,7 +34,7 @@ const FormDialogAddCourse = ({ setCoursesChange }) => {
 
     const onSubmitForm = async (e) => {
         e.preventDefault();
-        if (!title || !semester) {
+        if (!title || !semester || !year) {
             setFailedSubmit(true);
             return;
         }
@@ -40,21 +45,20 @@ const FormDialogAddCourse = ({ setCoursesChange }) => {
             myHeaders.append("token", localStorage.token);
 
 
-        const body = { title, semester, description };
-        const response = await fetch(`${process.env.REACT_APP_BASEURL}/courses/courses`, {
+        const body = { title, semester, year, description };
+        await fetch(`${process.env.REACT_APP_BASEURL}/courses/courses`, {
             method: "POST",
             headers: myHeaders,
             body: JSON.stringify(body)
         });
 
-            const parseResponse = await response.json();
+        toast.success("Course added successfully!");
 
-            toast.success("Course added successfully!");
-
-            setCoursesChange(true);
-            setTitle("");
-            setSemester("");
-            setDescription("");
+        setCoursesChange(true);
+        setTitle("");
+        setSemester("");
+        setYear("");
+        setDescription("");
         } catch (err) {
             console.error(err.message);
             toast.error("Failed to add course!");
@@ -103,6 +107,19 @@ const FormDialogAddCourse = ({ setCoursesChange }) => {
                         error={semester === "" && failedSubmit}
                         helperText={
                             semester === "" && failedSubmit ? "Course semester is required" : " "
+                        }
+                    />
+                    <TextField
+                        required
+                        margin="dense"
+                        label="Course Year"
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                        onChange={(e) => setYear(e.target.value)}
+                        error={(year === "" || isNaN(year) || year.length < 4) && failedSubmit}
+                        helperText={
+                            (year === "" || isNaN(year) || year.length < 4) && failedSubmit ? "A proper course year is required" : " "
                         }
                     />
                 </DialogContent>

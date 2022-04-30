@@ -28,6 +28,7 @@ CREATE TABLE courses(
     organizer_id SERIAL,
     course_title VARCHAR(255),
     course_semester VARCHAR(255),
+    course_year INT,
     course_description VARCHAR(255),
     course_archived BOOLEAN,
     course_public BOOLEAN,
