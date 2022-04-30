@@ -61,12 +61,26 @@ router.get("/project-total/:course_id", authorization, async(req, res) => {
     }
 });
 
-// Gets all courses assocaited with current organizer
+// Gets all students assocaited with a course
 router.get("/student-total/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
         
         const students = await pool.query("SELECT student_fname FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id  WHERE  studentcourses.course_id = $1", [course_id]);
+        
+        res.json(students.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+
+// Gets all teams assocaited with a course
+router.get("/team-total/:course_id", authorization, async(req, res) => {
+    try {
+        const {course_id} = req.params;
+        
+        const students = await pool.query("SELECT team_name, course_id FROM teams WHERE course_id = $1", [course_id]);
         
         res.json(students.rows);
     } catch (error) {

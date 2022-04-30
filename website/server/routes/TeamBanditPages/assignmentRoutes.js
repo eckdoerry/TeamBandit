@@ -10,7 +10,7 @@ router.get("/:course_id", async(req, res) => {
         const {course_id} = req.params;
 
         const assignments = await pool.query(
-            "SELECT organizer_id, assignment_id, assignment_name, assignment_start_date, assignment_due_date, submission_type, assignment_filename, course_id FROM assignments WHERE course_id = $1 ORDER BY assignment_id ASC", [course_id]
+            "SELECT organizer_id, assignment_id, assignment_name, assignment_start_date, assignment_due_date, submission_type, assignment_filename, allow_submissions_after_due, display_on_team_website, course_id FROM assignments WHERE course_id = $1 ORDER BY assignment_id ASC", [course_id]
         );
 
         res.json(assignments.rows);
@@ -42,7 +42,7 @@ router.get("/submission/:submission_id", authorization, async(req, res) => {
     try {
         const {submission_id} = req.params;
         const user = await pool.query(
-            "SELECT submission FROM assignmentbridgetable WHERE submission_id = $1", [submission_id]
+            "SELECT submission, submission_time FROM assignmentbridgetable WHERE submission_id = $1", [submission_id]
         );
 
         res.json(user.rows[0]);
@@ -109,9 +109,15 @@ router.delete("/deleteAssignment/:id", authorization, async(req, res) => {
 
         const deleteAssignment = await pool.query("DELETE FROM assignments WHERE assignment_id = $1 RETURNING *", [id]);
 
-        if( deleteAllSubmissions.rows.length === 0 )
+        if( deleteAllSubmissions.rows.length > 0 )
         {
-            return res.json("This assignment is not yours!");
+            deleteAllSubmissions.rows.forEach(row => {
+                // Removes old submission
+                if (fs.existsSync("../../public/uploads/documents/studentAssignments/" + row.submission))
+                {
+                    fs.unlinkSync("../../public/uploads/documents/studentAssignments/" + row.submission);
+                }
+            });
         }
 
         if( deleteAssignment.rows.length === 0 )
@@ -122,7 +128,7 @@ router.delete("/deleteAssignment/:id", authorization, async(req, res) => {
         const oldAssignmentFilename = deleteAssignment.rows[0].assignment_filename;
         if (oldAssignmentFilename != null)
         {
-            // Removes old profile pic
+            // Removes old assignment
             if (fs.existsSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentFilename))
             {
                 fs.unlinkSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentFilename);
@@ -146,12 +152,6 @@ router.post("/uploadStudentAssignment", authorization, async(req, res) => {
         {
             const oldStudentSubmissionPath = await pool.query("SELECT student_id, assignment_id, submission FROM assignmentbridgetable WHERE student_id = $1 AND assignment_id = $2", [req.user, assignment_id]);
 
-            // Removes old submission
-            if (fs.existsSync("../../public/uploads/documents/studentAssignments/" + oldStudentSubmissionPath.rows[0].submission))
-            {
-                fs.unlinkSync("../../public/uploads/documents/studentAssignments/" + oldStudentSubmissionPath.rows[0].submission);
-            }
-
             let student_assignment_upload = req.files.student_assignment_upload;
 
             student_assignment_filename = "studentAssignment_" + req.user.toString() + "_" + uuid().toString() + "." + student_assignment_upload.mimetype.split("/")[1];
@@ -162,14 +162,20 @@ router.post("/uploadStudentAssignment", authorization, async(req, res) => {
             if (oldStudentSubmissionPath.rows.length === 0)
             {
                 await pool.query(
-                    "INSERT INTO assignmentbridgetable (assignment_id, student_id, submission) VALUES($1, $2, $3) RETURNING *", [assignment_id, req.user, student_assignment_filename]
+                    "INSERT INTO assignmentbridgetable (assignment_id, student_id, submission, submission_time) VALUES($1, $2, $3, $4) RETURNING *", [assignment_id, req.user, student_assignment_filename, new Date(Date.now()).toLocaleString()]
                 );
             }
             else 
             {
                 await pool.query(
-                    "UPDATE assignmentbridgetable SET submission = student_assignment_filename WHERE assignment_id = $1 AND student_id = $2", [assignment_id, req.user]
+                    "UPDATE assignmentbridgetable SET submission = $1, submission_time = $2 WHERE assignment_id = $3 AND student_id = $4", [student_assignment_filename, new Date(Date.now()).toLocaleString(), assignment_id, req.user]
                 );
+
+                // Removes old submission
+                if (fs.existsSync("../../public/uploads/documents/studentAssignments/" + oldStudentSubmissionPath.rows[0].submission))
+                {
+                    fs.unlinkSync("../../public/uploads/documents/studentAssignments/" + oldStudentSubmissionPath.rows[0].submission);
+                }
             }
             res.json("Assignment was uploaded successfully!");
         }
@@ -190,11 +196,6 @@ router.post("/uploadTeamAssignment", authorization, async(req, res) => {
         {
             const oldTeamSubmissionPath = await pool.query("SELECT team_id, assignment_id, submission FROM assignmentbridgetable WHERE team_id = $1 AND assignment_id = $2", [team_id, assignment_id]);
 
-            // Removes old submission
-            if (fs.existsSync("../../public/uploads/documents/studentAssignments/" + oldTeamSubmissionPath.rows[0].submission))
-            {
-                fs.unlinkSync("../../public/uploads/documents/studentAssignments/" + oldTeamSubmissionPath.rows[0].submission);
-            }
 
             let student_assignment_upload = req.files.student_assignment_upload;
 
@@ -206,14 +207,19 @@ router.post("/uploadTeamAssignment", authorization, async(req, res) => {
             if (oldTeamSubmissionPath.rows.length === 0)
             {
                 await pool.query(
-                    "INSERT INTO assignmentbridgetable (assignment_id, team_id, student_id, submission) VALUES($1, $2, $3, $4) RETURNING *", [assignment_id, team_id, req.user, student_assignment_filename]
+                    "INSERT INTO assignmentbridgetable (assignment_id, team_id, student_id, submission, submission_time) VALUES($1, $2, $3, $4, $5) RETURNING *", [assignment_id, team_id, req.user, student_assignment_filename, new Date(Date.now()).toLocaleString()]
                 );
             }
             else 
             {
                 await pool.query(
-                    "UPDATE assignmentbridgetable SET submission = student_assignment_filename WHERE assignment_id = $1 AND team_id = $2", [assignment_id, team_id]
+                    "UPDATE assignmentbridgetable SET submission = $1, submission_time = $2 WHERE assignment_id = $3 AND team_id = $4", [student_assignment_filename, new Date(Date.now()).toLocaleString(), assignment_id, team_id]
                 );
+                // Removes old submission
+                if (fs.existsSync("../../public/uploads/documents/studentAssignments/" + oldTeamSubmissionPath.rows[0].submission))
+                {
+                    fs.unlinkSync("../../public/uploads/documents/studentAssignments/" + oldTeamSubmissionPath.rows[0].submission);
+                }
             }
         }
 
@@ -241,6 +247,43 @@ router.get("/submittedAssignments/:assignment_id", authorization, async(req, res
         );
         
         res.json(submittedAssignments.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+// get a single submission that has been submitted
+router.get("/currentSubmission/:assignment_id/:team_id", authorization, async(req, res) => {
+    try {
+        const {assignment_id, team_id} = req.params;
+
+        if (team_id === -1)
+        {
+            const individualAssignment = await pool.query(
+                "SELECT submission FROM assignmentbridgetable WHERE assignment_id = $1 AND student_id = $2", [assignment_id, req.user]
+            );
+            
+            if (individualAssignment.rows.length > 0)
+            {
+                return res.json(individualAssignment.rows[0].submission);
+            }
+        }
+
+        else
+        {
+            const teamAssignment = await pool.query(
+                "SELECT submission FROM assignmentbridgetable WHERE assignment_id = $1 AND team_id = $2", [assignment_id, team_id]
+            );
+
+            if (teamAssignment.rows.length > 0)
+            {
+                return res.json(teamAssignment.rows[0].submission);
+            }
+        }
+
+        res.json(null);
 
     } catch (error) {
         console.error(error.message);
