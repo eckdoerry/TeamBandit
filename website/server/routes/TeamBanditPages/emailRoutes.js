@@ -47,7 +47,7 @@ router.get("/getinbox", authorization, async (req, res) => {
         );
 
         const user = await pool.query(
-            "SELECT message,sender,read,datetime,subject,message_id,attachment FROM messages WHERE RECIPIENT = $1 ORDER BY datetime DESC",
+            "SELECT message,sender,read,datetime,subject,message_id,attachment FROM messages WHERE RECIPIENT = $1 AND archived = false ORDER BY datetime DESC",
             [organizerEmail.rows[0].organizer_email]
         );
 
@@ -65,6 +65,22 @@ router.put("/markread/:messageid", authorization, async (req, res) => {
 
         const updateClient = await pool.query(
             "UPDATE messages SET read = true WHERE message_id = $1",
+            [messageid]
+        );
+
+        res.json("Marked as read");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// MARKS EMAIL AS READ
+router.put("/markarchived/:messageid", authorization, async (req, res) => {
+    try {
+        const { messageid } = req.params;
+        console.log("1")
+        const updateClient = await pool.query(
+            "UPDATE messages SET archived = true WHERE message_id = $1",
             [messageid]
         );
 

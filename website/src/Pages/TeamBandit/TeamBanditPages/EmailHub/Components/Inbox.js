@@ -93,6 +93,27 @@ const Inbox = () => {
         }
     };
 
+    const markArchived = async () => {
+        console.log(selectedMessages.length)
+        for (let i = 0; i < selectedMessages.length; i++) {
+            console.log("Deleting " + selectedMessages[i])
+            try {
+                const response = await fetch(
+                    `${process.env.REACT_APP_BASEURL}/emailhub/markarchived/${selectedMessages[i]}`,
+                    {
+                        method: "PUT",
+                        headers: { token: localStorage.token },
+                    }
+                );
+                const parseData = await response.json();
+                setMessagesChange(parseData);
+                selectedMessages = [];
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+    };
+
     useEffect(() => {
         getEmails();
         setMessagesChange(false);
@@ -103,7 +124,7 @@ const Inbox = () => {
         <div className={`${styles.message} ${styles.lineheight}`}>
             <Item className={styles.titles}>
                 <p className={styles.farleftpanetitle}>
-                    <DeleteIcon fontSize="small" />
+                    <DeleteIcon fontSize="small" onClick = {markArchived} />
                 </p>
                 <p className={styles.leftpane}>From</p>
                 <p className={styles.middleleftpane}>Subject</p>
