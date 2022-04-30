@@ -121,6 +121,8 @@ router.post("/login", validInfo, async (req, res)=>{
         {
             token = jwtGenerator(student.rows[0].student_id);
             identifier = "student";
+            var date = new Date(Date.now())
+            await pool.query("UPDATE students SET student_last_sign_in = $1 WHERE student_id = $2", [date.toLocaleString().replace(",", " at"), student.rows[0].student_id]);
         }
         else if(mentor.rows.length !== 0)
         {

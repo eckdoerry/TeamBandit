@@ -77,6 +77,12 @@ const Students = ({ courseInfo }) => {
             flex: 1,
         },
         {
+            field: "student_last_sign_in",
+            headerName: "Last Sign-In",
+            cellClassName: "death",
+            flex: 1,
+        },
+        {
             field: "edit",
             headerName: "Edit",
             sortable: false,
