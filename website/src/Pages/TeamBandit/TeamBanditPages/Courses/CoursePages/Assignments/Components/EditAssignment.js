@@ -249,7 +249,7 @@ const EditAssignment = ({ assignment, setRowChange }) => {
                                 }
                             }
                         >
-                        Are you sure you want to delete this assignment?
+                        Are you sure you want to delete this assignment? This will delete ALL student submissions for this assignment.
                         </div>
 
                         </DialogContentText>

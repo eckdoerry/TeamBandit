@@ -38,6 +38,69 @@ const AssignmentPage = () => {
         getAssignment();
     }, []);
 
+    if (assignmentInfo !== null && assignmentInfo.assignment_filename === null) {
+        return (
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                    width: "100%",
+                }}
+            >
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <AppBar
+                        style={{ backgroundColor: `#002454` }}
+                        position="relative"
+                    >
+                        <Toolbar style={{ backgroundColor: `#002454` }}>
+                            <Typography variant="h6" color="inherit" noWrap>
+                                TeamBandit
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                </ThemeProvider>
+                <Typography
+                    variant="h1"
+                    style={{
+                        color: "#002454",
+                        textShadow: "1px 1px 2px black",
+                    }}
+                >
+                    {" "}
+                    Error{" "}
+                </Typography>
+                <Typography
+                    variant="h4"
+                    style={{
+                        color: "#FAC01A",
+                        textShadow: "1px 1px 2px black",
+                    }}
+                >
+                    {" "}
+                    This Assignment does not have an assignment description{" "}
+                </Typography>
+
+                <img
+                    src={TeamBanditLogo}
+                    alt="Logo"
+                    width="250px"
+                    height="250px"
+                />
+                <Link to="/">
+                    <Button
+                        variant="contained"
+                        style={{ backgroundColor: "#002454" }}
+                    >
+                        {" "}
+                        GO BACK TO HOME PAGE{" "}
+                    </Button>
+                </Link>
+            </div>
+    )};
     if (assignmentInfo !== null) {
         return(
             <div style={{ width: "100%" }}>
