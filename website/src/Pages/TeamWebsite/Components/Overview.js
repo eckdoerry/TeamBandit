@@ -9,7 +9,6 @@ import Card from "@mui/material/Card";
 import { TabPanelUnstyled } from "@mui/material";
 
 const Overview = ({ colorValue, teamInfo, fontColor }) => {
-    console.log(teamInfo)
     return (
         <div
             style={{
@@ -40,15 +39,15 @@ const Overview = ({ colorValue, teamInfo, fontColor }) => {
                         width: "100%",
                         height: "100%",
                         padding: "20px",
+                        marginLeft: "30%"
                     }}
                 >
                     <img
                         style={{ border: "2px solid white" }}
                         src={
                             teamInfo[0].team_logo
-                                ? "/uploads/images/teamLogos/" +
+                                && "/uploads/images/teamLogos/" +
                                     teamInfo[0].team_logo
-                                : null
                         }
                         alt="Logo"
                         width="250px"

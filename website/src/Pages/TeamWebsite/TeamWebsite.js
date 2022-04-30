@@ -232,7 +232,6 @@ const TeamPage = () => {
                             variant="scrollable"
                             value={value}
                             textColor="inherit"
-                            indicatorColor="inherit"
                             onChange={handleChange}
                             aria-label="Vertical tabs example"
                             sx={{ borderRight: 1, borderColor: "divider" }}

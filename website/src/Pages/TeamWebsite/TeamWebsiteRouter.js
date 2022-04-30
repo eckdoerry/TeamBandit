@@ -36,7 +36,7 @@ const TeamWebsiteRouter = ({route, colorValue, teamInfo, fontColor, teamMembers,
     {
         return (
             <Fragment>
-                <Deliverables colorValue={colorValue} fontColor={fontColor} />
+                <Deliverables teamInfo={teamInfo} colorValue={colorValue} fontColor={fontColor} />
             </Fragment>
         )
     }

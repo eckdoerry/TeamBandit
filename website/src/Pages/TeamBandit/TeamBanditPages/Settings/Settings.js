@@ -18,10 +18,8 @@ import { toast } from "react-toastify";
 
 const style = {
     position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 900,
+    left: "25%",
+    width: "50%",
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
@@ -1206,13 +1204,13 @@ const Settings = ({
                         </Button>
                     </Paper>
                     <Modal
-                        style={{overflow: 'scroll', height: '100vh'}}
+                        style={{overflow: "scroll", height: "100vh"}}
                         open={open}
                         onClose={handleClose}
                         aria-labelledby="modal-modal-title"
                         aria-describedby="modal-modal-description"
                     >
-                        <Box sx={style} style={{marginTop: '100vh'}}>
+                        <Box sx={style}>
                             <Box>
                                 <Typography
                                     id="modal-modal-title"

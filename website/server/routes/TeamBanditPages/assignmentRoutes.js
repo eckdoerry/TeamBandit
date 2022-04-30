@@ -254,6 +254,27 @@ router.get("/submittedAssignments/:assignment_id", authorization, async(req, res
     }
 });
 
+// get all submitted assignments associated with a team
+router.get("/submittedTeamAssignments/:team_id", authorization, async(req, res) => {
+    try {
+        const {team_id} = req.params;
+
+        const submittedAssignments = await pool.query(
+            `SELECT * FROM assignmentbridgetable
+             FULL JOIN assignments 
+             ON assignmentbridgetable.assignment_id=assignments.assignment_id
+             WHERE assignmentbridgetable.team_id = $1`, 
+             [team_id]
+        );
+        
+        res.json(submittedAssignments.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
 // get a single submission that has been submitted
 router.get("/currentSubmission/:assignment_id/:team_id", authorization, async(req, res) => {
     try {

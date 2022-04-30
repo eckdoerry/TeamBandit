@@ -130,7 +130,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
             flex: 1,
         },
         {
-            field: "schedule_description",
+            field: "schedule_week_description",
             headerName: "Topics and Assignments",
             renderCell: getProperStartDateFormat,
             cellClassName: "border",
@@ -138,7 +138,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
             flex: 2,
         },
         {
-            field: "schedule_deliverables",
+            field: "schedule_week_deliverables",
             headerName: "Deliverables",
             renderCell: getProperDueDateFormat,
             sortable: false,

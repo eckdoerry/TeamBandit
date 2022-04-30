@@ -105,8 +105,9 @@ const Solution = ({teamInfo}) => {
                     Key Requirements
                 </Typography>
                 <ul>
-                    {teamInfo[0].key_requirements.split(',').map((value) => 
-                    <li key={value}>{value}</li>
+                    {teamInfo[0].key_requirements !== null && 
+                        teamInfo[0].key_requirements.split(',').map((value) => 
+                            <li key={value}>{value}</li>
                     )}
                 </ul>
                 <Typography

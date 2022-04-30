@@ -406,7 +406,7 @@ router.get("/team-members/:team_id", async(req, res) => {
     try {
         const {team_id} = req.params;
         
-        const teams = await pool.query("SELECT students.student_fname, students.student_lname, students.profilepic_filepath, students.student_bio FROM studentteambridgetable LEFT JOIN students ON studentteambridgetable.student_id = students.student_id WHERE studentteambridgetable.team_id = $1", [team_id]);
+        const teams = await pool.query("SELECT students.student_id, students.student_fname, students.student_lname, students.profilepic_filepath, students.student_bio FROM studentteambridgetable LEFT JOIN students ON studentteambridgetable.student_id = students.student_id WHERE studentteambridgetable.team_id = $1", [team_id]);
         
         res.json(teams.rows);
     } catch (error) {
