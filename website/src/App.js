@@ -12,6 +12,7 @@ import TeamPage from "./Pages/TeamPage/TeamPage";
 import ProjectPages from "./Pages/ProjectPages/ProjectPages";
 import AssignmentPage from "./Pages/AssignmentPage/AssignmentPage";
 import SubmissionPage from "./Pages/SubmissionPage/SubmissionPage";
+import StudentProfilePage from "./Pages/StudentProfilePage/StudentProfile";
 
 // Toastify gets configured on the first page, this is the notification thing
 import { toast } from 'react-toastify';
@@ -26,7 +27,7 @@ toast.configure();
  */
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState( false );
-    const [userIdentifier, setUserIdentifier] = useState("NULL");
+    const [userIdentifier, setUserIdentifier] = useState("Organizer");
 
     const setAuth = (boolean) => {
         setIsAuthenticated(boolean);
@@ -72,6 +73,7 @@ function App() {
                     <Route exact path = "/project-pages/:projectName" element={<ProjectPages/>}/>
                     <Route exact path = "/assignment/:assignmentName" element={<AssignmentPage/>}/>
                     <Route exact path = "/submission/:submissionName" element={<SubmissionPage/>}/>
+                    <Route exact path = "/student-profile/:studentId" element={<StudentProfilePage/>}/>
                 </Routes>
             </Router>
         </Fragment>

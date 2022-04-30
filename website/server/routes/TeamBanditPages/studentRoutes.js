@@ -103,7 +103,7 @@ router.get("/is-team-lead/:student_id/:team_id", async(req, res) => {
     try {
         const {student_id, team_id} = req.params;
         
-        const students = await pool.query("SELECT team_name, page_color, team_logo, team_backdrop, team_description, font_color, information_link FROM teams WHERE team_id = $1 AND team_lead = $2", [team_id, student_id]);
+        const students = await pool.query("SELECT team_name, page_color, team_logo, team_backdrop, team_description, font_color, information_link, problem_description, solution_description, architecture_image, requirements_overview, key_requirements, technology_summary, tech_img_1, tech_img_2, tech_img_3, tech_img_4, tech_name_1, tech_name_2, tech_name_3, tech_name_4, tech_description_1, tech_description_2, tech_description_3, tech_description_4, development_strategy, schedule_image FROM teams WHERE team_id = $1 AND team_lead = $2", [team_id, student_id]);
 
         res.json(students.rows);
     } catch (error) {
@@ -132,7 +132,7 @@ router.get("/teams-assignment/:course_id", authorization, async(req, res) => {
 router.get("/students/:id", authorization, async(req, res) => {
     try {
         const {id} = req.params;
-        const students = await pool.query("SELECT * FROM students WHERE id = $1 ", [id]);
+        const students = await pool.query("SELECT student_fname, student_lname, student_resume, student_email, student_bio, profilepic_filepath FROM students WHERE student_id = $1 ", [id]);
 
         res.json(students.rows[0]);
     } catch (error) {

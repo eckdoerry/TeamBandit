@@ -263,3 +263,31 @@ ADD COLUMN course_color character varying(255) COLLATE pg_catalog."default" DEFA
 -- For PR #202: Adds some assignment fields for allowing submissions after the due date as well as a boolean to be used to display the assignment on team website
 ALTER TABLE assignments ADD COLUMN allow_submissions_after_due BOOLEAN;
 ALTER TABLE assignments ADD COLUMN display_on_team_website BOOLEAN;
+
+-- 4/29/22: Liam's additions
+ALTER TABLE assignmentbridgetable ADD COLUMN submission_time VARCHAR(255);
+
+-- 4/29/22: Column additions for more information on team website
+ALTER TABLE teams ADD problem_description VARCHAR(2500);
+ALTER TABLE teams ADD solution_description VARCHAR(2500);
+ALTER TABLE teams ADD architecture_image VARCHAR(255);
+ALTER TABLE teams ADD requirements_overview VARCHAR(2500);
+ALTER TABLE teams ADD key_requirements VARCHAR(2500);
+ALTER TABLE teams ADD technology_summary VARCHAR(2500);
+ALTER TABLE teams ADD tech_img_1 VARCHAR(255);
+ALTER TABLE teams ADD tech_img_2 VARCHAR(255);
+ALTER TABLE teams ADD tech_img_3 VARCHAR(255);
+ALTER TABLE teams ADD tech_img_4 VARCHAR(255);
+ALTER TABLE teams ADD tech_name_1 VARCHAR(255);
+ALTER TABLE teams ADD tech_name_2 VARCHAR(255);
+ALTER TABLE teams ADD tech_name_3 VARCHAR(255);
+ALTER TABLE teams ADD tech_name_4 VARCHAR(255);
+ALTER TABLE teams ADD tech_description_1 VARCHAR(2500);
+ALTER TABLE teams ADD tech_description_2 VARCHAR(2500);
+ALTER TABLE teams ADD tech_description_3 VARCHAR(2500);
+ALTER TABLE teams ADD tech_description_4 VARCHAR(2500);
+ALTER TABLE teams ADD development_strategy VARCHAR(2500);
+ALTER TABLE teams ADD schedule_image VARCHAR(255);
+
+-- Student Resume
+ALTER TABLE students ADD student_resume VARCHAR(255);

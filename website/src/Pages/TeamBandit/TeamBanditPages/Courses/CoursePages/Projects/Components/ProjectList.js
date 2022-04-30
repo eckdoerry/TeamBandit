@@ -23,11 +23,9 @@ import EditProject from "./EditProject";
 import ProjectPreferences from "./ProjectPreferences";
 
 const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
-
     const [rows, setRows] = useState([]);
     const [rowChange, setRowChange] = useState(false);
     const [NOTcolumns, setColumns] = useState([]); // TODO: set back to columns when works
-    
 
     const [sponsors, setSponsors] = useState([]);
     const [mentors, setMentors] = useState([]);
@@ -85,7 +83,7 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
                                 src={
                                     params.row.team_logo
                                         ? "/uploads/images/teamLogos/" +
-                                            params.row.team_logo
+                                          params.row.team_logo
                                         : null
                                 }
                                 alt=""
@@ -97,7 +95,6 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
                     <div>
                         <ul>
                             {studentsOnTeam.map((student) =>
-                                
                                 displayStudent(student)
                             )}
                         </ul>
@@ -108,25 +105,33 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
     };
 
     const displayStudent = (student) => {
-        const string = `mailto:` + student.student_email;
         if (isTeamLead(student.student_id) === true) {
             return (
                 <li key={student.student_id}>
-                    <a href={string}>
+                    <Link
+                        target="_blank"
+                        to={`/student-profile/${student.student_id}`}
+                    >
+                        {" "}
                         <Typography variant="string">
                             {student.student_fname} {student.student_lname}{" "}
                             (Lead){" "}
                         </Typography>
-                    </a>
+                    </Link>
                 </li>
             );
         } else {
             return (
                 <li key={student.student_id}>
-                    <Typography variant="string">
+                    <Link
+                        target="_blank"
+                        to={`/student-profile/${student.student_id}`}
+                    >
                         {" "}
-                        {student.student_fname} {student.student_lname}{" "}
-                    </Typography>
+                        <Typography variant="string">
+                            {student.student_fname} {student.student_lname}{" "}
+                        </Typography>
+                    </Link>
                 </li>
             );
         }
@@ -229,7 +234,7 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
                                 src={
                                     sponsorLogo
                                         ? "/uploads/images/clientLogos/" +
-                                            sponsorLogo
+                                          sponsorLogo
                                         : null
                                 }
                                 alt=""
@@ -247,89 +252,47 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
 
     //TODO: Replace with solution to where I set based off of user, currently
     // the columns load but dont render the cells properly
-    const columns = [{
-        field: "project_name",
-        headerName: "Project Title",
-        renderCell: projectPage,
-        cellClassName: "border",
-        flex: 3,
-    },
-    {
-        field: "client_name",
-        headerName: "Project Sponsor",
-        renderCell: displaySponsor,
-        cellClassName: "border",
-        flex: 3,
-    },
-    {
-        field: "team_name",
-        headerName: "Student Team",
-        renderCell: teamPage,
-        cellClassName: "border",
-        flex: 2,
-    },
-    {
-        field: "mentor_name",
-        headerName: "Team Mentor",
-        renderCell: displayMentor,
-        cellClassName: "border",
-        flex: 1,
-    },
-    userIdentifier == "organizer" &&
-    { 
-        field: "edit",
-        headerName: "Edit",
-        sortable: false,
-        filterable: false,
-        renderCell: editButton,
-        disableClickEventBubbling: true,
-    } 
-];
+    const columns = [
+        {
+            field: "project_name",
+            headerName: "Project Title",
+            renderCell: projectPage,
+            cellClassName: "border",
+            flex: 3,
+        },
+        {
+            field: "client_name",
+            headerName: "Project Sponsor",
+            renderCell: displaySponsor,
+            cellClassName: "border",
+            flex: 3,
+        },
+        {
+            field: "team_name",
+            headerName: "Student Team",
+            renderCell: teamPage,
+            cellClassName: "border",
+            flex: 2,
+        },
+        {
+            field: "mentor_name",
+            headerName: "Team Mentor",
+            renderCell: displayMentor,
+            cellClassName: "border",
+            flex: 1,
+        },
+        userIdentifier == "organizer" && {
+            field: "edit",
+            headerName: "Edit",
+            sortable: false,
+            filterable: false,
+            renderCell: editButton,
+            disableClickEventBubbling: true,
+        },
+    ];
 
     const determineColumns = () => {
-        if( userIdentifier == "organizer" )
-        {
-            setColumns([{
-                field: "project_name",
-                headerName: "Project Title",
-                renderCell: projectPage,
-                cellClassName: "border",
-                flex: 2,
-            },
-            {
-                field: "client_name",
-                headerName: "Project Sponsor",
-                renderCell: displaySponsor,
-                cellClassName: "border",
-                flex: 2,
-            },
-            {
-                field: "team_name",
-                headerName: "Student Team",
-                renderCell: teamPage,
-                cellClassName: "border",
-                flex: 3,
-            },
-            {
-                field: "mentor_name",
-                headerName: "Team Mentor",
-                renderCell: displayMentor,
-                cellClassName: "border",
-                flex: 1,
-            },
-            {
-                field: "edit",
-                headerName: "Edit",
-                sortable: false,
-                filterable: false,
-                flex: 1,
-                renderCell: editButton,
-                disableClickEventBubbling: true,
-            }
-        ]);
-        }
-        else if ( userIdentifier == "student" )
-        {
+        if (userIdentifier == "organizer") {
             setColumns([
                 {
                     field: "project_name",
@@ -358,27 +321,61 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
                     renderCell: displayMentor,
                     cellClassName: "border",
                     flex: 1,
-                }
+                },
+                {
+                    field: "edit",
+                    headerName: "Edit",
+                    sortable: false,
+                    filterable: false,
+                    flex: 1,
+                    renderCell: editButton,
+                    disableClickEventBubbling: true,
+                },
             ]);
-        }
-        else if( userIdentifier == "mentor")
-        {
+        } else if (userIdentifier == "student") {
+            setColumns([
+                {
+                    field: "project_name",
+                    headerName: "Project Title",
+                    renderCell: projectPage,
+                    cellClassName: "border",
+                    flex: 2,
+                },
+                {
+                    field: "client_name",
+                    headerName: "Project Sponsor",
+                    renderCell: displaySponsor,
+                    cellClassName: "border",
+                    flex: 2,
+                },
+                {
+                    field: "team_name",
+                    headerName: "Student Team",
+                    renderCell: teamPage,
+                    cellClassName: "border",
+                    flex: 3,
+                },
+                {
+                    field: "mentor_name",
+                    headerName: "Team Mentor",
+                    renderCell: displayMentor,
+                    cellClassName: "border",
+                    flex: 1,
+                },
+            ]);
+        } else if (userIdentifier == "mentor") {
             //TODO: implement mentor columns, should be identical to students but IDK
         }
-        
     };
 
-    
-
     const CustomToolbar = () => {
-        if( userIdentifier == "organizer" )
-        {
+        if (userIdentifier == "organizer") {
             return (
-                <GridToolbarContainer style={
-                    { 
-                        backgroundColor: courseInfo.course_color 
-                        }
-                }>
+                <GridToolbarContainer
+                    style={{
+                        backgroundColor: courseInfo.course_color,
+                    }}
+                >
                     <Typography sx={{ m: 1 }} variant="h4">
                         Projects
                     </Typography>
@@ -413,69 +410,65 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
                     ) : null}
                 </GridToolbarContainer>
             );
-        }
-        else if( userIdentifier == "student" )
-        {
+        } else if (userIdentifier == "student") {
             return (
-                <GridToolbarContainer style={
-                    {
-                        backgroundColor: courseInfo.course_color 
-                    }
-                }>
+                <GridToolbarContainer
+                    style={{
+                        backgroundColor: courseInfo.course_color,
+                    }}
+                >
                     <Typography sx={{ m: 1 }} variant="h4">
                         Projects
                     </Typography>
                     <GridToolbarColumnsButton sx={{ m: 1 }} />
                     <GridToolbarFilterButton sx={{ m: 1 }} />
                     <GridToolbarExport sx={{ m: 1 }} />
-                    <ProjectPreferences userInfo={userInfo} rows={rows} setRowChange={setRowChange}/>
+                    <ProjectPreferences
+                        userInfo={userInfo}
+                        rows={rows}
+                        setRowChange={setRowChange}
+                    />
                 </GridToolbarContainer>
             );
-        }
-        else if( userIdentifier == "mentor" )
-        {
+        } else if (userIdentifier == "mentor") {
             //TODO: Add mentor GridToolbarContainer
         }
     };
 
-    
-
     const getInformation = async () => {
-        if( userIdentifier == "organizer" )
-        {
+        if (userIdentifier == "organizer") {
             try {
-                
                 const projectInfo = await fetch(
                     `${process.env.REACT_APP_BASEURL}/projects/${courseInfo.course_id}`,
                     { method: "GET", headers: { token: localStorage.token } }
                 );
-                
+
                 const sponsorInfo = await fetch(
                     `${process.env.REACT_APP_BASEURL}/projects/sponsors/${courseInfo.course_id}`,
                     { method: "GET", headers: { token: localStorage.token } }
                 );
-                
+
                 const mentorInfo = await fetch(
                     `${process.env.REACT_APP_BASEURL}/projects/mentors/${courseInfo.course_id}`,
                     { method: "GET", headers: { token: localStorage.token } }
                 );
-                
+
                 const assignedStudentInfo = await fetch(
                     `${process.env.REACT_APP_BASEURL}/projects/getAssignedStudents/${courseInfo.course_id}`,
                     { method: "GET", headers: { token: localStorage.token } }
                 );
-                
+
                 const teamInfo = await fetch(
                     `${process.env.REACT_APP_BASEURL}/projects/getTeams/${courseInfo.course_id}`,
                     { method: "GET", headers: { token: localStorage.token } }
                 );
-    
+
                 const projectData = await projectInfo.json();
                 const sponsorData = await sponsorInfo.json();
                 const mentorData = await mentorInfo.json();
                 const assignedStudentData = await assignedStudentInfo.json();
                 const teamData = await teamInfo.json();
-    
+
                 setTeams(teamData);
                 setAllAssignedStudents(assignedStudentData);
                 setMentors(mentorData);
@@ -483,65 +476,57 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
                 setRows(projectData);
                 determineColumns();
                 setLoadingFalse();
-            } catch ( error )
-            {
+            } catch (error) {
                 toast.error("Failed to load information");
-                console.error( error.message );
+                console.error(error.message);
             }
-        }
-        else if( userIdentifier == "student" )
-        {
+        } else if (userIdentifier == "student") {
             try {
                 const projectInfo = await fetch(
                     `${process.env.REACT_APP_BASEURL}/general/projects/${courseInfo.course_id}`,
                     { method: "GET", headers: { token: localStorage.token } }
                 );
-                
+
                 const sponsorInfo = await fetch(
                     `${process.env.REACT_APP_BASEURL}/general/sponsors/${courseInfo.course_id}`,
                     { method: "GET", headers: { token: localStorage.token } }
                 );
-                
+
                 const mentorInfo = await fetch(
                     `${process.env.REACT_APP_BASEURL}/general/mentors/${courseInfo.course_id}`,
                     { method: "GET", headers: { token: localStorage.token } }
                 );
-                
+
                 const assignedStudentInfo = await fetch(
                     `${process.env.REACT_APP_BASEURL}/general/getAssignedStudents/${courseInfo.course_id}`,
                     { method: "GET", headers: { token: localStorage.token } }
                 );
-                
+
                 const teamInfo = await fetch(
                     `${process.env.REACT_APP_BASEURL}/general/getTeams/${courseInfo.course_id}`,
                     { method: "GET", headers: { token: localStorage.token } }
                 );
-    
+
                 const projectData = await projectInfo.json();
                 const sponsorData = await sponsorInfo.json();
                 const mentorData = await mentorInfo.json();
                 const assignedStudentData = await assignedStudentInfo.json();
                 const teamData = await teamInfo.json();
-    
+
                 setTeams(teamData);
                 setAllAssignedStudents(assignedStudentData);
                 setMentors(mentorData);
                 setSponsors(sponsorData);
                 setRows(projectData);
-    
-                setLoadingFalse();
-            } catch ( error )
-            {
-                toast.error("Failed to load information");
-                console.error( error.message );
-            }
 
-        }
-        else if( userIdentifier == "mentor" )
-        {
+                setLoadingFalse();
+            } catch (error) {
+                toast.error("Failed to load information");
+                console.error(error.message);
+            }
+        } else if (userIdentifier == "mentor") {
             // TODO: Implement mentor capabilities
         }
-        
     };
 
     useEffect(() => {
@@ -568,7 +553,7 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
             </div>
         );
     }
-    
+
     return (
         <div
             style={{

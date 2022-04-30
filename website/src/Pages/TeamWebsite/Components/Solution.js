@@ -6,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 
-const Solution = () => {
+const Solution = ({teamInfo}) => {
     return (
         <div
             style={{
@@ -44,22 +44,7 @@ const Solution = () => {
                     Problem
                 </Typography>
                 <Typography variant="body1" align="left" color="text.secondary">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a
-                    type specimen book. It has survived not only five centuries,
-                    but also the leap into electronic typesetting, remaining
-                    essentially unchanged. It was popularised in the 1960s with
-                    the release of Letraset sheets containing Lorem Ipsum
-                    passages, and more recently with desktop publishing software
-                    like Aldus PageMaker including versions of Lorem
-                    Ipsum.printer took a galley of type and scrambled it to make
-                    a type specimen book. It has survived not only five
-                    centuries, but also the leap into electronic typesetting,
-                    remaining essentially unchanged. It was popularised in the
-                    1960s with the release of Letraset sheets containing Lorem
-                    Ipsum passages
+                    {teamInfo[0].problem_description}
                 </Typography>
                 <Typography
                     component="h1"
@@ -71,26 +56,22 @@ const Solution = () => {
                     Solution
                 </Typography>
                 <Typography variant="body1" align="left" color="text.secondary">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a
-                    type specimen book. It has survived not only five centuries,
-                    but also the leap into electronic typesetting, remaining
-                    essentially unchanged. It was popularised in the 1960s with
-                    the release of Letraset sheets containing Lorem Ipsum
-                    passages, and more recently with desktop publishing software
-                    like Aldus PageMaker including versions of Lorem
-                    Ipsum.printer took a galley of type and scrambled it to make
-                    a type specimen book. It has survived not only five
-                    centuries, but also the leap into electronic typesetting,
-                    remaining essentially unchanged.
+                {teamInfo[0].solution_description}
                 </Typography>
                 <Paper
                     elevation={4}
                     style={{ marginTop: "10px", height: "35%" }}
                 >
-                    <p>* INSERT ARCHITECTURE HERE* </p>
+                {teamInfo[0].architecture_image != null ? (
+                            <img
+                                src={
+                                    "/uploads/images/architecture/" +
+                                    teamInfo[0].architecture_image
+                                }
+                                alt=""
+                                style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
+                            />
+                        ) : null}
                 </Paper>
             </div>
             <div
@@ -104,7 +85,7 @@ const Solution = () => {
             >
                 <Typography
                     component="h1"
-                    variant="h6"
+                    variant="h5"
                     align="left"
                     color="text.primary"
                     gutterBottom
@@ -112,38 +93,21 @@ const Solution = () => {
                     Requirements
                 </Typography>
                 <Typography variant="body1" align="left" color="text.secondary">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a
-                    type specimen book. It has survived not only five centuries,
-                    but also the leap into electronic typesetting, remaining
-                    essentially unchanged. It was popularised in the 1960s with
-                    the release of Letraset sheets containing Lorem Ipsum
-                    passages, and more recently with desktop publishing software
-                    like Aldus PageMaker including versions of Lorem Ipsum.
+                {teamInfo[0].requirements_overview}
+                </Typography>
+                <Typography
+                    
+                    variant="h6"
+                    align="left"
+                    color="text.primary"
+                    gutterBottom
+                >
+                    Key Requirements
                 </Typography>
                 <ul>
-                    <li>
-                        {" "}
-                        <Typography variant="body1">Requirement # 1</Typography>
-                    </li>
-                    <li>
-                        {" "}
-                        <Typography variant="body1">Requirement # 1</Typography>
-                    </li>
-                    <li>
-                        {" "}
-                        <Typography variant="body1">Requirement # 1</Typography>
-                    </li>
-                    <li>
-                        {" "}
-                        <Typography variant="body1">Requirement # 1</Typography>
-                    </li>
-                    <li>
-                        {" "}
-                        <Typography variant="body1">Requirement # 1</Typography>
-                    </li>
+                    {teamInfo[0].key_requirements.split(',').map((value) => 
+                    <li key={value}>{value}</li>
+                    )}
                 </ul>
                 <Typography
                     component="h1"
@@ -155,13 +119,7 @@ const Solution = () => {
                     Technologies
                 </Typography>
                 <Typography variant="body1" align="left" color="text.secondary">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a
-                    type specimen book. It has survived not only five centuries,
-                    but also the leap into electronic typesetting, remaining
-                    essentially unchanged.
+                    {teamInfo[0].technology_summary}
                 </Typography>
                 <div
                     style={{
@@ -175,7 +133,17 @@ const Solution = () => {
                             elevation={4}
                             style={{ margin: "2.5px", height: "50%" }}
                         >
-                            <p>*INSERT IMAGE*</p>
+                        {teamInfo[0].tech_img_1 != null ? (
+                            <img
+                                src={
+                                    "/uploads/images/techLogos/" +
+                                    teamInfo[0].tech_img_1
+                                }
+                                alt=""
+                                style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
+                            />
+                        ) : null}
+                            
                         </Paper>
                         <Typography
                             component="h1"
@@ -184,16 +152,14 @@ const Solution = () => {
                             color="text.primary"
                             gutterBottom
                         >
-                            Technologies
+                            {teamInfo[0].tech_name_1}
                         </Typography>
                         <Typography
                             variant="body1"
                             align="center"
                             color="text.secondary"
                         >
-                            Lorem Ipsum is simply dummy text of the printing and
-                            typesetting industry. Lorem Ipsum has been the
-                            industry's standard dummy text ever since the 1500s
+                            {teamInfo[0].tech_description_1}
                         </Typography>
                     </div>
                     <div style={{ width: "100%", height: "100%" }}>
@@ -201,7 +167,16 @@ const Solution = () => {
                             elevation={4}
                             style={{ margin: "2.5px", height: "50%" }}
                         >
-                            <p>*INSERT IMAGE*</p>
+                        {teamInfo[0].tech_img_2 != null ? (
+                            <img
+                                src={
+                                    "/uploads/images/techLogos/" +
+                                    teamInfo[0].tech_img_2
+                                }
+                                alt=""
+                                style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
+                            />
+                        ) : null}
                         </Paper>
                         <Typography
                             component="h1"
@@ -210,16 +185,14 @@ const Solution = () => {
                             color="text.primary"
                             gutterBottom
                         >
-                            Technologies
+                            {teamInfo[0].tech_name_2}
                         </Typography>
                         <Typography
                             variant="body1"
                             align="center"
                             color="text.secondary"
                         >
-                            Lorem Ipsum is simply dummy text of the printing and
-                            typesetting industry. Lorem Ipsum has been the
-                            industry's standard dummy text ever since the 1500s
+                            {teamInfo[0].tech_description_2}
                         </Typography>
                     </div>
                     <div style={{ width: "100%", height: "100%" }}>
@@ -227,7 +200,16 @@ const Solution = () => {
                             elevation={4}
                             style={{ margin: "2.5px", height: "50%" }}
                         >
-                            <p>*INSERT IMAGE*</p>
+                        {teamInfo[0].tech_img_3 != null ? (
+                            <img
+                                src={
+                                    "/uploads/images/techLogos/" +
+                                    teamInfo[0].tech_img_3
+                                }
+                                alt=""
+                                style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
+                            />
+                        ) : null}
                         </Paper>
                         <Typography
                             component="h1"
@@ -236,16 +218,14 @@ const Solution = () => {
                             color="text.primary"
                             gutterBottom
                         >
-                            Technologies
+                            {teamInfo[0].tech_name_3}
                         </Typography>
                         <Typography
                             variant="body1"
                             align="center"
                             color="text.secondary"
                         >
-                            Lorem Ipsum is simply dummy text of the printing and
-                            typesetting industry. Lorem Ipsum has been the
-                            industry's standard dummy text ever since the 1500s
+                            {teamInfo[0].tech_description_3}
                         </Typography>
                     </div>
                     <div style={{ width: "100%", height: "100%" }}>
@@ -253,7 +233,16 @@ const Solution = () => {
                             elevation={4}
                             style={{ margin: "2.5px", height: "50%" }}
                         >
-                            <p>*INSERT IMAGE*</p>
+                        {teamInfo[0].tech_img_4 != null ? (
+                            <img
+                                src={
+                                    "/uploads/images/techLogos/" +
+                                    teamInfo[0].tech_img_4
+                                }
+                                alt=""
+                                style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
+                            />
+                        ) : null}
                         </Paper>
                         <Typography
                             component="h1"
@@ -262,16 +251,14 @@ const Solution = () => {
                             color="text.primary"
                             gutterBottom
                         >
-                            Technologies
+                            {teamInfo[0].tech_name_4}
                         </Typography>
                         <Typography
                             variant="body1"
                             align="center"
                             color="text.secondary"
                         >
-                            Lorem Ipsum is simply dummy text of the printing and
-                            typesetting industry. Lorem Ipsum has been the
-                            industry's standard dummy text ever since the 1500s
+                            {teamInfo[0].tech_description_4}
                         </Typography>
                     </div>
                 </div>

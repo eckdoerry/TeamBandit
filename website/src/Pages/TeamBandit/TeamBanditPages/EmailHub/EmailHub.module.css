@@ -17,12 +17,18 @@
 }
 
 .text {
-    background-color: #ededed !important;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: white !important;
     margin: 0.25rem !important;
 }
 
 .text_sent {
-    background-color: #fac01a !important;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background-color: #ededed!important;
     margin: 0.25rem !important;
 }
 
@@ -49,10 +55,6 @@
     cursor: pointer;
 }
 
-.contact_card:nth-child(odd) {
-    background-color: #ededed;
-    cursor: pointer;
-}
 
 .lineheight {
     line-height: 1rem;

@@ -5,6 +5,7 @@ import styles from "./EmailHub.module.css";
 import ContactList from "./Components/ContactList";
 import ChatLog from "./Components/ChatLog";
 import Inbox from "./Components/Inbox";
+import EmailHubRouter from "./EmailHubRouter";
 
 const EmailHub = () => {
     // JS
@@ -16,32 +17,16 @@ const EmailHub = () => {
     };
 
     const setInboxViewHandler = (inboxBool) => {
-        console.log(inboxBool)
         setInboxView(inboxBool);
     };
 
-    // JSX
-    if (inboxView === true) {
-        return (
-            <div className={styles.page}>
-                <ContactList
-                    onChangeChain={setSelectedChainHandler}
-                    onChangeInboxView={setInboxViewHandler}
-                />
-                <Inbox />
-            </div>
-        );
-    } else {
-        return (
-            <div className={styles.page}>
-                <ContactList
-                    onChangeChain={setSelectedChainHandler}
-                    onChangeInboxView={setInboxViewHandler}
-                />
-                <ChatLog selectedChain={selectedChain} setInboxViewHandler={setInboxViewHandler}/>
-            </div>
-        );
-    }
+    const changeInboxView = () => {
+        setInboxView(!inboxView);
+    };
+
+    return (
+        <EmailHubRouter changeInboxView={changeInboxView} selectedChain={selectedChain} inboxView={inboxView} setSelectedChainHandler={setSelectedChainHandler} setInboxViewHandler={setInboxViewHandler}/>
+    );
 };
 
 export default EmailHub;

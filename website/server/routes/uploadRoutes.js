@@ -117,6 +117,63 @@ router.put("/studentAvatar", authorization, async (req, res) => {
     }
 });
 
+// Updates Student Profile Pic
+router.put("/studentResume", authorization, async (req, res) => {
+    try {
+        if (!req.files) {
+            res.json("No files selected!");
+        } else {
+            const oldProfilePicPath = await pool.query(
+                "SELECT student_id, student_resume FROM students WHERE student_id = $1",
+                [req.user]
+            );
+
+            // Removes old profile pic
+            if (
+                fs.existsSync(
+                    "../../public/uploads/images/studentResumes/" +
+                        oldProfilePicPath.rows[0].student_resume
+                )
+            ) {
+                fs.unlinkSync(
+                    "../../public/uploads/images/studentResumes/" +
+                        oldProfilePicPath.rows[0].student_resume
+                );
+            }
+
+            //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
+            let avatar = req.files.avatar;
+
+            const new_filename =
+                "student_" +
+                req.user.toString() +
+                "_" +
+                uuid().toString() +
+                "." +
+                avatar.mimetype.split("/")[1];
+
+            //Use the mv() method to place the file in upload directory
+            avatar.mv(
+                "../../public/uploads/images/studentResumes/" + new_filename
+            );
+
+            const updateProfilePic = await pool.query(
+                "UPDATE students SET student_resume = $1 WHERE student_id = $2 RETURNING *",
+                [new_filename, req.user]
+            );
+
+            if (updateProfilePic.rows.length === 0) {
+                return res.json("This profile is not yours!");
+            }
+
+            //send response
+            res.json("Your profile picture was successfully updated!");
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
 // Updates Project Overview PDF
 router.put("/projectOverview/:project_id", authorization, async (req, res) => {
     try {
@@ -321,6 +378,42 @@ router.put("/deleteStudentProfilePicture", authorization, async (req, res) => {
     }
 });
 
+// Deletes Student Profile Picture
+router.put("/deleteStudentResume", authorization, async (req, res) => {
+    try {
+        const oldProfilePicPath = await pool.query(
+            "SELECT student_id, student_resume FROM students WHERE student_id = $1",
+            [req.user]
+        );
+        const updateProfilePic = await pool.query(
+            "UPDATE students SET student_resume = $1 WHERE student_id = $2 RETURNING *",
+            [null, req.user]
+        );
+
+        if (updateProfilePic.rows.length === 0) {
+            return res.json("This profile is not yours!");
+        }
+
+        // Removes old profile pic
+        if (
+            fs.existsSync(
+                "../../public/uploads/images/studentResumes/" +
+                    oldProfilePicPath.rows[0].student_resume
+            )
+        ) {
+            fs.unlinkSync(
+                "../../public/uploads/images/studentResumes/" +
+                    oldProfilePicPath.rows[0].student_resume
+            );
+        }
+
+        //send response
+        res.json("Your profile picture was successfully deleted!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
 // Updates Team Logo
 router.put("/teamLogo", authorization, async (req, res) => {
     try {
@@ -362,6 +455,342 @@ router.put("/teamLogo", authorization, async (req, res) => {
 
             const updateTeamLogo = await pool.query(
                 "UPDATE teams SET team_logo = $1 WHERE team_lead = $2 RETURNING *",
+                [new_filename, req.user]
+            );
+
+            if (updateTeamLogo.rows.length === 0) {
+                return res.json("This team is not yours!");
+            }
+
+            //send response
+            res.json("Your team logo was successfully updated!");
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates Team Logo
+router.put("/updateSchedImg", authorization, async (req, res) => {
+    try {
+        if (!req.files) {
+            res.json("No files selected!");
+        } else {
+            const oldTeamLogoPath = await pool.query(
+                "SELECT team_lead, schedule_image FROM teams WHERE team_lead = $1",
+                [req.user]
+            );
+
+            // Removes old profile pic
+            if (
+                fs.existsSync(
+                    "../../public/uploads/images/schedules/" +
+                        oldTeamLogoPath.rows[0].schedule_image
+                )
+            ) {
+                fs.unlinkSync(
+                    "../../public/uploads/images/schedules/" +
+                        oldTeamLogoPath.rows[0].schedule_image
+                );
+            }
+
+            let scheduleImage = req.files.schedImg;
+
+            const new_filename =
+                "scheduleImage_" +
+                req.user.toString() +
+                "_" +
+                uuid().toString() +
+                "." +
+                scheduleImage.mimetype.split("/")[1];
+
+            //Use the mv() method to place the file in upload directory (i.e. "uploads")
+            scheduleImage.mv(
+                "../../public/uploads/images/schedules/" + new_filename
+            );
+
+            const updateTeamLogo = await pool.query(
+                "UPDATE teams SET schedule_image = $1 WHERE team_lead = $2 RETURNING *",
+                [new_filename, req.user]
+            );
+
+            if (updateTeamLogo.rows.length === 0) {
+                return res.json("This team is not yours!");
+            }
+
+            //send response
+            res.json("Your team logo was successfully updated!");
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates Team Logo
+router.put("/techImg2", authorization, async (req, res) => {
+    try {
+        if (!req.files) {
+            res.json("No files selected!");
+        } else {
+            const oldTeamLogoPath = await pool.query(
+                "SELECT team_lead, tech_img_2 FROM teams WHERE team_lead = $1",
+                [req.user]
+            );
+
+            // Removes old profile pic
+            if (
+                fs.existsSync(
+                    "../../public/uploads/images/techLogos/" +
+                        oldTeamLogoPath.rows[0].tech_img_2
+                )
+            ) {
+                fs.unlinkSync(
+                    "../../public/uploads/images/techLogos/" +
+                        oldTeamLogoPath.rows[0].tech_img_2
+                );
+            }
+
+            let techImg2 = req.files.techImg2;
+
+            const new_filename =
+                "techImg1_" +
+                req.user.toString() +
+                "_" +
+                uuid().toString() +
+                "." +
+                techImg2.mimetype.split("/")[1];
+
+            //Use the mv() method to place the file in upload directory (i.e. "uploads")
+            techImg2.mv(
+                "../../public/uploads/images/techLogos/" + new_filename
+            );
+
+            const updateTeamLogo = await pool.query(
+                "UPDATE teams SET tech_img_2 = $1 WHERE team_lead = $2 RETURNING *",
+                [new_filename, req.user]
+            );
+
+            if (updateTeamLogo.rows.length === 0) {
+                return res.json("This team is not yours!");
+            }
+
+            //send response
+            res.json("Your team logo was successfully updated!");
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates Team Logo
+router.put("/techImg1", authorization, async (req, res) => {
+    try {
+        if (!req.files) {
+            res.json("No files selected!");
+        } else {
+            const oldTeamLogoPath = await pool.query(
+                "SELECT team_lead, tech_img_1 FROM teams WHERE team_lead = $1",
+                [req.user]
+            );
+
+            // Removes old profile pic
+            if (
+                fs.existsSync(
+                    "../../public/uploads/images/techLogos/" +
+                        oldTeamLogoPath.rows[0].tech_img_1
+                )
+            ) {
+                fs.unlinkSync(
+                    "../../public/uploads/images/techLogos/" +
+                        oldTeamLogoPath.rows[0].tech_img_1
+                );
+            }
+
+            let techImg1 = req.files.techImg1;
+
+            const new_filename =
+                "techImg1_" +
+                req.user.toString() +
+                "_" +
+                uuid().toString() +
+                "." +
+                techImg1.mimetype.split("/")[1];
+
+            //Use the mv() method to place the file in upload directory (i.e. "uploads")
+            techImg1.mv(
+                "../../public/uploads/images/techLogos/" + new_filename
+            );
+
+            const updateTeamLogo = await pool.query(
+                "UPDATE teams SET tech_img_1 = $1 WHERE team_lead = $2 RETURNING *",
+                [new_filename, req.user]
+            );
+
+            if (updateTeamLogo.rows.length === 0) {
+                return res.json("This team is not yours!");
+            }
+
+            //send response
+            res.json("Your team logo was successfully updated!");
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates Team Logo
+router.put("/techImg3", authorization, async (req, res) => {
+    try {
+        if (!req.files) {
+            res.json("No files selected!");
+        } else {
+            const oldTeamLogoPath = await pool.query(
+                "SELECT team_lead, tech_img_3 FROM teams WHERE team_lead = $1",
+                [req.user]
+            );
+
+            // Removes old profile pic
+            if (
+                fs.existsSync(
+                    "../../public/uploads/images/techLogos/" +
+                        oldTeamLogoPath.rows[0].tech_img_3
+                )
+            ) {
+                fs.unlinkSync(
+                    "../../public/uploads/images/techLogos/" +
+                        oldTeamLogoPath.rows[0].tech_img_3
+                );
+            }
+
+            let techImg3 = req.files.techImg3;
+
+            const new_filename =
+                "techImg3_" +
+                req.user.toString() +
+                "_" +
+                uuid().toString() +
+                "." +
+                techImg3.mimetype.split("/")[1];
+
+            //Use the mv() method to place the file in upload directory (i.e. "uploads")
+            techImg3.mv(
+                "../../public/uploads/images/techLogos/" + new_filename
+            );
+
+            const updateTeamLogo = await pool.query(
+                "UPDATE teams SET tech_img_3 = $1 WHERE team_lead = $2 RETURNING *",
+                [new_filename, req.user]
+            );
+
+            if (updateTeamLogo.rows.length === 0) {
+                return res.json("This team is not yours!");
+            }
+
+            //send response
+            res.json("Your team logo was successfully updated!");
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates Team Logo
+router.put("/techImg4", authorization, async (req, res) => {
+    try {
+        if (!req.files) {
+            res.json("No files selected!");
+        } else {
+            const oldTeamLogoPath = await pool.query(
+                "SELECT team_lead, tech_img_4 FROM teams WHERE team_lead = $1",
+                [req.user]
+            );
+
+            // Removes old profile pic
+            if (
+                fs.existsSync(
+                    "../../public/uploads/images/techLogos/" +
+                        oldTeamLogoPath.rows[0].tech_img_4
+                )
+            ) {
+                fs.unlinkSync(
+                    "../../public/uploads/images/techLogos/" +
+                        oldTeamLogoPath.rows[0].tech_img_4
+                );
+            }
+
+            let techImg4 = req.files.techImg4;
+
+            const new_filename =
+                "techImg4_" +
+                req.user.toString() +
+                "_" +
+                uuid().toString() +
+                "." +
+                techImg4.mimetype.split("/")[1];
+
+            //Use the mv() method to place the file in upload directory (i.e. "uploads")
+            techImg4.mv(
+                "../../public/uploads/images/techLogos/" + new_filename
+            );
+
+            const updateTeamLogo = await pool.query(
+                "UPDATE teams SET tech_img_4 = $1 WHERE team_lead = $2 RETURNING *",
+                [new_filename, req.user]
+            );
+
+            if (updateTeamLogo.rows.length === 0) {
+                return res.json("This team is not yours!");
+            }
+
+            //send response
+            res.json("Your team logo was successfully updated!");
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates Team Logo
+router.put("/archImage", authorization, async (req, res) => {
+    try {
+        if (!req.files) {
+            res.json("No files selected!");
+        } else {
+            const oldTeamLogoPath = await pool.query(
+                "SELECT team_lead, architecture_image FROM teams WHERE team_lead = $1",
+                [req.user]
+            );
+
+            // Removes old profile pic
+            if (
+                fs.existsSync(
+                    "../../public/uploads/images/architecture/" +
+                        oldTeamLogoPath.rows[0].architecture_image
+                )
+            ) {
+                fs.unlinkSync(
+                    "../../public/uploads/images/architecture/" +
+                        oldTeamLogoPath.rows[0].architecture_image
+                );
+            }
+
+            let archImage = req.files.archImage;
+
+            const new_filename =
+                "archImage_" +
+                req.user.toString() +
+                "_" +
+                uuid().toString() +
+                "." +
+                archImage.mimetype.split("/")[1];
+
+            //Use the mv() method to place the file in upload directory (i.e. "uploads")
+            archImage.mv(
+                "../../public/uploads/images/architecture/" + new_filename
+            );
+
+            const updateTeamLogo = await pool.query(
+                "UPDATE teams SET architecture_image = $1 WHERE team_lead = $2 RETURNING *",
                 [new_filename, req.user]
             );
 

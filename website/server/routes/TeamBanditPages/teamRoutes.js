@@ -102,6 +102,262 @@ router.put("/updateAbstract/:id", async(req, res) => {
 });
 
 // Updates a student based on student id
+router.put("/updateProblemDesc/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET problem_description = $1 WHERE team_id = $2", [req.body['problemDesc'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateSolutionDesc/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET solution_description = $1 WHERE team_id = $2", [req.body['solutionDesc'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateReqOverview/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET requirements_overview = $1 WHERE team_id = $2", [req.body['reqOverview'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateKeyReq/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET key_requirements = $1 WHERE team_id = $2", [req.body['keyReq'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateTechSum/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET technology_summary = $1 WHERE team_id = $2", [req.body['techSum'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateTechName1/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET tech_name_1 = $1 WHERE team_id = $2", [req.body['techName1'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateTechName2/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET tech_name_2 = $1 WHERE team_id = $2", [req.body['techName2'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateTechName4/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET tech_name_4 = $1 WHERE team_id = $2", [req.body['techName4'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateTechName3/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET tech_name_3 = $1 WHERE team_id = $2", [req.body['techName3'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateTechDes1/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET tech_description_1 = $1 WHERE team_id = $2", [req.body['techDes1'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateTechDes2/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET tech_description_2 = $1 WHERE team_id = $2", [req.body['techDes2'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateTechDes3/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET tech_description_3 = $1 WHERE team_id = $2", [req.body['techDes3'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateTechDes4/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET tech_description_4 = $1 WHERE team_id = $2", [req.body['techDes4'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateTechName1/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET tech_name_1 = $1 WHERE team_id = $2", [req.body['techName1'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateTechName1/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET tech_name_1 = $1 WHERE team_id = $2", [req.body['techName1'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
+router.put("/updateDevStrat/:id", async(req, res) => {
+    try {
+        const updateColor = await pool.query("UPDATE teams SET development_strategy = $1 WHERE team_id = $2", [req.body['devStrat'], req.params['id']]);
+
+        if(updateColor.rows.length === 0)
+        {
+            return res.json("This team is not yours!");
+        }
+
+        res.json("Team was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Updates a student based on student id
 router.put("/updateVideoLink/:id", async(req, res) => {
     try {
         const updateColor = await pool.query("UPDATE teams SET information_link = $1 WHERE team_id = $2", [req.body['videoLink'], req.params['id']]);
@@ -137,7 +393,7 @@ router.get("/team-name/:team_name", async(req, res) => {
     try {
         const {team_name} = req.params;
 
-        const teams = await pool.query("SELECT teams.team_id, teams.team_name, teams.team_logo, teams.organizer_id, teams.course_id, teams.project_id, teams.team_size, teams.page_color, teams.team_lead, teams.team_description, courses.course_public, teams.team_backdrop, teams.font_color, teams.information_link, projects.project_name FROM teams LEFT JOIN courses ON teams.course_id = courses.course_id LEFT JOIN projects ON teams.project_id = projects.project_id WHERE team_id = $1 ORDER BY team_id ASC ", [team_name]);
+        const teams = await pool.query("SELECT teams.team_id, teams.team_name, teams.team_logo, teams.organizer_id, teams.course_id, teams.project_id, teams.team_size, teams.page_color, teams.team_lead, teams.team_description, courses.course_public, teams.team_backdrop, teams.font_color, teams.information_link, teams.problem_description, teams.solution_description, teams.architecture_image, teams.requirements_overview, teams.key_requirements, teams.technology_summary, teams.tech_img_1, teams.tech_img_2, teams.tech_img_3, teams.tech_img_4, teams.tech_name_1, teams.tech_name_2, teams.tech_name_3, teams.tech_name_4, teams.tech_description_1, teams.tech_description_2, teams.tech_description_3, teams.tech_description_4, teams.development_strategy, teams.schedule_image, projects.project_name FROM teams LEFT JOIN courses ON teams.course_id = courses.course_id LEFT JOIN projects ON teams.project_id = projects.project_id WHERE team_id = $1 ORDER BY team_id ASC ", [team_name]);
 
         res.json(teams.rows);
     } catch (error) {

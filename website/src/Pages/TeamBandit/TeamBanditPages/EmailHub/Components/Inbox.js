@@ -102,7 +102,7 @@ const Inbox = () => {
     return (
         <div className={`${styles.message} ${styles.lineheight}`}>
             <Item className={styles.titles}>
-                <p className={styles.farleftpanetitle}>
+            <p className={styles.farleftpanetitle}>
                     <DeleteIcon fontSize="small" />
                 </p>
                 <p className={styles.leftpane}>From</p>

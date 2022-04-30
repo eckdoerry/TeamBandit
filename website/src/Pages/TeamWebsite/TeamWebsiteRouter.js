@@ -28,7 +28,7 @@ const TeamWebsiteRouter = ({route, colorValue, teamInfo, fontColor, teamMembers,
     {
         return (
             <Fragment>
-                <Solution/>
+                <Solution teamInfo={teamInfo}/>
             </Fragment>
         )
     }
@@ -52,15 +52,7 @@ const TeamWebsiteRouter = ({route, colorValue, teamInfo, fontColor, teamMembers,
     {
         return (
             <Fragment>
-                <Schedule/>
-            </Fragment>
-        )
-    }
-    else if(route === "Requirements")
-    {
-        return (
-            <Fragment>
-                <Requirements/>
+                <Schedule teamInfo={teamInfo}/>
             </Fragment>
         )
     }
