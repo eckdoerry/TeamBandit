@@ -156,7 +156,7 @@ const AddProject = ({ courseInfo, setRowChange }) => {
         <Fragment>
             <Button
                 sx={{ m: 3 }}
-                variant="outlined"
+                variant="contained"
                 color="success"
                 onClick={handleOpen}
                 startIcon={<AddIcon />}

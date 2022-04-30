@@ -9,6 +9,7 @@ import Overview from "./Components/Overview";
 import Solution from "./Components/Solution";
 import Deliverables from "./Components/Deliverables";
 import Schedule from "./Components/Schedule";
+import Requirements from "./Components/Requirements";
 import Team from "./Components/Team";
 
 /**
@@ -23,19 +24,19 @@ const TeamWebsiteRouter = ({route, colorValue, teamInfo, fontColor, teamMembers,
             <Overview colorValue={colorValue} teamInfo={teamInfo} fontColor={fontColor}/>
         );
     }
-    else if(route === "Solution") 
+    else if(route === "Project Summary") 
     {
         return (
             <Fragment>
-                <Solution/>
+                <Solution teamInfo={teamInfo}/>
             </Fragment>
         )
     }
-    else if(route === "Deliverables") 
+    else if(route === "Documentation") 
     {
         return (
             <Fragment>
-                <Deliverables/>
+                <Deliverables colorValue={colorValue} fontColor={fontColor} />
             </Fragment>
         )
     }
@@ -51,7 +52,7 @@ const TeamWebsiteRouter = ({route, colorValue, teamInfo, fontColor, teamMembers,
     {
         return (
             <Fragment>
-                <Schedule/>
+                <Schedule teamInfo={teamInfo}/>
             </Fragment>
         )
     }

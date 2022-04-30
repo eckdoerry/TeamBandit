@@ -40,7 +40,8 @@ function Copyright() {
 const theme = createTheme();
 
 const TeamPage = () => {
-    const windowValue = window.location.pathname.replace("/team-page/", "");
+    
+    const windowValue = window.location.hash.replace("#/team-page/", "");
     const regExp = /%20/g;
     const course_id = windowValue.replace(regExp, " ");
 
@@ -124,19 +125,33 @@ const TeamPage = () => {
     };
 
     const displayStudent = (student) => {
-        const string = `mailto:` + student.student_email;
         if (isTeamLead(student.student_id) === true) {
             return (
-                <li>
-                    <a href={string}>
-                        {student.student_fname} {student.student_lname} (Lead)
-                    </a>
+                <li key={student.student_id}>
+                    <Link
+                        target="_blank"
+                        to={`/student-profile/${student.student_id}`}
+                    >
+                        {" "}
+                        <Typography variant="string">
+                            {student.student_fname} {student.student_lname}{" "}
+                            (Lead){" "}
+                        </Typography>
+                    </Link>
                 </li>
             );
         } else {
             return (
-                <li>
-                    {student.student_fname} {student.student_lname}
+                <li key={student.student_id}>
+                    <Link
+                        target="_blank"
+                        to={`/student-profile/${student.student_id}`}
+                    >
+                        {" "}
+                        <Typography variant="string">
+                            {student.student_fname} {student.student_lname}{" "}
+                        </Typography>
+                    </Link>
                 </li>
             );
         }

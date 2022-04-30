@@ -342,16 +342,7 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
 
     return (
         <Fragment>
-            <Button
-                sx={{ m: 3 }}
-                variant="outlined"
-                color="warning"
-                onClick={handleOpen}
-                startIcon={<EditIcon />}
-            >
-                {" "}
-                Edit{" "}
-            </Button>
+            <EditIcon style={{cursor: 'pointer', color: '#f57c00', alignItems:'center', justifyContent: 'center'}} onClick={handleOpen}/>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -496,7 +487,7 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
                         startIcon={<CloseIcon />}
                     >
                         {" "}
-                        Close{" "}
+                        Cancel{" "}
                     </Button>
                     <Button
                     variant="outlined"

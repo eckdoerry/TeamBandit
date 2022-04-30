@@ -27,7 +27,7 @@ router.get("/getchain/:clientEmail", authorization, async (req, res) => {
         );
 
         const user = await pool.query(
-            "SELECT message,sender FROM messages WHERE (RECIPIENT = $1 AND SENDER = $2) OR (RECIPIENT = $2 AND SENDER = $1)",
+            "SELECT messages.message, messages.sender, clients.client_fname, clients.client_lname FROM messages LEFT JOIN clients ON messages.recipient = clients.client_email OR messages.sender = clients.client_email WHERE (messages.RECIPIENT = $1 AND messages.SENDER = $2) OR (messages.RECIPIENT = $2 AND messages.SENDER = $1)",
             [clientEmail, organizerEmail.rows[0].organizer_email]
         );
 

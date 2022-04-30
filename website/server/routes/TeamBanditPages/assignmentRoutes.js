@@ -151,7 +151,7 @@ router.post("/uploadStudentAssignment", authorization, async(req, res) => {
         if (req.files) 
         {
             const oldStudentSubmissionPath = await pool.query("SELECT student_id, assignment_id, submission FROM assignmentbridgetable WHERE student_id = $1 AND assignment_id = $2", [req.user, assignment_id]);
-            
+
             let student_assignment_upload = req.files.student_assignment_upload;
 
             student_assignment_filename = "studentAssignment_" + req.user.toString() + "_" + uuid().toString() + "." + student_assignment_upload.mimetype.split("/")[1];
@@ -195,6 +195,7 @@ router.post("/uploadTeamAssignment", authorization, async(req, res) => {
         if (req.files) 
         {
             const oldTeamSubmissionPath = await pool.query("SELECT team_id, assignment_id, submission FROM assignmentbridgetable WHERE team_id = $1 AND assignment_id = $2", [team_id, assignment_id]);
+
 
             let student_assignment_upload = req.files.student_assignment_upload;
 

@@ -69,7 +69,7 @@ const AddMentor = ({courseInfo, setRowChange}) => {
 
     return (
         <Fragment>
-        <Button sx={{ m: 3 }} variant="outlined" color="success"  onClick={handleOpen} startIcon={<AddIcon />} > Add </Button>
+        <Button sx={{ m: 3 }} variant="contained" color="success"  onClick={handleOpen} startIcon={<AddIcon />} > Add </Button>
         <Modal
                 open={open}
                 onClose={handleClose}

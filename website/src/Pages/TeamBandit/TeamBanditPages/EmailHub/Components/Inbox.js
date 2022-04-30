@@ -125,6 +125,7 @@ const Inbox = () => {
             <Item className={styles.titles}>
                 <p className={styles.farleftpanetitle}>
                     <DeleteIcon fontSize="small" onClick = {markArchived} />
+
                 </p>
                 <p className={styles.leftpane}>From</p>
                 <p className={styles.middleleftpane}>Subject</p>
@@ -133,6 +134,7 @@ const Inbox = () => {
             </Item>
             {messageChain.map((message, index) => (
                 <Item
+                
                     className={
                         message.read === true
                             ? `${styles.inboxEmail}`
