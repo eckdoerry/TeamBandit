@@ -124,7 +124,7 @@ const StudentUploadAssignment = ({setRowChange, assignment, userInfo}) => {
                 {" "}
                 Upload Assignment{" "}
             </Button>
-            {(isBeforeDueDate() === true && assignment.allow_submissions_after_due === true) ?
+            {(isBeforeDueDate() === true || assignment.allow_submissions_after_due === true) ?
             <Modal
                 open={open}
                 onClose={handleClose}

@@ -26,7 +26,7 @@ router.get("/studentSchedule/:course_id", async(req, res) => {
     try {
         const {course_id} = req.params;
         const user = await pool.query(
-            "SELECT schedule_week_id, schedule_week, course_id schedule_week_message, FROM schedule WHERE course_id = $1 ORDER BY schedule_week_id ASC", [course_id]
+            "SELECT schedule_week_id, schedule_week, course_id, schedule_week_message FROM schedule WHERE course_id = $1 ORDER BY schedule_week_id ASC", [course_id]
         );
 
         res.json(user.rows.sort(function(a, b){return new Date(a.schedule_week) - new Date(b.schedule_week)}));
