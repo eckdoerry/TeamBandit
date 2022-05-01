@@ -11,7 +11,6 @@ import styles from "./LandingPage.module.css";
 // Page Components
 import SignUpForm from "./Components/SignUpForm";
 import SignInForm from "./Components/SignInForm";
-import SearchBar from "./Components/SearchBar";
 
 /**
  * Displays the current landing page and the sign in or
@@ -33,7 +32,6 @@ const LandingPage = ({ setAuth, setUser }) => {
             <div className={styles.appAside}>
                 <div>
                     <img className={styles.image} src={Logo} alt="Logo" />
-                    <SearchBar />
                 </div>
             </div>
             <div className={styles.appForm}>

@@ -1,4 +1,3 @@
-import { response } from 'express';
 import {React, useState, useEffect} from 'react'
 import styles from "../LandingPage.module.css";
 
@@ -20,27 +19,8 @@ const SearchBar = () => {
         }
     };
 
-    const getOrganizerCourseData = async (organizer_id) => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/general/organizer-courses/${organizer_id}`,
-                { method: "GET", headers: { token: localStorage.token } }
-            );
-
-            return await response.json();
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
     useEffect(() => {
         getOrganizerData();
-        /*
-        organizerData.forEach(organizer => {
-            organizer.courses = [];
-            organizer.courses.push(getOrganizerCourseData(organizer.organizer_id));
-        });
-        */
     }, []);
 
     return (
