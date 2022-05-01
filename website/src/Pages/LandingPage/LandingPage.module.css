@@ -116,7 +116,7 @@
 .image{
     width: 50%;
     position: absolute;
-    top: 25%;
+    top: 50%;
     transform: translateY(-50%);
 }
 
