@@ -255,7 +255,7 @@ router.get("/submittedAssignments/:assignment_id", authorization, async(req, res
 });
 
 // get all submitted assignments associated with a team
-router.get("/submittedTeamAssignments/:team_id", authorization, async(req, res) => {
+router.get("/submittedTeamAssignments/:team_id", async(req, res) => {
     try {
         const {team_id} = req.params;
 

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -341,7 +341,7 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
     }, [valueChange]);
 
     return (
-        <Fragment>
+        <div>
             <EditIcon style={{cursor: 'pointer', color: '#f57c00', alignItems:'center', justifyContent: 'center'}} onClick={handleOpen}/>
             <Modal
                 open={open}
@@ -587,7 +587,7 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
 
                 </Box>
             </Modal>
-        </Fragment>
+        </div>
     );
 };
 

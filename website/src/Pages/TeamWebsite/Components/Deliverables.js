@@ -84,25 +84,26 @@ const Deliverables = ({ teamInfo, colorValue, fontColor }) => {
                         </TableHead>
                         <TableBody>
                         {team_documents.map((document) => (
-                            <TableRow key={document.assignment_id}>
-                                <TableCell align="center">
-                                    {" "}
-                                    <Link
-                                        target="_blank"
-                                        to={`/submission/studentAssignment-${document.submission_id}`}
-                                    >
+                            document.display_on_team_website &&
+                                <TableRow key={document.assignment_id}>
+                                    <TableCell align="center">
                                         {" "}
+                                        <Link
+                                            target="_blank"
+                                            to={`/submission/studentAssignment-${document.submission_id}`}
+                                        >
+                                            {" "}
+                                            <Typography variant="h5">
+                                                {document.assignment_name}
+                                            </Typography>
+                                        </Link>{" "}
+                                    </TableCell>
+                                    <TableCell align="center"> 
                                         <Typography variant="h5">
-                                            {document.assignment_name}
-                                        </Typography>
-                                    </Link>{" "}
-                                </TableCell>
-                                <TableCell align="center"> 
-                                    <Typography variant="h5">
-                                        {document.submission_time.split(",")[0]}
-                                    </Typography> 
-                                </TableCell>
-                            </TableRow>
+                                            {document.submission_time.split(",")[0]}
+                                        </Typography> 
+                                    </TableCell>
+                                </TableRow>
                         ))}
                         </TableBody>
                     </Table>

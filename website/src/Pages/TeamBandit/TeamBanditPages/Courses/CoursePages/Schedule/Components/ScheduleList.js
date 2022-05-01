@@ -5,6 +5,8 @@ import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import styles from "../Schedule.module.css";
+import EditSchedule from "./EditSchedule";
+import DOMPurify from 'dompurify';
 
 // Datagrid
 import {
@@ -100,7 +102,15 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
         const week = params.row.schedule_week;
         var weekArray = week.split("-");
         var newWeek = weekArray[0] + "/" + weekArray[1].split("T")[0];
-        return <h3>{newWeek}</h3>;
+        return (
+            <div style={{display: "flex", flexDirection: "row", gap: "20px", alignItems: "center"}}>
+                <h3>
+                    {newWeek}
+                </h3>
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(params.row.schedule_week_message) }} />
+            </div>
+            
+        );
     };
 
     const getAssignments = async () => {
@@ -116,35 +126,94 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
         }
     };
 
+    const editButton = (params) => {
+        return (
+            <EditSchedule
+                schedule_week={params.row}
+                setRowChange={setRowChange}
+            />
+        );
+    };
+
     useEffect(() => {
         getAssignments();
     }, []);
 
-    const columns = [
-        {
-            field: "schedule_week",
-            headerName: "Week",
-            renderCell: getProperWeekFormat,
-            cellClassName: "border",
-            sortable: false,
-            flex: 1,
-        },
-        {
-            field: "schedule_week_description",
-            headerName: "Topics and Assignments",
-            renderCell: getProperStartDateFormat,
-            cellClassName: "border",
-            sortable: false,
-            flex: 2,
-        },
-        {
-            field: "schedule_week_deliverables",
-            headerName: "Deliverables",
-            renderCell: getProperDueDateFormat,
-            sortable: false,
-            flex: 2,
-        },
-    ];
+    var columns;
+
+    if (userIdentifier === "organizer")
+    {
+        columns = [
+            {
+                field: "schedule_week",
+                headerName: "Week",
+                renderCell: getProperWeekFormat,
+                cellClassName: "border",
+                sortable: false,
+                flex: 1,
+                headerAlign: 'center',
+            },
+            {
+                field: "schedule_week_description",
+                headerName: "Topics and Assignments",
+                renderCell: getProperStartDateFormat,
+                cellClassName: "border",
+                sortable: false,
+                flex: 2,
+                headerAlign: 'center',
+            },
+            {
+                field: "schedule_week_deliverables",
+                headerName: "Deliverables",
+                renderCell: getProperDueDateFormat,
+                cellClassName: "border",
+                sortable: false,
+                flex: 2,
+                headerAlign: 'center',
+            },
+            {
+                field: "edit",
+                headerName: "Actions",
+                sortable: false,
+                filterable: false,
+                renderCell: editButton,
+                disableClickEventBubbling: true,
+                headerAlign: 'center',
+            },
+        ];
+    }
+
+    else {
+        columns = [
+            {
+                field: "schedule_week",
+                headerName: "Week",
+                renderCell: getProperWeekFormat,
+                cellClassName: "border",
+                sortable: false,
+                flex: 1,
+                headerAlign: 'center',
+            },
+            {
+                field: "schedule_week_description",
+                headerName: "Topics and Assignments",
+                renderCell: getProperStartDateFormat,
+                cellClassName: "border",
+                sortable: false,
+                flex: 2,
+                headerAlign: 'center',
+            },
+            {
+                field: "schedule_week_deliverables",
+                headerName: "Deliverables",
+                renderCell: getProperDueDateFormat,
+                cellClassName: "border",
+                sortable: false,
+                flex: 2,
+                headerAlign: 'center',
+            },
+        ];
+    }
 
     const CustomToolbar = () => {
         return (

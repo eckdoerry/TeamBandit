@@ -293,5 +293,5 @@ ALTER TABLE teams ADD schedule_image VARCHAR(255);
 -- Student Resume
 ALTER TABLE students ADD student_resume VARCHAR(255);
 
-ALTER TABLE schedule ADD COLUMN schedule_week_message VARCHAR(250);
+ALTER TABLE schedule ADD COLUMN schedule_week_message VARCHAR(500);
 ALTER TABLE students ADD COLUMN student_last_sign_in VARCHAR(255);
