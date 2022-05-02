@@ -36,9 +36,10 @@ const SubmissionPage = () => {
 
     useEffect(() => {
         getSubmission();
+        document.title = "Submission"
     }, []);
 
-    if (submissionInfo !== null) {
+    if (submissionInfo !== null && submissionInfo.submission !== null) {
         return(
             <div style={{ width: "100%" }}>
                 <object

@@ -195,6 +195,7 @@ const AssignmentList = ({ courseInfo, setRoute }) => {
                     getRowId={(rows) => rows.assignment_id}
                     components={{ Toolbar: CustomToolbar }}
                     disableSelectionOnClick
+                    disableColumnMenu
                 />
                 </Box>
             </div>

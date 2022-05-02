@@ -58,6 +58,7 @@ const ProjectPage = () => {
 
     useEffect(() => {
         getProjectOverview();
+        document.title = "Project Description"
     }, []);
 
     if (projectInfo !== null && projectInfo.projectoverview_filename === null) {

@@ -37,6 +37,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
         var millisecondsOfWeek = new Date(params.row.schedule_week).getTime();
         return (
             <div>
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(params.row.schedule_week_message) }} />
                 {assignments.map(
                     (assignment) =>
                         Math.abs(
@@ -56,7 +57,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
                                 >
                                     <p>{assignment.assignment_name}</p>
                                 </Link>
-                                <p>&nbsp;({assignment.submission_type + " Assignment"})</p>
+                                <p>&nbsp;{assignment.submission_type + " Assignment"}</p>
                             </div>
                         )
                 )}
@@ -88,7 +89,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
                                 >
                                     <p>{assignment.assignment_name}</p>
                                 </Link>
-                                <p>&nbsp;due by:&nbsp;{assignment.assignment_due_date.split("T")[1]}&nbsp;MST</p>
+                                <p>&nbsp;{"Due by: " + assignment.assignment_due_date.split("T")[1] + " MST"}</p>
                                 {userIdentifier == "organizer" && <SubmittedAssignmentsModal assignment={assignment} courseInfo={courseInfo}/>}
                                 {userIdentifier == "student" && <StudentUploadAssignment setRowChange={setRowChange} assignment={assignment} userInfo={userInfo}/>}
                             </div>
@@ -107,7 +108,6 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
                 <h3>
                     {newWeek}
                 </h3>
-                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(params.row.schedule_week_message) }} />
             </div>
             
         );
@@ -150,7 +150,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
                 renderCell: getProperWeekFormat,
                 cellClassName: "border",
                 sortable: false,
-                flex: 1,
+                flex: 0.1,
                 headerAlign: 'center',
             },
             {
@@ -191,7 +191,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
                 renderCell: getProperWeekFormat,
                 cellClassName: "border",
                 sortable: false,
-                flex: 1,
+                flex: 0.11,
                 headerAlign: 'center',
             },
             {
@@ -340,6 +340,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
                     components={{ Toolbar: CustomToolbar }}
                     disableSelectionOnClick
                     disableColumnSelector
+                    disableColumnMenu
                 />
                 </Box>
             </div>
@@ -375,6 +376,7 @@ function ScheduleList({ courseInfo, userInfo, userIdentifier }) {
                         components={{ Toolbar: CustomToolbarStudents }}
                         disableSelectionOnClick
                         disableColumnSelector
+                        disableColumnMenu
                     />
                     </Box>
                 </div>

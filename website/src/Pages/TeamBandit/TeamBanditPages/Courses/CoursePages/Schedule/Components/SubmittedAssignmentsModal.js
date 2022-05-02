@@ -17,6 +17,8 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    display: "flex",
+    flexDirection: "column"
 };
 
 const SubmittedAssignmentsModal = ({assignment, courseInfo}) => {
@@ -76,6 +78,12 @@ const SubmittedAssignmentsModal = ({assignment, courseInfo}) => {
         }
     };
 
+    const isBeforeDueDate = () => {
+        var dateNow = Date.now();
+        var dueDate = Date.parse(assignment.assignment_due_date.split("T"));
+        return ((dueDate - dateNow) > 0) ? true : false;
+    }
+
     useEffect(() => {
         getAssignments();
         getTotalStudents();
@@ -98,28 +106,34 @@ const SubmittedAssignmentsModal = ({assignment, courseInfo}) => {
                 <Box sx={style}>
                     <div style={{display: "flex", flexDirection: "column"}}>
                         <Typography variant="p">
-                            All Submissions (Click link to view submission)
+                            {assignment.assignment_name + " (" + assignment.submission_type + ")" + " Due: " + assignment.assignment_due_date.split("T")[1] + " MST"}
                         </Typography>
                         {assignment.allow_submissions_after_due &&
                             <Typography variant="p">
                                 *This assignment allows late submissions
                             </Typography>
                         }
+                        <Typography variant="p">
+                            All Submissions (Click link to view submission)
+                        </Typography>
                     </div>
                     <div style={{height: "80%", width:"100%", border: "1px solid black", overflow: "auto"}}>
                         {((submissions.length > 0) === true) ?
-                        submissions.map((assignment) =>
-                            <div key={assignment.submission_id} style={{display: "flex", flexDirection: "row", gap: "5px"}}>
+                        submissions.map((submission) =>
+                            <div key={submission.submission_id} style={{display: "flex", flexDirection: "row", gap: "5px"}}>
                                 <Link
                                     target="_blank"
-                                    to={`/submission/studentAssignment-${assignment.submission_id}`}
+                                    to={`/submission/studentAssignment-${submission.submission_id}`}
                                     >
-                                        {assignment.team_id == null ?
-                                            <p>{assignment.student_fname + " " + assignment.student_lname}</p>
-                                            : <p>{assignment.team_name}</p>
+                                        {submission.team_id == null ?
+                                            <p>{submission.student_fname + " " + submission.student_lname}</p>
+                                            : <p>{submission.team_name + " (Uploaded by " + submission.student_fname + " " + submission.student_lname + ")"}</p>
                                         }
                                 </Link>
-                                <p><i>on</i> {assignment.submission_time.split(",")[0]} <i>at</i> {assignment.submission_time.split(",")[1]} MST</p>
+                                <p><i>on</i> {submission.submission_time.split(",")[0]} <i>at</i> {submission.submission_time.split(",")[1]} MST</p>
+                                {(!isBeforeDueDate() === true || submission.allow_submissions_after_due === true) 
+                                    && <p style={{"color": "red"}}>(Late)</p>
+                                }
                             </div>
                         ) : <p>&nbsp;No submissions yet!</p>}
                     </div>
