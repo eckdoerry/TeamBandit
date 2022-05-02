@@ -157,7 +157,7 @@ const AssignmentPage = () => {
                 }}
             >
                 {" "}
-                This Project Does Not Exist{" "}
+                This Assignment Does Not Exist{" "}
             </Typography>
             
                 <img

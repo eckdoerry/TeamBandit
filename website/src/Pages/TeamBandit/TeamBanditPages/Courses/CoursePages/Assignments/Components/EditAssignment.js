@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -137,7 +137,7 @@ const EditAssignment = ({ assignment, setRowChange }) => {
     };
 
     return (
-        <Fragment>
+        <div>
             <EditIcon style={{cursor: 'pointer', color: '#f57c00', alignItems:'center', justifyContent: 'center'}} onClick={handleOpen}/>
             <Modal
                 open={open}
@@ -307,7 +307,7 @@ const EditAssignment = ({ assignment, setRowChange }) => {
 
                 </Box>
             </Modal>
-        </Fragment>
+        </div>
     );
 };
 

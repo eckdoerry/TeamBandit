@@ -28,6 +28,7 @@ CREATE TABLE courses(
     organizer_id SERIAL,
     course_title VARCHAR(255),
     course_semester VARCHAR(255),
+    course_year INT,
     course_description VARCHAR(255),
     course_archived BOOLEAN,
     course_public BOOLEAN,
@@ -39,7 +40,7 @@ CREATE TABLE courses(
 alter table courses
     add course_archived bool default False;
 
-ALTER TABLE courses add course_public BOOLEAN default True;
+ALTER TABLE courses ALTER COLUMN course_public SET DEFAULT False;
 
 comment on column courses.course_archived is 'Is the course archived (i.e. changes where it will be shown)';
 
@@ -291,3 +292,6 @@ ALTER TABLE teams ADD schedule_image VARCHAR(255);
 
 -- Student Resume
 ALTER TABLE students ADD student_resume VARCHAR(255);
+
+ALTER TABLE schedule ADD COLUMN schedule_week_message VARCHAR(500);
+ALTER TABLE students ADD COLUMN student_last_sign_in VARCHAR(255);

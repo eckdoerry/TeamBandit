@@ -228,6 +228,29 @@ router.get("/getAssignedStudents/:course_id", async(req, res) => {
     }
 });
 
+// Get all organizers
+router.get("/organizers/:placeholder_id", async(req, res) => {
+    try {
+        const organizer = await pool.query("SELECT organizer_id, organizer_fname, organizer_lname FROM organizers");
+
+        res.json(organizer.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+// Get all courses created by an organizer
+router.get("/organizer-courses/:organizer_id", async(req, res) => {
+    try {
+        const {organizer_id} = req.params;
+        const organizer = await pool.query("SELECT * FROM courses WHERE organizer_id = $1", [organizer_id]);
+
+        res.json(organizer.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
 // --------------- //
 
 // END GENERAL ROUTES //

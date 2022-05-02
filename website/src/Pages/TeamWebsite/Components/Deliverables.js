@@ -1,4 +1,4 @@
-import { React } from "react";
+import { React, useState, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Table from "@mui/material/Table";
@@ -10,7 +10,29 @@ import TableRow from "@mui/material/TableRow";
 
 import { Link } from "react-router-dom";
 
-const Deliverables = ({ colorValue, fontColor }) => {
+const Deliverables = ({ teamInfo, colorValue, fontColor }) => {
+    const [team_documents, setTeamDocuments] = useState([]);
+
+    const getTeamDocuments = async () => {
+        try {
+            const documentInfo = await fetch(
+                `${process.env.REACT_APP_BASEURL}/assignments/submittedTeamAssignments/${teamInfo[0].team_id}`,
+                { method: "GET", headers: { token: localStorage.token } }
+            );
+
+            const documentData = await documentInfo.json();
+
+            setTeamDocuments(documentData);
+
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
+
+    useEffect(() => {
+        getTeamDocuments();
+    }, []);
+
     return (
         <div
             style={{
@@ -61,103 +83,28 @@ const Deliverables = ({ colorValue, fontColor }) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            <TableRow>
-                                <TableCell align="center">
-                                    {" "}
-                                    <Link
-                                        target="_blank"
-                                        to={`/team-website/`}
-                                    >
+                        {team_documents.map((document) => (
+                            document.display_on_team_website &&
+                                <TableRow key={document.assignment_id}>
+                                    <TableCell align="center">
                                         {" "}
+                                        <Link
+                                            target="_blank"
+                                            to={`/submission/studentAssignment-${document.submission_id}`}
+                                        >
+                                            {" "}
+                                            <Typography variant="h5">
+                                                {document.assignment_name}
+                                            </Typography>
+                                        </Link>{" "}
+                                    </TableCell>
+                                    <TableCell align="center"> 
                                         <Typography variant="h5">
-                                            Peer Evaluation # 1
-                                        </Typography>
-                                    </Link>{" "}
-                                </TableCell>
-                                <TableCell align="center"> <Typography variant="h5">
-                                            02/13/22
-                                        </Typography> </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell align="center">
-                                <Link
-                                        target="_blank"
-                                        to={`/team-website/`}
-                                    >
-                                        {" "}
-                                        <Typography variant="h5">
-                                            Peer Evaluation # 1
-                                        </Typography>
-                                    </Link>
-                                </TableCell>
-                                <TableCell align="center"><Typography variant="h5">
-                                            02/13/22
-                                        </Typography>  </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell align="center">
-                                <Link
-                                        target="_blank"
-                                        to={`/team-website/`}
-                                    >
-                                        {" "}
-                                        <Typography variant="h5">
-                                            Peer Evaluation # 1
-                                        </Typography>
-                                    </Link>
-                                </TableCell>
-                                <TableCell align="center"><Typography variant="h5">
-                                            02/13/22
-                                        </Typography>  </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell align="center">
-                                <Link
-                                        target="_blank"
-                                        to={`/team-website/`}
-                                    >
-                                        {" "}
-                                        <Typography variant="h5">
-                                            Peer Evaluation # 1
-                                        </Typography>
-                                    </Link>
-                                </TableCell>
-                                <TableCell align="center"> <Typography variant="h5">
-                                            02/13/22
-                                        </Typography>  </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell align="center">
-                                <Link
-                                        target="_blank"
-                                        to={`/team-website/`}
-                                    >
-                                        {" "}
-                                        <Typography variant="h5">
-                                            Peer Evaluation # 1
-                                        </Typography>
-                                    </Link>
-                                </TableCell>
-                                <TableCell align="center"> <Typography variant="h5">
-                                            02/13/22
-                                        </Typography>  </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell align="center">
-                                <Link
-                                        target="_blank"
-                                        to={`/team-website/`}
-                                    >
-                                        {" "}
-                                        <Typography variant="h5">
-                                            Peer Evaluation # 1
-                                        </Typography>
-                                    </Link>
-                                </TableCell>
-                                <TableCell align="center"> <Typography variant="h5">
-                                            02/13/22
-                                        </Typography>  </TableCell>
-                            </TableRow>
+                                            {document.submission_time.split(",")[0]}
+                                        </Typography> 
+                                    </TableCell>
+                                </TableRow>
+                        ))}
                         </TableBody>
                     </Table>
                 </TableContainer>

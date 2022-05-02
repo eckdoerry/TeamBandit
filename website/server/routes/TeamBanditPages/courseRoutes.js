@@ -10,7 +10,7 @@ router.get("/", authorization, async(req, res) => {
         if( req.headers.type == "organizer" )
         {
             const user = await pool.query(
-                "SELECT organizers.organizer_fname, organizers.organizer_lname, courses.course_id, courses.course_description, courses.course_color, courses.course_title, courses.course_semester, courses.creation_date, courses.course_public, courses.team_size FROM organizers LEFT JOIN courses ON organizers.organizer_id = courses.organizer_id WHERE organizers.organizer_id = $1 ORDER BY course_id ASC ",
+                "SELECT organizers.organizer_fname, organizers.organizer_lname, courses.course_id, courses.course_description, courses.course_color, courses.course_title, courses.course_semester, courses.course_year, courses.creation_date, courses.course_public, courses.team_size FROM organizers LEFT JOIN courses ON organizers.organizer_id = courses.organizer_id WHERE organizers.organizer_id = $1 ORDER BY course_id ASC ",
                 [req.user]
             );
 
@@ -111,9 +111,9 @@ router.put("/courses/:id", authorization, async(req, res) => {
 // Add a new course
 router.post("/courses", authorization, async(req,res) =>{
     try{
-        const { title, semester, description } = req.body;
+        const { title, semester, year, description } = req.body;
 
-        const newCourse = await pool.query("INSERT INTO courses (organizer_id, course_title, course_semester, course_description) VALUES($1, $2, $3, $4) RETURNING *", [req.user, title, semester, description]);
+        const newCourse = await pool.query("INSERT INTO courses (organizer_id, course_title, course_semester, course_year, course_description) VALUES($1, $2, $3, $4, $5) RETURNING *", [req.user, title, semester, parseInt(year.split("-")[0]), description]);
 
         res.json(newCourse.rows[0]);
     } catch (err) {

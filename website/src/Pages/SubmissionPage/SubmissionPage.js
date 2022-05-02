@@ -17,7 +17,6 @@ const SubmissionPage = () => {
     const regExp = /%20/g;
     const windowString = windowValue.replace(regExp, " ");
     const submissionCourse = windowString.split("-");
-    console.log(submissionCourse);
 
     const [submissionInfo, setSubmissionInfo] = useState([]);
 
@@ -95,7 +94,7 @@ const SubmissionPage = () => {
                 }}
             >
                 {" "}
-                This Project Does Not Exist{" "}
+                This Submission Does Not Exist{" "}
             </Typography>
             
                 <img

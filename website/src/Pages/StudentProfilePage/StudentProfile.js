@@ -164,7 +164,7 @@ const ProfilePage = () => {
                     }}
                 >
                     {" "}
-                    This Project Does Not Exist{" "}
+                    This Student Does Not Exist{" "}
                 </Typography>
 
                 <img

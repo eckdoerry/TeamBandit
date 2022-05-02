@@ -45,6 +45,16 @@ const Students = ({ courseInfo }) => {
         );
     };
 
+    const studentLastSignedIn = (params) => {
+        return (
+            <div>
+                {params.row.student_last_sign_in !== null ?
+                    params.row.student_last_sign_in :
+                    "Never"}
+            </div>
+        );
+    };
+
     const columns = [
         {
             field: "student_fname",
@@ -73,6 +83,13 @@ const Students = ({ courseInfo }) => {
         {
             field: "student_gpa",
             headerName: "GPA",
+            cellClassName: "death",
+            flex: 1,
+        },
+        {
+            field: "student_last_sign_in",
+            headerName: "Last Sign-In",
+            renderCell: studentLastSignedIn,
             cellClassName: "death",
             flex: 1,
         },

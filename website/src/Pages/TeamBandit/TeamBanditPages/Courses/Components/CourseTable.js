@@ -25,6 +25,7 @@ const CourseTable = ({ coursesInfo, userInfo, userIdentifier, setCoursesChange }
                             <TableCell className={styles.tableCell}>Course Name</TableCell>
                             <TableCell className={styles.tableCell}>Course Organizer</TableCell>
                             <TableCell className={styles.tableCell}>Course Semester</TableCell>
+                            <TableCell className={styles.tableCell}>Course Year</TableCell>
                             <TableCell className={styles.tableCell}>Total Projects</TableCell>
                             <TableCell className={styles.tableCell}>Total Students</TableCell>
                             <TableCell className={styles.tableCell}>Date Created</TableCell>
