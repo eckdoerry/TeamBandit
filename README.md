@@ -74,80 +74,95 @@ Every tool is neatly combined into a single application, providing the ultimate 
 
 # Installation
 
-Hello! You've started upon a journey of getting this app to work, this is here to help you out! Firstly, you want to get this repository on your local machine.
-This can be through forking it and cloning your forked repository or through cloning this repo directly. There are tutorials and guides on how to do so :-).
+The installation instructions for TeamBandit are detailed here:
+
+### Initial Setup
 
 <br/>
 
-Once the application is downloaded you want to make sure you have Node installed on your machine. This is what we use to run React and Express. This can be done here:
+1) Clone the <a href="https://github.com/QJMTech/TeamBandit">TeamBandit GitHub repository</a> to your machine.
 
 <br/>
-https://nodejs.org/en/
+
+2) Install <a href="https://nodejs.org/en/">Node</a>. This is used to run React and Express.
+
 <br/>
- 
- You may need to restart once its done. Navigate to a command line and make sure its installed by typing:
 
-```bash
-node -v
-```
+3) In the terminal, navigate to the /website directory in your cloned TeamBandit repository.
 
-With that installed you want to navigate to the cloned repository. Specifically you want to be in the /website directory. Once inside you want to run: 
+<br/>
+
+4) Run the following command to install all of the Node dependencies:
 
 ```bash
 npm i
 ```
 
-This should go through and install all of our node dependencies! Congrats, you're progressing along!
 <br/>
-Next you want to make sure your database is up to date. Inside /website/server we have included a nifty sqlCode.txt for your use! We use PostgreSQL for our
-database management system. There are tutorials on how to install this on YouTube. Once installed you should be able to copy the contents of the sqlCode.txt
-into a query and run them. This will set up your database to work with our application!
-<br/>
-Finally, the last thing you need to set up is the .env files. For security reasons we do not include our actual .env files. Instead we have included two .env.examples
-located in /website/server and in /website. Each one has some comments and examples of what needs to go there. These basically help set up the connections to the database.
-<br/>
-Once those are set up you should be good to run the application!
 
-## Windows Run Guide
-To run on windows you need to open two terminals, either through VSCodes terminal, powershell, or normal CMD terminal.
+5) Install <a href="https://www.postgresql.org/download/">PostgreSQL</a> to set up the database.
 
 <br/>
 
-### First Terminal
-Navigate to /website, then run:
+6) In the terminal, navigate to the /website/server directory in your cloned TeamBandit repository. There is a file named "sqlCode.txt" in this directory. Copy the contents of this file and paste them in to the PostgreSQL query tool then run the query. The database is now set up!
+
+<br/>
+
+7) The /website and /website/server directories each have an example .env file. Each contains comments and examples detailing how to set up your own .env files to set up connections to the database.
+
+<br/>
+
+Initial setup complete!
+
+<br/>
+
+### Run Guide
+
+#### Windows
+To run on windows you need to open *two* terminals (either through VSCodes terminal, powershell, or normal CMD terminal).
+
+
+<br/>
+
+##### First Terminal
+Navigate to the /website directory, then run:
 
 ```bash
 npm run start-client
 ```
 
-This runs our the React application on localhost.
+This runs the React application on localhost.
 
-### Second Terminal
-Windows does not execute commands simultaneously. So you need to navigate to, /website/server/middleware and run:
+<br/>
+
+##### Second Terminal
+Windows does not execute commands simultaneously, so you need to navigate to the directory /website/server/middleware.
+<br/>
+From there, run:
 
 ```bash
 node authRoutes
 ```
 
-This sets up the connection to the database.
+This will set up the connection to the database.
 
-## Mac Run Guide
-For MAC its easy! Navigate to /website and run:
+<br/>
+
+#### MacOS/Linux
+Navigate to /website and run:
 
 ```bash
 npm run start-client
 ```
 
-You should be good to go as MAC will execute both processes!
-
-## Linux Run Guide
-*Should be similar to the Mac run process*
+You are done!
 
 <br/>
 
-Hopefully at this point the application is running and you can start working on it! Good luck and have fun!
+The application should be set up and running now. Congratulations!
 
 <br/>
+
 # The Developers
 
 <br />
