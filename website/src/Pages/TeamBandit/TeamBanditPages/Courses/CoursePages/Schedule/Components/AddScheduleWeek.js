@@ -1,7 +1,7 @@
 
 ////// UNUSED //////
 
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 
 // MUI Imports
 import Button from "@mui/material/Button";
@@ -70,7 +70,7 @@ const AddScheduleWeek = ({ courseInfo, rows, setRowChange }) => {
     };
 
     return (
-        <Fragment>
+        <div>
             <Button
                 sx={{ m: 3 }}
                 variant="contained"
@@ -129,7 +129,7 @@ const AddScheduleWeek = ({ courseInfo, rows, setRowChange }) => {
                     </Button>
                 </Box>
             </Modal>
-        </Fragment>
+        </div>
     );
 };
 

@@ -24,10 +24,12 @@ const style = {
 const EditSchedule = ({schedule_week, setRowChange}) => {
     // Variables
     const [schedule_week_message, setScheduleWeekMessage] = useState("");
+    const [failedSubmit, setFailedSubmit] = useState(false);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
+        setFailedSubmit(false);
         if (schedule_week.schedule_week_message !== null)
         {
             setScheduleWeekMessage(schedule_week.schedule_week_message);
@@ -35,10 +37,16 @@ const EditSchedule = ({schedule_week, setRowChange}) => {
     };
     const handleClose = () => {
         setOpen(false);
+        setFailedSubmit(false);
     };
 
     const updateScheduleWeek = async (e) => {
         e.preventDefault();
+        if (schedule_week_message.length > 500) {
+            setFailedSubmit(true);
+            console.log("Here");
+            return;
+        }
         try {
             const body = {
                 schedule_week_message,
@@ -64,6 +72,7 @@ const EditSchedule = ({schedule_week, setRowChange}) => {
             console.error(error.message);
             toast.error("Failed to update week!");
         }
+        handleClose();
     };
 
     return (
@@ -91,17 +100,20 @@ const EditSchedule = ({schedule_week, setRowChange}) => {
                         fullWidth
                         sx={{ m: 2 }}
                         label="Schedule Week Milestone (Maximum 500 characters)"
-                        helperText="You can enter your own HTML with in-line styling if you wish!"
                         type="text"
                         value={schedule_week_message}
                         onChange={(e) => setScheduleWeekMessage(e.target.value)}
+                        error={schedule_week_message.length > 500 && failedSubmit}
+                        helperText={
+                            schedule_week_message.length > 500 && failedSubmit ? "Maximum 500 characters" : "You can enter your own HTML with in-line styling if you wish!"
+                        }
                     />
 
                     <Button
                         sx={{ m: 3 }}
                         variant="contained"
                         color="warning"
-                        onClick={(e) => (handleClose(), updateScheduleWeek(e))}
+                        onClick={(e) => (updateScheduleWeek(e))}
                         startIcon={<EditIcon />}
                     >
                         {" "}

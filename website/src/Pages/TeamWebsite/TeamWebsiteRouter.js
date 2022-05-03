@@ -1,4 +1,4 @@
-import {Fragment, React} from "react"
+import {React} from "react"
 
 // Material UI Imports
 import Alert from '@mui/material/Alert';
@@ -27,44 +27,34 @@ const TeamWebsiteRouter = ({route, colorValue, teamInfo, fontColor, teamMembers,
     else if(route === "Project Summary") 
     {
         return (
-            <Fragment>
-                <Solution teamInfo={teamInfo}/>
-            </Fragment>
+            <Solution teamInfo={teamInfo}/>
         )
     }
     else if(route === "Documentation") 
     {
         return (
-            <Fragment>
-                <Deliverables teamInfo={teamInfo} colorValue={colorValue} fontColor={fontColor} />
-            </Fragment>
+            <Deliverables teamInfo={teamInfo} colorValue={colorValue} fontColor={fontColor} />
         )
     }
     else if(route === "The Team") 
     {
         return (
-            <Fragment>
-                <Team teamMembers={teamMembers} projectInfo={projectInfo}/>
-            </Fragment>
+            <Team teamMembers={teamMembers} projectInfo={projectInfo}/>
         )
     }
     else if(route === "Schedule")
     {
         return (
-            <Fragment>
-                <Schedule teamInfo={teamInfo}/>
-            </Fragment>
+            <Schedule teamInfo={teamInfo}/>
         )
     }
     else
     {
         return (
-            <Fragment>
-                <Alert severity="error">
-                    <AlertTitle>Error</AlertTitle>
-                    The page is not displayed correctly — <strong>please refresh!</strong>
-                </Alert>
-            </Fragment>
+            <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                The page is not displayed correctly — <strong>please refresh!</strong>
+            </Alert>
         )
     }
     

@@ -1,4 +1,4 @@
-import React, { Fragment, useState} from "react";
+import React, { useState} from "react";
 
 import styles from "./SignInForm.module.css";
 import { toast } from 'react-toastify';
@@ -52,7 +52,7 @@ const SignInForm = ({setAuth, setUser, changeLocation}) => {
     };
 
     return (
-        <Fragment>
+        <div>
             <div className={styles.formCenter}>
                 <form className={styles.formFields} onSubmit={onSubmitForm}>
                     <div className={styles.formField}>
@@ -91,7 +91,7 @@ const SignInForm = ({setAuth, setUser, changeLocation}) => {
                     </div>
                 </form>
             </div>
-        </Fragment>
+        </div>
     );
 };
 

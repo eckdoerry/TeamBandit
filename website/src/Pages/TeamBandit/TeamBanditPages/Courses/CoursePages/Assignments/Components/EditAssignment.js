@@ -13,6 +13,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import {Delete} from "@mui/icons-material";
+import Checkbox from '@mui/material/Checkbox';
 
 import { toast } from "react-toastify";
 
@@ -33,6 +34,8 @@ const EditAssignment = ({ assignment, setRowChange }) => {
     const [assignment_name, setAssignmentName] = useState("");
     const [assignment_start_date, setAssignmentStartDate] = useState("");
     const [assignment_due_date, setAssignmentDueDate] = useState("");
+    const [allow_submissions_after_due, setAllowSubmissionsAfterDue] = useState(false);
+    const [display_on_team_website, setDisplayOnTeamWebsite] = useState(true);
     const [assignment_instructions, setAssignmentInstructions] = useState(null);
 
     const [open, setOpen] = useState(false);
@@ -41,6 +44,8 @@ const EditAssignment = ({ assignment, setRowChange }) => {
         setAssignmentName(assignment.assignment_name);
         setAssignmentStartDate(assignment.assignment_start_date);
         setAssignmentDueDate(assignment.assignment_due_date);
+        setAllowSubmissionsAfterDue(assignment.allow_submissions_after_due);
+        setDisplayOnTeamWebsite(assignment.display_on_team_website);
         setAssignmentInstructions(null);
     };
     const handleClose = () => {
@@ -65,6 +70,14 @@ const EditAssignment = ({ assignment, setRowChange }) => {
     const onFileChange = (e) => {
         setAssignmentInstructions(e.target.files[0]); 
     }
+
+    const handleAllowSubmissionsAfterDueCheckChange = (event) => {
+        setAllowSubmissionsAfterDue(event.target.checked);
+    };
+
+    const handleDisplayOnTeamWebsiteCheckChange = (event) => {
+        setDisplayOnTeamWebsite(event.target.checked);
+    };
 
     const updateAssignmentInstructions = async (e) => {
         e.preventDefault();
@@ -92,7 +105,9 @@ const EditAssignment = ({ assignment, setRowChange }) => {
             const body = {
                 assignment_name,
                 assignment_start_date,
-                assignment_due_date
+                assignment_due_date,
+                allow_submissions_after_due,
+                display_on_team_website
             };
             const myHeaders = new Headers();
 
@@ -184,7 +199,29 @@ const EditAssignment = ({ assignment, setRowChange }) => {
                         onChange={(e) => setAssignmentName(e.target.value)}
                     />
 
-                    <Typography>Upload Assignment PDF Instructions</Typography>
+                    <div>
+                        <Typography>Allow Submissions After Due Date?</Typography>
+                        <Checkbox
+                            checked={allow_submissions_after_due}
+                            onChange={handleAllowSubmissionsAfterDueCheckChange}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                        />
+                    </div>
+
+                    {assignment.submission_type === "Team" &&
+                        <div>
+                            <Typography>Display Assignment on Team Website?</Typography>
+                            <Checkbox
+                                checked={display_on_team_website}
+                                onChange={handleDisplayOnTeamWebsiteCheckChange}
+                                inputProps={{ 'aria-label': 'controlled' }}
+                            />
+                        </div>
+                    }
+
+                    {assignment.assignment_filename === null 
+                        ? <Typography>Upload Assignment PDF Instructions</Typography>
+                        : <Typography>Change Current Assignment PDF Instructions</Typography>}
                     <form encType="multipart/form-data">
                         <input type="file" accept="application/pdf" name="assignmentInstructions" onChange={onFileChange}/>
                     </form>

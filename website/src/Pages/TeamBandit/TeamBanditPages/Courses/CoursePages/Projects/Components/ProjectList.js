@@ -153,7 +153,7 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
                 <div style={{ display: "flex" }}>
                     <Link
                         target="_blank"
-                        to={`/project-pages/${params.row.project_name}`}
+                        to={`/project-pages/${params.row.project_id}`}
                     >
                         Project Description
                     </Link>

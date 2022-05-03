@@ -84,9 +84,9 @@ router.post("/addAssignment", authorization, async(req, res) => {
 router.put("/editAssignment/:id", authorization, async(req, res) => {
     try {
         const {id} = req.params;
-        const {assignment_name, assignment_start_date, assignment_due_date} = req.body;
+        const {assignment_name, assignment_start_date, assignment_due_date, allow_submissions_after_due, display_on_team_website} = req.body;
 
-        const updateAssignment = await pool.query("UPDATE assignments SET assignment_name = $1, assignment_start_date = $2, assignment_due_date = $3 WHERE assignment_id = $4 AND organizer_id = $5 RETURNING *", [assignment_name, assignment_start_date, assignment_due_date, id, req.user]);
+        const updateAssignment = await pool.query("UPDATE assignments SET assignment_name = $1, assignment_start_date = $2, assignment_due_date = $3, allow_submissions_after_due = $4, display_on_team_website = $5 WHERE assignment_id = $6 AND organizer_id = $7 RETURNING *", [assignment_name, assignment_start_date, assignment_due_date, allow_submissions_after_due, display_on_team_website, id, req.user]);
 
         if(updateAssignment.rows.length === 0)
         {
