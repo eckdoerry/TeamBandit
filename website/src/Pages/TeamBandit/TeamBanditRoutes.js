@@ -1,4 +1,4 @@
-import {Fragment, React} from "react"
+import {React} from "react"
 
 // Material UI Imports
 import Alert from '@mui/material/Alert';
@@ -20,52 +20,40 @@ const TeamBanditRouter = ({route, userInfo, userIdentifier, setUserChange}) => {
     if(route.text === "Courses" || route === "Courses") 
     {
         return (
-            <Fragment>
-                <Courses userInfo={userInfo} userIdentifier={userIdentifier}/>
-            </Fragment>
+            <Courses userInfo={userInfo} userIdentifier={userIdentifier}/>
         )
     }
     else if(route.text === "Email Hub") 
     {
         return (
-            <Fragment>
-                <EmailHub/>
-            </Fragment>
+            <EmailHub/>
         )
     }
     else if(route.text === "Clients") 
     {
         return (
-            <Fragment>
-                <Clients/>
-            </Fragment>
+            <Clients/>
         )
     }
     else if(route.setting === "Profile")
     {
         return (
-            <Fragment>
-                <Profile userInfo={userInfo} setUserChange={setUserChange}/>
-            </Fragment>
+            <Profile userInfo={userInfo} setUserChange={setUserChange}/>
         )
     }
     else if(route === "Settings")
     {
         return (
-            <Fragment>
-                <Settings userInfo={userInfo} setUserChange={setUserChange} userIdentifier={userIdentifier}/>
-            </Fragment>
+            <Settings userInfo={userInfo} setUserChange={setUserChange} userIdentifier={userIdentifier}/>
         )
     }
     else
     {
         return (
-            <Fragment>
-                <Alert severity="error">
-                    <AlertTitle>Error</AlertTitle>
-                    The page is not displayed correctly — <strong>please refresh!</strong>
-                </Alert>
-            </Fragment>
+            <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                The page is not displayed correctly — <strong>please refresh!</strong>
+            </Alert>
         )
     }
     

@@ -423,6 +423,7 @@ const TeamPage = () => {
         isACourse();
         isCoursePublic();
         setLoadingFalse();
+        document.title = "Team Page"
     }, [isCourse]);
 
     if (loading) {

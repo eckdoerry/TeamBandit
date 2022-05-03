@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 // MUI Imports
 import Button from "@mui/material/Button";
@@ -153,7 +153,7 @@ const AddProject = ({ courseInfo, setRowChange }) => {
     }, [valueChange]);
 
     return (
-        <Fragment>
+        <div>
             <Button
                 sx={{ m: 3 }}
                 variant="contained"
@@ -276,7 +276,7 @@ const AddProject = ({ courseInfo, setRowChange }) => {
                     </Button>
                 </Box>
             </Modal>
-        </Fragment>
+        </div>
     );
 };
 

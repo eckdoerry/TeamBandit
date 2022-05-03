@@ -1,4 +1,4 @@
-import { Fragment, React, useState, useEffect } from "react";
+import { React, useState, useEffect } from "react";
 import styles from "./Courses.module.css";
 
 // Page Components
@@ -63,7 +63,7 @@ const Courses = ({userInfo, userIdentifier}) => {
     }
 
     return (
-        <Fragment>
+        <div>
             <div className={styles.row}>
                 <Typography variant="h3" gutterBottom>
                     Courses
@@ -76,7 +76,7 @@ const Courses = ({userInfo, userIdentifier}) => {
                 userIdentifier={userIdentifier}
                 setCoursesChange={setCoursesChange}
             />
-        </Fragment>
+        </div>
     );
 };
 

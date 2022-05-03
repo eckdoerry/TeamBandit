@@ -108,6 +108,7 @@ const TeamPage = () => {
 
     useEffect(() => {
         getInformation();
+        document.title = "Team Website"
     }, []);
 
     if (loading) {

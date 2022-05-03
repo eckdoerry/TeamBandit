@@ -36,6 +36,7 @@ const AssignmentPage = () => {
 
     useEffect(() => {
         getAssignment();
+        document.title = "Assignment Description"
     }, []);
 
     if (assignmentInfo !== null && assignmentInfo.assignment_filename === null) {

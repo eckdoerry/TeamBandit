@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect, React } from "react";
+import { useState, useEffect, React } from "react";
 
 // MUI Functions
 import Drawer from "@mui/material/Drawer";
@@ -75,7 +75,7 @@ const CoursePage = ({ courseInfo, userInfo, userIdentifier, setCoursesChange }) 
 
     return (
         <div>
-            <Fragment key={anchor}>
+            <div key={anchor}>
                 <Button onClick={toggleDrawer(anchor, true)}>
                     {courseInfo.course_title.toUpperCase()}
                 </Button>
@@ -141,7 +141,7 @@ const CoursePage = ({ courseInfo, userInfo, userIdentifier, setCoursesChange }) 
                         setCoursesChange={setCoursesChange}
                     />
                 </Drawer>
-            </Fragment>
+            </div>
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import {Fragment, React, useState} from "react";
+import {React, useState} from "react";
 
 // MUI Imports
 import Button from '@mui/material/Button';
@@ -88,7 +88,7 @@ const EditPassword = ({userInfo, setUserChange, userIdentifier}) => {
     };
 
     return(
-        <Fragment>
+        <div>
             <Button variant="outlined" onClick={handleClickOpen}>
                 Change Your Password
             </Button>
@@ -157,7 +157,7 @@ const EditPassword = ({userInfo, setUserChange, userIdentifier}) => {
             </DialogActions>
 
             </Dialog>
-        </Fragment>
+        </div>
     );
 }
 

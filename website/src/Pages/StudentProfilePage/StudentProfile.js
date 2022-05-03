@@ -35,6 +35,7 @@ const ProfilePage = () => {
 
     useEffect(() => {
         getStudent();
+        document.title = "Student Profile"
     }, []);
 
     if (studentInfo !== null) {
