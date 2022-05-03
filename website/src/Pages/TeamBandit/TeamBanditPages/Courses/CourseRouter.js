@@ -1,4 +1,4 @@
-import {Fragment, React} from "react"
+import {React} from "react"
 
 // Material UI Imports
 import Alert from '@mui/material/Alert';
@@ -18,68 +18,52 @@ const CourseRouter = ({route, courseInfo, userInfo, userIdentifier, setCoursesCh
     if(route === "Projects") 
     {
         return (
-            <Fragment>
-                <Projects courseInfo={courseInfo} userInfo={userInfo} userIdentifier={userIdentifier} setRoute={setRoute}/>
-            </Fragment>
+            <Projects courseInfo={courseInfo} userInfo={userInfo} userIdentifier={userIdentifier} setRoute={setRoute}/>
         )
     }
     else if(route === "Students") 
     {
         return (
-            <Fragment>
-                <Students courseInfo={courseInfo}/>
-            </Fragment>
+            <Students courseInfo={courseInfo}/>
         )
     }
     else if(route === "Schedule") 
     {
         return (
-            <Fragment>
-                <Schedule courseInfo={courseInfo} userInfo={userInfo} userIdentifier={userIdentifier}/>
-            </Fragment>
+            <Schedule courseInfo={courseInfo} userInfo={userInfo} userIdentifier={userIdentifier}/>
         )
     }
     else if(route === "Assignments") 
     {
         return (
-            <Fragment>
-                <Assignments courseInfo={courseInfo} setRoute={setRoute}/>
-            </Fragment>
+            <Assignments courseInfo={courseInfo} setRoute={setRoute}/>
         )
     }
     else if(route === "Mentors") 
     {
         return (
-            <Fragment>
-                <Mentors courseInfo={courseInfo}/>
-            </Fragment>
+            <Mentors courseInfo={courseInfo}/>
         )
     }
     else if(route === "Teams Assignment") 
     {
         return (
-            <Fragment>
-                <TeamsAssignment courseInfo={courseInfo} setRoute={setRoute} userIdentifier={userIdentifier}/>
-            </Fragment>
+            <TeamsAssignment courseInfo={courseInfo} setRoute={setRoute} userIdentifier={userIdentifier}/>
         )
     }
     else if(route === "Settings") 
     {
         return (
-            <Fragment>
-                <Settings courseInfo={courseInfo} userInfo={userInfo} userIdentifier={userIdentifier} setCoursesChange={setCoursesChange}/>
-            </Fragment>
+            <Settings courseInfo={courseInfo} userInfo={userInfo} userIdentifier={userIdentifier} setCoursesChange={setCoursesChange}/>
         )
     }
     else
     {
         return (
-            <Fragment>
-                <Alert severity="error">
-                    <AlertTitle>Error</AlertTitle>
-                    The page is not displayed correctly — <strong>please refresh!</strong>
-                </Alert>
-            </Fragment>
+            <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                The page is not displayed correctly — <strong>please refresh!</strong>
+            </Alert>
         )
     }
     

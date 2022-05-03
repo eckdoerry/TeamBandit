@@ -1,4 +1,4 @@
-import { Fragment, React } from "react";
+import { React } from "react";
 import Alert from "@mui/material/Alert";
 import AlertTitle from '@mui/material/AlertTitle';
 
@@ -9,14 +9,14 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
     
     if (userIdentifier == "student" && !courseInfo.course_public) {
         return (
-            <Fragment>
+            <div>
                 <div style={{padding: '25px'}}>
                     <Alert severity="info">
                         <AlertTitle>The projects are still in progress. </AlertTitle>
                         This page will be changed when the projects are ready.
                     </Alert>
                 </div>
-            </Fragment>
+            </div>
         );
     }
 

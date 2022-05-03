@@ -1,4 +1,4 @@
-import {React, Fragment} from "react";
+import {React} from "react";
 import styles from "../Courses.module.css";
 
 // Page Components
@@ -16,7 +16,7 @@ import Paper from "@mui/material/Paper";
 const CourseTable = ({ coursesInfo, userInfo, userIdentifier, setCoursesChange }) => {
     
     return (
-        <Fragment>
+        <div>
             <TableContainer component={Paper}>
                 <Table aria-label="simple table">
                     <TableHead >
@@ -49,7 +49,7 @@ const CourseTable = ({ coursesInfo, userInfo, userIdentifier, setCoursesChange }
                     </TableBody>
                 </Table>
             </TableContainer>
-        </Fragment>
+        </div>
     );
 };
 

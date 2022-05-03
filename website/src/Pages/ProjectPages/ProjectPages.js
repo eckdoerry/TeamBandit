@@ -37,14 +37,14 @@ const theme = createTheme();
 const ProjectPage = () => {
     const windowValue = window.location.hash.replace("#/project-pages/", "");
     const regExp = /%20/g;
-    const projectname = windowValue.replace(regExp, " ");
+    const project_id = windowValue.replace(regExp, " ");
 
     const [projectInfo, setProjectInfo] = useState([]);
 
     const getProjectOverview = async () => {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/project-name/${projectname}`,
+                `${process.env.REACT_APP_BASEURL}/projects/project-id/${project_id}`,
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const jsonData = await response.json();

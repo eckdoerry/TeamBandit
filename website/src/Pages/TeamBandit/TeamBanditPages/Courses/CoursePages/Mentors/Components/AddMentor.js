@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import { toast } from 'react-toastify';
 
 // MUI Imports
@@ -68,7 +68,7 @@ const AddMentor = ({courseInfo, setRowChange}) => {
     }, [valueChange]);
 
     return (
-        <Fragment>
+        <div>
         <Button sx={{ m: 3 }} variant="contained" color="success"  onClick={handleOpen} startIcon={<AddIcon />} > Add </Button>
         <Modal
                 open={open}
@@ -94,7 +94,7 @@ const AddMentor = ({courseInfo, setRowChange}) => {
                 <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose} startIcon={<CloseIcon/>}> Cancel </Button>
                 </Box>
             </Modal>
-        </Fragment>
+        </div>
     );
 };
 

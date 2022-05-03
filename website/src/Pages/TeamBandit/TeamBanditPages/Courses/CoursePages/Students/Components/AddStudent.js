@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 // For Parsing the CSVs
@@ -169,7 +169,7 @@ const InputTodo = ({ courseInfo, setRowChange }) => {
     };
 
     return (
-        <Fragment>
+        <div>
             <Button
                 size="large"
                 variant="contained"
@@ -609,7 +609,7 @@ const InputTodo = ({ courseInfo, setRowChange }) => {
                     </div>
                 </div>
             </Dialog>
-        </Fragment>
+        </div>
     );
 };
 
