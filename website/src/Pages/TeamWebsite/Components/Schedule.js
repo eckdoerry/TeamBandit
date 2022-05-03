@@ -20,7 +20,7 @@ const Schedule = ({teamInfo}) => {
             {teamInfo[0].schedule_image != null ? (
                             <img
                                 src={
-                                    "/uploads/images/schedules/" +
+                                    process.env.PUBLIC_URL + "/uploads/images/schedules/" +
                                     teamInfo[0].schedule_image
                                 }
                                 alt=""

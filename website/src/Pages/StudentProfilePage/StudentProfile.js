@@ -67,7 +67,7 @@ const ProfilePage = () => {
                         <img
                             src={
                                 studentInfo.profilepic_filepath != null
-                                    ? "/uploads/images/profilePictures/" +
+                                    ? process.env.PUBLIC_URL + "/uploads/images/profilePictures/" +
                                       studentInfo.profilepic_filepath
                                     : null
                             }
@@ -105,7 +105,7 @@ const ProfilePage = () => {
                         <embed
                             src={
                                 studentInfo.student_resume != null
-                                    ? "/uploads/images/studentResumes/" +
+                                    ? process.env.PUBLIC_URL + "/uploads/images/studentResumes/" +
                                       studentInfo.student_resume
                                     : null
                             }

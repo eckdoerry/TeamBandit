@@ -105,7 +105,7 @@ const AssignmentPage = () => {
         return(
             <div style={{ width: "100%" }}>
                 <object
-                    data={`/uploads/documents/assignmentInstructions/${assignmentInfo.assignment_filename}`}
+                    data={`${process.env.PUBLIC_URL}/uploads/documents/assignmentInstructions/${assignmentInfo.assignment_filename}`}
                     type="application/pdf"
                     style={{ minHeight: "100vh", width: "100%" }}
                 >

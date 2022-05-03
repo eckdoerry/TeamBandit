@@ -42,7 +42,7 @@ const SubmissionPage = () => {
         return(
             <div style={{ width: "100%" }}>
                 <object
-                    data={`/uploads/documents/studentAssignments/${submissionInfo.submission}`}
+                    data={`${process.env.PUBLIC_URL}/uploads/documents/studentAssignments/${submissionInfo.submission}`}
                     type="application/pdf"
                     style={{ minHeight: "100vh", width: "100%" }}
                 >

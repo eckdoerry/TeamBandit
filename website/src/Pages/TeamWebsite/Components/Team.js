@@ -65,7 +65,7 @@ const Team = ({ teamMembers, projectInfo }) => {
                             <img
                                 src={
                                     teamMember.profilepic_filepath != null
-                                        ? "/uploads/images/profilePictures/" +
+                                        ? process.env.PUBLIC_URL + "/uploads/images/profilePictures/" +
                                             teamMember.profilepic_filepath
                                         : null
                                 }
@@ -152,7 +152,7 @@ const Team = ({ teamMembers, projectInfo }) => {
                                 <img
                                     src={
                                         projectInfo[0].client_logo
-                                            ? "/uploads/images/clientLogos/" +
+                                            ? process.env.PUBLIC_URL + "/uploads/images/clientLogos/" +
                                                 projectInfo[0].client_logo
                                             : null
                                     }

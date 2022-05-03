@@ -66,7 +66,7 @@ const Clients = () => {
                         <img
                             src={
                                 params.row.client_logo
-                                    ? "/uploads/images/clientLogos/" +
+                                    ? process.env.PUBLIC_URL + "/uploads/images/clientLogos/" +
                                       params.row.client_logo
                                     : null
                             }

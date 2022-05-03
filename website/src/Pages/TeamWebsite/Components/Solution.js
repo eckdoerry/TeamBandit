@@ -65,7 +65,7 @@ const Solution = ({teamInfo}) => {
                 {teamInfo[0].architecture_image != null ? (
                             <img
                                 src={
-                                    "/uploads/images/architecture/" +
+                                    process.env.PUBLIC_URL + "/uploads/images/architecture/" +
                                     teamInfo[0].architecture_image
                                 }
                                 alt=""
@@ -137,7 +137,7 @@ const Solution = ({teamInfo}) => {
                         {teamInfo[0].tech_img_1 != null ? (
                             <img
                                 src={
-                                    "/uploads/images/techLogos/" +
+                                    process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
                                     teamInfo[0].tech_img_1
                                 }
                                 alt=""
@@ -171,7 +171,7 @@ const Solution = ({teamInfo}) => {
                         {teamInfo[0].tech_img_2 != null ? (
                             <img
                                 src={
-                                    "/uploads/images/techLogos/" +
+                                    process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
                                     teamInfo[0].tech_img_2
                                 }
                                 alt=""
@@ -204,7 +204,7 @@ const Solution = ({teamInfo}) => {
                         {teamInfo[0].tech_img_3 != null ? (
                             <img
                                 src={
-                                    "/uploads/images/techLogos/" +
+                                    process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
                                     teamInfo[0].tech_img_3
                                 }
                                 alt=""
@@ -237,7 +237,7 @@ const Solution = ({teamInfo}) => {
                         {teamInfo[0].tech_img_4 != null ? (
                             <img
                                 src={
-                                    "/uploads/images/techLogos/" +
+                                    process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
                                     teamInfo[0].tech_img_4
                                 }
                                 alt=""

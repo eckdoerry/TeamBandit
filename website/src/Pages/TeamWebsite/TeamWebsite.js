@@ -216,7 +216,7 @@ const TeamPage = () => {
                             <img
                                 src={
                                     teamInfo[0].team_logo
-                                        ? "/uploads/images/teamLogos/" +
+                                        ? process.env.PUBLIC_URL + "/uploads/images/teamLogos/" +
                                           teamInfo[0].team_logo
                                         : null
                                 }

@@ -128,7 +128,7 @@ const ProjectPage = () => {
             <div style={{ display: "flex" }}>
                 <div style={{ width: "100%" }}>
                     <object
-                        data={`/uploads/documents/projectOverviews/${projectInfo.projectoverview_filename}`}
+                        data={`${process.env.PUBLIC_URL}/uploads/documents/projectOverviews/${projectInfo.projectoverview_filename}`}
                         type="application/pdf"
                         style={{ minHeight: "100vh", width: "100%" }}
                     >

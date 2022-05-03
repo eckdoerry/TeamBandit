@@ -22,7 +22,7 @@ const Overview = ({ colorValue, teamInfo, fontColor }) => {
             <div
                 style={{
                     backgroundColor: `${colorValue}`,
-                    backgroundImage: `url(/uploads/images/teamBackdrop/${teamInfo[0].team_backdrop})`,
+                    backgroundImage: `url(${process.env.PUBLIC_URL}/uploads/images/teamBackdrop/${teamInfo[0].team_backdrop})`,
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "100% 100%",
                     height: "100%",
@@ -46,7 +46,7 @@ const Overview = ({ colorValue, teamInfo, fontColor }) => {
                         style={{ border: "2px solid white" }}
                         src={
                             teamInfo[0].team_logo
-                                && "/uploads/images/teamLogos/" +
+                                && process.env.PUBLIC_URL + "/uploads/images/teamLogos/" +
                                     teamInfo[0].team_logo
                         }
                         alt="Logo"

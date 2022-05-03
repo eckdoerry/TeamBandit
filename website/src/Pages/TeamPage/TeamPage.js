@@ -103,7 +103,7 @@ const TeamPage = () => {
                         <img
                             src={
                                 params.row.team_logo
-                                    ? "/uploads/images/teamLogos/" +
+                                    ? process.env.PUBLIC_URL + "/uploads/images/teamLogos/" +
                                       params.row.team_logo
                                     : null
                             }
@@ -253,7 +253,7 @@ const TeamPage = () => {
                             <img
                                 src={
                                     sponsorLogo
-                                        ? "/uploads/images/clientLogos/" +
+                                        ? process.env.PUBLIC_URL + "/uploads/images/clientLogos/" +
                                           sponsorLogo
                                         : null
                                 }

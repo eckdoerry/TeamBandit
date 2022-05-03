@@ -4,8 +4,6 @@ import {HashRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 
 // Page Components
 import Landing from "./Pages/LandingPage/LandingPage";
-import Info from "./Pages/InfoPage/Info";
-import PrivacyPolicy from "./Pages/PrivacyPolicyPage/PrivacyPolicy";
 import TeamBandit from "./Pages/TeamBandit/TeamBandit";
 import TeamWebsite from "./Pages/TeamWebsite/TeamWebsite";
 import TeamPage from "./Pages/TeamPage/TeamPage";
@@ -65,8 +63,6 @@ function App() {
             <Router>
                 <Routes>
                     <Route exact path = "/" element={!isAuthenticated ? <Landing setAuth={setAuth} setUser={setUser}/> : <Navigate to="/team-bandit"/>}/>
-                    <Route exact path = "/info" element={<Info/>}/>
-                    <Route exact path = "/privacy-policy" element={<PrivacyPolicy/>}/>
                     <Route exact path = "/team-bandit" element={isAuthenticated ? <TeamBandit userIdentifier={userIdentifier} setAuth={setAuth}/> : <Navigate to="/"/>}/>
                     <Route exact path = "/team-website/:teamName" element={<TeamWebsite/>}/>
                     <Route exact path = "/team-page/:courseName" element={<TeamPage/>}/>

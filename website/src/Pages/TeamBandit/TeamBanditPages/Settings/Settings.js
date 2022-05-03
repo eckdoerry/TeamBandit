@@ -912,7 +912,7 @@ const Settings = ({
                         {teamLogoFilename != null ? (
                             <img
                                 src={
-                                    "/uploads/images/teamLogos/" +
+                                    process.env.PUBLIC_URL + "/uploads/images/teamLogos/" +
                                     teamLogoFilename
                                 }
                                 alt=""
@@ -982,7 +982,7 @@ const Settings = ({
                         {archImageFilename != null ? (
                             <img
                                 src={
-                                    "/uploads/images/architecture/" +
+                                    process.env.PUBLIC_URL + "/uploads/images/architecture/" +
                                     archImageFilename
                                 }
                                 alt=""
@@ -1045,7 +1045,7 @@ const Settings = ({
                         {techImg1Filename != null ? (
                             <img
                                 src={
-                                    "/uploads/images/techLogos/" +
+                                    process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
                                     techImg1Filename
                                 }
                                 alt=""
@@ -1078,7 +1078,7 @@ const Settings = ({
                         {techImg2Filename != null ? (
                             <img
                                 src={
-                                    "/uploads/images/techLogos/" +
+                                    process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
                                     techImg2Filename
                                 }
                                 alt=""
@@ -1111,7 +1111,7 @@ const Settings = ({
                         {techImg3Filename != null ? (
                             <img
                                 src={
-                                    "/uploads/images/techLogos/" +
+                                    process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
                                     techImg3Filename
                                 }
                                 alt=""
@@ -1144,7 +1144,7 @@ const Settings = ({
                         {techImg4Filename != null ? (
                             <img
                                 src={
-                                    "/uploads/images/techLogos/" +
+                                    process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
                                     techImg4Filename
                                 }
                                 alt=""
@@ -1171,7 +1171,7 @@ const Settings = ({
                         {schedImgFilename != null ? (
                             <img
                                 src={
-                                    "/uploads/images/schedules/" +
+                                    process.env.PUBLIC_URL + "/uploads/images/schedules/" +
                                     schedImgFilename
                                 }
                                 alt=""
@@ -1186,7 +1186,7 @@ const Settings = ({
                         {teamBackdropFilename != null ? (
                             <img
                                 src={
-                                    "/uploads/images/teamBackdrop/" +
+                                    process.env.PUBLIC_URL + "/uploads/images/teamBackdrop/" +
                                     teamBackdropFilename
                                 }
                                 alt=""
