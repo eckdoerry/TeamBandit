@@ -239,6 +239,17 @@ router.get("/organizers/:placeholder_id", async(req, res) => {
     }
 });
 
+// Get all organizers
+router.get("/org-profile/:placeholder_id", async(req, res) => {
+    try {
+        const organizer = await pool.query("SELECT organizer_id, organizer_fname, organizer_lname FROM organizers WHERE organizer_id= $1", [req.params['placeholder_id']]);
+
+        res.json(organizer.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
 // Get all courses created by an organizer
 router.get("/organizer-courses/:organizer_id", async(req, res) => {
     try {

@@ -70,7 +70,7 @@ const ProfilePage = () => {
                                 studentInfo.profilepic_filepath != null
                                     ? process.env.PUBLIC_URL + "/uploads/images/profilePictures/" +
                                       studentInfo.profilepic_filepath
-                                    : null
+                                    : process.env.PUBLIC_URL + "/uploads/images/profilePictures/default.jpg"
                             }
                             alt=""
                             width="500px"

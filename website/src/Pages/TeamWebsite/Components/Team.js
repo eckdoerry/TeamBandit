@@ -67,7 +67,7 @@ const Team = ({ teamMembers, projectInfo }) => {
                                     teamMember.profilepic_filepath != null
                                         ? process.env.PUBLIC_URL + "/uploads/images/profilePictures/" +
                                             teamMember.profilepic_filepath
-                                        : null
+                                        : process.env.PUBLIC_URL + "/uploads/images/profilePictures/default.jpg"
                                 }
                                 alt=""
                                 width="350px"

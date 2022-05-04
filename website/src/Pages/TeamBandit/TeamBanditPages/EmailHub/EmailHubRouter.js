@@ -7,7 +7,7 @@ import ChatLog from "./Components/ChatLog";
 import Inbox from "./Components/Inbox";
 
 
-const EmailHubRouter = ({changeInboxView, selectedChain, inboxView, setSelectedChainHandler, setInboxViewHandler}) => {
+const EmailHubRouter = ({highlight, setHighlight, changeInboxView, selectedChain, inboxView, setSelectedChainHandler, setInboxViewHandler}) => {
 
     // JSX
     if (inboxView === true) {
@@ -16,6 +16,8 @@ const EmailHubRouter = ({changeInboxView, selectedChain, inboxView, setSelectedC
                 <ContactList
                     onChangeChain={setSelectedChainHandler}
                     onChangeInboxView={setInboxViewHandler}
+                    highlight={highlight}
+                    setHighlight={setHighlight}
                 />
                 <Inbox  />
             </div>
@@ -26,8 +28,10 @@ const EmailHubRouter = ({changeInboxView, selectedChain, inboxView, setSelectedC
                 <ContactList
                     onChangeChain={setSelectedChainHandler}
                     onChangeInboxView={setInboxViewHandler}
+                    highlight={highlight}
+                    setHighlight={setHighlight}
                 />
-                <ChatLog selectedChain={selectedChain} changeInboxView={changeInboxView}/>
+                <ChatLog selectedChain={selectedChain} changeInboxView={changeInboxView} setHighlight={setHighlight}/>
             </div>
         );
     }

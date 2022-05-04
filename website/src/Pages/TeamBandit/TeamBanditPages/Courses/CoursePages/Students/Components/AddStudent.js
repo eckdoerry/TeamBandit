@@ -283,6 +283,9 @@ const InputTodo = ({ courseInfo, setRowChange }) => {
                         }}
                         onClick={handleInfoToggle}
                     />
+                    <Typography>File should be of the type .csv</Typography>
+                <Typography>Headers need to include firstName, lastName, studentID,
+                                email, and gpa</Typography>
                     <Dialog
                         fullWidth={true}
                         maxWidth={"md"}

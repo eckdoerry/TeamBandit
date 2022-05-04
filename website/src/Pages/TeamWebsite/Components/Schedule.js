@@ -26,7 +26,14 @@ const Schedule = ({teamInfo}) => {
                                 alt=""
                                 style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
                             />
-                        ) : null}
+                        )  : <img
+                                src={
+                                    process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
+                                    
+                                }
+                                alt=""
+                                style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
+                            />}
                 
             </Paper>
             <div

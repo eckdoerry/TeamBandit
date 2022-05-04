@@ -188,9 +188,11 @@ export default function TeamAssignment({ courseInfo, setRoute, userIdentifier })
 
     const toggleStudent = async (student_id, project_id) => {
         try {
+            const course_id = courseInfo.course_id;
             const body = {
                 student_id,
                 project_id,
+                course_id,
             };
             const myHeaders = new Headers();
 

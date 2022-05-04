@@ -23,7 +23,7 @@ const style = {
     p: 4,
 };
 
-const ProjectPreferences = ({userInfo, rows, setRowChange}) => {
+const ProjectPreferences = ({userInfo, rows, setRowChange, courseInfo}) => {
     const [pref1, setPref1] = useState(userInfo.student_projectpref1);
     const [pref2, setPref2] = useState(userInfo.student_projectpref2);
     const [pref3, setPref3] = useState(userInfo.student_projectpref3);
@@ -86,6 +86,7 @@ const ProjectPreferences = ({userInfo, rows, setRowChange}) => {
 
             toast.success("Preferences were successfully updated!");
             setPrefUpdate(true);
+            setRowChange(true);
         } catch (error) {
             console.error(error.message);
             toast.error("Failed to update project!");
@@ -95,10 +96,11 @@ const ProjectPreferences = ({userInfo, rows, setRowChange}) => {
     useEffect(() => {
         setPrefUpdate(false);
     }, [prefUpdate]);
-
+    
     return(
         <div>
-            <Button style={{textAlign: 'center', whiteSpace: 'nowrap'}} sx={{ m: 3 }} variant="outlined" color="secondary" startIcon={<AssignmentIcon />} onClick = {handleOpen}> Project Preferences </Button>
+            {courseInfo.project_prefs ? null : <Button style={{textAlign: 'center', whiteSpace: 'nowrap'}} sx={{ m: 3 }} variant="outlined" color="secondary" startIcon={<AssignmentIcon />} onClick = {handleOpen}> Project Preferences </Button>}
+            
             <Modal
                 open={open}
                 onClose={handleClose}

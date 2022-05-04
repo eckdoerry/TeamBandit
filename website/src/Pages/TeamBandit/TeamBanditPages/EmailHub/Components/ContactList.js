@@ -55,18 +55,35 @@ const ContactList = (props) => {
                     style={{height: '68px', backgroundColor: '#003466', color: 'white', textAlign: 'center', fontSize: 'large', fontWeight: '500', alignItems: 'center', justifyContent: 'center'}}
                     onClick={() => {
                         changeInboxViewhandler(true);
+                        props.setHighlight(-1)
                     }}
                 >
                     <Typography variant="h5" style={{justifyContent: 'center', alignItems: 'center'}}> Inbox </Typography>
                 </Item>
             {contactList.map((message, index) => (
-                
+                index == props.highlight ? 
+                <Item
+                    className={styles.contact_card}
+                    style={{backgroundColor: '#FAC01A'}}
+                    key={index}
+                    onClick={() => {
+                        changeChainHandler(message.client_email);
+                        changeInboxViewhandler(false);
+                        props.setHighlight(index);
+                    }}
+                >
+                    <p className={styles.contact_name}>{message.client_fname} {message.client_lname}</p>
+                    <p className={styles.contact_email}>
+                        {message.client_email}
+                    </p>
+                </Item> :
                 <Item
                     className={styles.contact_card}
                     key={index}
                     onClick={() => {
                         changeChainHandler(message.client_email);
                         changeInboxViewhandler(false);
+                        props.setHighlight(index);
                     }}
                 >
                     <p className={styles.contact_name}>{message.client_fname} {message.client_lname}</p>

@@ -39,7 +39,7 @@ const Profile = ({userInfo, setUserChange}) => {
             <div>
                     <Typography style={{ padding: "5px" }} variant="h6">
                         {" "}
-                        Your Team Title{" "}
+                        Your Team Role{" "}
                     </Typography>
                     <Typography style={{ padding: "5px" }} variant="h8">
                         {userInfo.student_bio}
