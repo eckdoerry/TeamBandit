@@ -99,7 +99,7 @@ const ProjectPreferences = ({userInfo, rows, setRowChange, courseInfo}) => {
     
     return(
         <div>
-            {courseInfo.project_prefs ? null : <Button style={{textAlign: 'center', whiteSpace: 'nowrap'}} sx={{ m: 3 }} variant="outlined" color="secondary" startIcon={<AssignmentIcon />} onClick = {handleOpen}> Project Preferences </Button>}
+            {courseInfo.project_prefs && <Button style={{textAlign: 'center', whiteSpace: 'nowrap'}} sx={{ m: 3 }} variant="outlined" color="secondary" startIcon={<AssignmentIcon />} onClick = {handleOpen}> Project Preferences </Button>}
             
             <Modal
                 open={open}

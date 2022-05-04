@@ -111,9 +111,9 @@ router.get("/team-total/:course_id", authorization, async(req, res) => {
 router.put("/courses/:id", authorization, async(req, res) => {
     try {
         const {id} = req.params;
-        const {title, semester, isPublic, teamSize, courseColor, projectPrefs} = req.body;
+        const {title, semester, year, isPublic, teamSize, courseColor, projectPrefs} = req.body;
 
-        const updateTodo = await pool.query("UPDATE courses SET course_public = $1, course_title = $4, course_semester = $5, team_size = $6, course_color = $7, project_prefs = $8 WHERE course_id = $2 AND organizer_id = $3 RETURNING *", [isPublic, id, req.user, title, semester, teamSize, courseColor, projectPrefs]);
+        const updateTodo = await pool.query("UPDATE courses SET course_public = $1, course_title = $4, course_semester = $5, course_year = $6, team_size = $7, course_color = $8, project_prefs = $9 WHERE course_id = $2 AND organizer_id = $3 RETURNING *", [isPublic, id, req.user, title, semester, year, teamSize, courseColor, projectPrefs]);
 
         if(updateTodo.rows.length === 0)
         {

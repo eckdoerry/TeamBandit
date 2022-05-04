@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
  * @param setUser Passed along to determine which type of user
  * is signed in
  */
-const SignInForm = ({setAuth, setUser, changeLocation}) => {
+const SignInForm = ({setAuth, setUser, changeLocation, userType}) => {
 
     const [inputs, setInputs] = useState({
         email: "",
@@ -31,7 +31,16 @@ const SignInForm = ({setAuth, setUser, changeLocation}) => {
 
             const body = { email, password };
 
-            const response = await fetch(`${process.env.REACT_APP_BASEURL}/auth/login`, { method: "POST", headers : {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+            var response;
+
+            if (userType === "organizer") 
+            {
+                response = await fetch(`${process.env.REACT_APP_BASEURL}/auth/organizerLogin`, { method: "POST", headers : {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+            }
+            else 
+            {
+                response = await fetch(`${process.env.REACT_APP_BASEURL}/auth/studentLogin`, { method: "POST", headers : {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+            }
 
             const parseRes = await response.json();
 

@@ -110,7 +110,7 @@ const LandingPage = ({ setAuth, setUser }) => {
  */
 function DisplayCorrectForm({ location, setAuth, setUser, changeLocation }) {
     if (location === "sign-in") {
-        return <SignInForm setAuth={setAuth} setUser={setUser} changeLocation={changeLocation}/>;
+        return <SignInForm setAuth={setAuth} setUser={setUser} changeLocation={changeLocation} userType="student"/>;
     } else if (location === "sign-up") {
         return <SignUpForm setAuth={setAuth} setUser={setUser} changeLocation={changeLocation}/>;
     } else {

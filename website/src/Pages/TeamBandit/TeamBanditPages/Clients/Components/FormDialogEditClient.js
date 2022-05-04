@@ -119,7 +119,7 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
             myHeaders.append("token", localStorage.token);
     
             const body = { clientFName, clientLName, clientEmail, clientOrganization, clientPhoneNumber, clientNotes, clientLocation };
-            const response = await fetch(`${process.env.REACT_APP_BASEURL}/clients/editclient`, {
+            const response = await fetch(`${process.env.REACT_APP_BASEURL}/clients/editclient/${client.client_id}`, {
                 method: "PUT",
                 headers: myHeaders,
                 body: JSON.stringify(body)

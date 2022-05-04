@@ -333,7 +333,7 @@ export default function MainPage({ userIdentifier, setAuth }) {
                                             ? userInfo.student_fname
                                             : userInfo.mentor_fname
                                     }
-                                    src={
+                                    src={userInfo.profilepic_filepath &&
                                         process.env.PUBLIC_URL + "/uploads/images/profilePictures/" +
                                         userInfo.profilepic_filepath
                                     }

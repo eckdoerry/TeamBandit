@@ -70,8 +70,8 @@ const Team = ({ teamMembers, projectInfo }) => {
                                         : process.env.PUBLIC_URL + "/uploads/images/profilePictures/default.jpg"
                                 }
                                 alt=""
-                                width="350px"
-                                height="350px"
+                                width="250px"
+                                height="250px"
                             />
                             <CardContent>
                                 <Typography
