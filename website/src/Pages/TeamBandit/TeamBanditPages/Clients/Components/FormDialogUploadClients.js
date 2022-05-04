@@ -127,6 +127,9 @@ const FormDialogUploadClients = ({ setClientsChange, setOpen, open }) => {
                     }}
                     onClick={handleInfoToggle}
                 />
+                <Typography>File should be of the type .csv</Typography>
+                <Typography>Headers need to include firstName, lastName, email, organization, phone,
+                            notes, and location</Typography>
                 <Dialog
                     fullWidth={true}
                     maxWidth={"md"}

@@ -16,9 +16,14 @@ const Item = styled(Paper)(({ theme }) => ({
     lineHeight: "10px",
 }));
 
-const ChatLog = ({ selectedChain, changeInboxView }) => {
+const ChatLog = ({ selectedChain, changeInboxView, setHighlight }) => {
     // JS
     const [messageChain, setMessageChain] = useState([]);
+
+    const options = () => {
+        changeInboxView()
+        setHighlight()
+    }
 
     const getEmails = async () => {
         try {
@@ -50,7 +55,7 @@ const ChatLog = ({ selectedChain, changeInboxView }) => {
                     variant="contained"
                     color="primary"
                     startIcon={<ArrowBackIcon />}
-                    onClick={changeInboxView}
+                    onClick={options}
                 >
                     {" "}
                     Back to Inbox{" "}

@@ -146,9 +146,34 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
         return false;
     };
 
+    const displayProjectPref = (project_id) => {
+        if(project_id == userInfo.student_projectpref1)
+        {
+            return "First Choice"
+        }
+        else if(project_id == userInfo.student_projectpref2)
+        {
+            return "Second Choice"
+        }
+        else if(project_id == userInfo.student_projectpref3)
+        {
+            return "Third Choice"
+        }
+        else if(project_id == userInfo.student_projectpref4)
+        {
+            return "Fourth Choice"
+        }
+        else if(project_id == userInfo.student_projectpref5)
+        {
+            return "Fifth Choice"
+        }
+        return "";
+    }
+
     const projectPage = (params) => {
         return (
             <div>
+            {userIdentifier == "student" ? displayProjectPref(params.row.project_id) : null}
                 <Typography variant="h5">{params.row.project_name}</Typography>
                 <div style={{ display: "flex" }}>
                     <Link
@@ -424,6 +449,7 @@ const Projects = ({ courseInfo, userInfo, userIdentifier, setRoute }) => {
                     <GridToolbarFilterButton sx={{ m: 1 }} />
                     <GridToolbarExport sx={{ m: 1 }} />
                     <ProjectPreferences
+                        courseInfo={courseInfo}
                         userInfo={userInfo}
                         rows={rows}
                         setRowChange={setRowChange}

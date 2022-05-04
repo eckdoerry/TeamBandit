@@ -5,6 +5,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
+import { CallMissedOutgoing } from "@mui/icons-material";
 
 const Solution = ({teamInfo}) => {
     return (
@@ -71,7 +72,14 @@ const Solution = ({teamInfo}) => {
                                 alt=""
                                 style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
                             />
-                        ) : null}
+                        ) : <img
+                                src={
+                                    process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
+                                    
+                                }
+                                alt=""
+                                style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
+                            />}
                 </Paper>
             </div>
             <div
@@ -143,7 +151,14 @@ const Solution = ({teamInfo}) => {
                                 alt=""
                                 style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
                             />
-                        ) : null}
+                        ) : <img
+                                src={
+                                    process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
+                                    
+                                }
+                                alt=""
+                                style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
+                            />}
                             
                         </Paper>
                         <Typography
@@ -177,7 +192,14 @@ const Solution = ({teamInfo}) => {
                                 alt=""
                                 style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
                             />
-                        ) : null}
+                        ) : <img
+                                src={
+                                    process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
+                                    
+                                }
+                                alt=""
+                                style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
+                            />}
                         </Paper>
                         <Typography
                             component="h1"
@@ -210,7 +232,14 @@ const Solution = ({teamInfo}) => {
                                 alt=""
                                 style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
                             />
-                        ) : null}
+                        )  : <img
+                                src={
+                                    process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
+                                    
+                                }
+                                alt=""
+                                style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
+                            />}
                         </Paper>
                         <Typography
                             component="h1"
@@ -243,7 +272,14 @@ const Solution = ({teamInfo}) => {
                                 alt=""
                                 style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
                             />
-                        ) : null}
+                        )  : <img
+                                src={
+                                    process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
+                                    
+                                }
+                                alt=""
+                                style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
+                            />}
                         </Paper>
                         <Typography
                             component="h1"

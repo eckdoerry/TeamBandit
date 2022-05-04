@@ -31,6 +31,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
     const [title, setTitle] = useState(courseInfo.course_title);
     const [semester, setSemester] = useState(courseInfo.course_semester);
     const [isPublic, setIsPublic] = useState(courseInfo.course_public);
+    const [projectPrefs, setProjectPrefs] = useState(courseInfo.project_prefs);
     const [teamSize, setTeamSize] = useState(courseInfo.team_size);
     const [courseColor, setCourseColor] = useState();
 
@@ -59,6 +60,10 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
         setIsPublic(event.target.checked);
     };
 
+    const updateProjectPrefs = (event) => {
+        setProjectPrefs(event.target.checked);
+    }
+
     const handleClickOpen = () => {
         setOpen(true);
         setTitle(courseInfo.course_title);
@@ -66,6 +71,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
         setIsPublic(courseInfo.course_public);
         setTeamSize(courseInfo.team_size);
         setCourseColor(courseInfo.course_color);
+        setProjectPrefs(courseInfo.project_prefs);
     };
 
     const handleClose = () => {
@@ -75,6 +81,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
         setIsPublic(courseInfo.course_public);
         setTeamSize(courseInfo.team_size);
         setCourseColor(courseInfo.course_color);
+        setProjectPrefs(courseInfo.project_prefs);
     };
 
     const updateCourse = async (e) => {
@@ -95,6 +102,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                     isPublic,
                     teamSize,
                     courseColor,
+                    projectPrefs
                 };
                 await fetch(
                     `${process.env.REACT_APP_BASEURL}/courses/courses/${courseInfo.course_id}`,
@@ -600,6 +608,60 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                         </Typography>
                     </div>
 
+                    
+                    <div
+                        style={{
+                            backgroundColor: "white",
+                            marginLeft: "-1.01%",
+
+                            padding: "10px 10px 10px 10px",
+                        }}
+                    >
+                        <Typography
+                            variant="h5"
+                            display="inline"
+                            marginRight="1%"
+                        >
+                            Course Sign Up Code
+                        </Typography>
+
+                        <Typography
+                            display="inline"
+                            style={{
+                                marginInlineStart: "20px",
+                                fontSize: "150%",
+                            }}
+                        >
+                            {courseInfo.course_sign_up_id}
+                        </Typography>
+                    </div>
+                    <div
+                        style={{
+                            backgroundColor: "white",
+                            marginLeft: "-1.01%",
+
+                            padding: "10px 10px 10px 10px",
+                        }}
+                    >
+                        <Typography
+                            variant="h5"
+                            display="inline"
+                            marginRight="1%"
+                        >
+                            Project Preferences
+                        </Typography>
+
+                        <Typography
+                            display="inline"
+                            style={{
+                                marginInlineStart: "35px",
+                                fontSize: "150%",
+                            }}
+                        >
+                            {courseInfo.project_prefs ? "Not Allowed" : "Allowed"}
+                        </Typography>
+                    </div>
+
                     <br></br>
                 </div>
 
@@ -703,6 +765,25 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 {isPublic
                                     ? "| Course is now visible to anyone."
                                     : "| Course is now set to private and can only be viewed by the organizer through the application."}{" "}
+                            </Typography>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            <Typography style={{ paddingRight: "6px" }}>
+                                Project Preferences
+                            </Typography>
+                            <Switch
+                                checked={projectPrefs}
+                                onChange={updateProjectPrefs}
+                            />
+                            <Typography style={{ paddingRight: "6px" }}>
+                            {projectPrefs
+                                    ? "Not Allowed"
+                                    : "Allowed"}{" "}
+                            </Typography>
+                            <Typography style={{ paddingRight: "6px" }}>
+                                {projectPrefs
+                                    ? "| Students Cannot Edit Project Preferences"
+                                    : "| Students Can Edit Project Preferences"}{" "}
                             </Typography>
                         </div>
                     </DialogContent>

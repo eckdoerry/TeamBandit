@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import Divider from '@mui/material/Divider';
 
 // Color Picker for React
 import ColorPicker from "material-ui-color-picker";
@@ -1249,6 +1250,7 @@ const Settings = ({
                                 >
                                     UPDATE TEAM NAME
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1273,6 +1275,7 @@ const Settings = ({
                                         Upload
                                     </Button>
                                 </form>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1291,6 +1294,7 @@ const Settings = ({
                                     value={fontValue}
                                     onChange={(color) => updateFont(color)}
                                 />
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1309,7 +1313,7 @@ const Settings = ({
                                     value={colorValue}
                                     onChange={(color) => updateColor(color)}
                                 />
-                                
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1338,6 +1342,7 @@ const Settings = ({
                                 >
                                     UPDATE PROJECT ABSTRACT
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1366,6 +1371,7 @@ const Settings = ({
                                 >
                                     UPDATE PROBLEM DESCRIPTION
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1394,6 +1400,7 @@ const Settings = ({
                                 >
                                     UPDATE SOLUTION DESCRIPTION
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1418,6 +1425,7 @@ const Settings = ({
                                         Upload
                                     </Button>
                                 </form>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1446,6 +1454,7 @@ const Settings = ({
                                 >
                                     UPDATE Requirements Overview
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1474,6 +1483,7 @@ const Settings = ({
                                 >
                                     UPDATE Key REquirements
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1502,6 +1512,7 @@ const Settings = ({
                                 >
                                     UPDATE Technology Summary
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1530,6 +1541,7 @@ const Settings = ({
                                 >
                                     UPDATE Technology 1
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1558,6 +1570,7 @@ const Settings = ({
                                 >
                                     UPDATE Technology 1 Description
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1582,6 +1595,7 @@ const Settings = ({
                                         Upload
                                     </Button>
                                 </form>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1610,6 +1624,7 @@ const Settings = ({
                                 >
                                     UPDATE Tech 2
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1638,6 +1653,7 @@ const Settings = ({
                                 >
                                     UPDATE Technology 2 Description
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1661,8 +1677,9 @@ const Settings = ({
                                     >
                                         Upload
                                     </Button>
+                                    
                                 </form>
-                                
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1691,6 +1708,7 @@ const Settings = ({
                                 >
                                     UPDATE Technology 3
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1719,6 +1737,7 @@ const Settings = ({
                                 >
                                     UPDATE Technology 3 Description
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1743,6 +1762,7 @@ const Settings = ({
                                         Upload
                                     </Button>
                                 </form>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1771,6 +1791,7 @@ const Settings = ({
                                 >
                                     UPDATE Technology 4 
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1799,6 +1820,7 @@ const Settings = ({
                                 >
                                     UPDATE Technology 4 Description
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1823,6 +1845,7 @@ const Settings = ({
                                         Upload
                                     </Button>
                                 </form>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1851,6 +1874,7 @@ const Settings = ({
                                 >
                                     UPDATE Development Strategy
                                 </Button>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"
@@ -1875,6 +1899,7 @@ const Settings = ({
                                         Upload
                                     </Button>
                                 </form>
+                                <Divider/>
                                 <Typography
                                     style={{ padding: "5px" }}
                                     variant="h6"

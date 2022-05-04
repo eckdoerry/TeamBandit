@@ -49,6 +49,51 @@ router.post("/register", validInfo, async (req, res) =>{
     }
 });
 
+
+/**
+ * User Registering Route, only used by students
+ */
+router.post("/registerStudent", validInfo, async (req, res) =>{
+    try {
+
+        //1. destructure the req.body (fname, lname, email, password)     
+        const { course, email, password } = req.body;
+
+        //2. check if user exist (if user is not in the student database throw error)
+        const user = await pool.query("SELECT * FROM students LEFT JOIN studentcourses ON students.student_id = studentcourses.student_id LEFT JOIN courses ON studentcourses.course_id = courses.course_id WHERE students.student_email = $1 AND courses.course_sign_up_id = $2", [email, course]);
+
+        // User already exists
+        if(user.rows.length === 0)
+        {
+            // 401 unauthenticated, 403 unauthorized
+            return res.status(401).json("Student does not exist for current course");
+        }
+
+        //3. Check if user already has account (boolean in students table)
+        if(user.rows[0].account_created === true)
+        {
+            return res.status(401).json("Account has already been created");
+        }
+        
+        //4. Bcrypt the user password
+        const saltRounds = 10;
+        const salt = await bcrypt.genSalt(saltRounds);
+        const bcryptPassword = await bcrypt.hash(password, salt);
+
+        //5. enter the new user inside our database
+        const newUser = await pool.query("UPDATE students SET student_password = $1, account_created =$2 WHERE student_email = $3 RETURNING *", [bcryptPassword, true, email]);
+        
+        //6. generating our jwt token
+        const token = jwtGenerator(newUser.rows[0].student_id);
+
+        res.json({ token });
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
 /**
  * Login Route, used by Organizers, Mentors, and Students
  * 
@@ -91,10 +136,7 @@ router.post("/login", validInfo, async (req, res)=>{
             validPassword = await bcrypt.compare( password, student.rows[0].student_password );
             if(!validPassword)
             {
-                if( student.rows[0].student_password != password )
-                {
-                    return res.status(401).json("Password or Email is incorrect");
-                }
+                return res.status(401).json("Password or Email is incorrect");
             }
         }
         else if( mentor.rows.length !== 0 )

@@ -24,6 +24,15 @@
     overflow: auto;
 }
 
+.appFormNew {
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    background-color: #002454;
+    padding: 30vh 40px;
+    overflow: auto;
+}
+
 @media (max-width: 600px) {
     .appForm {
         width: 100%;
@@ -120,9 +129,17 @@
     transform: translateY(-50%);
 }
 
-.searchBar{
+.imageNew{
     width: 50%;
     position: absolute;
+    left: 10%;
+    top: 35%;
+    transform: translateY(-75%);
+}
+
+.searchBar{
+    width: 65%;
+    position: absolute;
     top: 50%;
-    left: 15%;
+    left: 2.5%;
 }

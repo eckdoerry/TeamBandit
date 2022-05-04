@@ -11,6 +11,9 @@ import ProjectPages from "./Pages/ProjectPages/ProjectPages";
 import AssignmentPage from "./Pages/AssignmentPage/AssignmentPage";
 import SubmissionPage from "./Pages/SubmissionPage/SubmissionPage";
 import StudentProfilePage from "./Pages/StudentProfilePage/StudentProfile";
+import OrganizerProfilePage from "./Pages/OrganizerProfilePage/OrganizerProfile";
+import OrganizerLanding from "./Pages/LandingPage/OrganizerLanding";
+import StudentLanding from "./Pages/LandingPage/StudentLanding";
 
 // Toastify gets configured on the first page, this is the notification thing
 import { toast } from 'react-toastify';
@@ -70,6 +73,10 @@ function App() {
                     <Route exact path = "/assignment/:assignmentName" element={<AssignmentPage/>}/>
                     <Route exact path = "/submission/:submissionName" element={<SubmissionPage/>}/>
                     <Route exact path = "/student-profile/:studentId" element={<StudentProfilePage/>}/>
+                    <Route exact path = "/organizer-profile/:organizerId" element={<OrganizerProfilePage/>}/>
+                    <Route exact path = "/organizer-sign-in" element={!isAuthenticated ? <OrganizerLanding setAuth={setAuth} setUser={setUser}/> : <Navigate to="/team-bandit"/>}/>
+                    <Route exact path = "/student-sign-in" element={!isAuthenticated ? <StudentLanding setAuth={setAuth} setUser={setUser}/> : <Navigate to="/team-bandit"/>}/>
+                    <Route exact path = "/organizer-profile" element={<StudentProfilePage/>}/>
                 </Routes>
             </Router>
         </Fragment>

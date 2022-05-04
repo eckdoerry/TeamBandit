@@ -42,7 +42,7 @@ const Overview = ({ colorValue, teamInfo, fontColor }) => {
                         marginLeft: "30%"
                     }}
                 >
-                    <img
+                {teamInfo[0].team_logo != null ?  <img
                         style={{ border: "2px solid white" }}
                         src={
                             teamInfo[0].team_logo
@@ -52,7 +52,15 @@ const Overview = ({ colorValue, teamInfo, fontColor }) => {
                         alt="Logo"
                         width="250px"
                         height="250px"
-                    />
+                    />  : <img
+                                src={
+                                    process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
+                                    
+                                }
+                                alt=""
+                                style={{padding: '10px', height:'250px', width: '250px', objectFit: 'cover'}}
+                            />}
+                
                     <div style={{ paddingLeft: "20px" }}>
                     <Typography
                             style={{

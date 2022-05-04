@@ -162,9 +162,9 @@ router.post("/projects", authorization, async(req,res) =>{
 // Adds a new Project to the Projects table
 router.post("/toggleStudent", authorization, async(req,res) =>{
     try{
-        const { student_id, project_id } = req.body;
+        const { student_id, project_id, course_id } = req.body;
 
-        const alreadyInProject = await pool.query("SELECT * FROM studentteambridgetable WHERE student_id = $1", [student_id]);
+        const alreadyInProject = await pool.query("SELECT * FROM studentteambridgetable WHERE student_id = $1 AND course_id = $2", [student_id, course_id]);
 
         // Student is not associated with project
         if(alreadyInProject.rows.length === 0)
@@ -173,7 +173,7 @@ router.post("/toggleStudent", authorization, async(req,res) =>{
             const teamId = await pool.query("SELECT * FROM teams WHERE project_id = $1", [project_id]);
 
             // Inserts into the student into the bridge table
-            const associateStudent = await pool.query("INSERT INTO studentteambridgetable (team_id, student_id, project_id) VALUES ($1, $2, $3) RETURNING *", [teamId.rows[0].team_id, student_id, project_id]);
+            const associateStudent = await pool.query("INSERT INTO studentteambridgetable (team_id, student_id, project_id, course_id) VALUES ($1, $2, $3, $4) RETURNING *", [teamId.rows[0].team_id, student_id, project_id, course_id]);
             await pool.query("UPDATE students SET assigned = true WHERE student_id = $1", [ student_id]);
 
             res.json(associateStudent.rows[0]);
@@ -183,7 +183,7 @@ router.post("/toggleStudent", authorization, async(req,res) =>{
             if( alreadyInProject.rows[0].project_id === project_id)
             {
                 // DELETE STUDENT FROM BRIDGE TABLE //
-                await pool.query("DELETE FROM studentteambridgetable WHERE student_id = $1", [student_id]);
+                await pool.query("DELETE FROM studentteambridgetable WHERE student_id = $1 AND course_id = $2", [student_id, course_id]);
 
                 await pool.query("UPDATE students SET assigned = false WHERE student_id = $1", [ student_id]);
 
@@ -192,13 +192,13 @@ router.post("/toggleStudent", authorization, async(req,res) =>{
             else
             {
                 // DELETE STUDENT FROM BRIDGE TABLE //
-                await pool.query("DELETE FROM studentteambridgetable WHERE student_id = $1", [student_id]);
+                await pool.query("DELETE FROM studentteambridgetable WHERE student_id = $1 AND course_id = $2", [student_id, course_id]);
 
                 // Get team id
                 const teamId = await pool.query("SELECT * FROM teams WHERE project_id = $1", [project_id]);
 
                 // Add student with new project //
-                await pool.query("INSERT INTO studentteambridgetable (team_id, student_id, project_id) VALUES ($1, $2, $3) RETURNING *", [teamId.rows[0].team_id, student_id, project_id]);
+                await pool.query("INSERT INTO studentteambridgetable (team_id, student_id, project_id, course_id) VALUES ($1, $2, $3, $4) RETURNING *", [teamId.rows[0].team_id, student_id, project_id, course_id]);
 
                 res.json("DELETED");
             }
@@ -214,7 +214,7 @@ router.post("/toggleStudent", authorization, async(req,res) =>{
 router.get("/getAssignedStudents/:course_id", authorization, async(req, res) => {
     try {
         const {course_id} = req.params;
-        const student = await pool.query("SELECT studentteambridgetable.project_id, studentteambridgetable.team_id, studentteambridgetable.student_id, students.student_fname, students.student_lname, students.student_email FROM studentteambridgetable LEFT JOIN students ON studentteambridgetable.student_id = students.student_id");
+        const student = await pool.query("SELECT studentteambridgetable.project_id, studentteambridgetable.team_id, studentteambridgetable.student_id, students.student_fname, students.student_lname, students.student_email FROM studentteambridgetable LEFT JOIN students ON studentteambridgetable.student_id = students.student_id WHERE studentTeamBridgeTable.course_id = $1", [course_id]);
 
         res.json(student.rows);
     } catch (error) {

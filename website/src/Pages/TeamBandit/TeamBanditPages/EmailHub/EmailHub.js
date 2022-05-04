@@ -11,6 +11,7 @@ const EmailHub = () => {
     // JS
     const [selectedChain, setSelectedChain] = useState("");
     const [inboxView, setInboxView] = useState(true);
+    const [highlight, setHighlight] = useState(-1);
 
     const setSelectedChainHandler = (newEmail) => {
         setSelectedChain(newEmail);
@@ -25,7 +26,7 @@ const EmailHub = () => {
     };
 
     return (
-        <EmailHubRouter changeInboxView={changeInboxView} selectedChain={selectedChain} inboxView={inboxView} setSelectedChainHandler={setSelectedChainHandler} setInboxViewHandler={setInboxViewHandler}/>
+        <EmailHubRouter highlight={highlight} setHighlight={setHighlight} changeInboxView={changeInboxView} selectedChain={selectedChain} inboxView={inboxView} setSelectedChainHandler={setSelectedChainHandler} setInboxViewHandler={setInboxViewHandler}/>
     );
 };
 
