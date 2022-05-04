@@ -30,6 +30,7 @@ import { borderColor, color, fontWeight } from "@mui/system";
 const Settings = ({ courseInfo, setCoursesChange }) => {
     const [title, setTitle] = useState(courseInfo.course_title);
     const [semester, setSemester] = useState(courseInfo.course_semester);
+    const [year, setYear] = useState(courseInfo.course_year);
     const [isPublic, setIsPublic] = useState(courseInfo.course_public);
     const [projectPrefs, setProjectPrefs] = useState(courseInfo.project_prefs);
     const [teamSize, setTeamSize] = useState(courseInfo.team_size);
@@ -68,6 +69,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
         setOpen(true);
         setTitle(courseInfo.course_title);
         setSemester(courseInfo.course_semester);
+        setYear(courseInfo.course_year);
         setIsPublic(courseInfo.course_public);
         setTeamSize(courseInfo.team_size);
         setCourseColor(courseInfo.course_color);
@@ -78,6 +80,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
         setOpen(false);
         setTitle(courseInfo.course_title);
         setSemester(courseInfo.course_semester);
+        setYear(courseInfo.course_year);
         setIsPublic(courseInfo.course_public);
         setTeamSize(courseInfo.team_size);
         setCourseColor(courseInfo.course_color);
@@ -99,6 +102,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                 const body = {
                     title,
                     semester,
+                    year,
                     isPublic,
                     teamSize,
                     courseColor,
@@ -533,19 +537,21 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                             display="inline"
                             marginRight="1%"
                         >
-                            Semester
+                            Semester and Year
                         </Typography>
 
                         <Typography
                             display="inline"
                             style={{
-                                marginInlineStart: "150px",
+                                marginInlineStart: "50px",
                                 fontSize: "150%",
                             }}
                         >
-                            {courseInfo.course_semester}
+                            {courseInfo.course_semester + " " + courseInfo.course_year}
                         </Typography>
                     </div>
+
+                    <br></br>
 
                     <br></br>
                     <br></br>
@@ -658,7 +664,7 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                                 fontSize: "150%",
                             }}
                         >
-                            {courseInfo.project_prefs ? "Not Allowed" : "Allowed"}
+                            {courseInfo.project_prefs ? "Allowed" : "Not Allowed"}
                         </Typography>
                     </div>
 
@@ -721,6 +727,16 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                             onChange={(e) => setSemester(e.target.value)}
                         />
 
+                        <TextField
+                            margin="dense"
+                            label="Course Year"
+                            type="text"
+                            fullWidth
+                            variant="standard"
+                            value={year}
+                            onChange={(e) => setYear(e.target.value)}
+                        />
+
                         <Typography>Standard Team Size</Typography>
                         <div
                             style={{
@@ -777,13 +793,13 @@ const Settings = ({ courseInfo, setCoursesChange }) => {
                             />
                             <Typography style={{ paddingRight: "6px" }}>
                             {projectPrefs
-                                    ? "Not Allowed"
-                                    : "Allowed"}{" "}
+                                    ? "Allowed"
+                                    : "Not Allowed"}{" "}
                             </Typography>
                             <Typography style={{ paddingRight: "6px" }}>
                                 {projectPrefs
-                                    ? "| Students Cannot Edit Project Preferences"
-                                    : "| Students Can Edit Project Preferences"}{" "}
+                                    ? "| Students Can Edit Project Preferences"
+                                    : "| Students Cannot Edit Project Preferences"}{" "}
                             </Typography>
                         </div>
                     </DialogContent>

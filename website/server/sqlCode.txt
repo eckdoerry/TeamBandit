@@ -298,3 +298,25 @@ ALTER TABLE schedule ADD COLUMN schedule_week_message VARCHAR(500);
 ALTER TABLE students ADD COLUMN student_last_sign_in VARCHAR(255);
 ALTER TABLE courses ALTER COLUMN course_public SET DEFAULT False;
 ALTER TABLE courses ADD COLUMN course_year INT;
+
+-- 5/3/22: Max Final Additons
+ALTER TABLE courses ADD COLUMN course_sign_up_id VARCHAR(255) DEFAULT uuid_generate_v4();
+ALTER TABLE students ADD COLUMN account_created BOOLEAN DEFAULT false;
+ALTER TABLE teams ALTER team_description SET DEFAULT 'This is a Team Description';
+ALTER TABLE teams ALTER problem_description SET DEFAULT 'This is a Problem Description';
+ALTER TABLE teams ALTER solution_description  SET DEFAULT 'This is a Solution Description';
+ALTER TABLE teams ALTER requirements_overview SET DEFAULT 'This is the Requirements Overview';
+ALTER TABLE teams ALTER key_requirements SET DEFAULT 'Key Requirement #1, Key Requirement #2, Key Requirement # 3';
+ALTER TABLE teams ALTER technology_summary SET DEFAULT 'This is a Technology Summary';
+ALTER TABLE teams ALTER tech_name_1 SET DEFAULT 'Tech # 1';
+ALTER TABLE teams ALTER tech_name_2 SET DEFAULT 'Tech # 2';
+ALTER TABLE teams ALTER tech_name_3 SET DEFAULT 'Tech # 3';
+ALTER TABLE teams ALTER tech_name_4 SET DEFAULT 'Tech # 4';
+ALTER TABLE teams ALTER tech_description_1 SET DEFAULT 'First technology description';
+ALTER TABLE teams ALTER tech_description_2 SET DEFAULT 'Second technology description';
+ALTER TABLE teams ALTER tech_description_3 SET DEFAULT 'Third technology description';
+ALTER TABLE teams ALTER tech_description_4 SET DEFAULT 'Fourth technology description';
+ALTER TABLE teams ALTER development_strategy SET DEFAULT 'This is the development strategy';
+ALTER TABLE courses ADD COLUMN project_prefs BOOLEAN DEFAULT false;
+ALTER TABLE studentTeamBridgeTable ADD COLUMN course_id SERIAL;
+ALTER TABLE studentTeamBridgeTable ADD FOREIGN KEY (course_id) REFERENCES courses(course_id);

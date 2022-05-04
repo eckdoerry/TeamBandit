@@ -105,13 +105,15 @@ const AssignmentPage = () => {
     if (assignmentInfo !== null) {
         return(
             <div style={{ width: "100%" }}>
-                <object
-                    data={`${process.env.PUBLIC_URL}/uploads/documents/assignmentInstructions/${assignmentInfo.assignment_filename}`}
-                    type="application/pdf"
-                    style={{ minHeight: "100vh", width: "100%" }}
-                >
-                    You are unable to view this document
-                </object>
+                {assignmentInfo.assignment_filename &&
+                    <object
+                        data={`${process.env.PUBLIC_URL}/uploads/documents/assignmentInstructions/${assignmentInfo.assignment_filename}`}
+                        type="application/pdf"
+                        style={{ minHeight: "100vh", width: "100%" }}
+                    >
+                        You are unable to view this document
+                    </object>
+                }
             </div>
         );
     }

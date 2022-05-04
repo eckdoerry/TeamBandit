@@ -101,7 +101,7 @@ router.post("/registerStudent", validInfo, async (req, res) =>{
  * do not have emails in more then one table. If they do, it might throw errors as the
  * wrong comparisons might happen. 
  */
-router.post("/login", validInfo, async (req, res)=>{
+router.post("/organizerLogin", validInfo, async (req, res)=>{
 
     // Variables for use primarily in checks and returns
     var token = "";
@@ -115,18 +115,78 @@ router.post("/login", validInfo, async (req, res)=>{
 
         // 2. check if user email exists in Organizers, Mentors, or Students(if not then we throw error)
         const user = await pool.query("SELECT * FROM organizers WHERE organizer_email = $1", [email]);
-        const student = await pool.query("SELECT * FROM students WHERE student_email = $1", [email]);
         const mentor = await pool.query("SELECT * FROM mentors WHERE mentor_email = $1", [email]);
 
         // user is not in the system
         if(user.rows.length === 0) 
         {
-            if(student.rows.length === 0)
+            if(mentor.rows.length === 0)
             {
-                if(mentor.rows.length === 0)
+                return res.status(401).json("Password or Email is incorrect");
+            }
+        }
+
+        // 3. Check first if password is bcrypted and is correct 
+        if( mentor.rows.length !== 0 )
+        {
+            validPassword = await bcrypt.compare(password, mentor.rows[0].mentor_password);
+            if( mentor.rows[0].mentor_password != password )
                 {
                     return res.status(401).json("Password or Email is incorrect");
                 }
+        }
+        else if( user.rows.length !== 0 )
+        {
+            validPassword = await bcrypt.compare( password, user.rows[0].organizer_pass );
+
+            if( !validPassword )
+            {
+                return res.status(401).json("Password or Email is incorrect");
+            }
+        }
+
+
+        // Generate JWT Token and User based off of successful login
+        if(mentor.rows.length !== 0)
+        {
+            token = jwtGenerator(mentor.rows[0].mentor_id);
+            identifier = "mentor";
+        }
+        else 
+        {
+            token = jwtGenerator(user.rows[0].organizer_id);
+            identifier = "organizer";
+        }
+        
+        res.json({ token_value : token, user_identifier: identifier });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+router.post("/studentLogin", validInfo, async (req, res)=>{
+
+    // Variables for use primarily in checks and returns
+    var token = "";
+    var identifier = "";
+    var validPassword = "";
+
+    try {
+
+        // 1. destructure the req.body
+        const { email, password } = req.body;
+
+        // 2. check if user email exists in Organizers, Mentors, or Students(if not then we throw error)
+        const student = await pool.query("SELECT * FROM students WHERE student_email = $1", [email]);
+        const mentor = await pool.query("SELECT * FROM mentors WHERE mentor_email = $1", [email]);
+
+        // user is not in the system
+        if(student.rows.length === 0)
+        {
+            if(mentor.rows.length === 0)
+            {
+                return res.status(401).json("Password or Email is incorrect");
             }
         }
 
@@ -147,15 +207,6 @@ router.post("/login", validInfo, async (req, res)=>{
                     return res.status(401).json("Password or Email is incorrect");
                 }
         }
-        else if( user.rows.length !== 0 )
-        {
-            validPassword = await bcrypt.compare( password, user.rows[0].organizer_pass );
-
-            if( !validPassword )
-            {
-                return res.status(401).json("Password or Email is incorrect");
-            }
-        }
 
 
         // Generate JWT Token and User based off of successful login
@@ -170,11 +221,6 @@ router.post("/login", validInfo, async (req, res)=>{
         {
             token = jwtGenerator(mentor.rows[0].mentor_id);
             identifier = "mentor";
-        }
-        else 
-        {
-            token = jwtGenerator(user.rows[0].organizer_id);
-            identifier = "organizer";
         }
         
         res.json({ token_value : token, user_identifier: identifier });

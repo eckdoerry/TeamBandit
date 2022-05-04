@@ -13,6 +13,8 @@ const SearchBar = () => {
     const [organizerData, setOrganizerData] = useState([]);
     const [query, setQuery] = useState("");
 
+    var noResults = false;
+
     const getOrganizerData = async () => {
         try {
             const response = await fetch(
@@ -28,9 +30,16 @@ const SearchBar = () => {
 
     useEffect(() => {
         getOrganizerData();
+
+        // Was getting unmounted component warning in console
+        // when refreshing the page with a valid JWT
+            // this fixes it
+        return () => {
+            setOrganizerData([]);
+            setQuery("");
+          };
     }, []);
 
-    console.log(organizerData)
     return (
         <div className={styles.searchBar} >
             <Paper
@@ -52,6 +61,7 @@ const SearchBar = () => {
                 <IconButton
                     sx={{ p: "10px" }}
                     aria-label="search"
+                    disabled
                 >
                     <SearchIcon />
                 </IconButton>
@@ -67,60 +77,62 @@ const SearchBar = () => {
                     width: '100%',
                 }}
             >
-            {organizerData
-                .filter((result) => {
-                    var organizer_full_name =
-                        result.organizer_fname + " " + result.organizer_lname;
-                    if (query === "") {
-                        return false;
-                    } else if (
-                        organizer_full_name
-                            .trim()
-                            .replace(" ", "")
-                            .toLowerCase()
-                            .includes(
-                                query.toLowerCase().trim().replace(" ", "")
-                            )
-                    ) {
+                {organizerData
+                    .filter((result) => {
+                        var organizer_full_name =
+                            result.organizer_fname + " " + result.organizer_lname;
+                        if (query === "") {
+                            return false;
+                        } else if (
+                            organizer_full_name
+                                .trim()
+                                .replace(" ", "")
+                                .toLowerCase()
+                                .includes(
+                                    query.toLowerCase().trim().replace(" ", "")
+                                )
+                        ) {
+                            return true;
+                        } else if (
+                            result.organizer_fname
+                                .toLowerCase()
+                                .includes(
+                                    query.toLowerCase().trim().replace(" ", "")
+                                )
+                        ) {
+                            return true;
+                        } else if (
+                            result.organizer_lname
+                                .toLowerCase()
+                                .includes(
+                                    query.toLowerCase().trim().replace(" ", "")
+                                )
+                        ) {
+                            return true;
+                        }
+                        noResults = true;
                         return true;
-                    } else if (
-                        result.organizer_fname
-                            .toLowerCase()
-                            .includes(
-                                query.toLowerCase().trim().replace(" ", "")
-                            )
-                    ) {
-                        return true;
-                    } else if (
-                        result.organizer_lname
-                            .toLowerCase()
-                            .includes(
-                                query.toLowerCase().trim().replace(" ", "")
-                            )
-                    ) {
-                        return true;
-                    }
-                    return false;
-                })
-                
-                .map((result, index) => (
-                    <div key={index} style={{borderBottom: '1px solid #d3d3d3', paddingTop: '10px'}}>
-                    <Link
-                    style={{textDecoration: 'none'}}
-                        target="_blank"
-                        to={`/organizer-profile/${result.organizer_id}`}
-                    >
-                        {" "}
-                        <Typography gutterBottom variant="h6">
-                        {result.organizer_fname +
-                                " " +
-                                result.organizer_lname}
-                        </Typography>
-                    </Link>
-                    
-                        
-                    </div>
-                ))}
+                    }).map((result, index) => (
+                        <div key={index} style={{borderBottom: '1px solid #d3d3d3', paddingTop: '10px'}}>
+                        {
+                            noResults ? <Typography gutterBottom variant="h6">
+                                No Results
+                            </Typography>
+                        :
+                            <Link
+                            style={{textDecoration: 'none'}}
+                                target="_blank"
+                                to={`/organizer-profile/${result.organizer_id}`}
+                            >
+                                {" "}
+                                <Typography gutterBottom variant="h6">
+                                {result.organizer_fname +
+                                        " " +
+                                        result.organizer_lname}
+                                </Typography>
+                            </Link>}
+                        </div>
+                    ))}
                 </Paper>
         </div>
     );

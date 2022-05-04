@@ -31,14 +31,13 @@ const SubmittedAssignmentsDownload = ({assignment}) => {
     const downloadAndRemoveZip = async () => {
         // Entire path is returned
         const zipPath = await downloadAssignmentSubmissions();
-
         // Creating the actual download action here
         const link = document.createElement("a");
         // Regex gets filename and extension only
         link.download = `${zipPath.split(/.*[/|\\]/)[1]}`;
-        link.href = zipPath;
+        link.href = process.env.PUBLIC_URL + zipPath;
         link.click();
-        setTimeout(() => removeDownloadedZip(zipPath.split(/.*[/|\\]/)[1]), 5000);
+        setTimeout(() => removeDownloadedZip(zipPath.split(/.*[/|\\]/)[1]), 10000);
     }
 
     return (
