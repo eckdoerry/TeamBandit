@@ -82,6 +82,8 @@ router.post("/registerStudent", validInfo, async (req, res) =>{
 
         //5. enter the new user inside our database
         const newUser = await pool.query("UPDATE students SET student_password = $1, account_created =$2 WHERE student_email = $3 RETURNING *", [bcryptPassword, true, email]);
+        var date = new Date(Date.now())
+        await pool.query("UPDATE students SET student_last_sign_in = $1 WHERE student_id = $2", [date.toLocaleString().replace(",", " at"), newUser.rows[0].student_id]);
         
         //6. generating our jwt token
         const token = jwtGenerator(newUser.rows[0].student_id);

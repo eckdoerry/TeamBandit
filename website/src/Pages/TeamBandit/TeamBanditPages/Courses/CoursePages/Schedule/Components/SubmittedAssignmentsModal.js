@@ -3,8 +3,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import SubmittedAssignmentsDownload from './SubmittedAssignmentsDownload';
 import { Link } from "react-router-dom";
+
+import SubmittedAssignmentsDownload from './SubmittedAssignmentsDownload';
 
 const style = {
     position: 'absolute',
@@ -26,6 +27,8 @@ const SubmittedAssignmentsModal = ({assignment, courseInfo}) => {
     const [open, setOpen] = useState(false);
     const [total_students, setTotalStudents] = useState(0);
     const [total_teams, setTotalTeams] = useState(0);
+
+    const [disabled, setDisabled] = useState(false);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -90,6 +93,10 @@ const SubmittedAssignmentsModal = ({assignment, courseInfo}) => {
         getTotalTeams();
     }, []);
 
+    useEffect(() => {
+        setTimeout(() => setDisabled(false), 30000);
+    }, [setDisabled]);
+
     return (
         <div>
             <Button sx={{ m: 1 }}
@@ -142,7 +149,7 @@ const SubmittedAssignmentsModal = ({assignment, courseInfo}) => {
                             <p>
                                 Download All Above Submissions
                             </p>
-                            <SubmittedAssignmentsDownload assignment={assignment}/>
+                            <SubmittedAssignmentsDownload assignment={assignment} disabled={disabled} setDisabled={setDisabled}/>
                         </div>
                     }
                 </Box>

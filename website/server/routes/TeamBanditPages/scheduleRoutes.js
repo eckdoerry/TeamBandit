@@ -95,11 +95,11 @@ router.post("/createZip/:assignment_id", authorization, async(req, res) => {
         const pdfs = zip.folder("submissions");
         for (var i = 0; i < assignments.rows.length; i++)
         {
-            pdfs.file(assignments.rows[i].submission, fs.readFileSync("../../public/uploads/documents/studentAssignments/" + assignments.rows[i].submission), {base64: true});
+            pdfs.file(assignments.rows[i].submission, fs.readFileSync("../../" + process.env.PRODUCTION_MODE + "/uploads/documents/studentAssignments/" + assignments.rows[i].submission), {base64: true});
         }
         
         const content = await zip.generateAsync({type: "nodebuffer"});
-        fs.writeFileSync(`../../public/downloads/tempZipFiles/assignment_${assignment_id}_submissions.zip`, content);
+        fs.writeFileSync(`../../${process.env.PRODUCTION_MODE}/downloads/tempZipFiles/assignment_${assignment_id}_submissions.zip`, content);
 
         res.json(`/downloads/tempZipFiles/assignment_${assignment_id}_submissions.zip`);
 
@@ -113,9 +113,9 @@ router.delete("/deleteZip/:filename", authorization, async(req, res) => {
     try {
         const {filename} = req.params;
 
-        if (fs.existsSync("../../public/downloads/tempZipFiles/" + filename))
+        if (fs.existsSync("../../" + process.env.PRODUCTION_MODE + "/downloads/tempZipFiles/" + filename))
         {
-            fs.unlinkSync("../../public/downloads/tempZipFiles/" + filename);
+            fs.unlinkSync("../../" + process.env.PRODUCTION_MODE + "/downloads/tempZipFiles/" + filename);
         }
 
         res.json("Complete");

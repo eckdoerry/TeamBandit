@@ -42,6 +42,7 @@ const SubmissionPage = () => {
     if (submissionInfo !== null && submissionInfo.submission !== null) {
         return(
             <div style={{ width: "100%" }}>
+            {submissionInfo.submission &&
                 <object
                     data={`${process.env.PUBLIC_URL}/uploads/documents/studentAssignments/${submissionInfo.submission}`}
                     type="application/pdf"
@@ -49,6 +50,7 @@ const SubmissionPage = () => {
                 >
                     You are unable to view this document
                 </object>
+            }
             </div>
         );
     }

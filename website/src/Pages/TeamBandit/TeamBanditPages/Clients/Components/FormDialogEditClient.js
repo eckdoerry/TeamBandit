@@ -205,7 +205,7 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
 
                 <TextField 
                 required
-                autofocus
+                autoFocus
                 sx={{ m: 2 }} 
                 variant="filled" 
                 id ="filled-password-input" 
@@ -285,7 +285,7 @@ const FormDialogEditClient = ({client, setClientsChange}) => {
                 value = {clientLocation}
                 onChange = {e => setClientLocation(e.target.value)}/>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                
+                    Client Logo
                 </Typography>
                     <form onSubmit={updateClientLogo} encType="multipart/form-data">
                         <input type="file" accept="images/*" name="clientLogo" onChange={onClientLogoChange}/>

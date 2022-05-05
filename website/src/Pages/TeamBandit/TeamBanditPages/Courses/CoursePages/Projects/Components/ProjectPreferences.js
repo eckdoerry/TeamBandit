@@ -30,7 +30,6 @@ const ProjectPreferences = ({userInfo, rows, setRowChange, courseInfo}) => {
     const [pref4, setPref4] = useState(userInfo.student_projectpref4);
     const [pref5, setPref5] = useState(userInfo.student_projectpref5);
     const [prefUpdate, setPrefUpdate] = useState(false);
-    
 
     const handleChange1 = (event) => {
         setPref1(event.target.value);

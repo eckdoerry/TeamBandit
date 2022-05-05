@@ -90,14 +90,7 @@ const AddAssignment = ({ courseInfo, rows, setRowChange }) => {
             formData.append("assignment_start_date", assignment_start_date);
             formData.append("assignment_due_date", assignment_due_date);
             formData.append("submission_type", submission_type);
-            if (submission_type === "Individual")
-            {
-                formData.append("allow_submissions_after_due", null);
-            }
-            else 
-            {
-                formData.append("allow_submissions_after_due", allow_submissions_after_due);
-            }
+            formData.append("allow_submissions_after_due", allow_submissions_after_due);
             formData.append("display_on_team_website", display_on_team_website);
             formData.append("course_id", courseInfo.course_id);
         

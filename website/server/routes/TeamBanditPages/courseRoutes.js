@@ -19,7 +19,7 @@ router.get("/", authorization, async(req, res) => {
         else if ( req.headers.type == "student")
         {
             const user = await pool.query(
-                "SELECT courses.course_id, courses.course_description, courses.course_color, courses.course_title, courses.project_prefs, courses.course_semester, courses.course_public FROM courses LEFT JOIN studentCourses ON studentCourses.course_id = courses.course_id WHERE studentCourses.student_id = $1 ORDER BY course_id ASC ",
+                "SELECT courses.course_id, courses.course_description, courses.course_color, courses.course_title, courses.project_prefs, courses.course_semester, courses.course_year, courses.course_public FROM courses LEFT JOIN studentCourses ON studentCourses.course_id = courses.course_id WHERE studentCourses.student_id = $1 ORDER BY course_id ASC ",
                 [req.user]
             );
             res.json(user.rows);

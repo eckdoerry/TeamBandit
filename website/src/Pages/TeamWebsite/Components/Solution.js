@@ -66,8 +66,9 @@ const Solution = ({teamInfo}) => {
                 {teamInfo[0].architecture_image != null ? (
                             <img
                                 src={
-                                    process.env.PUBLIC_URL + "/uploads/images/architecture/" +
                                     teamInfo[0].architecture_image
+                                        && process.env.PUBLIC_URL + "/uploads/images/architecture/" +
+                                           teamInfo[0].architecture_image
                                 }
                                 alt=""
                                 style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
@@ -75,6 +76,7 @@ const Solution = ({teamInfo}) => {
                         ) : <img
                                 src={
                                     process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
+                                        && process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
                                     
                                 }
                                 alt=""
@@ -145,8 +147,9 @@ const Solution = ({teamInfo}) => {
                         {teamInfo[0].tech_img_1 != null ? (
                             <img
                                 src={
-                                    process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
                                     teamInfo[0].tech_img_1
+                                        && process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
+                                           teamInfo[0].tech_img_1
                                 }
                                 alt=""
                                 style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
@@ -154,6 +157,7 @@ const Solution = ({teamInfo}) => {
                         ) : <img
                                 src={
                                     process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
+                                        && process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
                                     
                                 }
                                 alt=""
@@ -186,8 +190,9 @@ const Solution = ({teamInfo}) => {
                         {teamInfo[0].tech_img_2 != null ? (
                             <img
                                 src={
-                                    process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
                                     teamInfo[0].tech_img_2
+                                        && process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
+                                           teamInfo[0].tech_img_2
                                 }
                                 alt=""
                                 style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
@@ -195,6 +200,7 @@ const Solution = ({teamInfo}) => {
                         ) : <img
                                 src={
                                     process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
+                                        && process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
                                     
                                 }
                                 alt=""
@@ -226,8 +232,9 @@ const Solution = ({teamInfo}) => {
                         {teamInfo[0].tech_img_3 != null ? (
                             <img
                                 src={
-                                    process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
                                     teamInfo[0].tech_img_3
+                                        && process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
+                                           teamInfo[0].tech_img_3
                                 }
                                 alt=""
                                 style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
@@ -235,6 +242,7 @@ const Solution = ({teamInfo}) => {
                         )  : <img
                                 src={
                                     process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
+                                        && process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
                                     
                                 }
                                 alt=""
@@ -266,8 +274,9 @@ const Solution = ({teamInfo}) => {
                         {teamInfo[0].tech_img_4 != null ? (
                             <img
                                 src={
-                                    process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
                                     teamInfo[0].tech_img_4
+                                        && process.env.PUBLIC_URL + "/uploads/images/techLogos/" +
+                                           teamInfo[0].tech_img_4
                                 }
                                 alt=""
                                 style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
@@ -275,6 +284,7 @@ const Solution = ({teamInfo}) => {
                         )  : <img
                                 src={
                                     process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
+                                        && process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
                                     
                                 }
                                 alt=""

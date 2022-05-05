@@ -20,8 +20,9 @@ const Schedule = ({teamInfo}) => {
             {teamInfo[0].schedule_image != null ? (
                             <img
                                 src={
-                                    process.env.PUBLIC_URL + "/uploads/images/schedules/" +
                                     teamInfo[0].schedule_image
+                                        && process.env.PUBLIC_URL + "/uploads/images/schedules/" +
+                                           teamInfo[0].schedule_image
                                 }
                                 alt=""
                                 style={{padding: '10px', height:'100%', width: '100%', objectFit: 'cover'}}
@@ -29,6 +30,7 @@ const Schedule = ({teamInfo}) => {
                         )  : <img
                                 src={
                                     process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
+                                        && process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
                                     
                                 }
                                 alt=""

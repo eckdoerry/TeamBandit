@@ -65,7 +65,7 @@ router.post("/addAssignment", authorization, async(req, res) => {
             assignment_filename = "assignmentInstructions_" + req.user.toString() + "_" + uuid().toString() + "." + assignmentInstructions.mimetype.split("/")[1];
 
             //Use the mv() method to place the file in upload directory
-            assignmentInstructions.mv("../../public/uploads/documents/assignmentInstructions/" + assignment_filename);
+            assignmentInstructions.mv("../../" + process.env.PRODUCTION_MODE + "/uploads/documents/assignmentInstructions/" + assignment_filename);
         }
 
         const assignment = await pool.query(
@@ -113,9 +113,9 @@ router.delete("/deleteAssignment/:id", authorization, async(req, res) => {
         {
             deleteAllSubmissions.rows.forEach(row => {
                 // Removes old submission
-                if (fs.existsSync("../../public/uploads/documents/studentAssignments/" + row.submission))
+                if (fs.existsSync("../../" + process.env.PRODUCTION_MODE + "/uploads/documents/studentAssignments/" + row.submission))
                 {
-                    fs.unlinkSync("../../public/uploads/documents/studentAssignments/" + row.submission);
+                    fs.unlinkSync("../../" + process.env.PRODUCTION_MODE + "/uploads/documents/studentAssignments/" + row.submission);
                 }
             });
         }
@@ -129,9 +129,9 @@ router.delete("/deleteAssignment/:id", authorization, async(req, res) => {
         if (oldAssignmentFilename != null)
         {
             // Removes old assignment
-            if (fs.existsSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentFilename))
+            if (fs.existsSync("../../" + process.env.PRODUCTION_MODE + "/uploads/documents/assignmentInstructions/" + oldAssignmentFilename))
             {
-                fs.unlinkSync("../../public/uploads/documents/assignmentInstructions/" + oldAssignmentFilename);
+                fs.unlinkSync("../../" + process.env.PRODUCTION_MODE + "/uploads/documents/assignmentInstructions/" + oldAssignmentFilename);
             }
         }
 
@@ -157,7 +157,7 @@ router.post("/uploadStudentAssignment", authorization, async(req, res) => {
             student_assignment_filename = "studentAssignment_" + req.user.toString() + "_" + uuid().toString() + "." + student_assignment_upload.mimetype.split("/")[1];
 
             //Use the mv() method to place the file in upload directory
-            student_assignment_upload.mv("../../public/uploads/documents/studentAssignments/" + student_assignment_filename);
+            student_assignment_upload.mv("../../" + process.env.PRODUCTION_MODE + "/uploads/documents/studentAssignments/" + student_assignment_filename);
 
             if (oldStudentSubmissionPath.rows.length === 0)
             {
@@ -172,9 +172,9 @@ router.post("/uploadStudentAssignment", authorization, async(req, res) => {
                 );
 
                 // Removes old submission
-                if (fs.existsSync("../../public/uploads/documents/studentAssignments/" + oldStudentSubmissionPath.rows[0].submission))
+                if (fs.existsSync("../../" + process.env.PRODUCTION_MODE + "/uploads/documents/studentAssignments/" + oldStudentSubmissionPath.rows[0].submission))
                 {
-                    fs.unlinkSync("../../public/uploads/documents/studentAssignments/" + oldStudentSubmissionPath.rows[0].submission);
+                    fs.unlinkSync("../../" + process.env.PRODUCTION_MODE + "/uploads/documents/studentAssignments/" + oldStudentSubmissionPath.rows[0].submission);
                 }
             }
             res.json("Assignment was uploaded successfully!");
@@ -202,7 +202,7 @@ router.post("/uploadTeamAssignment", authorization, async(req, res) => {
             student_assignment_filename = "studentTeamAssignment_" + req.user.toString() + "_" + uuid().toString() + "." + student_assignment_upload.mimetype.split("/")[1];
 
             //Use the mv() method to place the file in upload directory
-            student_assignment_upload.mv("../../public/uploads/documents/studentAssignments/" + student_assignment_filename);
+            student_assignment_upload.mv("../../" + process.env.PRODUCTION_MODE + "/uploads/documents/studentAssignments/" + student_assignment_filename);
 
             if (oldTeamSubmissionPath.rows.length === 0)
             {
@@ -216,9 +216,9 @@ router.post("/uploadTeamAssignment", authorization, async(req, res) => {
                     "UPDATE assignmentbridgetable SET submission = $1, submission_time = $2 WHERE assignment_id = $3 AND team_id = $4", [student_assignment_filename, new Date(Date.now()).toLocaleString(), assignment_id, team_id]
                 );
                 // Removes old submission
-                if (fs.existsSync("../../public/uploads/documents/studentAssignments/" + oldTeamSubmissionPath.rows[0].submission))
+                if (fs.existsSync("../../" + process.env.PRODUCTION_MODE + "/uploads/documents/studentAssignments/" + oldTeamSubmissionPath.rows[0].submission))
                 {
-                    fs.unlinkSync("../../public/uploads/documents/studentAssignments/" + oldTeamSubmissionPath.rows[0].submission);
+                    fs.unlinkSync("../../" + process.env.PRODUCTION_MODE + "/uploads/documents/studentAssignments/" + oldTeamSubmissionPath.rows[0].submission);
                 }
             }
         }
