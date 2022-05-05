@@ -1,35 +1,65 @@
-import {React, useState, useEffect} from "react";
+import { React, useState, useEffect } from "react";
 
 //MUI Import
-import Button from '@mui/material/Button';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
+import Button from "@mui/material/Button";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     width: 700,
-    bgcolor: 'background.paper',
+    bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
 };
 
-const ProjectPreferences = ({userInfo, rows, setRowChange, courseInfo}) => {
+const ProjectPreferences = ({ userInfo, rows, setRowChange, courseInfo }) => {
     const [pref1, setPref1] = useState(userInfo.student_projectpref1);
     const [pref2, setPref2] = useState(userInfo.student_projectpref2);
     const [pref3, setPref3] = useState(userInfo.student_projectpref3);
     const [pref4, setPref4] = useState(userInfo.student_projectpref4);
     const [pref5, setPref5] = useState(userInfo.student_projectpref5);
     const [prefUpdate, setPrefUpdate] = useState(false);
+
+    const checkValue = (value, pref) => {
+        
+        if (value == pref1 || value == pref2 || value == pref3 || value == pref4 || value == pref5)
+        {
+            if ( pref == 1 && value == pref1 )
+            {
+                return false;
+            }
+            else if ( pref == 2 && value == pref2 )
+            {
+                return false;
+            }
+            else if ( pref == 3 && value == pref3 )
+            {
+                return false;
+            }
+            else if( pref == 4 && value == pref4 )
+            {
+                return false;
+            }
+            else if ( pref == 5 && value == pref5 )
+            {
+                return false;
+            }
+            return true;
+        }
+
+        return false;
+    };
 
     const handleChange1 = (event) => {
         setPref1(event.target.value);
@@ -59,15 +89,13 @@ const ProjectPreferences = ({userInfo, rows, setRowChange, courseInfo}) => {
     };
 
     const updatePreferences = async () => {
-        
         try {
-
             const body = {
                 pref1,
                 pref2,
                 pref3,
                 pref4,
-                pref5
+                pref5,
             };
             const myHeaders = new Headers();
 
@@ -95,11 +123,23 @@ const ProjectPreferences = ({userInfo, rows, setRowChange, courseInfo}) => {
     useEffect(() => {
         setPrefUpdate(false);
     }, [prefUpdate]);
-    
-    return(
+
+    return (
         <div>
-            {courseInfo.project_prefs && <Button style={{textAlign: 'center', whiteSpace: 'nowrap'}} sx={{ m: 3 }} variant="outlined" color="secondary" startIcon={<AssignmentIcon />} onClick = {handleOpen}> Project Preferences </Button>}
-            
+            {courseInfo.project_prefs && (
+                <Button
+                    style={{ textAlign: "center", whiteSpace: "nowrap" }}
+                    sx={{ m: 3 }}
+                    variant="outlined"
+                    color="secondary"
+                    startIcon={<AssignmentIcon />}
+                    onClick={handleOpen}
+                >
+                    {" "}
+                    Project Preferences{" "}
+                </Button>
+            )}
+
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -108,77 +148,143 @@ const ProjectPreferences = ({userInfo, rows, setRowChange, courseInfo}) => {
             >
                 <Box sx={style}>
                     <Box>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                        <Typography
+                            id="modal-modal-title"
+                            variant="h6"
+                            component="h2"
+                        >
                             Project Preferences
                         </Typography>
                     </Box>
-                
-                    <Typography variant="h7">Select Project Preference:</Typography>
-            <div>
-            
-                <InputLabel id="pref1"> First Choice </InputLabel>
-                <Select
-                    labelId="pref1"
-                    id = "preferenceSelect1"
-                    value = {pref1}
-                    fullWidth
-                    label ="Preference1"
-                    onChange={handleChange1}
-                >
-                    {rows.map( (project) => <MenuItem key = {project.project_id} value={project.project_id}> {project.project_name}</MenuItem>)}
-                </Select>
-                <InputLabel id="pref2"> Second Choice </InputLabel>
-                <Select
-                    labelId="pref2"
-                    id = "preferenceSelect2"
-                    value = {pref2}
-                    fullWidth
-                    label ="Preference2"
-                    onChange={handleChange2}
-                >
-                    {rows.map( (project) => <MenuItem key = {project.project_id} value={project.project_id}> {project.project_name}</MenuItem>)}
-                </Select>
-                <InputLabel id="pref3"> Third Choice </InputLabel>
-                <Select
-                    labelId="pref3"
-                    id = "preferenceSelect3"
-                    value = {pref3}
-                    fullWidth
-                    label ="Preference3"
-                    onChange={handleChange3}
-                >
-                    {rows.map( (project) => <MenuItem key = {project.project_id} value={project.project_id}> {project.project_name}</MenuItem>)}
-                </Select>
-                <InputLabel id="pref4"> Fourth Choice </InputLabel>
-                <Select
-                    labelId="pref4"
-                    id = "preferenceSelect4"
-                    value = {pref4}
-                    fullWidth
-                    label ="Preference4"
-                    onChange={handleChange4}
-                >
-                    {rows.map( (project) => <MenuItem key = {project.project_id} value={project.project_id}> {project.project_name}</MenuItem>)}
-                </Select>
-                <InputLabel id="pref5"> Fifth Choice </InputLabel>
-                <Select
-                    labelId="pref5"
-                    id = "preferenceSelect5"
-                    value = {pref5}
-                    fullWidth
-                    label ="Preference5"
-                    onChange={handleChange5}
-                >
-                    {rows.map( (project) => <MenuItem key = {project.project_id} value={project.project_id}> {project.project_name}</MenuItem>)}
-                </Select>
-            
-            </div>       
-                <Button sx={{ m: 2 }} variant="contained" color="warning" onClick = {(e) => (handleClose(), updatePreferences(e))}> Save </Button>
-                <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleClose}> Cancel </Button>
+
+                    <Typography variant="h7">
+                        Select Project Preference:
+                    </Typography>
+                    <div>
+                        <InputLabel id="pref1"> First Choice </InputLabel>
+                        <Select
+                            labelId="pref1"
+                            id="preferenceSelect1"
+                            value={pref1}
+                            fullWidth
+                            label="Preference1"
+                            onChange={handleChange1}
+                        >
+                            {rows.map((project) => (
+                                checkValue(project.project_id, 1) ? null :
+                                <MenuItem
+                                    key={project.project_id}
+                                    value={project.project_id}
+                                >
+                                    {" "}
+                                    {project.project_name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <InputLabel id="pref2"> Second Choice </InputLabel>
+                        <Select
+                            labelId="pref2"
+                            id="preferenceSelect2"
+                            value={pref2}
+                            fullWidth
+                            label="Preference2"
+                            onChange={handleChange2}
+                        >
+                            {rows.map((project) => (
+                                checkValue(project.project_id, 2) ? null :
+                                <MenuItem
+                                    key={project.project_id}
+                                    value={project.project_id}
+                                >
+                                    {" "}
+                                    {project.project_name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <InputLabel id="pref3"> Third Choice </InputLabel>
+                        <Select
+                            labelId="pref3"
+                            id="preferenceSelect3"
+                            value={pref3}
+                            fullWidth
+                            label="Preference3"
+                            onChange={handleChange3}
+                        >
+                            {rows.map((project) => (
+                                checkValue(project.project_id, 3) ? null :
+                                <MenuItem
+                                    key={project.project_id}
+                                    value={project.project_id}
+                                >
+                                    {" "}
+                                    {project.project_name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <InputLabel id="pref4"> Fourth Choice </InputLabel>
+                        <Select
+                            labelId="pref4"
+                            id="preferenceSelect4"
+                            value={pref4}
+                            fullWidth
+                            label="Preference4"
+                            onChange={handleChange4}
+                        >
+                            {rows.map((project) => (
+                                
+                                checkValue(project.project_id, 4) ?
+                                null : <MenuItem
+                                    key={project.project_id}
+                                    value={project.project_id}
+                                >
+                                    {" "}
+                                    {project.project_name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <InputLabel id="pref5"> Fifth Choice </InputLabel>
+                        <Select
+                            labelId="pref5"
+                            id="preferenceSelect5"
+                            value={pref5}
+                            fullWidth
+                            label="Preference5"
+                            onChange={handleChange5}
+                        >
+                            {rows.map((project) => (
+                                checkValue( project.project_id, 5 ) ? null :
+                                <MenuItem
+                                    key={project.project_id}
+                                    value={project.project_id}
+                                >
+                                    {" "}
+                                    {project.project_name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </div>
+                    <Button
+                        sx={{ m: 2 }}
+                        variant="contained"
+                        color="warning"
+                        onClick={(e) => (handleClose(), updatePreferences(e))}
+                    >
+                        {" "}
+                        Save{" "}
+                    </Button>
+                    <Button
+                        sx={{ m: 2 }}
+                        variant="contained"
+                        color="error"
+                        onClick={handleClose}
+                    >
+                        {" "}
+                        Cancel{" "}
+                    </Button>
                 </Box>
             </Modal>
         </div>
     );
-}
+};
 
 export default ProjectPreferences;

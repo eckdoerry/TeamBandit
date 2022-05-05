@@ -13,8 +13,6 @@ const SearchBar = () => {
     const [organizerData, setOrganizerData] = useState([]);
     const [query, setQuery] = useState("");
 
-    var noResults = false;
-
     const getOrganizerData = async () => {
         try {
             const response = await fetch(
@@ -110,15 +108,10 @@ const SearchBar = () => {
                         ) {
                             return true;
                         }
-                        noResults = true;
-                        return true;
+                        return false;
                     }).map((result, index) => (
                         <div key={index} style={{borderBottom: '1px solid #d3d3d3', paddingTop: '10px'}}>
-                        {
-                            noResults ? <Typography gutterBottom variant="h6">
-                                No Results
-                            </Typography>
-                        :
+                        
                             <Link
                             style={{textDecoration: 'none'}}
                                 target="_blank"
@@ -130,7 +123,7 @@ const SearchBar = () => {
                                         " " +
                                         result.organizer_lname}
                                 </Typography>
-                            </Link>}
+                            </Link>
                         </div>
                     ))}
                 </Paper>
