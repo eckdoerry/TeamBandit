@@ -128,6 +128,7 @@ const ProjectPage = () => {
         return (
             <div style={{ display: "flex" }}>
                 <div style={{ width: "100%" }}>
+                {projectInfo.projectoverview_filename &&
                     <object
                         data={`${process.env.PUBLIC_URL}/uploads/documents/projectOverviews/${projectInfo.projectoverview_filename}`}
                         type="application/pdf"
@@ -135,6 +136,7 @@ const ProjectPage = () => {
                     >
                         You are unable to view this document
                     </object>
+                }
                 </div>
             </div>
         );

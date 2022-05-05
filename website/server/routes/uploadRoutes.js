@@ -17,12 +17,12 @@ router.put("/organizerAvatar", authorization, async (req, res) => {
             // Removes old profile pic
             if (
                 fs.existsSync(
-                    "../../public/uploads/images/profilePictures/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/profilePictures/" +
                         oldProfilePicPath.rows[0].profilepic_filepath
                 )
             ) {
                 fs.unlinkSync(
-                    "../../public/uploads/images/profilePictures/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/profilePictures/" +
                         oldProfilePicPath.rows[0].profilepic_filepath
                 );
             }
@@ -40,7 +40,7 @@ router.put("/organizerAvatar", authorization, async (req, res) => {
 
             //Use the mv() method to place the file in upload directory
             avatar.mv(
-                "../../public/uploads/images/profilePictures/" + new_filename
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/profilePictures/" + new_filename
             );
 
             const updateProfilePic = await pool.query(
@@ -74,12 +74,12 @@ router.put("/studentAvatar", authorization, async (req, res) => {
             // Removes old profile pic
             if (
                 fs.existsSync(
-                    "../../public/uploads/images/profilePictures/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/profilePictures/" +
                         oldProfilePicPath.rows[0].profilepic_filepath
                 )
             ) {
                 fs.unlinkSync(
-                    "../../public/uploads/images/profilePictures/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/profilePictures/" +
                         oldProfilePicPath.rows[0].profilepic_filepath
                 );
             }
@@ -97,7 +97,7 @@ router.put("/studentAvatar", authorization, async (req, res) => {
 
             //Use the mv() method to place the file in upload directory
             avatar.mv(
-                "../../public/uploads/images/profilePictures/" + new_filename
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/profilePictures/" + new_filename
             );
 
             const updateProfilePic = await pool.query(
@@ -131,12 +131,12 @@ router.put("/studentResume", authorization, async (req, res) => {
             // Removes old profile pic
             if (
                 fs.existsSync(
-                    "../../public/uploads/images/studentResumes/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/studentResumes/" +
                         oldProfilePicPath.rows[0].student_resume
                 )
             ) {
                 fs.unlinkSync(
-                    "../../public/uploads/images/studentResumes/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/studentResumes/" +
                         oldProfilePicPath.rows[0].student_resume
                 );
             }
@@ -154,7 +154,7 @@ router.put("/studentResume", authorization, async (req, res) => {
 
             //Use the mv() method to place the file in upload directory
             avatar.mv(
-                "../../public/uploads/images/studentResumes/" + new_filename
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/studentResumes/" + new_filename
             );
 
             const updateProfilePic = await pool.query(
@@ -189,12 +189,12 @@ router.put("/projectOverview/:project_id", authorization, async (req, res) => {
             // Removes old profile pic
             if (
                 fs.existsSync(
-                    "../../public/uploads/documents/projectOverviews/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/documents/projectOverviews/" +
                         oldProjectOverviewPath.rows[0].projectoverview_filename
                 )
             ) {
                 fs.unlinkSync(
-                    "../../public/uploads/documents/projectOverviews/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/documents/projectOverviews/" +
                         oldProjectOverviewPath.rows[0].projectoverview_filename
                 );
             }
@@ -213,7 +213,7 @@ router.put("/projectOverview/:project_id", authorization, async (req, res) => {
 
             //Use the mv() method to place the file in upload directory
             projectOverview.mv(
-                "../../public/uploads/documents/projectOverviews/" +
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/documents/projectOverviews/" +
                     new_filename
             );
 
@@ -252,13 +252,13 @@ router.put(
                 // Removes old profile pic
                 if (
                     fs.existsSync(
-                        "../../public/uploads/documents/assignmentInstructions/" +
+                        "../../" + process.env.PRODUCTION_MODE + "/uploads/documents/assignmentInstructions/" +
                             oldAssignmentInstructionsPath.rows[0]
                                 .assignment_filename
                     )
                 ) {
                     fs.unlinkSync(
-                        "../../public/uploads/documents/assignmentInstructions/" +
+                        "../../" + process.env.PRODUCTION_MODE + "/uploads/documents/assignmentInstructions/" +
                             oldAssignmentInstructionsPath.rows[0]
                                 .assignment_filename
                     );
@@ -278,7 +278,7 @@ router.put(
 
                 //Use the mv() method to place the file in upload directory
                 assignmentInstructions.mv(
-                    "../../public/uploads/documents/assignmentInstructions/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/documents/assignmentInstructions/" +
                         new_filename
                 );
 
@@ -324,12 +324,12 @@ router.put(
             // Removes old profile pic
             if (
                 fs.existsSync(
-                    "../../public/uploads/images/profilePictures/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/profilePictures/" +
                         oldProfilePicPath.rows[0].profilepic_filepath
                 )
             ) {
                 fs.unlinkSync(
-                    "../../public/uploads/images/profilePictures/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/profilePictures/" +
                         oldProfilePicPath.rows[0].profilepic_filepath
                 );
             }
@@ -361,12 +361,12 @@ router.put("/deleteStudentProfilePicture", authorization, async (req, res) => {
         // Removes old profile pic
         if (
             fs.existsSync(
-                "../../public/uploads/images/profilePictures/" +
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/profilePictures/" +
                     oldProfilePicPath.rows[0].profilepic_filepath
             )
         ) {
             fs.unlinkSync(
-                "../../public/uploads/images/profilePictures/" +
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/profilePictures/" +
                     oldProfilePicPath.rows[0].profilepic_filepath
             );
         }
@@ -397,12 +397,12 @@ router.put("/deleteStudentResume", authorization, async (req, res) => {
         // Removes old profile pic
         if (
             fs.existsSync(
-                "../../public/uploads/images/studentResumes/" +
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/studentResumes/" +
                     oldProfilePicPath.rows[0].student_resume
             )
         ) {
             fs.unlinkSync(
-                "../../public/uploads/images/studentResumes/" +
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/studentResumes/" +
                     oldProfilePicPath.rows[0].student_resume
             );
         }
@@ -428,12 +428,12 @@ router.put("/teamLogo", authorization, async (req, res) => {
             // Removes old profile pic
             if (
                 fs.existsSync(
-                    "../../public/uploads/images/teamLogos/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/teamLogos/" +
                         oldTeamLogoPath.rows[0].team_logo
                 )
             ) {
                 fs.unlinkSync(
-                    "../../public/uploads/images/teamLogos/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/teamLogos/" +
                         oldTeamLogoPath.rows[0].team_logo
                 );
             }
@@ -450,7 +450,7 @@ router.put("/teamLogo", authorization, async (req, res) => {
 
             //Use the mv() method to place the file in upload directory (i.e. "uploads")
             teamLogo.mv(
-                "../../public/uploads/images/teamLogos/" + new_filename
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/teamLogos/" + new_filename
             );
 
             const updateTeamLogo = await pool.query(
@@ -484,12 +484,12 @@ router.put("/updateSchedImg", authorization, async (req, res) => {
             // Removes old profile pic
             if (
                 fs.existsSync(
-                    "../../public/uploads/images/schedules/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/schedules/" +
                         oldTeamLogoPath.rows[0].schedule_image
                 )
             ) {
                 fs.unlinkSync(
-                    "../../public/uploads/images/schedules/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/schedules/" +
                         oldTeamLogoPath.rows[0].schedule_image
                 );
             }
@@ -506,7 +506,7 @@ router.put("/updateSchedImg", authorization, async (req, res) => {
 
             //Use the mv() method to place the file in upload directory (i.e. "uploads")
             scheduleImage.mv(
-                "../../public/uploads/images/schedules/" + new_filename
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/schedules/" + new_filename
             );
 
             const updateTeamLogo = await pool.query(
@@ -540,12 +540,12 @@ router.put("/techImg2", authorization, async (req, res) => {
             // Removes old profile pic
             if (
                 fs.existsSync(
-                    "../../public/uploads/images/techLogos/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/techLogos/" +
                         oldTeamLogoPath.rows[0].tech_img_2
                 )
             ) {
                 fs.unlinkSync(
-                    "../../public/uploads/images/techLogos/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/techLogos/" +
                         oldTeamLogoPath.rows[0].tech_img_2
                 );
             }
@@ -562,7 +562,7 @@ router.put("/techImg2", authorization, async (req, res) => {
 
             //Use the mv() method to place the file in upload directory (i.e. "uploads")
             techImg2.mv(
-                "../../public/uploads/images/techLogos/" + new_filename
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/techLogos/" + new_filename
             );
 
             const updateTeamLogo = await pool.query(
@@ -596,12 +596,12 @@ router.put("/techImg1", authorization, async (req, res) => {
             // Removes old profile pic
             if (
                 fs.existsSync(
-                    "../../public/uploads/images/techLogos/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/techLogos/" +
                         oldTeamLogoPath.rows[0].tech_img_1
                 )
             ) {
                 fs.unlinkSync(
-                    "../../public/uploads/images/techLogos/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/techLogos/" +
                         oldTeamLogoPath.rows[0].tech_img_1
                 );
             }
@@ -618,7 +618,7 @@ router.put("/techImg1", authorization, async (req, res) => {
 
             //Use the mv() method to place the file in upload directory (i.e. "uploads")
             techImg1.mv(
-                "../../public/uploads/images/techLogos/" + new_filename
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/techLogos/" + new_filename
             );
 
             const updateTeamLogo = await pool.query(
@@ -652,12 +652,12 @@ router.put("/techImg3", authorization, async (req, res) => {
             // Removes old profile pic
             if (
                 fs.existsSync(
-                    "../../public/uploads/images/techLogos/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/techLogos/" +
                         oldTeamLogoPath.rows[0].tech_img_3
                 )
             ) {
                 fs.unlinkSync(
-                    "../../public/uploads/images/techLogos/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/techLogos/" +
                         oldTeamLogoPath.rows[0].tech_img_3
                 );
             }
@@ -674,7 +674,7 @@ router.put("/techImg3", authorization, async (req, res) => {
 
             //Use the mv() method to place the file in upload directory (i.e. "uploads")
             techImg3.mv(
-                "../../public/uploads/images/techLogos/" + new_filename
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/techLogos/" + new_filename
             );
 
             const updateTeamLogo = await pool.query(
@@ -708,12 +708,12 @@ router.put("/techImg4", authorization, async (req, res) => {
             // Removes old profile pic
             if (
                 fs.existsSync(
-                    "../../public/uploads/images/techLogos/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/techLogos/" +
                         oldTeamLogoPath.rows[0].tech_img_4
                 )
             ) {
                 fs.unlinkSync(
-                    "../../public/uploads/images/techLogos/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/techLogos/" +
                         oldTeamLogoPath.rows[0].tech_img_4
                 );
             }
@@ -730,7 +730,7 @@ router.put("/techImg4", authorization, async (req, res) => {
 
             //Use the mv() method to place the file in upload directory (i.e. "uploads")
             techImg4.mv(
-                "../../public/uploads/images/techLogos/" + new_filename
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/techLogos/" + new_filename
             );
 
             const updateTeamLogo = await pool.query(
@@ -764,12 +764,12 @@ router.put("/archImage", authorization, async (req, res) => {
             // Removes old profile pic
             if (
                 fs.existsSync(
-                    "../../public/uploads/images/architecture/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/architecture/" +
                         oldTeamLogoPath.rows[0].architecture_image
                 )
             ) {
                 fs.unlinkSync(
-                    "../../public/uploads/images/architecture/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/architecture/" +
                         oldTeamLogoPath.rows[0].architecture_image
                 );
             }
@@ -786,7 +786,7 @@ router.put("/archImage", authorization, async (req, res) => {
 
             //Use the mv() method to place the file in upload directory (i.e. "uploads")
             archImage.mv(
-                "../../public/uploads/images/architecture/" + new_filename
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/architecture/" + new_filename
             );
 
             const updateTeamLogo = await pool.query(
@@ -820,12 +820,12 @@ router.put("/teamBackdrop", authorization, async (req, res) => {
             // Removes old profile pic
             if (
                 fs.existsSync(
-                    "../../public/uploads/images/teamBackdrop/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/teamBackdrop/" +
                         oldTeamBackdropPath.rows[0].team_backdrop
                 )
             ) {
                 fs.unlinkSync(
-                    "../../public/uploads/images/teamBackdrop/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/teamBackdrop/" +
                         oldTeamBackdropPath.rows[0].team_backdrop
                 );
             }
@@ -842,7 +842,7 @@ router.put("/teamBackdrop", authorization, async (req, res) => {
 
             //Use the mv() method to place the file in upload directory (i.e. "uploads")
             teamBackdrop.mv(
-                "../../public/uploads/images/teamBackdrop/" + new_filename
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/teamBackdrop/" + new_filename
             );
 
             const updateTeamBackdrop = await pool.query(
@@ -876,12 +876,12 @@ router.put("/clientLogo/:id", authorization, async (req, res) => {
             // Removes old profile pic
             if (
                 fs.existsSync(
-                    "../../public/uploads/images/clientLogos/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/clientLogos/" +
                         oldClientLogoPath.rows[0].client_logo
                 )
             ) {
                 fs.unlinkSync(
-                    "../../public/uploads/images/clientLogos/" +
+                    "../../" + process.env.PRODUCTION_MODE + "/uploads/images/clientLogos/" +
                         oldClientLogoPath.rows[0].client_logo
                 );
             }
@@ -898,7 +898,7 @@ router.put("/clientLogo/:id", authorization, async (req, res) => {
 
             //Use the mv() method to place the file in upload directory (i.e. "uploads")
             clientLogo.mv(
-                "../../public/uploads/images/clientLogos/" + new_filename
+                "../../" + process.env.PRODUCTION_MODE + "/uploads/images/clientLogos/" + new_filename
             );
 
             const updateClientLogo = await pool.query(

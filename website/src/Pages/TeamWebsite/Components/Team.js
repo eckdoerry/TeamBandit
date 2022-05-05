@@ -152,9 +152,8 @@ const Team = ({ teamMembers, projectInfo }) => {
                                 <img
                                     src={
                                         projectInfo[0].client_logo
-                                            ? process.env.PUBLIC_URL + "/uploads/images/clientLogos/" +
+                                            && process.env.PUBLIC_URL + "/uploads/images/clientLogos/" +
                                                 projectInfo[0].client_logo
-                                            : null
                                     }
                                     alt=""
                                     width="150px"

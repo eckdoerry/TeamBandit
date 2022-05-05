@@ -22,7 +22,7 @@ const Overview = ({ colorValue, teamInfo, fontColor }) => {
             <div
                 style={{
                     backgroundColor: `${colorValue}`,
-                    backgroundImage: `url(${process.env.PUBLIC_URL}/uploads/images/teamBackdrop/${teamInfo[0].team_backdrop})`,
+                    backgroundImage: teamInfo[0].team_backdrop && `url(${process.env.PUBLIC_URL}/uploads/images/teamBackdrop/${teamInfo[0].team_backdrop})`,
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "100% 100%",
                     height: "100%",
@@ -55,6 +55,7 @@ const Overview = ({ colorValue, teamInfo, fontColor }) => {
                     />  : <img
                                 src={
                                     process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
+                                        && process.env.PUBLIC_URL + "/uploads/images/missing/missing.jpg"
                                     
                                 }
                                 alt=""

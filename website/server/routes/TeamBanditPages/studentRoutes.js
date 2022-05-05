@@ -56,7 +56,7 @@ router.post("/csv", authorization, async(req,res) =>{
             if(alreadyCourse.rows.length === 0)
             {
                 await pool.query("INSERT INTO studentcourses(student_id, course_id) VALUES ($1, $2)", [tempStudent.rows[0].student_id, req.body['course_id']]);
-                return res.status(401).json("Student Already Added them to course");
+                return res.status(401).json("Student Already Added to course");
             }
 
             return res.status(401).json("Student Already Exists");

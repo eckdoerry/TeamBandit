@@ -33,6 +33,7 @@ const CourseTable = ({ coursesInfo, userInfo, userIdentifier, setCoursesChange }
                         <TableRow>
                             <TableCell className={styles.tableCell}>Course Name</TableCell>
                             <TableCell className={styles.tableCell}>Course Semester</TableCell>
+                            <TableCell className={styles.tableCell}>Course Year</TableCell>
                         </TableRow> : userIdentifier == "mentor" ? null : null
                     }
                     </TableHead>

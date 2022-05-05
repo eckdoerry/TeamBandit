@@ -121,10 +121,12 @@ router.get("/members/:project_id", authorization, async(req, res) => {
  * @TODO: This will need to change once bridge interactions start happening, but
  * might be okay
  */
-router.delete("/projects/:id", authorization, async(req, res) => {
+router.delete("/projects/:id/:team_id", authorization, async(req, res) => {
     try {
         
-        const {id} = req.params;
+        const {id, team_id} = req.params;
+
+        await pool.query("DELETE FROM assignmentbridgetable WHERE team_id = $1", [team_id]);
 
         // Delete associated team
         await pool.query("DELETE FROM teams WHERE project_id = $1 AND organizer_id = $2", [id, req.user]);

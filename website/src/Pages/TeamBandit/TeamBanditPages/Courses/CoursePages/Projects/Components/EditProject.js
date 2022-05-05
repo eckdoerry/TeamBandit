@@ -78,7 +78,8 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
 
     const handleConfirmDelete = () => {
         handleDeleteConfirmClose();
-        deleteProject(project.project_id);
+        console.log(project);
+        deleteProject(project.project_id, project.team_id);
     };
 
     const handleDeleteConfirmOpen = () => {
@@ -314,10 +315,10 @@ const EditProject = ({ project, setRowChange, courseInfo }) => {
     };
 
     // Delete function
-    const deleteProject = async (id) => {
+    const deleteProject = async (id, team_id) => {
         try {
             await fetch(
-                `${process.env.REACT_APP_BASEURL}/projects/projects/${id}/`,
+                `${process.env.REACT_APP_BASEURL}/projects/projects/${id}/${team_id}`,
                 {
                     method: "DELETE",
                     headers: { token: localStorage.token },

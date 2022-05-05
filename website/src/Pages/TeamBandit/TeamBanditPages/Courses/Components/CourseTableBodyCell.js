@@ -95,7 +95,15 @@ const CourseTableBodyCell = ({ courseInfo, userInfo, userIdentifier, setCoursesC
                         setCoursesChange={setCoursesChange}
                     />
                 </TableCell>
-                <TableCell>{courseInfo.course_semester}</TableCell>
+                <TableCell 
+                    style={{borderRight: '1px solid #d3d3d3'}} 
+                    className={styles.tableCellBorder}
+                >
+                    {courseInfo.course_semester}
+                </TableCell>
+                <TableCell>
+                    {courseInfo.course_year}
+                </TableCell>
             </TableRow> 
         );
     }
